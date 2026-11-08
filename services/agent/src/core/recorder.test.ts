@@ -180,6 +180,29 @@ describe("DrizzleWriter order ownership", () => {
   });
 });
 
+describe("DrizzleWriter fill ownership", () => {
+  it("skips fill rows when the indexer owns agent_fills, keeps guard and tuner rows", async () => {
+    const calls: string[] = [];
+    const tx = {
+      insert: (t: unknown) => ({ values: () => ({ onConflictDoNothing: async () => void calls.push(`insert:${tableName(t)}`) }) }),
+      update: () => ({ set: () => ({ where: async () => void calls.push("update") }) }),
+    };
+    const db = { transaction: async (fn: (t: typeof tx) => Promise<void>) => fn(tx) };
+    const w = new DrizzleWriter(db as unknown as ConstructorParameters<typeof DrizzleWriter>[0], { orders: false, fills: false });
+    await w.write([{ kind: "fill", value: fill }, { kind: "guard", value: guard }, { kind: "tuner", value: tuner }]);
+    expect(calls).toEqual(["insert:guard_events", "insert:tuner_events"]);
+  });
+
+  it("still writes fills by default (simulator runs)", async () => {
+    const calls: string[] = [];
+    const tx = { insert: (t: unknown) => ({ values: () => ({ onConflictDoNothing: async () => void calls.push(`insert:${tableName(t)}`) }) }) };
+    const db = { transaction: async (fn: (t: typeof tx) => Promise<void>) => fn(tx) };
+    const w = new DrizzleWriter(db as unknown as ConstructorParameters<typeof DrizzleWriter>[0], { orders: false });
+    await w.write([{ kind: "fill", value: fill }]);
+    expect(calls).toEqual(["insert:agent_fills"]);
+  });
+});
+
 describe("row mapping", () => {
   it("maps sdk events to DB rows", () => {
     expect(toOrderRow(quote("h1"))).toMatchObject({ orderHash: "h1", postedAt: new Date(1_000), cancelledAt: null, provenance: "TESTNET" });

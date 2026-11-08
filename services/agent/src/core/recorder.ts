@@ -204,19 +204,23 @@ type AnyPgJsDb = PostgresJsDatabase<Record<string, never>>;
  * Idempotent writes: inserts ignore duplicates so a retried batch never double-counts.
  * `orders: false` leaves agent_orders to the indexer (services/indexer writes every order with its
  * chain createdAt); writing them here too would create a second row per order hash.
+ * `fills: false` leaves agent_fills to the indexer as well: it writes every fill from the same
+ * Indexer trade record, so a single writer keeps one consistent row (side, fee, order hash case).
  */
 export class DrizzleWriter implements RecordWriter {
   readonly #db: AnyPgJsDb;
   readonly #orders: boolean;
+  readonly #fills: boolean;
 
-  constructor(db: AnyPgJsDb, opts: { orders: boolean } = { orders: true }) {
+  constructor(db: AnyPgJsDb, opts: { orders: boolean; fills?: boolean } = { orders: true }) {
     this.#db = db;
     this.#orders = opts.orders;
+    this.#fills = opts.fills ?? true;
   }
 
   async write(events: readonly RecordedEvent[]): Promise<void> {
     const orders = this.#orders ? events.flatMap((e) => (e.kind === "quote" ? [toOrderRow(e.value)] : [])) : [];
-    const fills = events.flatMap((e) => (e.kind === "fill" ? [toFillRow(e.value)] : []));
+    const fills = this.#fills ? events.flatMap((e) => (e.kind === "fill" ? [toFillRow(e.value)] : [])) : [];
     const guards = events.flatMap((e) => (e.kind === "guard" ? [toGuardRow(e.value)] : []));
     const tuners = events.flatMap((e) => (e.kind === "tuner" ? [toTunerRow(e.value)] : []));
     const cancels = this.#orders ? events.flatMap((e) => (e.kind === "cancel" ? [e.value] : [])) : [];

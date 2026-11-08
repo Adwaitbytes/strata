@@ -84,7 +84,7 @@ async function main(): Promise<void> {
   const db = sql === null ? null : drizzle(sql);
   // Without a database the events are discarded; the warning makes that explicit.
   const recordOrders = env.AGENT_RECORD_ORDERS === undefined ? env.STRATA_ADAPTER === "sim" : env.AGENT_RECORD_ORDERS === "true";
-  const writer: RecordWriter = db === null ? { write: async () => undefined } : new DrizzleWriter(db, { orders: recordOrders });
+  const writer: RecordWriter = db === null ? { write: async () => undefined } : new DrizzleWriter(db, { orders: recordOrders, fills: recordOrders });
   if (db === null) log("warn", "No DATABASE_URL or DATABASE_URL_FILE; events, risk stops and kill latch are not persisted (local testnet only)");
 
   // Load persisted stops and kill latch before anything can quote (review H-2). A failed load exits.
