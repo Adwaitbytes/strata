@@ -27,17 +27,32 @@ Each stream appends dated entries under its heading: what is done (with evidence
 - 2026-11-09 (note from W6): the signed kill message builder now lives in `packages/sdk` as `killRequestMessage()` (same text as `services/agent/src/core/killSwitch.ts`: `STRATA kill request` header, then network, target, closePositions, nonce, expiresAt). Please import it from `@strata/sdk` and delete the local copy so there is one source.
 ## W3 Injective integration
 - 2026-11-09: CROSS-FOLDER NOTE for W2: W3 added deps to `services/agent/package.json` (`@injectivelabs/sdk-ts`, `@injectivelabs/networks`, `@injectivelabs/utils`, `@injectivelabs/core-proto-ts-v2`, `@strata/keys`) and `inj:*` + `fetch-markets` scripts. Please merge rather than overwrite this file. W3 code lives only in `services/agent/src/injective/**`.
-- 2026-11-09: **NEEDS FAUCET** (testnet only, injective-888 / EVM 1439). Keystores created with `pnpm --filter @strata/keys new-testnet-key` (encrypted, `.secrets/keystores/`). The Injective faucet page uses hCaptcha/Turnstile and the documented lambda API (`https://jsbqfdd4yk.execute-api.us-east-1.amazonaws.com/v1/faucet`, docs.injective.network/developers-defi/testnet-faucet-integration) returns 404, so please fund via Chrome:
-  1. https://testnet.faucet.injective.network/ : paste the **0x** address (1 INJ + test USDT, new accounts only). Fallback: https://cloud.google.com/application/web3/faucet/injective/testnet with the **inj1** address.
-  2. https://faucet.circle.com/ : network "Injective Testnet", paste the **0x** address (testnet USDC, EVM `0x0C382e685bbeeFE5d3d9C29e29E341fEE8E84C5d`). Priority: strata-test-1 first (W3 integration test needs it), then test-2, test-3, strata-options.
+- 2026-11-09: **Funded** (was NEEDS FAUCET). Owner funded strata-test-1 once (1 INJ + 10 USDT from the Injective faucet, 20 USDC from Circle); `scripts/distribute-testnet-funds.ts` split it. Balances at 00:40 IST (bank; subaccount 0 trades from the bank, no deposit possible):
 
-  | name | 0x | inj1 | needs |
-  |---|---|---|---|
-  | strata-test-1 | 0xa37F84583F356EcEAd212471B49944b35469ed8A | inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh | INJ + USDC |
-  | strata-test-2 | 0x4cE919B19D7afc0e92EC0E52f05aAbbF73E28A13 | inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev | INJ + USDC |
-  | strata-test-3 | 0x719641745709e867bB0AC8d19515BBC92b3857d6 | inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t | INJ + USDC |
-  | strata-options | 0xc82EDAB6e2047964DD08c82d69FD0EbfE5C6b536 | inj1eqhd4dhzq3ukfhggeqkknlgwhljuddfk7yrvwg | INJ + USDC |
-  | strata-testnet-attestor | 0xdc83322EE104526f473AfC4f8a01e2d57676A953 | inj1mjpnythpq3fx73e6l38c5q0z64m8d22nvhankl | INJ only (gas for epoch posts) |
+  | name | 0x | inj1 | INJ | USDC | USDT |
+  |---|---|---|---|---|---|
+  | strata-test-1 | 0xa37F84583F356EcEAd212471B49944b35469ed8A | inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh | 0.144 | 8 | 4 |
+  | strata-test-2 | 0x4cE919B19D7afc0e92EC0E52f05aAbbF73E28A13 | inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev | 0.117 | 4 | 2 |
+  | strata-test-3 | 0x719641745709e867bB0AC8d19515BBC92b3857d6 | inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t | 0.117 | 4 | 2 |
+  | strata-options | 0xc82EDAB6e2047964DD08c82d69FD0EbfE5C6b536 | inj1eqhd4dhzq3ukfhggeqkknlgwhljuddfk7yrvwg | 0.117 | 4 | 2 |
+  | strata-testnet-attestor | 0xdc83322EE104526f473AfC4f8a01e2d57676A953 | inj1mjpnythpq3fx73e6l38c5q0z64m8d22nvhankl | 0.311 | 0 | 0 |
+  | W1 testnet deployer | 0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54 | inj10a9w33ncwts086ugjt3hzfvcvgh0ex65vuypwx | 0.194 | 0 | 0 |
+
+  Distribution txs: INJ to attestor `0xf6c4dfb36c4783d9ca4bb775015f35cd4fec0c289c2378e52bdb8348221fca50`, to deployer `0x03479a9f7361471d6a6a99c32610647a6ca52b1ba9e07d43ee32c182325dea06`; USDT MsgSend `863CE2F7524690FA914E58C1B09B722AA690D7AE0606C4F00B6661102B43A127`; USDC to test-2 `0x8cb42a087f602e8634f586d6f81ec0da120a20478c0cccd9e6f3eb6ce97524d8`, test-3 `0xacdb9bbaf6eec3908cc0f64e9ceaa98581baeacd3dbd970a9f05a2c4a34560d2`, options `0x336112c6dca9dfbd6f8e566abaac8b1f0b0b760773453a8df3ade0860f1167f6`. Two runs raced once (a second copy of the script ran concurrently), so the attestor got gas twice; the script now takes a lock file (`.secrets/distribute-testnet.lock`). Rerun any time: `pnpm --filter @strata/agent inj:distribute` (idempotent, testnet only, refuses chain 1776). Balances: `pnpm --filter @strata/agent inj:balances`. 10 USDC per agent is enough to test, not to quote meaningful depth; more Circle faucet runs to strata-test-1 then a rerun of the distributor will top everyone up.
+- 2026-11-09: `.secrets/keystores` had been set to mode 0600 by another stream, which removes the directory traverse bit and makes every keystore unreadable. Restored to 0700 (still owner only). Directories need 0700, files 0600.
+- 2026-11-09: **Done** (evidence in `docs/INJECTIVE.md`):
+  - `packages/keys` (D16): `KeySource` / `KeyHandle`, Web3 Secret Storage v3 keystores, passphrase from `STRATA_KEY_PASS_<NAME>` env, `.secrets/<name>.pass` (0600 enforced) or macOS Keychain. CLI `pnpm --filter @strata/keys new-testnet-key <name>` prints only addresses. 16 tests.
+  - `scripts/fetch-markets.ts`: live Indexer + chain v2 cross-check + oracle freshness + Pyth Pro metadata. Mainnet 354 markets, arena SICI/USDC, XAU/USDC, EURUSD/USDC, USTECH/USDC. Testnet 18 markets: **no SICI and no live RWA**; arena BTC, ETH, INJ, LINK (USDC) + MUN, BHA, LIV index perps (slow oracle tier). New sidecar `packages/config/src/generated/market-sessions.<network>.json` (additive): classification rule, Pyth market-hours schedule, Hermes id, oracle age at fetch. **For W2 Session Guard**: use `pythSchedule`.
+  - `services/agent/src/injective`: `createInjectiveAdapter` implementing `ExchangeAdapter` (MsgBatchUpdateOrdersV2, post-only, feeRecipient, streams with failover, chain time, oracle timestamps, authz mode). 37 tests. Testnet smoke: place `0EBEB1CF54F0B009904084B1FF9AD3584703D6AE86A4D83C68E34DE4CCE80052` / cancel `BFC5274AB2E14948CFB679981743734880353A7CA12C427AEA96D3E4F51A4C47`, and `C0BB37351EE0A880F14BE5BF1C05A57BA641AAA081A8FAC0575AB9383862B4FA` / `7D0093F6080E4E9BDB5D1C93488B5B9410B2C52D734D8FD71AFD3A9E9CA025AC`, each verified on chain and Indexer.
+  - Scoped authz (`BatchUpdateOrdersAuthz`, one subaccount + arena markets, no send/withdraw): grant `E0B6BEBA36C916B96E22B3952033E68FB2E33B5F950C8627DB3D0E95EFCB1F9D` (test-2 -> test-3), negative check refused MsgSend, trade via grant `803CD52C91F63C10E6AAF15C47A55E4D2703884BF5C5710CE8501290F1A3D97D` / `A4E3EE1DC2CF43DD1AE9017D625CBBB4D6E3C083F2F2C5DABF2A28433F5EAF6F`.
+  - `docs/OPTIONS.md` (no public writer interface; SIMULATED payoff model) and `docs/OPTIONS_WHITELIST_REQUEST.md` (owner to send).
+- Notes for other streams:
+  - **W2**: `FillEvent.txHash` is "" (the Indexer trade has no tx hash); key fills on `tradeId` = `<blockHeight>_<eventIndex>`. `MarketState.reference` is null (Pyth Hermes now needs an API key). Subaccount 0 is bank funded.
+  - **W4**: Indexer v1 prices/fees are x10^quoteDecimals, quantities human; chain v2 values are human x10^18. Helpers in `services/agent/src/injective/units.ts`.
+  - **W6 (x402)**: hosted facilitator `x402.injective.network` is NXDOMAIN; run `InjectiveFacilitator` from `@injectivelabs/x402` yourself.
+  - **W1/W5**: ERC-8004 registries verified by `eth_getCode` (match W1's note).
+  - **Orchestrator**: `pnpm-lock.yaml` changes from my deps are uncommitted (shared file).
+- Blockers: none for testnet. Mainnet trading needs owner funds (D27) and the owner-run authz grant.
 ## W4 Indexer + DB + baseline
 - 2026-11-09 00:20 IST: **Baseline recorder (PRD 10.4) running** since 2026-11-08 18:48 UTC, two supervised processes (`services/indexer/scripts/run-baseline.sh`, restarts on exit, logs in `services/indexer/logs/`, gitignored):
   - Production (Neon, what the API reads): `DATABASE_URL_FILE=$PWD/.secrets/neon_url LOG_NAME=baseline-neon BASELINE_MAX_MARKETS=12 nohup services/indexer/scripts/run-baseline.sh &`. 5 s samples, 12 mainnet story markets (SICI, XAU, EURUSD, USTECH, US500, XAG, WTI, BRENT, GBPUSD, USDJPY, NVDA, AAPL) + 3 testnet RWA perps (GOLD/USDT, EVINDEX/USDT, TRUCPI/USDT). First count after 1 min: mainnet 144 rows / 12 markets, testnet 36 rows / 3 markets, 0 errors, sample latency ~600 ms.
