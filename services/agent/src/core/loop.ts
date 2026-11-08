@@ -559,12 +559,12 @@ export class MarketQuoter {
     const { adapter } = this.#d;
     try {
       if (!this.#killCancelled) {
-        await withTimeout(adapter.cancelAll(this.marketId), this.#timeoutMs, "cancelAll");
+        await this.cancelAllRecorded();
         this.#killCancelled = true;
       } else {
         // Late landings of a tx that was in flight when the kill arrived.
         const live = await withTimeout(adapter.getOpenOrders(this.marketId), this.#timeoutMs, "getOpenOrders");
-        if (live.length > 0) await withTimeout(adapter.cancelAll(this.marketId), this.#timeoutMs, "cancelAll");
+        if (live.length > 0) await this.cancelAllRecorded(live);
       }
       const ks = this.#d.killSwitch.state;
       if (ks.closePositions && !this.#gaveUp.kill) {
@@ -606,6 +606,23 @@ export class MarketQuoter {
     this.#d.sink.guard(toGuardEvent(d, { network, provenance, agentId, marketId: this.marketId, id: this.#d.ids(), at: this.#d.now() }));
   }
 
+  /**
+   * cancelAll plus a cancel record for every order it removed, so DB open-order counts stay true.
+   * The listing is best effort: a failed read never blocks the cancel itself.
+   */
+  async cancelAllRecorded(known?: readonly LiveOrder[]): Promise<void> {
+    let live: readonly LiveOrder[] = known ?? [];
+    if (known === undefined) {
+      try {
+        live = await withTimeout(this.#d.adapter.getOpenOrders(this.marketId), this.#timeoutMs, "getOpenOrders");
+      } catch {
+        live = [];
+      }
+    }
+    await withTimeout(this.#d.adapter.cancelAll(this.marketId), this.#timeoutMs, "cancelAll");
+    if (live.length > 0) this.#recordCancels(live.map((o) => o.orderHash), this.#d.now());
+  }
+
   async #enterUncertainty(params: RiskParams, err: unknown): Promise<CycleReport> {
     const first = this.#uncertainUntil === null;
     this.#uncertainUntil = this.#d.now() + this.#settleMs;
@@ -621,7 +638,7 @@ export class MarketQuoter {
       ]);
     }
     try {
-      await withTimeout(this.#d.adapter.cancelAll(this.marketId), this.#timeoutMs, "cancelAll");
+      await this.cancelAllRecorded();
     } catch {
       // Still uncertain; the next cycle tries again.
     }
@@ -634,7 +651,7 @@ export class MarketQuoter {
     const { adapter } = this.#d;
     try {
       if (this.#d.now() < this.#uncertainUntil!) {
-        await withTimeout(adapter.cancelAll(this.marketId), this.#timeoutMs, "cancelAll");
+        await this.cancelAllRecorded();
         return blocked;
       }
       const live = await withTimeout(adapter.getOpenOrders(this.marketId), this.#timeoutMs, "getOpenOrders");
@@ -727,7 +744,7 @@ export class AgentRunner {
       this.#d.quoters.map(async (q) => {
         for (let i = 0; i < attempts; i++) {
           try {
-            await this.#d.adapter.cancelAll(q.marketId);
+            await q.cancelAllRecorded();
             return;
           } catch {
             // retry

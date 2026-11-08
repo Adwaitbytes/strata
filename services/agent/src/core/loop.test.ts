@@ -707,3 +707,39 @@ describe("unhealthy testnet books", () => {
     expect(Number(o.find((q) => q.side === "buy")!.price)).toBeCloseTo(99.9, 1);
   });
 });
+
+describe("cancel-all paths record cancels (DB open-order counts stay true)", () => {
+  const cancelledAll = (c: ReturnType<typeof setup>) => {
+    const cancelled = new Set(c.sink.cancels.map((x) => x.orderHash));
+    return c.sink.quotes.every((q) => cancelled.has(q.orderHash));
+  };
+
+  it("on uncertainty", async () => {
+    const c = setup();
+    await c.tick();
+    c.sim.injectFault("getMarketState", "throw");
+    await c.tick();
+    expect(c.open()).toHaveLength(0);
+    expect(cancelledAll(c)).toBe(true);
+  });
+
+  it("on kill", async () => {
+    const c = setup();
+    await c.tick();
+    c.killSwitch.trigger({ target: "all", closePositions: false, source: "env", at: 1 });
+    await c.tick();
+    expect(cancelledAll(c)).toBe(true);
+  });
+
+  it("on startup reconciliation and on shutdown", async () => {
+    const first = setup();
+    await first.tick();
+    const restarted = setup({ sim: first.sim, startUncertain: true });
+    await restarted.tick();
+    expect(restarted.sink.cancels).toHaveLength(6);
+    for (let i = 0; i < 7; i++) await restarted.tick();
+    const runner = new AgentRunner({ adapter: restarted.sim, quoters: [restarted.quoter], killSwitch: restarted.killSwitch, sleep: () => new Promise(() => undefined) });
+    await runner.shutdown();
+    expect(cancelledAll(restarted)).toBe(true);
+  });
+});
