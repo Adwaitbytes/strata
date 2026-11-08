@@ -12,7 +12,8 @@ packages/contracts/cache
 packages/contracts/broadcast
 deliverables/*.mp4
 deliverables/*.pdf
-apps/video
+apps/video/*
+!apps/video/package.json
 services/*/logs
 infra/grafana
 .claude
