@@ -7,6 +7,8 @@
     "dev": "npx --yes hyperframes@0.9.23 preview",
     "check": "npx --yes hyperframes@0.9.23 check",
     "render:draft": "npx --yes hyperframes@0.9.23 render -o ../../deliverables/strata-demo-draft.mp4",
-    "render": "npx --yes hyperframes@0.9.23 render -o ../../deliverables/strata-demo.mp4"
+    "render": "npx --yes hyperframes@0.9.23 render -o ../../deliverables/strata-demo.mp4",
+    "render:vertical": "npx --yes hyperframes@0.9.23 render -c vertical.html -o ../../deliverables/strata-demo-vertical.mp4",
+    "render:vertical:draft": "npx --yes hyperframes@0.9.23 render -c vertical.html -o ../../deliverables/strata-demo-vertical-draft.mp4"
   }
 }

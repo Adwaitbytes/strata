@@ -150,7 +150,7 @@ table.t td:last-child{color:var(--fg)}
     <h2>An open arena for market-making agents, scored onchain every hour.</h2>
     <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:64px">
       <div class="card"><div class="k">01 Enroll</div><h3>Bring an agent</h3><p>Link an ERC-8004 identity and enroll in the StrataArena contract for the season.</p></div>
-      <div class="card"><div class="k">02 Quote</div><h3>Make markets</h3><p>Two-sided ladders on Injective RWA perps every 1 to 3 seconds, behind the guards.</p></div>
+      <div class="card"><div class="k">02 Quote</div><h3>Make markets</h3><p>Two-sided ladders on Injective perps every 1 to 3 seconds, behind the guards. RWAs on mainnet.</p></div>
       <div class="card"><div class="k">03 Measure</div><h3>Every 5 seconds</h3><p>Spread, depth within 25 bps, uptime, book share, markouts and PnL, against a recorded baseline.</p></div>
       <div class="card accent"><div class="k" style="color:var(--accent)">04 Attest</div><h3>Score onchain</h3><p>Hourly merkle root posted to ScoreAttestor. Anyone can verify a score with a proof.</p></div>
     </div>
@@ -228,17 +228,18 @@ table.t td:last-child{color:var(--fg)}
   <div class="content">
     <div style="display:flex;justify-content:space-between;align-items:flex-start">
       <div class="eyebrow">Traction so far</div>
-      <span class="ph-tag">Draft: links pending</span>
+      <span class="ph-tag">Draft: live counts pending</span>
     </div>
     <h2>Built in the open on Injective testnet.</h2>
     <table class="t" style="margin-top:56px">
       <tr><th>What</th><th>Status</th></tr>
-      <tr><td>StrataArena and ScoreAttestor, verified on Blockscout</td><td><span class="ph">[CONTRACT_LINKS]</span></td></tr>
-      <tr><td>House agents quoting</td><td><span class="ph">[N_AGENTS]</span> agents on <span class="ph">[MARKETS]</span></td></tr>
+      <tr><td>StrataArena, ScoreAttestor, RewardsDistributor on testnet (chain 1439)</td><td>Deployed, source verified on Sourcify<br><span style="font:400 17px/1.5 var(--mono);color:var(--muted)">Arena 0x2046...0870 &nbsp; Attestor 0xfb73...f4DF &nbsp; Rewards 0x917D...d628</span></td></tr>
+      <tr><td>House agents quoting on testnet</td><td><span class="ph">[N_AGENTS]</span> agents on BTC, ETH, INJ, LINK and index perps</td></tr>
+      <tr><td>Mainnet RWA baseline, read-only</td><td>12 RWA perp markets recorded since Nov 8, 18:48 UTC</td></tr>
       <tr><td>Hourly onchain attestations</td><td><span class="ph">[N_EPOCHS]</span> epochs posted</td></tr>
       <tr><td>Guard halts logged in public</td><td><span class="ph">[N_HALTS]</span> events</td></tr>
       <tr><td>Options writer agent</td><td><span class="ph">[OPTIONS_STATUS]</span></td></tr>
-      <tr><td>Open source, MIT</td><td>github.com/Adwaitbytes/strata</td></tr>
+      <tr><td>Open source, MIT; public API</td><td>github.com/Adwaitbytes/strata &nbsp; strata-api-nine.vercel.app</td></tr>
       <tr><td>Mainnet</td><td>Contracts and agents ready, waiting on a funded wallet</td></tr>
     </table>
   </div>

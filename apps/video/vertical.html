@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>STRATA vertical cut</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Geist"; src: url("assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Geist Mono"; src: url("assets/fonts/geist-mono.woff2") format("woff2"); font-weight: 100 900; }
+      @font-face { font-family: "Archivo Wide"; src: url("assets/fonts/archivo-wide.woff2") format("woff2"); font-weight: 100 900; font-stretch: 125%; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #07080b; }
+      #root { width: 100%; height: 100%; position: relative; overflow: hidden; background: #07080b; color: #e8ebf0; font-family: "Geist", sans-serif;
+        --accent: #3ee6d4; --bid: #5fd49a; --ask: #ff7d6b; --warn: #f2b84b; --halt: #ff4d5e; --muted: #9aa3b2; }
+      .v-lines { position: absolute; inset: 0; background: repeating-linear-gradient(180deg, transparent 0 47px, rgba(255,255,255,0.02) 47px 48px); }
+      .mono { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; }
+      .display { font-family: "Archivo Wide", sans-serif; font-stretch: 125%; font-weight: 700; letter-spacing: -0.025em; }
+      .v-scene { position: absolute; inset: 0; }
+      #v-count { position: absolute; left: 96px; top: 200px; font: 600 220px/0.8 "Geist Mono", monospace; letter-spacing: -0.05em; }
+      #v-count-l { position: absolute; left: 96px; top: 400px; right: 96px; font-family: "Archivo Wide", sans-serif; font-stretch: 125%; font-weight: 700; font-size: 48px; }
+      #v-grid { position: absolute; left: 96px; right: 96px; top: 520px; display: grid; grid-template-columns: repeat(9, 1fr); gap: 8px; }
+      .v-tile { height: 38px; border-radius: 6px; background: #11141a; border: 1px solid #1f242d; position: relative; }
+      .v-tile i { position: absolute; bottom: 8px; width: 6px; border-radius: 2px; opacity: 0.7; }
+      .v-tile i.b { right: calc(50% + 8px); background: var(--bid); }
+      .v-tile i.a { left: calc(50% + 8px); background: var(--ask); }
+      .v-bookwrap { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+      .book { position: absolute; left: 540px; top: 1060px; width: 0; height: 0; transform: scale(0.6); transform-origin: 0 0; }
+      .book .bar { position: absolute; bottom: 0; width: 60px; border-radius: 4px 4px 0 0; }
+      .book .bid { background: linear-gradient(180deg, rgba(95,212,154,0.55), rgba(95,212,154,0.18)); border-top: 2px solid var(--bid); }
+      .book .ask { background: linear-gradient(180deg, rgba(255,125,107,0.55), rgba(255,125,107,0.18)); border-top: 2px solid var(--ask); }
+      .book .band { position: absolute; bottom: 0; height: 0; border-radius: 3px; background: rgba(62,230,212,0.22); border-top: 2px solid var(--accent); }
+      .v-axis { position: absolute; left: 48px; right: 48px; top: 1060px; height: 2px; background: #2c333e; }
+      #v-title { position: absolute; left: 96px; right: 96px; top: 300px; font-size: 92px; line-height: 1.02; }
+      #v-tag { position: absolute; left: 96px; top: 520px; font: 600 26px/1 "Geist Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 18px; border-radius: 8px; border: 1px solid rgba(242,184,75,0.5); color: var(--warn); }
+      #v-halt { position: absolute; left: 0; right: 0; top: 700px; text-align: center; font: 600 120px/1 "Geist Mono", monospace; color: var(--halt); letter-spacing: 0.1em; opacity: 0; }
+      #v-oracle { position: absolute; left: 96px; right: 96px; top: 1160px; font-size: 32px; color: var(--muted); text-align: center; opacity: 0; }
+      #v-oracle b { color: var(--halt); font-weight: 600; }
+      #v-mark { position: absolute; left: 96px; top: 640px; width: 888px; height: 111px; }
+      #v-seam { position: absolute; left: 60px; right: 60px; top: 728px; height: 5px; background: var(--accent); }
+      #v-end-l { position: absolute; left: 96px; right: 96px; top: 860px; text-align: center; font-size: 60px; line-height: 1.1; }
+      #v-end-tag { position: absolute; left: 0; right: 0; top: 1060px; text-align: center; }
+      #v-end-tag span { display: inline-block; font: 600 30px/1 "Geist Mono", monospace; letter-spacing: 0.08em; padding: 14px 22px; border-radius: 8px; border: 1px solid rgba(62,230,212,0.45); color: var(--accent); }
+      #v-end-links { position: absolute; left: 0; right: 0; top: 1160px; text-align: center; font: 500 34px/1.7 "Geist Mono", monospace; color: var(--muted); }
+      .ph { color: var(--warn); background: rgba(242,184,75,0.12); border: 2px dashed rgba(242,184,75,0.7); border-radius: 10px; padding: 0 12px; }
+      #v-credit { position: absolute; left: 60px; right: 60px; bottom: 160px; text-align: center; font: 500 24px/1.4 "Geist Mono", monospace; color: #8b93a7; }
+      .v-cap { position: absolute; left: 96px; right: 96px; bottom: 380px; text-align: center; opacity: 0; }
+      .v-cap span { display: inline-block; font: 600 52px/1.25 "Geist", sans-serif; color: #e8ebf0; padding: 12px 28px; border-radius: 14px; background: rgba(7,8,11,0.78); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="vertical" data-start="0" data-duration="15" data-width="1080" data-height="1920">
+      <div class="v-lines"></div>
+
+      <div id="v-s1" class="v-scene clip" data-start="0" data-duration="3" data-track-index="1">
+        <div id="v-count" class="mono">135</div>
+        <div id="v-count-l">real-world markets on Injective</div>
+        <div id="v-grid"><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:16px"></i><i class="a" style="height:15px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:8px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:12px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:16px"></i></div><div class="v-tile"><i class="b" style="height:8px"></i><i class="a" style="height:9px"></i></div><div class="v-tile"><i class="b" style="height:11px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:14px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:13px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:17px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:10px"></i></div><div class="v-tile"><i class="b" style="height:9px"></i><i class="a" style="height:14px"></i></div><div class="v-tile"><i class="b" style="height:12px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:15px"></i><i class="a" style="height:11px"></i></div><div class="v-tile"><i class="b" style="height:10px"></i><i class="a" style="height:18px"></i></div><div class="v-tile"><i class="b" style="height:13px"></i><i class="a" style="height:11px"></i></div></div>
+      </div>
+
+      <div id="v-s2" class="v-scene clip" data-start="3" data-duration="8.6" data-track-index="1">
+        <div id="v-title" class="display">Thin books</div>
+        <div id="v-tag">Illustration</div>
+        <div class="v-axis"></div>
+        <div class="book" id="v-book">
+        <div class="v-bid bar bid" style="left:-244px;height:22px"></div>
+        <div class="v-ask bar ask" style="left:180px;height:22px"></div>
+        <div class="v-bid bar bid" style="left:-308px;height:34px"></div>
+        <div class="v-ask bar ask" style="left:244px;height:34px"></div>
+        <div class="v-bid bar bid" style="left:-372px;height:48px"></div>
+        <div class="v-ask bar ask" style="left:308px;height:48px"></div>
+        <div class="v-bid bar bid" style="left:-436px;height:70px"></div>
+        <div class="v-ask bar ask" style="left:372px;height:70px"></div>
+        <div class="v-bid bar bid" style="left:-500px;height:96px"></div>
+        <div class="v-ask bar ask" style="left:436px;height:96px"></div>
+        <div class="v-bid bar bid" style="left:-564px;height:128px"></div>
+        <div class="v-ask bar ask" style="left:500px;height:128px"></div>
+        <div class="v-bid bar bid" style="left:-628px;height:166px"></div>
+        <div class="v-ask bar ask" style="left:564px;height:166px"></div>
+        <div class="v-bid bar bid" style="left:-692px;height:210px"></div>
+        <div class="v-ask bar ask" style="left:628px;height:210px"></div>
+        <div class="v-bid bar bid" style="left:-756px;height:258px"></div>
+        <div class="v-ask bar ask" style="left:692px;height:258px"></div>
+        <div class="v-bid bar bid" style="left:-820px;height:310px"></div>
+        <div class="v-ask bar ask" style="left:756px;height:310px"></div>
+        <div class="v-band band a0" style="left:-68px;width:40px;bottom:0px" data-h="36"></div>
+        <div class="v-band band a0" style="left:28px;width:40px;bottom:0px" data-h="36"></div>
+        <div class="v-band band a0" style="left:-114px;width:40px;bottom:0px" data-h="62"></div>
+        <div class="v-band band a0" style="left:74px;width:40px;bottom:0px" data-h="62"></div>
+        <div class="v-band band a0" style="left:-160px;width:40px;bottom:0px" data-h="88"></div>
+        <div class="v-band band a0" style="left:120px;width:40px;bottom:0px" data-h="88"></div>
+        <div class="v-band band a1" style="left:-68px;width:40px;bottom:42px" data-h="36"></div>
+        <div class="v-band band a1" style="left:28px;width:40px;bottom:42px" data-h="36"></div>
+        <div class="v-band band a1" style="left:-114px;width:40px;bottom:68px" data-h="62"></div>
+        <div class="v-band band a1" style="left:74px;width:40px;bottom:68px" data-h="62"></div>
+        <div class="v-band band a1" style="left:-160px;width:40px;bottom:94px" data-h="88"></div>
+        <div class="v-band band a1" style="left:120px;width:40px;bottom:94px" data-h="88"></div>
+        <div class="v-band band a2" style="left:-68px;width:40px;bottom:84px" data-h="36"></div>
+        <div class="v-band band a2" style="left:28px;width:40px;bottom:84px" data-h="36"></div>
+        <div class="v-band band a2" style="left:-114px;width:40px;bottom:136px" data-h="62"></div>
+        <div class="v-band band a2" style="left:74px;width:40px;bottom:136px" data-h="62"></div>
+        <div class="v-band band a2" style="left:-160px;width:40px;bottom:188px" data-h="88"></div>
+        <div class="v-band band a2" style="left:120px;width:40px;bottom:188px" data-h="88"></div>
+        </div>
+        <div id="v-halt">HALT</div>
+        <div id="v-oracle" class="mono">oracle report <b>+5.0 s</b> ahead of chain time</div>
+      </div>
+
+      <div id="v-s3" class="v-scene clip" data-start="11.6" data-duration="3.4" data-track-index="1">
+        <svg id="v-mark" viewBox="0 0 548 68.6" aria-label="STRATA">
+          <defs><clipPath id="v-seam-clip"><rect width="548" height="41.2"/><rect y="45.6" width="548" height="68.6"/></clipPath></defs>
+          <path fill="#e8ebf0" clip-path="url(#v-seam-clip)" d="M37.0 69.8Q29.4 69.8 22.7 68.9Q15.9 68 10.8 65.5Q5.7 63.1 2.9 58.7Q0.0 54.4 0.0 47.5Q0.0 47.3 0.0 47Q-0.0 46.7 0.1 46.4L14.2 46.4Q14.1 46.9 14.1 47.4Q14.0 48 14.0 48.7Q14.0 52 16.8 54Q19.5 56 24.7 57Q29.8 58 36.8 58Q39.8 58 42.9 57.7Q45.9 57.4 48.8 56.8Q51.6 56.3 53.8 55.4Q55.9 54.5 57.2 53Q58.5 51.5 58.5 49.6Q58.5 46.9 56.1 45.2Q53.7 43.5 49.7 42.4Q45.7 41.4 40.7 40.7Q35.6 40 30.3 39.1Q24.9 38.3 19.9 36.8Q14.8 35.4 10.7 33.1Q6.6 30.9 4.3 27.2Q2.0 23.6 2.0 18.3Q2.0 13.8 4.2 10.1Q6.3 6.4 10.8 3.8Q15.2 1.3 21.8 0Q28.3 -1.3 36.9 -1.3Q45.7 -1.3 52.1 0.1Q58.4 1.6 62.5 4.2Q66.6 6.9 68.6 10.4Q70.5 14 70.5 18.3L70.5 20L56.6 20L56.6 18.6Q56.6 16.3 54.2 14.5Q51.8 12.7 47.6 11.6Q43.3 10.5 37.8 10.5Q30.4 10.5 25.8 11.4Q21.1 12.3 18.9 14Q16.6 15.7 16.6 17.8Q16.6 20.2 19.0 21.7Q21.4 23.2 25.4 24.1Q29.4 25.1 34.5 25.8Q39.5 26.5 44.9 27.4Q50.3 28.3 55.4 29.7Q60.4 31.1 64.5 33.4Q68.5 35.8 70.9 39.3Q73.2 42.8 73.2 47.9Q73.2 56 68.7 60.8Q64.1 65.6 56.0 67.7Q47.8 69.8 37.0 69.8ZM120.5 68.6L120.5 12.5L90.0 12.5L90.0 -0.1L165.4 -0.1L165.4 12.5L134.9 12.5L134.9 68.6ZM186.5 68.6L186.5 -0.1L240.3 -0.1Q247.5 -0.1 252.2 2.8Q256.8 5.7 259.2 10.5Q261.5 15.4 261.5 21.2Q261.5 27.4 258.3 32.7Q255.1 38 248.5 40.9L263.2 68.6L247.1 68.6L234.3 43.6L200.8 43.6L200.8 68.6ZM200.8 31.7L236.5 31.7Q241.4 31.7 244.1 28.8Q246.8 26 246.8 21.5Q246.8 18.4 245.6 16.2Q244.4 14.1 242.2 13Q239.9 11.9 236.5 11.9L200.8 11.9ZM311.3 0L278.5 68.7L296.8 68.7L314.0 31.2Q315.1 28.8 316.3 26Q317.5 23.2 318.6 20.5Q319.7 17.8 320.5 15.9L321.3 15.9Q322.0 17.6 323.0 20.2Q324.1 22.9 325.3 25.7Q326.6 28.6 327.8 31.1L345.1 68.7L362.5 68.7L329.6 0ZM405.8 68.6L405.8 12.5L375.3 12.5L375.3 -0.1L450.7 -0.1L450.7 12.5L420.2 12.5L420.2 68.6ZM496.4 0L463.6 68.7L481.9 68.7L499.1 31.2Q500.2 28.8 501.4 26Q502.6 23.2 503.7 20.5Q504.8 17.8 505.6 15.9L506.4 15.9Q507.1 17.6 508.2 20.2Q509.2 22.9 510.5 25.7Q511.7 28.6 512.9 31.1L530.2 68.7L547.6 68.7L514.7 0Z"/>
+        </svg>
+        <div id="v-seam"></div>
+        <div id="v-end-l" class="display">Open to any agent. Verified onchain.</div>
+        <div id="v-end-tag"><span>INJECTIVE TESTNET</span></div>
+        <div id="v-end-links"><div><span class="ph">[TESTNET_APP_URL]</span></div><div>github.com/Adwaitbytes/strata</div></div>
+        <div id="v-credit">Aarambh Labs. Music: "Clean Soul" by Kevin MacLeod (incompetech.com), CC BY 4.0</div>
+      </div>
+
+      <div id="v-caps" class="clip" data-start="0" data-duration="15" data-track-index="2" data-track-kind="captions" style="position:absolute;inset:0;z-index:10">
+      <div class="v-cap" id="v-cap-0"><span>Injective lists 135 real-world markets.</span></div>
+      <div class="v-cap" id="v-cap-1"><span>Most of those books are thin.</span></div>
+      <div class="v-cap" id="v-cap-2"><span>STRATA agents compete to fill them, scored onchain every hour.</span></div>
+      <div class="v-cap" id="v-cap-3"><span>A bad oracle price? The agent halts.</span></div>
+      <div class="v-cap" id="v-cap-4"><span>Live on Injective testnet. Mainnet once funded.</span></div>
+      </div>
+
+      <audio id="v-bed" class="clip" src="assets/audio/clean-soul-bed.m4a" data-start="0" data-duration="15" data-track-index="3" data-volume="1" data-fade-out="1.5"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const counter = { v: 1 };
+      tl.fromTo(".v-tile", { opacity: 0.15, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out", stagger: 0.008 }, 0);
+      tl.fromTo(counter, { v: 1 }, { v: 135, duration: 1.4, ease: "power2.out", onUpdate: () => { document.querySelector("#v-count").textContent = String(Math.round(counter.v)); } }, 0);
+      tl.fromTo(".v-bid, .v-ask", { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.6, ease: "expo.out", stagger: { each: 0.03, from: "end" } }, 3.05);
+      tl.fromTo("#v-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 3.1);
+      document.querySelectorAll(".v-band").forEach((el, i) => {
+        tl.fromTo(el, { height: 0, opacity: 0 }, { height: Number(el.dataset.h), opacity: 1, duration: 0.5, ease: "expo.out" }, 6.2 + Math.floor(i / 6) * 0.35 + (i % 6) * 0.04);
+      });
+      tl.to("#v-title", { opacity: 0, duration: 0.2, ease: "power3.in" }, 6.0);
+      tl.to(".v-band", { height: 0, opacity: 0, duration: 0.25, ease: "power3.in", stagger: 0.01 }, 9.6);
+      tl.fromTo("#v-oracle", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 9.2);
+      tl.fromTo("#v-halt", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, 9.8);
+      tl.fromTo("#v-mark", { opacity: 0, filter: "blur(10px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.4, ease: "expo.out" }, 11.7);
+      tl.fromTo("#v-seam", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 11.9);
+      tl.fromTo("#v-end-l, #v-end-tag", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.4);
+      tl.fromTo("#v-end-links, #v-credit", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 12.8);
+      const caps = [[0.2, 2.9], [3.1, 5.9], [6.1, 9.0], [9.2, 11.6], [11.8, 14.9]];
+      caps.forEach(([start, end], i) => {
+        const el = "#v-cap-" + i;
+        tl.fromTo(el, { opacity: 0, visibility: "visible" }, { opacity: 1, duration: 0.15, ease: "power2.out" }, start);
+        tl.to(el, { opacity: 0, duration: 0.1, ease: "power2.in" }, end - 0.1);
+        tl.set(el, { opacity: 0, visibility: "hidden" }, end);
+      });
+      window.__timelines["vertical"] = tl;
+    </script>
+  </body>
+</html>

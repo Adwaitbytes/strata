@@ -51,6 +51,6 @@ QA frames: 4 s (grid full, caption), 13 s (thin book with spread bracket), 24 s 
 | Epoch root | `s3-arena` host `data-variable-values`, `epochRoot` | First 8 to 12 hex chars of a real testnet `EpochPosted` root |
 | App URL | `s6-cta` host `data-variable-values`, `appUrl`; also the `[TESTNET_APP_URL]` text in both browser bars | Vercel URL |
 
-After filling: `pnpm --filter @strata/video check`, then `pnpm --filter @strata/video render` writes `deliverables/strata-demo.mp4`. No placeholder may remain in the final render: `grep -rn "\[[A-Z_]*\]" apps/video/index.html apps/video/compositions` must print nothing. The 15 s vertical cut (PRD 14) is not built yet.
+After filling: `pnpm --filter @strata/video check`, then `pnpm --filter @strata/video render` writes `deliverables/strata-demo.mp4`. No placeholder may remain in the final render: `grep -rn "\[[A-Z_]*\]" apps/video/index.html apps/video/compositions` must print nothing. The 15 s vertical cut (PRD 14) is `vertical.html` (1080 x 1920, standalone composition): markets, thin book, agents fill it, oracle halt, end card. Its only placeholder is `[TESTNET_APP_URL]` in `#v-end-links`. Render with `pnpm --filter @strata/video render:vertical`.
 
 Captions and every scene file are plain HTML; edit them directly.
