@@ -43,4 +43,9 @@ const shutdown = async (signal: string) => {
 process.once("SIGTERM", () => void shutdown("SIGTERM"));
 process.once("SIGINT", () => void shutdown("SIGINT"));
 
-await app.listen({ port: config.port, host: config.host });
+// Not awaited: Vercel's launcher stubs http.Server#listen so the callback never fires, and a
+// top-level await here would keep the module import pending until the function times out.
+app.listen({ port: config.port, host: config.host }).catch((err: unknown) => {
+  app.log.fatal({ err }, "failed to listen");
+  process.exit(1);
+});
