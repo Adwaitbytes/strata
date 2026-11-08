@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import type { Fill, GuardEvent, Quote, TunerEvent } from "@strata/sdk";
-import { BufferedRecorder, toFillRow, toGuardRow, toOrderRow, toTunerRow, type RecordedEvent, type RecordWriter } from "./recorder.js";
+import { getTableName } from "drizzle-orm";
+import type { PgTable } from "drizzle-orm/pg-core";
+import { BufferedRecorder, DrizzleWriter, toFillRow, toGuardRow, toOrderRow, toTunerRow, type RecordedEvent, type RecordWriter } from "./recorder.js";
 
 const M = `0x${"a".repeat(64)}`;
 const quote = (orderHash: string): Quote => ({
@@ -63,6 +65,8 @@ const tuner: TunerEvent = {
   rejectReason: null,
   at: 4_000,
 };
+
+const tableName = (t: unknown): string => getTableName(t as PgTable);
 
 class MemoryWriter implements RecordWriter {
   batches: RecordedEvent[][] = [];
@@ -155,6 +159,24 @@ describe("BufferedRecorder", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe("DrizzleWriter order ownership", () => {
+  it("skips quote and cancel rows when the indexer owns agent_orders", async () => {
+    const calls: string[] = [];
+    const tx = {
+      insert: (t: unknown) => ({ values: () => ({ onConflictDoNothing: async () => void calls.push(`insert:${tableName(t)}`) }) }),
+      update: () => ({ set: () => ({ where: async () => void calls.push("update") }) }),
+    };
+    const db = { transaction: async (fn: (t: typeof tx) => Promise<void>) => fn(tx) };
+    const w = new DrizzleWriter(db as unknown as ConstructorParameters<typeof DrizzleWriter>[0], { orders: false });
+    await w.write([
+      { kind: "quote", value: quote("h1") },
+      { kind: "cancel", value: { network: "testnet", orderHash: "h1", cancelledAt: 1 } },
+      { kind: "guard", value: guard },
+    ]);
+    expect(calls).toEqual(["insert:guard_events"]);
   });
 });
 

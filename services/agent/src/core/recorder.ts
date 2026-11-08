@@ -200,20 +200,26 @@ export function toTunerRow(e: TunerEvent): typeof tunerEvents.$inferInsert {
 // The schema generic is irrelevant here: the writer only uses insert/update on imported tables.
 type AnyPgJsDb = PostgresJsDatabase<Record<string, never>>;
 
-/** Idempotent writes: inserts ignore duplicates so a retried batch never double-counts. */
+/**
+ * Idempotent writes: inserts ignore duplicates so a retried batch never double-counts.
+ * `orders: false` leaves agent_orders to the indexer (services/indexer writes every order with its
+ * chain createdAt); writing them here too would create a second row per order hash.
+ */
 export class DrizzleWriter implements RecordWriter {
   readonly #db: AnyPgJsDb;
+  readonly #orders: boolean;
 
-  constructor(db: AnyPgJsDb) {
+  constructor(db: AnyPgJsDb, opts: { orders: boolean } = { orders: true }) {
     this.#db = db;
+    this.#orders = opts.orders;
   }
 
   async write(events: readonly RecordedEvent[]): Promise<void> {
-    const orders = events.flatMap((e) => (e.kind === "quote" ? [toOrderRow(e.value)] : []));
+    const orders = this.#orders ? events.flatMap((e) => (e.kind === "quote" ? [toOrderRow(e.value)] : [])) : [];
     const fills = events.flatMap((e) => (e.kind === "fill" ? [toFillRow(e.value)] : []));
     const guards = events.flatMap((e) => (e.kind === "guard" ? [toGuardRow(e.value)] : []));
     const tuners = events.flatMap((e) => (e.kind === "tuner" ? [toTunerRow(e.value)] : []));
-    const cancels = events.flatMap((e) => (e.kind === "cancel" ? [e.value] : []));
+    const cancels = this.#orders ? events.flatMap((e) => (e.kind === "cancel" ? [e.value] : [])) : [];
     await this.#db.transaction(async (tx) => {
       if (orders.length) await tx.insert(agentOrders).values(orders).onConflictDoNothing();
       if (fills.length) await tx.insert(agentFills).values(fills).onConflictDoNothing();

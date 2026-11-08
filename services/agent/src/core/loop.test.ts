@@ -743,3 +743,14 @@ describe("cancel-all paths record cancels (DB open-order counts stay true)", () 
     expect(cancelledAll(restarted)).toBe(true);
   });
 });
+
+describe("client order IDs", () => {
+  it("carry the ladder level for the indexer and fit the 36-character chain limit", async () => {
+    const c = setup();
+    await c.tick();
+    const cids = c.sim.landed[0]!.create.map((o) => o.cid);
+    expect(new Set(cids).size).toBe(cids.length);
+    for (const cid of cids) expect(cid.length).toBeLessThanOrEqual(36);
+    expect(cids.map((cid) => /-L(\d+)-/.exec(cid)![1]).sort()).toEqual(["0", "0", "1", "1", "2", "2"]);
+  });
+});

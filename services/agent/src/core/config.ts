@@ -124,6 +124,11 @@ export const AgentEnv = z.object({
   SECRETS_DIR: z.string().default(".secrets"),
   /** Keystore folder (keystores/<name>.json + <name>.pass); compose mounts it apart from SECRETS_DIR. Defaults to SECRETS_DIR. */
   STRATA_SECRETS_DIR: z.string().min(1).optional(),
+  /**
+   * Write quotes and cancels to agent_orders. Default: only for the simulator; with the Injective
+   * adapter the indexer owns agent_orders (it records every order from the chain).
+   */
+  AGENT_RECORD_ORDERS: z.enum(["true", "false"]).optional(),
   /** Explicit orchestrator go-ahead for mainnet; mainnet configs also need enabled: true. */
   MAINNET_GO_AHEAD: bool,
 });
