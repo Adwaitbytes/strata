@@ -20,6 +20,7 @@ import { insertBookSnapshots, upsertHeartbeat } from "../store/writes.js";
 import { insertOraclePrices, insertPositions, insertTrades, upsertAgentOrders, type OracleRow } from "../store/live.js";
 import { loadAgents, type AgentRef } from "./agents.js";
 import { closeOrdersMissingFromChain } from "../store/reconcile.js";
+import { backfillTrades } from "./backfill.js";
 import { upsertMarketCatalog } from "../store/catalog.js";
 import { isOpenOrder, liveProvenance, mapOrder, mapPosition, mapTrade, strataBookMaps, type FillRow, type OrderRow, type PositionRow, type TradeRow } from "./mappers.js";
 import type { IndexerOrder } from "./records.js";
@@ -110,6 +111,25 @@ export class LiveIndexer {
       this.restartStreams();
     }
     await this.reconcileAgents();
+    await this.reconcileTrades();
+  }
+
+  /** Re-reads the last 15 min of arena trades each refresh so stream gaps never lose fills. */
+  private async reconcileTrades(): Promise<void> {
+    if (this.markets.size === 0) return;
+    const now = Date.now();
+    const r = await backfillTrades({
+      network: this.o.network,
+      reader: this.o.reader,
+      db: this.o.db,
+      markets: [...this.markets.values()],
+      agentBySubaccount: this.agentBySub,
+      sinceMs: now - 15 * 60_000,
+      untilMs: now,
+      maxPages: 20,
+    });
+    this.stats.trades += r.insertedTrades;
+    this.stats.fills += r.insertedFills;
   }
 
   /**

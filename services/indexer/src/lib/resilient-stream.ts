@@ -34,8 +34,11 @@ export function resilientStream(
     if (stopped) return;
     controller?.abort();
     controller = null;
-    const delay = Math.min(maxBackoff, 1000 * 2 ** Math.min(attempt, 6));
-    attempt += 1;
+    // A stall on a quiet market is not a failure: reconnect at once without growing the backoff,
+    // otherwise idle streams end up disconnected for a minute at a time.
+    const stalled = reason === "stalled";
+    const delay = stalled ? 1000 : Math.min(maxBackoff, 1000 * 2 ** Math.min(attempt, 6));
+    if (!stalled) attempt += 1;
     log("warn", "stream restart", { stream: name, reason, delayMs: delay, ...(err === undefined ? {} : { error: errMsg(err) }) });
     if (retryTimer) clearTimeout(retryTimer);
     retryTimer = setTimeout(connect, delay);
