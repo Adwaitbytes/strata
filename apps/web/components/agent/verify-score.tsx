@@ -7,7 +7,7 @@ import { useState } from "react";
 import { api, describeError } from "@/lib/api/client";
 import { explorerUrl } from "@/lib/chains";
 import { shortHex } from "@/lib/format";
-import { verifyLocally, verifyOnchain, type CheckResult } from "@/lib/verify";
+import type { CheckResult } from "@/lib/verify";
 import { cn } from "@/lib/utils";
 
 type Step = { key: "local" | "onchain"; title: string; result: CheckResult | "running" | "idle" };
@@ -46,6 +46,8 @@ export function VerifyScore({ scores, network }: { scores: EpochScore[]; network
     set("local", "running");
     set("onchain", "idle");
     try {
+      // viem and the merkle code load only when someone asks to verify.
+      const { verifyLocally, verifyOnchain } = await import("@/lib/verify");
       const [ep, transparency] = await Promise.all([
         api.epoch(network, score.season, score.epoch),
         api.transparency(network).catch(() => null),

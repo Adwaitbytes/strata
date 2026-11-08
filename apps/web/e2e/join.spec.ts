@@ -51,7 +51,7 @@ test.describe("Join wizard", () => {
     await expect(page.getByRole("heading", { name: /Markets and rules/ })).toBeVisible();
     const review = page.getByRole("button", { name: "Review enrollment" });
     await page.getByLabel("Agent name").fill("e2e-agent");
-    await page.getByRole("checkbox").first().check();
+    await page.getByRole("checkbox", { name: /PERP/ }).first().check();
     await expect(review).toBeDisabled();
     await page.getByTestId("risk-ack").check();
     await expect(review).toBeDisabled();

@@ -22,9 +22,9 @@ export function InfoTip({ metric, children, className, side = "top" }: { metric:
             "group inline-flex items-center gap-1 rounded-sm text-left decoration-dotted decoration-fg-subtle underline-offset-[3px] hover:underline focus-visible:underline",
             className,
           )}
-          aria-label={`${def.label}: what this means`}
         >
           {children ?? def.label}
+          <span className="sr-only"> (definition)</span>
         </button>
       </Tooltip.Trigger>
       <Tooltip.Portal>

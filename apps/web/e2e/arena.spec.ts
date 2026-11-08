@@ -14,7 +14,7 @@ test.describe("Arena", () => {
 
   test("explains every column on hover", async ({ page }) => {
     await page.goto("/arena");
-    await page.getByRole("columnheader").getByRole("button", { name: /Score: what this means/ }).hover();
+    await page.getByRole("columnheader").getByRole("button", { name: "Score (definition)" }).hover();
     await expect(page.getByRole("tooltip")).toContainText("0 to 10,000");
     await expect(page.getByRole("tooltip")).toContainText("Source:");
   });
@@ -30,7 +30,7 @@ test.describe("Arena", () => {
   test("filters by market and links through to a market page", async ({ page }) => {
     await page.goto("/arena");
     await expect(page.getByTestId("market-card")).toHaveCount(3);
-    await page.getByLabel("Market").selectOption({ index: 1 });
+    await page.getByRole("combobox", { name: "Market" }).selectOption({ index: 1 });
     await expect(page.getByTestId("leaderboard-row")).toHaveCount(2);
     await page.getByTestId("market-card").first().click();
     await expect(page).toHaveURL(/\/markets\/0x0{63}1$/);

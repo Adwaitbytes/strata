@@ -26,7 +26,7 @@ export function ScoreHistory({ scores }: { scores: EpochScore[] }) {
           {current && current.flagNames.length ? <span className="ml-2 text-halt">{current.flagNames.join(", ")}</span> : null}
         </span>
       </div>
-      <div role="img" aria-label={summary} className="flex items-end gap-[3px]" style={{ height: H }} onMouseLeave={() => setActive(null)}>
+      <div role="group" aria-label={summary} className="flex items-end gap-[3px]" style={{ height: H }} onMouseLeave={() => setActive(null)}>
         {sorted.map((s) => {
           const h = Math.max(2, (s.score / 10_000) * H);
           const flagged = s.flags !== 0;

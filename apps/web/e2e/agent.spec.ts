@@ -7,7 +7,7 @@ test.describe("Agent page", () => {
     await expect(page.getByTestId("data-labels").first()).toContainText("TESTNET");
     await expect(page.getByText("ERC-8004 identity")).toBeVisible();
     await expect(page.getByRole("table", { name: "Live quotes by level" })).toBeVisible();
-    await expect(page.getByRole("img", { name: /Score history over/ })).toBeVisible();
+    await expect(page.getByRole("group", { name: /Score history over/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Guard events" })).toBeVisible();
     await expect(page.getByText("SHADOW").first()).toBeVisible();
   });
@@ -22,7 +22,7 @@ test.describe("Agent page", () => {
 
   test("handles an unknown agent", async ({ page }) => {
     await page.goto("/agents/999");
-    await expect(page.getByRole("alert")).toContainText("Not found");
+    await expect(page.getByRole("alert").filter({ hasText: "Not found" })).toBeVisible();
   });
 
   test("rejects a malformed id with a 404", async ({ page }) => {

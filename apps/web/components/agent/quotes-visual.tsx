@@ -44,7 +44,7 @@ export function QuotesVisual({ quotes }: { quotes: Quote[] }) {
                   <>
                     <span aria-hidden className="absolute inset-y-1 right-0 rounded-l-[4px] bg-bid-soft ring-1 ring-inset ring-bid/25" style={{ width: `${(Number(bid.quantity) / maxQty) * 100}%`, opacity: 1 - level * 0.18 }} />
                     <span className="num relative pr-2 text-xs text-fg">
-                      {formatPrice(bid.price)} <span className="text-fg-subtle">x {bid.quantity}</span>
+                      {formatPrice(bid.price)} <span className="text-fg-muted">x {bid.quantity}</span>
                     </span>
                   </>
                 ) : null}
@@ -55,7 +55,7 @@ export function QuotesVisual({ quotes }: { quotes: Quote[] }) {
                   <>
                     <span aria-hidden className="absolute inset-y-1 left-0 rounded-r-[4px] bg-ask-soft ring-1 ring-inset ring-ask/25" style={{ width: `${(Number(ask.quantity) / maxQty) * 100}%`, opacity: 1 - level * 0.18 }} />
                     <span className="num relative pl-2 text-xs text-fg">
-                      {formatPrice(ask.price)} <span className="text-fg-subtle">x {ask.quantity}</span>
+                      {formatPrice(ask.price)} <span className="text-fg-muted">x {ask.quantity}</span>
                     </span>
                   </>
                 ) : null}

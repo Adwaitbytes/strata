@@ -5,7 +5,7 @@ import { DATA_MODE } from "@/lib/env";
 export function DevDataNotice() {
   if (DATA_MODE !== "mock") return null;
   return (
-    <div className="border-b border-halt/30 bg-halt-soft" data-testid="mock-notice">
+    <div className="border-b border-halt/40 bg-bg-raised" data-testid="mock-notice">
       <div className="mx-auto flex max-w-[1280px] items-center gap-3 px-4 py-2 text-[13px] text-fg sm:px-6">
         <DataBadge tone="halt">MOCK</DataBadge>
         <span className="text-fg-muted">Development data. No STRATA API is configured, so every number on this page is synthetic.</span>

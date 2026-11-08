@@ -143,7 +143,7 @@ export function SpreadChart({ history, baselineSpreadBps, height = 280 }: Props)
       </div>
       <div className="relative" style={{ height }}>
         {!ready && points.length > 0 ? <Skeleton style={{ position: "absolute", inset: 0, borderRadius: 8 }} /> : null}
-        <div ref={ref} role="img" aria-label={summary} className="absolute inset-0" />
+        <div ref={ref} className="absolute inset-0" />
       </div>
       <figcaption className="sr-only">{summary}</figcaption>
       <details className="mt-3 text-xs text-fg-muted">

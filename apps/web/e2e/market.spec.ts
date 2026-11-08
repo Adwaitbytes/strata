@@ -9,7 +9,7 @@ test.describe("Market page", () => {
     await expect(page.getByRole("table", { name: /Order book/ })).toBeVisible();
     await expect(page.getByText("BASELINE").first()).toBeVisible();
     await expect(page.locator("#spread canvas").first()).toBeVisible();
-    await expect(page.getByRole("img", { name: /Baseline average/ })).toBeAttached();
+    await expect(page.locator("#spread figcaption")).toContainText("Baseline average");
     await expect(page.getByRole("heading", { name: /Session state/ })).toBeVisible();
     await expect(page.getByRole("img", { name: /STRATA provides/ })).toBeVisible();
   });

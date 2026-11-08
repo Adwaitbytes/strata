@@ -18,7 +18,7 @@ export const docsComponents = {
       <a href={href} target="_blank" rel="noopener noreferrer" className="text-accent underline decoration-accent/40 underline-offset-4 hover:decoration-accent" {...p} />
     ),
   code: (p: ComponentPropsWithoutRef<"code">) => <code className="num rounded bg-surface-hover px-1.5 py-0.5 text-[0.86em] text-fg [pre_&]:bg-transparent [pre_&]:p-0" {...p} />,
-  pre: (p: ComponentPropsWithoutRef<"pre">) => <pre className="my-5 overflow-x-auto rounded-xl border border-border bg-bg-sunken p-4 text-[13px] leading-relaxed" {...p} />,
+  pre: (p: ComponentPropsWithoutRef<"pre">) => <pre tabIndex={0} className="my-5 overflow-x-auto rounded-xl border border-border bg-bg-sunken p-4 text-[13px] leading-relaxed" {...p} />,
   blockquote: (p: ComponentPropsWithoutRef<"blockquote">) => <blockquote className="my-5 border-l-2 border-accent pl-4 text-fg-muted" {...p} />,
   hr: () => <hr className="my-10 border-border" />,
   table: (p: ComponentPropsWithoutRef<"table">) => (

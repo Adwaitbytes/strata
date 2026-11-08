@@ -136,7 +136,7 @@ export function TransparencyView() {
                         <Link href={`/agents/${s.agentId}${network === "mainnet" ? "?network=mainnet" : ""}`} className="font-medium text-fg hover:underline">
                           Agent #{s.agentId}
                         </Link>
-                        <time className="text-xs text-fg-subtle">{formatUtc(s.at)}</time>
+                        <time className="text-xs text-fg-muted">{formatUtc(s.at)}</time>
                       </div>
                       <p className="mt-1 text-sm text-fg-muted">{s.reason}</p>
                     </li>
@@ -197,7 +197,7 @@ export function TransparencyView() {
       <Panel title="Security" id="security">
         <p className="text-sm leading-relaxed text-fg-muted">
           The security review covers the threat model, static analysis of the contracts, key management and known limitations. Read{" "}
-          <a href="https://github.com/Adwaitbytes/strata/blob/main/docs/SECURITY.md" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">
+          <a href="https://github.com/Adwaitbytes/strata/blob/main/docs/SECURITY.md" target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4">
             docs/SECURITY.md
           </a>{" "}
           in the repository.

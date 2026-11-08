@@ -88,7 +88,7 @@ export function MarketView({ id }: { id: string }) {
         description={
           <span>
             <span className="capitalize">{m.assetClass}</span> perpetual. Max spread for scoring {m.maxSpreadBps} bps. Market data fetched from{" "}
-            <a className="text-accent underline-offset-4 hover:underline" href={m.source} rel="noopener noreferrer" target="_blank">
+            <a className="text-accent underline underline-offset-4" href={m.source} rel="noopener noreferrer" target="_blank">
               the Injective indexer
             </a>
             .
