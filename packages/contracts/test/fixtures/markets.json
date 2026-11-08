@@ -1,0 +1,5 @@
+[
+  { "marketId": "0x00000000000000000000000000000000000000000000000000000000000000a1", "ticker": "AAA/USDC PERP", "arenaEnabled": true, "maxSpreadBps": 50, "minDepthUsd": 100 },
+  { "marketId": "0x00000000000000000000000000000000000000000000000000000000000000b2", "ticker": "BBB-PERP", "arenaEnabled": false, "maxSpreadBps": 40, "minDepthUsd": 200 },
+  { "marketId": "0x00000000000000000000000000000000000000000000000000000000000000c3", "ticker": "CCC/USDC PERP", "arenaEnabled": true, "maxSpreadBps": 25, "minDepthUsd": 5000 }
+]

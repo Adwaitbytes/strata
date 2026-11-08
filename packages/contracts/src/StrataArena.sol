@@ -43,6 +43,9 @@ contract StrataArena is IStrataArena, Ownable2Step {
     /// @notice Whether an ERC-8004 identity is already enrolled in a season.
     mapping(uint64 season => mapping(uint256 erc8004Id => bool enrolled)) public identityEnrolled;
 
+    /// @notice Whether an Injective subaccount is already enrolled in a season.
+    mapping(uint64 season => mapping(bytes32 subaccountId => bool enrolled)) public subaccountEnrolled;
+
     mapping(bytes32 marketId => MarketCfg) private _markets;
     mapping(uint256 agentId => Agent) private _agents;
 
@@ -50,7 +53,8 @@ contract StrataArena is IStrataArena, Ownable2Step {
     event OperatorCapChanged(uint256 previousCap, uint256 newCap);
 
     error RenounceDisabled();
-    error ZeroSubaccount();
+    error SubaccountNotOwned();
+    error SubaccountTaken();
     error InvalidMetadataURI();
     error InvalidOperatorCap();
 
@@ -67,7 +71,9 @@ contract StrataArena is IStrataArena, Ownable2Step {
     // ------------------------------------------------------------------ operator actions
 
     /// @inheritdoc IStrataArena
-    /// @dev Reverts with NotIdentityOwner if the registry call reverts or the caller is not the token owner.
+    /// @dev The caller must hold the ERC-8004 identity (NotIdentityOwner if the registry call reverts or the
+    ///      caller is not the token owner) and be the trader of `subaccountId` (SubaccountNotOwned). A
+    ///      subaccount and an identity can each be enrolled once per season.
     function enroll(uint256 erc8004Id, bytes32 subaccountId, string calldata metadataURI)
         external
         returns (uint256 agentId)
@@ -75,10 +81,16 @@ contract StrataArena is IStrataArena, Ownable2Step {
         uint64 season = currentSeason;
         Season storage s = seasons[season];
         if (!s.active || block.timestamp >= s.endTime) revert NoActiveSeason();
-        if (subaccountId == bytes32(0)) revert ZeroSubaccount();
+        // Injective subaccount ID = 20-byte trader address + 12-byte nonce
+        // (docs.injective.network/developers/concepts/trading-account). Only the trader may enroll it,
+        // so nobody can claim another market maker's fills (W11 H-1). This also rejects a zero ID.
+        // Truncation is the intent: bytes20() keeps the leading 20 address bytes and drops the nonce.
+        // forge-lint: disable-next-line(unsafe-typecast)
+        if (address(bytes20(subaccountId)) != msg.sender) revert SubaccountNotOwned();
         _checkURI(metadataURI);
         if (identityEnrolled[season][erc8004Id]) revert AlreadyEnrolled();
         if (operatorEnrollments[season][msg.sender] >= operatorCap) revert AlreadyEnrolled();
+        if (subaccountEnrolled[season][subaccountId]) revert SubaccountTaken();
         uint256 cap = agentCap;
         if (cap != 0 && seasonAgentCount[season] >= cap) revert AgentCapReached();
 
@@ -92,6 +104,7 @@ contract StrataArena is IStrataArena, Ownable2Step {
 
         agentId = ++agentCount;
         identityEnrolled[season][erc8004Id] = true;
+        subaccountEnrolled[season][subaccountId] = true;
         ++operatorEnrollments[season][msg.sender];
         ++seasonAgentCount[season];
         agentIdOf[msg.sender] = agentId;

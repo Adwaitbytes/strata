@@ -69,7 +69,8 @@ contract ArenaHandler is Test {
         address actor = actors[actorSeed % actors.length];
         uint256 id = bound(idSeed, 1, IDENTITIES);
         vm.prank(actor);
-        try arena.enroll(id, bytes32(uint256(uint160(actor))), "ipfs://agent") {} catch {}
+        bytes32 sub = bytes32(abi.encodePacked(actor, uint96(idSeed % 3)));
+        try arena.enroll(id, sub, "ipfs://agent") {} catch {}
     }
 
     function transferIdentity(uint256 idSeed, uint256 toSeed) external {
@@ -97,10 +98,15 @@ contract ArenaHandler is Test {
         } catch {}
     }
 
+    /// Posts the next epoch, first warping to its end so it is inside the window when the season allows it.
     function postNextEpoch() external {
         uint64 season = arena.currentSeason();
         uint256 n = _posted[season].length;
         uint64 epoch = n == 0 ? 0 : _posted[season][n - 1] + 1;
+        (uint64 start, uint64 end, uint32 len,) = arena.seasons(season);
+        uint256 epochEnd = uint256(start) + (uint256(epoch) + 1) * len;
+        if (epochEnd > end) epochEnd = end;
+        if (epochEnd > block.timestamp) vm.warp(epochEnd);
         vm.prank(arena.attestor());
         try attestorC.postEpoch(season, epoch, keccak256(abi.encode(season, epoch)), "ipfs://e") {
             _posted[season].push(epoch);
@@ -168,6 +174,11 @@ contract ArenaInvariantsTest is Test {
             (uint64 last, bool any) = attestorC.lastEpoch(s);
             assertEq(any, n > 0);
             if (n > 0) assertEq(last, handler.postedAt(s, n - 1));
+            // Every posted epoch starts inside its season (W11 M-1).
+            (uint64 start, uint64 end, uint32 len,) = arena.seasons(s);
+            for (uint256 i; i < n; ++i) {
+                assertLt(uint256(start) + uint256(handler.postedAt(s, i)) * len, end);
+            }
         }
     }
 
@@ -176,7 +187,7 @@ contract ArenaInvariantsTest is Test {
         assertEq(handler.unauthorizedPostSuccesses(), 0);
     }
 
-    /// An ERC-8004 identity is enrolled at most once per season, operators stay within the cap,
+    /// An ERC-8004 identity and a subaccount are each enrolled at most once per season, operators stay within the cap,
     /// and per-season counts add up to the global agent count.
     function invariant_noDuplicateEnrollment() public view {
         uint256 count = arena.agentCount();
@@ -188,9 +199,14 @@ contract ArenaInvariantsTest is Test {
         assertEq(total, count);
         for (uint256 a = 1; a <= count; ++a) {
             IStrataArena.Agent memory x = arena.getAgent(a);
+            // The subaccount always belongs to the operator who enrolled it (W11 H-1).
+            assertEq(address(bytes20(x.subaccountId)), x.operator);
             for (uint256 b = a + 1; b <= count; ++b) {
                 IStrataArena.Agent memory y = arena.getAgent(b);
-                if (arena.agentSeason(a) == arena.agentSeason(b)) assertTrue(x.erc8004Id != y.erc8004Id);
+                if (arena.agentSeason(a) == arena.agentSeason(b)) {
+                    assertTrue(x.erc8004Id != y.erc8004Id);
+                    assertTrue(x.subaccountId != y.subaccountId);
+                }
             }
         }
     }

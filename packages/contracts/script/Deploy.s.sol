@@ -13,7 +13,8 @@ import {RewardsDistributor} from "../src/RewardsDistributor.sol";
 ///        testnet 1439: 0x8004A818BFB912233c491871b3d84c89A494BD9e
 ///        mainnet 1776: 0x8004A169FB4a3325136EB29fA0ceB6D2e539a432
 ///      Mainnet (chain 1776) is refused unless STRATA_ALLOW_MAINNET=yes, which only the orchestrator sets after
-///      the PRD Section 16 gate passes. RewardsDistributor is never deployed to mainnet in R0 (PRD 8.3).
+///      the PRD Section 16 gate passes; even then OWNER must be a contract (Safe) and differ from ATTESTOR.
+///      RewardsDistributor is never deployed to mainnet in R0 (PRD 8.3).
 contract Deploy is Script {
     uint256 internal constant INJECTIVE_MAINNET = 1776;
 
@@ -25,7 +26,10 @@ contract Deploy is Script {
 
     error MainnetBlocked();
     error RegistryHasNoCode();
+    error OwnerNotContract();
+    error OwnerIsAttestor();
 
+    /// @notice Deploy using OWNER, ATTESTOR, IDENTITY_REGISTRY and optional STRATA_ALLOW_MAINNET from env.
     function run() external returns (Deployment memory) {
         return deploy(
             vm.envAddress("OWNER"),
@@ -35,12 +39,19 @@ contract Deploy is Script {
         );
     }
 
+    /// @notice Deploy the arena, attestor and (off mainnet) the rewards distributor.
     function deploy(address owner, address attestor, address registry, bool allowMainnet)
         public
         returns (Deployment memory d)
     {
         bool mainnet = block.chainid == INJECTIVE_MAINNET;
-        if (mainnet && !allowMainnet) revert MainnetBlocked();
+        if (mainnet) {
+            if (!allowMainnet) revert MainnetBlocked();
+            // Mainnet owner must be a Safe (or other contract wallet), and the hot attestor key must never own
+            // the arena (PRD 8.4, W11 I-3).
+            if (owner.code.length == 0) revert OwnerNotContract();
+            if (owner == attestor) revert OwnerIsAttestor();
+        }
         if (registry.code.length == 0) revert RegistryHasNoCode();
 
         vm.startBroadcast();

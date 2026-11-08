@@ -16,19 +16,27 @@ contract StrataArenaTest is Test {
     address internal alice = makeAddr("alice");
     address internal bob = makeAddr("bob");
 
-    bytes32 internal constant SUB_A = bytes32(uint256(0xA11CE));
-    bytes32 internal constant SUB_B = bytes32(uint256(0xB0B));
+    bytes32 internal SUB_A;
+    bytes32 internal SUB_B;
     bytes32 internal constant MARKET = keccak256("SICI/USDT PERP");
 
     uint64 internal constant T0 = 1_800_000_000;
 
     function setUp() public {
         vm.warp(T0);
+        SUB_A = _sub(alice, 0);
+        SUB_B = _sub(bob, 0);
         registry = new MockIdentityRegistry();
         arena = new StrataArena(owner, attestor, address(registry));
         registry.mint(alice, 1);
         registry.mint(alice, 2);
         registry.mint(bob, 3);
+    }
+
+    /// @dev Injective subaccount ID: 20-byte trader address then a 12-byte nonce
+    ///      (docs.injective.network/developers/concepts/trading-account).
+    function _sub(address trader, uint96 nonce) internal pure returns (bytes32) {
+        return bytes32(abi.encodePacked(trader, nonce));
     }
 
     function _startSeason() internal returns (uint64) {
@@ -266,8 +274,33 @@ contract StrataArenaTest is Test {
     function test_enroll_revertsOnZeroSubaccount() public {
         _startSeason();
         vm.prank(alice);
-        vm.expectRevert(StrataArena.ZeroSubaccount.selector);
+        vm.expectRevert(StrataArena.SubaccountNotOwned.selector);
         arena.enroll(1, bytes32(0), "ipfs://agent");
+    }
+
+    function test_enroll_revertsOnSomeoneElsesSubaccount() public {
+        _startSeason();
+        vm.prank(alice);
+        vm.expectRevert(StrataArena.SubaccountNotOwned.selector);
+        arena.enroll(1, _sub(bob, 0), "ipfs://agent");
+    }
+
+    function test_enroll_acceptsNonZeroNonce() public {
+        _startSeason();
+        vm.prank(alice);
+        uint256 id = arena.enroll(1, _sub(alice, 7), "ipfs://agent");
+        assertEq(arena.getAgent(id).subaccountId, _sub(alice, 7));
+        assertTrue(arena.subaccountEnrolled(1, _sub(alice, 7)));
+    }
+
+    function test_enroll_revertsWhenSubaccountTakenInSeason() public {
+        _startSeason();
+        vm.prank(owner);
+        arena.setOperatorCap(2);
+        _enroll(alice, 1, SUB_A);
+        vm.prank(alice);
+        vm.expectRevert(StrataArena.SubaccountTaken.selector);
+        arena.enroll(2, SUB_A, "ipfs://agent2");
     }
 
     function test_enroll_revertsOnEmptyMetadata() public {
@@ -324,7 +357,7 @@ contract StrataArenaTest is Test {
         vm.prank(owner);
         arena.setOperatorCap(2);
         _enroll(alice, 1, SUB_A);
-        uint256 second = _enroll(alice, 2, SUB_B);
+        uint256 second = _enroll(alice, 2, _sub(alice, 1));
         assertEq(second, 2);
         assertEq(arena.agentIdOf(alice), 2, "latest agent");
         assertEq(arena.operatorEnrollments(1, alice), 2);
@@ -378,19 +411,33 @@ contract StrataArenaTest is Test {
         registry.mint(holder, erc8004Id);
         vm.prank(caller);
         if (caller == holder) {
-            uint256 id = arena.enroll(erc8004Id, SUB_A, "ipfs://x");
+            uint256 id = arena.enroll(erc8004Id, _sub(caller, 0), "ipfs://x");
             assertEq(arena.getAgent(id).erc8004Id, erc8004Id);
         } else {
             vm.expectRevert(IStrataArena.NotIdentityOwner.selector);
-            arena.enroll(erc8004Id, SUB_A, "ipfs://x");
+            arena.enroll(erc8004Id, _sub(caller, 0), "ipfs://x");
         }
     }
 
-    function testFuzz_enroll_holderAlwaysSucceedsOnce(uint256 erc8004Id, bytes32 sub) public {
+    function testFuzz_enroll_subaccountMustBelongToCaller(address caller, bytes32 sub) public {
+        vm.assume(caller != address(0) && caller.code.length == 0);
+        _startSeason();
+        registry.mint(caller == alice ? bob : caller, 50);
+        address holder = caller == alice ? bob : caller;
+        vm.prank(holder);
+        if (address(bytes20(sub)) == holder) {
+            arena.enroll(50, sub, "ipfs://x");
+        } else {
+            vm.expectRevert(StrataArena.SubaccountNotOwned.selector);
+            arena.enroll(50, sub, "ipfs://x");
+        }
+    }
+
+    function testFuzz_enroll_holderAlwaysSucceedsOnce(uint256 erc8004Id, uint96 nonce) public {
         erc8004Id = bound(erc8004Id, 100, type(uint256).max);
-        vm.assume(sub != bytes32(0));
         _startSeason();
         address holder = makeAddr("holder");
+        bytes32 sub = _sub(holder, nonce);
         registry.mint(holder, erc8004Id);
         vm.prank(holder);
         uint256 id = arena.enroll(erc8004Id, sub, "ipfs://x");

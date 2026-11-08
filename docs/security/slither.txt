@@ -1,4 +1,4 @@
-# slither 0.11.6 on packages/contracts/src (filter: lib/, test/, script/), 2026-11-08T18:50Z
+# slither 0.11.6 on packages/contracts/src (filter: lib/, test/, script/), 2026-11-08T19:19Z
 INFO:Detectors:
 Detector: timestamp
 RewardsDistributor.sweep(uint64,address) (src/RewardsDistributor.sol#124-134) uses timestamp for comparisons
@@ -7,20 +7,26 @@ RewardsDistributor.sweep(uint64,address) (src/RewardsDistributor.sol#124-134) us
 RewardsDistributor._openPool(uint64) (src/RewardsDistributor.sol#156-160) uses timestamp for comparisons
 	Dangerous comparisons:
 	- block.timestamp >= p.claimDeadline (src/RewardsDistributor.sol#159)
-StrataArena.enroll(uint256,bytes32,string) (src/StrataArena.sol#71-109) uses timestamp for comparisons
+ScoreAttestor.postEpoch(uint64,uint64,bytes32,string) (src/ScoreAttestor.sol#39-68) uses timestamp for comparisons
 	Dangerous comparisons:
-	- ! s.active || block.timestamp >= s.endTime (src/StrataArena.sol#77)
-StrataArena.startSeason(uint64,uint64,uint32) (src/StrataArena.sol#138-149) uses timestamp for comparisons
+	- epochStart >= endTime || epochEnd > block.timestamp (src/ScoreAttestor.sol#54)
+StrataArena.enroll(uint256,bytes32,string) (src/StrataArena.sol#77-122) uses timestamp for comparisons
 	Dangerous comparisons:
-	- endTime <= startTime || endTime <= block.timestamp (src/StrataArena.sol#144)
-StrataArena.endSeason() (src/StrataArena.sol#153-162) uses timestamp for comparisons
+	- ! s.active || block.timestamp >= s.endTime (src/StrataArena.sol#83)
+StrataArena.startSeason(uint64,uint64,uint32) (src/StrataArena.sol#151-162) uses timestamp for comparisons
 	Dangerous comparisons:
-	- nowTs < s.endTime (src/StrataArena.sol#160)
+	- endTime <= startTime || endTime <= block.timestamp (src/StrataArena.sol#157)
+StrataArena.endSeason() (src/StrataArena.sol#166-175) uses timestamp for comparisons
+	Dangerous comparisons:
+	- nowTs < s.endTime (src/StrataArena.sol#173)
 Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
-INFO:Slither:. analyzed (17 contracts with 102 detectors), 5 result(s) found
+INFO:Slither:. analyzed (17 contracts with 102 detectors), 6 result(s) found
 
-# Triage (W1, 2026-11-09)
-# Result: 0 High, 0 Medium, 0 Low beyond the 5 `timestamp` results above (informational/low), all accepted:
-# - StrataArena.enroll/startSeason/endSeason and RewardsDistributor.sweep/_openPool compare block.timestamp
-#   against season end times and a 30-day claim deadline. Validator drift is seconds; these windows are
-#   hours to days, so manipulation cannot change any outcome that matters.
+# Triage (W1, updated 2026-11-09 after W11 review)
+# Result: 0 High, 0 Medium. The 6 `timestamp` results above are low/informational and accepted:
+# - StrataArena.enroll/startSeason/endSeason, ScoreAttestor.postEpoch (epoch window) and
+#   RewardsDistributor.sweep/_openPool compare block.timestamp with season, epoch and claim-window bounds.
+#   Validator drift is seconds; these windows are an hour or more, so it cannot change any outcome that matters.
+# Suppressed with a scoped `slither-disable-start/end unused-return` (reason in code):
+# - ScoreAttestor.postEpoch ignores the `active` flag from `arena.seasons(season)` on purpose. The epoch window
+#   uses endTime, which StrataArena clamps when a season ends early, so `active` adds nothing.

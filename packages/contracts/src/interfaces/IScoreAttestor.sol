@@ -37,9 +37,6 @@ interface IScoreAttestor {
         bytes32[] calldata proof
     ) external view returns (bool);
 
-    /// @notice Verify a precomputed leaf against a posted epoch root.
-    function verifyLeaf(uint64 season, uint64 epoch, bytes32 leaf, bytes32[] calldata proof) external view returns (bool);
-
     function arena() external view returns (address);
     function getEpoch(uint64 season, uint64 epoch) external view returns (EpochRecord memory);
     function lastEpoch(uint64 season) external view returns (uint64 epoch, bool any);

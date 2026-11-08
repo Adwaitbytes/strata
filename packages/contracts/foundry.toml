@@ -7,6 +7,11 @@ evm_version = "cancun"
 optimizer = true
 optimizer_runs = 10000
 via_ir = false
+# Read-only: ConfigureSeason reads the generated market list; tests read fixtures.
+fs_permissions = [
+    { access = "read", path = "../config/src/generated" },
+    { access = "read", path = "./test/fixtures" },
+]
 remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/", "forge-std/=lib/forge-std/src/"]
 
 [fuzz]

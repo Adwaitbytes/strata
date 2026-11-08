@@ -21,6 +21,7 @@ contract ScoreAttestor is IScoreAttestor {
 
     error ZeroAddress();
     error UnknownSeason(uint64 season);
+    error EpochOutOfWindow(uint64 season, uint64 epoch);
 
     /// @param arena_ The StrataArena that names the attestor and owns the season registry.
     constructor(address arena_) {
@@ -29,22 +30,34 @@ contract ScoreAttestor is IScoreAttestor {
     }
 
     /// @inheritdoc IScoreAttestor
-    /// @dev Season must already exist in the arena (1..currentSeason). Gaps between epochs are allowed
-    ///      (an epoch with no scored agents is not attested); duplicates and regressions are not.
+    /// @dev Season must already exist in the arena (1..currentSeason). Epoch `e` covers
+    ///      [startTime + e * epochSeconds, startTime + (e + 1) * epochSeconds), clipped to the season's endTime
+    ///      (which StrataArena clamps when a season ends early). An epoch is postable only when it starts before
+    ///      endTime and has already ended, so the attestor cannot post future epochs, epochs past the season,
+    ///      or `type(uint64).max` to brick the season (W11 M-1). Gaps between epochs are allowed (an epoch with no
+    ///      scored agents is not attested); duplicates and regressions are not.
     function postEpoch(uint64 season, uint64 epoch, bytes32 merkleRoot, string calldata dataURI) external {
         IStrataArena a = IStrataArena(arena);
-        // Both reads are `view` calls (STATICCALL) to the immutable arena set at construction: no reentrancy.
+        // All arena reads are `view` calls (STATICCALL) to the immutable arena set at construction: no reentrancy.
         // aderyn-fp-next-line(reentrancy-state-change)
         if (msg.sender != a.attestor()) revert NotAttestor();
         // aderyn-fp-next-line(reentrancy-state-change)
         if (season == 0 || season > a.currentSeason()) revert UnknownSeason(season);
+        // `active` is deliberately ignored: the window uses endTime, which the arena clamps when a season ends early.
+        // slither-disable-start unused-return
+        // aderyn-fp-next-line(reentrancy-state-change)
+        (uint64 startTime, uint64 endTime, uint32 epochSeconds,) = a.seasons(season); // forge-lint: disable-line(unused-return)
+        // slither-disable-end unused-return
+        uint256 epochStart = uint256(startTime) + uint256(epoch) * epochSeconds;
+        uint256 epochEnd = epochStart + epochSeconds;
+        if (epochEnd > endTime) epochEnd = endTime;
+        if (epochStart >= endTime || epochEnd > block.timestamp) revert EpochOutOfWindow(season, epoch);
         if (merkleRoot == bytes32(0)) revert ZeroRoot();
         if (bytes(dataURI).length == 0) revert EmptyURI();
         if (_anyEpoch[season]) {
             uint64 last = _lastEpoch[season];
-            if (epoch <= last) {
-                revert EpochOutOfOrder(season, last == type(uint64).max ? last : last + 1, epoch);
-            }
+            // last + 1 cannot overflow: the window check bounds every posted epoch below endTime <= 2^64 - 1.
+            if (epoch <= last) revert EpochOutOfOrder(season, last + 1, epoch);
         }
         _anyEpoch[season] = true;
         _lastEpoch[season] = epoch;
@@ -71,15 +84,6 @@ contract ScoreAttestor is IScoreAttestor {
         bytes32 leaf = computeLeaf(
             season, epoch, agentId, score, spreadCentiBps, depthUsd, uptimeBps, pnlUsdCents, flags
         );
-        return _verify(season, epoch, leaf, proof);
-    }
-
-    /// @inheritdoc IScoreAttestor
-    function verifyLeaf(uint64 season, uint64 epoch, bytes32 leaf, bytes32[] calldata proof)
-        external
-        view
-        returns (bool)
-    {
         return _verify(season, epoch, leaf, proof);
     }
 

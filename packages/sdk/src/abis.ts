@@ -543,6 +543,30 @@ export const strataArenaAbi = [
   },
   {
     "type": "function",
+    "name": "subaccountEnrolled",
+    "inputs": [
+      {
+        "name": "season",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "subaccountId",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "enrolled",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
     "name": "suspendAgent",
     "inputs": [
       {
@@ -968,12 +992,17 @@ export const strataArenaAbi = [
   },
   {
     "type": "error",
-    "name": "ZeroAddress",
+    "name": "SubaccountNotOwned",
     "inputs": []
   },
   {
     "type": "error",
-    "name": "ZeroSubaccount",
+    "name": "SubaccountTaken",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "ZeroAddress",
     "inputs": []
   }
 ] as const;
@@ -1157,40 +1186,6 @@ export const scoreAttestorAbi = [
   },
   {
     "type": "function",
-    "name": "verifyLeaf",
-    "inputs": [
-      {
-        "name": "season",
-        "type": "uint64",
-        "internalType": "uint64"
-      },
-      {
-        "name": "epoch",
-        "type": "uint64",
-        "internalType": "uint64"
-      },
-      {
-        "name": "leaf",
-        "type": "bytes32",
-        "internalType": "bytes32"
-      },
-      {
-        "name": "proof",
-        "type": "bytes32[]",
-        "internalType": "bytes32[]"
-      }
-    ],
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool",
-        "internalType": "bool"
-      }
-    ],
-    "stateMutability": "view"
-  },
-  {
-    "type": "function",
     "name": "verifyScore",
     "inputs": [
       {
@@ -1305,6 +1300,22 @@ export const scoreAttestorAbi = [
       },
       {
         "name": "got",
+        "type": "uint64",
+        "internalType": "uint64"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "EpochOutOfWindow",
+    "inputs": [
+      {
+        "name": "season",
+        "type": "uint64",
+        "internalType": "uint64"
+      },
+      {
+        "name": "epoch",
         "type": "uint64",
         "internalType": "uint64"
       }
