@@ -38,6 +38,16 @@ export const RiskParams = z.object({
   micropriceWeight: num,
   maxMicropriceAdjBps: num,
   bookHealthyMaxSpreadBps: num,
+  /** Book levels further than this from the oracle are ignored for fair value and the cross-check. */
+  bookHealthBandBps: num,
+  /** Minimum USD depth per side inside the band for the book to count as healthy. */
+  bookHealthMinDepthUsd: num,
+  /**
+   * Unhealthy book (no two-sided depth near the oracle, e.g. testnet books full of stale far orders):
+   * halt = stop quoting (mainnet default), widen = skip the oracle-vs-book cross-check and double spreads.
+   * Staleness, future-timestamp, jump and two-source checks still halt either way.
+   */
+  unhealthyBookPolicy: z.enum(["halt", "widen"]),
   /* Oracle guard (9.4) */
   maxOracleAgeSec: num,
   maxFutureSkewSec: num,
@@ -105,6 +115,8 @@ export const PARAM_BOUNDS: Readonly<Record<NumericParamKey, ParamBound>> = {
   micropriceWeight: { min: 0, max: 1 },
   maxMicropriceAdjBps: { min: 0, max: 100 },
   bookHealthyMaxSpreadBps: { min: 1, max: 2_000 },
+  bookHealthBandBps: { min: 10, max: 5_000 },
+  bookHealthMinDepthUsd: { min: 0, max: 1_000_000 },
   maxOracleAgeSec: { min: 1, max: 300 },
   maxFutureSkewSec: { min: 0, max: 10 },
   maxOracleBookDevBps: { min: 10, max: 2_000 },
@@ -156,6 +168,9 @@ export const DEFAULT_PARAMS: RiskParams = {
   micropriceWeight: 0.5,
   maxMicropriceAdjBps: 20,
   bookHealthyMaxSpreadBps: 100,
+  bookHealthBandBps: 300,
+  bookHealthMinDepthUsd: 25,
+  unhealthyBookPolicy: "halt",
   maxOracleAgeSec: 30,
   maxFutureSkewSec: 2,
   maxOracleBookDevBps: 150,

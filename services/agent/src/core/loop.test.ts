@@ -669,3 +669,41 @@ describe("security review fixes in the loop", () => {
     expect(changes.at(-1)!.stoppedForDay).toBe(true);
   });
 });
+
+describe("unhealthy testnet books", () => {
+  const staleBook = () => ({ bids: [{ price: "60", quantity: "5" }], asks: [{ price: "250", quantity: "5" }] });
+
+  it("widen: keeps quoting at double spread and records one widen event, not one per cycle", async () => {
+    const base = setup({ params: { levels: 1 } });
+    await base.tick();
+    const c = setup({ params: { levels: 1, unhealthyBookPolicy: "widen" } });
+    const b = staleBook();
+    c.sim.setBook(M, b.bids, b.asks);
+    for (let i = 0; i < 5; i++) expect(["quoted", "unchanged"]).toContain((await c.tick()).outcome);
+    const spread = (x: ReturnType<typeof setup>) => {
+      const o = x.open();
+      return Number(o.find((q) => q.side === "sell")!.price) - Number(o.find((q) => q.side === "buy")!.price);
+    };
+    expect(spread(c)).toBeGreaterThan(spread(base) * 1.8);
+    const widen = c.sink.guards.filter((g) => g.reason === "oracle_book_deviation");
+    expect(widen).toHaveLength(1);
+    expect(widen[0]).toMatchObject({ action: "widen", observed: { reason: "no_bids_in_band", bookHealthy: false } });
+    expect(c.sink.guards.some((g) => g.action === "halt")).toBe(false);
+  });
+
+  it("halt (mainnet default): pulls quotes on the same book", async () => {
+    const c = setup({ params: { levels: 1 } });
+    const b = staleBook();
+    c.sim.setBook(M, b.bids, b.asks);
+    expect((await c.tick()).outcome).toBe("halted");
+    expect(c.open()).toHaveLength(0);
+  });
+
+  it("stale far-away levels do not move fair value when a healthy band exists", async () => {
+    const c = setup({ params: { levels: 1 } });
+    c.sim.setBook(M, [{ price: "99.9", quantity: "10" }, { price: "40", quantity: "500" }], [{ price: "100.1", quantity: "10" }, { price: "400", quantity: "500" }]);
+    expect((await c.tick()).outcome).toBe("quoted");
+    const o = c.open();
+    expect(Number(o.find((q) => q.side === "buy")!.price)).toBeCloseTo(99.9, 1);
+  });
+});

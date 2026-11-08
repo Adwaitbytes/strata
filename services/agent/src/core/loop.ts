@@ -16,6 +16,7 @@ import { Decimal } from "decimal.js";
 import type { Fill, NetworkName, Provenance, SessionState } from "@strata/sdk";
 import {
   INITIAL_ORACLE_STATE,
+  assessBook,
   INITIAL_RISK_STATE,
   computeFairValue,
   computeQuotes,
@@ -422,7 +423,9 @@ export class MarketQuoter {
     const oraclePrice = Number(state.oracle.price);
     const ownResting = live.map((o) => ({ side: o.side, price: o.price, quantity: new Decimal(o.quantity).minus(o.filled).toFixed() }));
     const ext = externalBook(state.bids, state.asks, ownResting);
-    const fv = computeFairValue({ oraclePrice, bids: ext.bids, asks: ext.asks }, params);
+    // Only in-band, external depth counts: stale far-away orders must not move fair value or the cross-check.
+    const health = assessBook(oraclePrice, ext.bids, ext.asks, params);
+    const fv = computeFairValue({ oraclePrice, bids: health.bids, asks: health.asks }, params);
 
     const oracle = evaluateOracle(
       {
@@ -430,7 +433,9 @@ export class MarketQuoter {
         reference: state.reference === null ? null : { price: Number(state.reference.price), timestampMs: state.reference.timestampMs },
         chainTimeMs: chainTime,
         wallClockMs: (this.#d.wallClock ?? Date.now)(),
-        bookMid: fv.mid,
+        bookMid: health.mid,
+        bookHealthy: health.healthy,
+        bookDiagnostics: { reason: health.reason, bidDepthUsd: Math.round(health.bidDepthUsd * 100) / 100, askDepthUsd: Math.round(health.askDepthUsd * 100) / 100 },
       },
       this.#oracleState,
       params,

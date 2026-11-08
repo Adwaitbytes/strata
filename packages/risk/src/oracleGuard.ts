@@ -26,8 +26,12 @@ export interface OracleObservation {
   readonly chainTimeMs: number;
   /** Host wall clock (NTP), used only to detect a node whose chain time lags (M-3). */
   readonly wallClockMs: number;
-  /** Book mid from the external book, null when the book is one-sided or empty. */
+  /** Mid of the in-band external book (see assessBook), null when the book is unhealthy. */
   readonly bookMid: number | null;
+  /** assessBook().healthy. An unhealthy book makes the cross-check not applicable. */
+  readonly bookHealthy: boolean;
+  /** Depth numbers recorded with the unhealthy-book event. */
+  readonly bookDiagnostics?: Readonly<Record<string, number | string | boolean>>;
 }
 
 export interface OracleGuardState {
@@ -155,7 +159,7 @@ export function evaluateOracle(obs: OracleObservation, state: OracleGuardState, 
   }
 
   let devCycles = state.consecutiveDevCycles;
-  if (obs.bookMid !== null && isPrice(obs.bookMid)) {
+  if (obs.bookHealthy && obs.bookMid !== null && isPrice(obs.bookMid)) {
     const devBps = Math.abs(bpsBetween(obs.bookMid, price));
     devCycles = devBps > params.maxOracleBookDevBps ? devCycles + 1 : 0;
     if (devCycles >= params.oracleBookDevCycles) {
@@ -166,6 +170,15 @@ export function evaluateOracle(obs: OracleObservation, state: OracleGuardState, 
           { deviationBps: round(devBps, 3), consecutiveCycles: devCycles, limitBps: params.maxOracleBookDevBps },
         ),
       );
+    }
+  } else {
+    // No trustworthy book near the oracle: the cross-check does not apply.
+    devCycles = 0;
+    const observed = { bookHealthy: false, bandBps: params.bookHealthBandBps, minDepthUsd: params.bookHealthMinDepthUsd, policy: params.unhealthyBookPolicy, ...obs.bookDiagnostics };
+    if (params.unhealthyBookPolicy === "halt") {
+      failures.push(halt("oracle_book_deviation", "Book unhealthy near the oracle; cross-check impossible, quoting halted.", observed));
+    } else {
+      warnings.push({ guard: "oracle", action: "widen", reason: "oracle_book_deviation", detail: "Book unhealthy, cross-check skipped, spreads widened.", observed });
     }
   }
 

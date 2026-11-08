@@ -13,7 +13,8 @@
     "rampMinutes": 1,
     "rampStartSizeFraction": 0.5,
     "maxDailyLossUsd": 3,
-    "maxDrawdownUsd": 5
+    "maxDrawdownUsd": 5,
+    "unhealthyBookPolicy": "widen"
   },
   "markets": [
     {

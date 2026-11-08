@@ -131,6 +131,56 @@ export function externalBook(
   return { bids: strip(bids, "buy"), asks: strip(asks, "sell") };
 }
 
+export type BookHealthReason = "ok" | "invalid_oracle" | "no_bids_in_band" | "no_asks_in_band" | "thin_depth" | "crossed";
+
+export interface BookHealth {
+  readonly healthy: boolean;
+  readonly reason: BookHealthReason;
+  /** Mid of the best in-band levels; null unless healthy. */
+  readonly mid: number | null;
+  readonly bids: PriceLevel[];
+  readonly asks: PriceLevel[];
+  readonly bidDepthUsd: number;
+  readonly askDepthUsd: number;
+}
+
+/**
+ * Book health for fair value and the oracle cross-check (PRD 9.2: microprice only "when the book is
+ * healthy"). Pass the EXTERNAL book (own orders removed). Only levels within bookHealthBandBps of the
+ * oracle count, so stale far-away orders that nobody arbitrages cannot drag the mid. Healthy means
+ * both sides have at least bookHealthMinDepthUsd inside the band and the in-band book is not crossed.
+ */
+export function assessBook(oraclePrice: number, bids: readonly PriceLevel[], asks: readonly PriceLevel[], params: RiskParams): BookHealth {
+  const empty = (reason: BookHealthReason, b: PriceLevel[] = [], a: PriceLevel[] = [], bd = 0, ad = 0): BookHealth => ({
+    healthy: false,
+    reason,
+    mid: null,
+    bids: b,
+    asks: a,
+    bidDepthUsd: bd,
+    askDepthUsd: ad,
+  });
+  if (!(oraclePrice > 0) || !Number.isFinite(oraclePrice)) return empty("invalid_oracle");
+  const band = params.bookHealthBandBps / BPS;
+  const inBand = (l: PriceLevel): boolean => {
+    const p = Number(l.price);
+    const q = Number(l.quantity);
+    return p > 0 && q > 0 && Math.abs(p - oraclePrice) / oraclePrice <= band;
+  };
+  const b = bids.filter(inBand);
+  const a = asks.filter(inBand);
+  const depth = (ls: PriceLevel[]): number => ls.reduce((s, l) => s + Number(l.price) * Number(l.quantity), 0);
+  const bd = depth(b);
+  const ad = depth(a);
+  if (b.length === 0) return empty("no_bids_in_band", b, a, bd, ad);
+  if (a.length === 0) return empty("no_asks_in_band", b, a, bd, ad);
+  if (bd < params.bookHealthMinDepthUsd || ad < params.bookHealthMinDepthUsd) return empty("thin_depth", b, a, bd, ad);
+  const bestBid = Math.max(...b.map((l) => Number(l.price)));
+  const bestAsk = Math.min(...a.map((l) => Number(l.price)));
+  if (bestBid >= bestAsk) return empty("crossed", b, a, bd, ad);
+  return { healthy: true, reason: "ok", mid: (bestBid + bestAsk) / 2, bids: b, asks: a, bidDepthUsd: bd, askDepthUsd: ad };
+}
+
 export interface FairValue {
   readonly fair: number;
   readonly mid: number | null;

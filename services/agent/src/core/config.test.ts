@@ -62,6 +62,14 @@ describe("committed house agent configs", () => {
     for (const f of files) expect(readFileSync(join(CONFIG_DIR, f), "utf8")).not.toMatch(/0x[0-9a-fA-F]{64}/);
   });
 
+  it("widens on unhealthy books on testnet and halts on mainnet", () => {
+    for (const f of files) {
+      const cfg = loadAgentConfig(join(CONFIG_DIR, f));
+      for (const m of cfg.markets) expect(buildRiskParams(cfg, m).unhealthyBookPolicy).toBe(cfg.network === "testnet" ? "widen" : "halt");
+    }
+    expect(AgentConfig.safeParse({ name: "x", network: "testnet", enabled: true, capitalUsd: 1, markets: [{ ticker: "A" }], params: { unhealthyBookPolicy: "ignore" } }).success).toBe(false);
+  });
+
   it("starts the tuner in shadow mode", () => {
     for (const f of files) expect(loadAgentConfig(join(CONFIG_DIR, f)).tuner.mode).not.toBe("live");
   });

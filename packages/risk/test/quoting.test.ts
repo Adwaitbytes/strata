@@ -3,6 +3,7 @@ import fc from "fast-check";
 import { Decimal } from "decimal.js";
 import { DEFAULT_PARAMS, type RiskParams } from "../src/params.js";
 import {
+  assessBook,
   computeFairValue,
   computeQuotes,
   estimateKappa,
@@ -403,6 +404,47 @@ describe("computeQuotes properties", () => {
         expect(total.lte(Math.abs(inv) + 1e-12)).toBe(true);
       }),
       { numRuns: 300 },
+    );
+  });
+});
+
+describe("book health (testnet stale-order books)", () => {
+  const P2: RiskParams = { ...DEFAULT_PARAMS, bookHealthBandBps: 300, bookHealthMinDepthUsd: 25 };
+  it("ignores far-away stale levels and measures depth inside the band", () => {
+    const h = assessBook(
+      100,
+      [{ price: "99.8", quantity: "1" }, { price: "50", quantity: "1000" }],
+      [{ price: "100.3", quantity: "0.5" }, { price: "180", quantity: "1000" }],
+      P2,
+    );
+    expect(h.healthy).toBe(true);
+    expect(h.mid).toBeCloseTo(100.05, 10);
+    expect(h.bidDepthUsd).toBeCloseTo(99.8, 6);
+    expect(h.askDepthUsd).toBeCloseTo(50.15, 6);
+    expect(h.bids).toEqual([{ price: "99.8", quantity: "1" }]);
+  });
+
+  it("is unhealthy when a side has no depth in the band, too little depth, or is crossed", () => {
+    expect(assessBook(100, [{ price: "50", quantity: "1000" }], [{ price: "100.2", quantity: "10" }], P2)).toMatchObject({ healthy: false, mid: null, reason: "no_bids_in_band" });
+    expect(assessBook(100, [{ price: "99.9", quantity: "10" }], [], P2)).toMatchObject({ healthy: false, reason: "no_asks_in_band" });
+    expect(assessBook(100, [{ price: "99.9", quantity: "0.1" }], [{ price: "100.1", quantity: "10" }], P2)).toMatchObject({ healthy: false, reason: "thin_depth" });
+    expect(assessBook(100, [{ price: "100.2", quantity: "10" }], [{ price: "100.1", quantity: "10" }], P2)).toMatchObject({ healthy: false, reason: "crossed" });
+    expect(assessBook(Number.NaN, [], [], P2)).toMatchObject({ healthy: false, reason: "invalid_oracle" });
+  });
+
+  it("property: a healthy mid always lies within the band around the oracle", () => {
+    fc.assert(
+      fc.property(
+        fc.double({ min: 1, max: 10_000, noNaN: true }),
+        fc.array(fc.tuple(fc.double({ min: -0.9, max: 2, noNaN: true }), fc.double({ min: 0.001, max: 100, noNaN: true })), { maxLength: 6 }),
+        fc.array(fc.tuple(fc.double({ min: -0.9, max: 2, noNaN: true }), fc.double({ min: 0.001, max: 100, noNaN: true })), { maxLength: 6 }),
+        (oracle, b, a) => {
+          const lv = (xs: [number, number][]) => xs.map(([off, q]) => ({ price: String(oracle * (1 + off)), quantity: String(q) }));
+          const h = assessBook(oracle, lv(b), lv(a), P2);
+          if (h.healthy) expect(Math.abs((h.mid! - oracle) / oracle) * 1e4).toBeLessThanOrEqual(P2.bookHealthBandBps + 1e-6);
+          else expect(h.mid).toBeNull();
+        },
+      ),
     );
   });
 });

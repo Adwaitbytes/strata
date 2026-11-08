@@ -13,16 +13,17 @@ function obs(over: Partial<OracleObservation> = {}): OracleObservation {
     chainTimeMs: T0,
     wallClockMs: T0 + 500,
     bookMid: 100.02,
+    bookHealthy: true,
     ...over,
   };
 }
 
 /** Run a sequence of observations, threading state, and return every result. */
-function run(seq: OracleObservation[], state: OracleGuardState = INITIAL_ORACLE_STATE) {
+function run(seq: OracleObservation[], state: OracleGuardState = INITIAL_ORACLE_STATE, params = P) {
   const out = [];
   let s = state;
   for (const o of seq) {
-    const r = evaluateOracle(o, s, P);
+    const r = evaluateOracle(o, s, params);
     out.push(r);
     s = r.state;
   }
@@ -79,9 +80,9 @@ describe("oracle guard", () => {
       expect(r.every((x) => x.action === "ok")).toBe(true);
     });
 
-    it("does not count cycles with no book mid", () => {
-      const r = run([deviated, obs({ bookMid: null }), deviated, deviated]);
-      expect(r.map((x) => x.action)).toEqual(["ok", "ok", "ok", "halt"]);
+    it("resets the counter on an unhealthy book (no mid) under the widen policy", () => {
+      const r = run([deviated, obs({ bookMid: null }), deviated, deviated], INITIAL_ORACLE_STATE, { ...P, unhealthyBookPolicy: "widen" });
+      expect(r.map((x) => x.action)).toEqual(["ok", "ok", "ok", "ok"]);
     });
   });
 
@@ -133,6 +134,55 @@ describe("oracle guard", () => {
       expect(r.action).toBe("halt");
       expect(r.decisions[0]!.reason).toBe("data_unavailable");
     }
+  });
+
+  describe("unhealthy book policy", () => {
+    const unhealthy = obs({ bookMid: null, bookHealthy: false, bookDiagnostics: { bidDepthUsd: 0, askDepthUsd: 12 } });
+    it("widen: skips the cross-check and widens instead of halting, every cycle", () => {
+      const W = { ...P, unhealthyBookPolicy: "widen" as const };
+      let s = INITIAL_ORACLE_STATE;
+      for (let i = 0; i < 5; i++) {
+        const r = evaluateOracle(unhealthy, s, W);
+        expect(r.action).toBe("ok");
+        expect(r.spreadMultiplier).toBe(2);
+        expect(r.decisions[0]).toMatchObject({ action: "widen", reason: "oracle_book_deviation", observed: { bookHealthy: false, askDepthUsd: 12 } });
+        expect(r.decisions[0]!.detail).toBe("Book unhealthy, cross-check skipped, spreads widened.");
+        s = r.state;
+      }
+      expect(s.consecutiveDevCycles).toBe(0);
+    });
+    it("halt: halts on an unhealthy book (mainnet default)", () => {
+      expect(P.unhealthyBookPolicy).toBe("halt");
+      const r = evaluateOracle(unhealthy, INITIAL_ORACLE_STATE, P);
+      expect(r.action).toBe("halt");
+      expect(r.decisions[0]).toMatchObject({ reason: "oracle_book_deviation" });
+    });
+    it("widen never masks staleness, future timestamps or source divergence", () => {
+      const W = { ...P, unhealthyBookPolicy: "widen" as const };
+      expect(evaluateOracle({ ...unhealthy, oracle: { price: 100, timestampMs: T0 - 60_000 } }, INITIAL_ORACLE_STATE, W).action).toBe("halt");
+      expect(evaluateOracle({ ...unhealthy, oracle: { price: 100, timestampMs: T0 + 9_000 } }, INITIAL_ORACLE_STATE, W).action).toBe("halt");
+      expect(evaluateOracle({ ...unhealthy, reference: { price: 105, timestampMs: T0 } }, INITIAL_ORACLE_STATE, W).action).toBe("halt");
+    });
+    it("widen never masks an unconfirmed jump", () => {
+      const W = { ...P, unhealthyBookPolicy: "widen" as const };
+      const first = evaluateOracle(unhealthy, INITIAL_ORACLE_STATE, W);
+      const r = evaluateOracle({ ...unhealthy, oracle: { price: 104, timestampMs: T0 + 1_000 }, chainTimeMs: T0 + 1_500, wallClockMs: T0 + 1_500 }, first.state, W);
+      expect(r.action).toBe("halt");
+      expect(r.decisions.map((d) => d.reason)).toContain("oracle_jump");
+    });
+    it("property: with widen, an unhealthy book never produces a deviation halt", () => {
+      const W = { ...P, unhealthyBookPolicy: "widen" as const };
+      fc.assert(
+        fc.property(fc.array(fc.double({ min: 1, max: 1e6, noNaN: true }), { minLength: 1, maxLength: 10 }), (mids) => {
+          let s = INITIAL_ORACLE_STATE;
+          for (const m of mids) {
+            const r = evaluateOracle(obs({ bookMid: m, bookHealthy: false }), s, W);
+            expect(r.decisions.some((d) => d.reason === "oracle_book_deviation" && d.action === "halt")).toBe(false);
+            s = r.state;
+          }
+        }),
+      );
+    });
   });
 
   describe("chain lag (M-3)", () => {

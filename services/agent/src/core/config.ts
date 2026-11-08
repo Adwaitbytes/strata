@@ -7,18 +7,12 @@
 import { readFileSync } from "node:fs";
 import { z } from "zod";
 import type { Market } from "@strata/sdk";
-import { DEFAULT_PARAMS, PARAM_BOUNDS, assertMainnetCaps, sessionClassFor, type RiskParams, type SessionClass } from "@strata/risk";
+import { DEFAULT_PARAMS, RiskParams, assertMainnetCaps, sessionClassFor, type SessionClass } from "@strata/risk";
 import type { MarketRuntime } from "./loop.js";
 import { ShadowReview } from "./tuner.js";
 
-const numericKeys = Object.keys(PARAM_BOUNDS) as (keyof typeof PARAM_BOUNDS)[];
-const ParamOverrides = z
-  .object({
-    ...Object.fromEntries(numericKeys.map((k) => [k, z.number().finite()])),
-    offHoursQuoting: z.boolean(),
-  } as Record<keyof RiskParams, z.ZodTypeAny>)
-  .partial()
-  .strict();
+// Same schema as @strata/risk RiskParams; unknown names are rejected, values are clamped later.
+const ParamOverrides = RiskParams.partial().strict();
 type ParamOverrides = Partial<RiskParams>;
 
 const SessionClassSchema = z.enum(["us_equity", "fx", "cme_globex", "always_open"]);
