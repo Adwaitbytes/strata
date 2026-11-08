@@ -130,13 +130,15 @@ function history(def: (typeof MARKET_DEFS)[number], now: number): LiquiditySampl
   for (let i = 0; i < points; i++) {
     const at = now - (points - i) * 15 * 60_000;
     const baseline = i < 40;
-    const spread = baseline ? 28 + r() * 14 : 9 + r() * 6;
-    const depth = baseline ? 6_000 + r() * 3_000 : 18_000 + r() * 6_000;
+    const quoting = i >= 48;
+    const spread = quoting ? 9 + r() * 6 : 28 + r() * 14;
+    const depth = quoting ? 18_000 + r() * 6_000 : 6_000 + r() * 3_000;
     samples.push({
       at,
       spreadBps: Math.round(spread * 10) / 10,
       depthUsd25: Math.round(depth),
-      strataDepthUsd25: baseline ? 0 : Math.round(depth * (0.35 + r() * 0.15)),
+      // Samples 40 to 47: indexer running, STRATA not quoting yet. Labeled by provenance, not "With STRATA".
+      strataDepthUsd25: quoting ? Math.round(depth * (0.35 + r() * 0.15)) : 0,
       provenance: baseline ? "BASELINE" : "MOCK",
     });
   }

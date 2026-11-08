@@ -50,6 +50,12 @@ describe("buildStatStrip", () => {
     expect(spread?.emptyLabel).toBe(NOT_MEASURED);
   });
 
+  it("does not claim a spread improvement while STRATA has no depth on the book", () => {
+    const spread = buildStatStrip(stats({ strataDepthUsd25: 0, spreadImprovementBps: 6 }), "testnet").cells.find((c) => c.id === "spread");
+    expect(spread?.value).toBeNull();
+    expect(spread?.emptyLabel).toBe(NOT_MEASURED);
+  });
+
   it("shows an honest zero when zero agents are live", () => {
     const agents = buildStatStrip(stats({ agentsLive: 0 }), "testnet").cells.find((c) => c.id === "agents");
     expect(agents?.value).toBe("0");
@@ -131,5 +137,11 @@ describe("buildProofRows", () => {
     expect(rows.map((r) => r.symbol)).toEqual(["M1/USDT"]);
     expect(rows[0]?.baselineSpreadBps).toBe(20);
     expect(rows[0]?.nowSpreadBps).toBe(8);
+  });
+
+  it("drops markets where STRATA has no depth now, so no before/after is claimed", () => {
+    const noStrata = market(4, 100, true);
+    noStrata.now = { ...noStrata.now!, strataDepthUsd25: 0, strataBookShare: 0 };
+    expect(buildProofRows({ network: "testnet", at: 1, markets: [noStrata] })).toEqual([]);
   });
 });

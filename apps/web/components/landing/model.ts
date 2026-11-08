@@ -1,4 +1,5 @@
 import type { HeroStatsResponse, MarketsResponse, NetworkName, Provenance } from "@strata/sdk";
+import { hasStrataDepth } from "@/lib/liquidity";
 
 /**
  * Pure view-model for the Landing. No React, no fetch: everything here is unit tested.
@@ -54,6 +55,8 @@ export function formatBps(v: number): string {
 export function buildStatStrip(stats: HeroStatsResponse | null, network: NetworkName): StatStrip {
   const source = stats ? `STRATA API /v1/stats, ${stats.network} ${stats.provenance}` : "STRATA API /v1/stats";
   const live = stats !== null;
+  // Spread improvement is a STRATA effect only while STRATA agents have depth on the book.
+  const strataQuoting = hasStrataDepth(stats);
   return {
     live,
     network: stats?.network ?? network,
@@ -93,9 +96,9 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
       {
         id: "spread",
         label: "Spread improvement",
-        value: live && stats.spreadImprovementBps !== null ? formatBpsNumber(stats.spreadImprovementBps) : null,
+        value: live && strataQuoting && stats.spreadImprovementBps !== null ? formatBpsNumber(stats.spreadImprovementBps) : null,
         unit: "bps",
-        numeric: live ? stats.spreadImprovementBps : null,
+        numeric: live && strataQuoting ? stats.spreadImprovementBps : null,
         emptyLabel: live ? NOT_MEASURED : NOT_LIVE,
         definition:
           "Change in quoted spread against the BASELINE window recorded before agents went live. Positive means tighter.",
@@ -181,12 +184,16 @@ export interface ProofRow {
   provenance: Provenance;
 }
 
-/** Only markets with both a closed BASELINE window and a current measurement can be compared. */
+/**
+ * Only markets with a closed BASELINE window and a current measurement in which STRATA agents
+ * actually have depth can be shown as "before vs with STRATA". A current sample with no STRATA
+ * depth is just another market reading, not an effect of STRATA (W7 honest-label rule).
+ */
 export function buildProofRows(markets: MarketsResponse | null): ProofRow[] {
   if (!markets) return [];
   const rows: ProofRow[] = [];
   for (const m of markets.markets) {
-    if (!m.baseline || !m.now || m.baseline.samples === 0) continue;
+    if (!m.baseline || !m.now || m.baseline.samples === 0 || !hasStrataDepth(m.now)) continue;
     rows.push({
       marketId: m.market.marketId,
       symbol: m.market.symbol,

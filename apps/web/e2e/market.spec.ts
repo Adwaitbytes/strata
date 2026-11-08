@@ -14,6 +14,16 @@ test.describe("Market page", () => {
     await expect(page.getByRole("img", { name: /STRATA provides/ })).toBeVisible();
   });
 
+  test("labels samples without STRATA depth by provenance, never as With STRATA", async ({ page }) => {
+    await page.goto(MARKET);
+    await expect(page.getByTestId("legend-strata")).toHaveText("With STRATA");
+    await expect(page.getByTestId("legend-no-strata")).toHaveText("Mock, no STRATA quotes");
+    await page.getByText("Show data table").click();
+    const labels = page.locator("#spread table tbody tr td:nth-child(3)");
+    await expect(labels.filter({ hasText: "Mock, no STRATA quotes" })).toHaveCount(8);
+    await expect(labels.filter({ hasText: "Before STRATA" })).toHaveCount(40);
+  });
+
   test("offers the chart data as a table", async ({ page }) => {
     await page.goto(MARKET);
     await page.getByText("Show data table").click();

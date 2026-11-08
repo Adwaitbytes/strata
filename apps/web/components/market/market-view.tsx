@@ -16,6 +16,7 @@ import { useNetwork } from "@/hooks/use-network";
 import { api } from "@/lib/api/client";
 import { dominantProvenance } from "@/lib/api/provenance";
 import { formatAge, formatBps, formatPct, formatPrice, formatUsd, formatUtc } from "@/lib/format";
+import { hasStrataDepth } from "@/lib/liquidity";
 import { cn } from "@/lib/utils";
 import { DepthLadder } from "./depth-ladder";
 
@@ -73,7 +74,9 @@ export function MarketView({ id }: { id: string }) {
   const base = summary.baseline;
   const provenance = dominantProvenance([...(now ? [now.provenance] : []), ...(book ? [book.provenance] : [])]);
   const session = book?.sessionState ?? now?.sessionState ?? null;
-  const improvement = now?.spreadBps != null && base?.spreadBps != null ? base.spreadBps - now.spreadBps : null;
+  // Only a STRATA effect when STRATA agents have depth on the book now; otherwise no comparison is claimed.
+  const strataQuoting = hasStrataDepth(now);
+  const improvement = strataQuoting && now?.spreadBps != null && base?.spreadBps != null ? base.spreadBps - now.spreadBps : null;
 
   return (
     <div className="flex flex-col gap-8">
@@ -102,7 +105,11 @@ export function MarketView({ id }: { id: string }) {
           <Stat
             metric="marketSpread"
             value={formatBps(now?.spreadBps)}
-            footnote={base?.spreadBps != null ? `Baseline ${formatBps(base.spreadBps)}${improvement != null ? `, ${improvement >= 0 ? "down" : "up"} ${formatBps(Math.abs(improvement))}` : ""}` : "No baseline recorded"}
+            footnote={
+              base?.spreadBps != null
+                ? `Baseline ${formatBps(base.spreadBps)}${improvement != null ? `, ${improvement >= 0 ? "down" : "up"} ${formatBps(Math.abs(improvement))} with STRATA` : strataQuoting ? "" : ". No STRATA quotes yet"}`
+                : "No baseline recorded"
+            }
           />
         </div>
         <div className="bg-surface p-5">
@@ -131,7 +138,7 @@ export function MarketView({ id }: { id: string }) {
         aside={base ? <span className="text-xs text-fg-subtle">Baseline window {formatUtc(base.windowStart)} to {formatUtc(base.windowEnd)}, {base.samples} samples</span> : null}
       >
         {history.some((s) => s.spreadBps != null) ? (
-          <SpreadChart history={history} baselineSpreadBps={base?.spreadBps ?? null} />
+          <SpreadChart history={history} baselineSpreadBps={base?.spreadBps ?? null} network={network} />
         ) : (
           <EmptyState title="No spread samples yet" detail="Samples are recorded every 5 seconds once the indexer follows this market." className="border-0 p-0" />
         )}
