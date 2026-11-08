@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { NETWORKS } from "@strata/config";
 import { buildEnrollPreview, metadataJson, starterKit, validateAgentName, validateErc8004Id, validateMetadataUri } from "./enroll";
 
 const draft = {
@@ -43,9 +44,10 @@ describe("enroll helpers", () => {
     expect(p.args[1]).toBe("0xabcdef0123456789abcdef0123456789abcdef01000000000000000000000000");
     expect(p.args[2]).toBe("ipfs://bafyexample/agent.json");
     expect(p.rows.find((r) => r.label === "Value sent")?.value).toBe("0 INJ");
-    // Arena is not deployed in config yet, and the preview says so instead of inventing an address.
-    expect(p.contract).toBeNull();
-    expect(p.rows.find((r) => r.label === "Contract")?.value).toMatch(/Not deployed/);
+    // The target is always the configured arena; when none is configured the preview says so instead of inventing an address.
+    const arena = NETWORKS.testnet.contracts.arena;
+    expect(p.contract).toBe(arena);
+    expect(p.rows.find((r) => r.label === "Contract")?.value).toBe(arena ?? "Not deployed on this network yet");
   });
 
   it("starter kit never contains key material", () => {
