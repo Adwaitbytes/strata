@@ -83,13 +83,18 @@ export function StatusView() {
             {d.services.length ? (
               <ul className="divide-y divide-border">
                 {d.services.map((s) => (
-                  <li key={s.name} className="flex flex-wrap items-center gap-x-4 gap-y-1 py-3 first:pt-0 last:pb-0" data-testid="service-row">
-                    <span className={`inline-flex items-center gap-2 text-sm ${s.ok ? "text-fg" : "text-warn"}`}>
-                      <span aria-hidden className={`size-2 rounded-full ${s.ok ? "bg-bid" : "bg-warn"}`} />
-                      <span className="num">{s.name}</span>
+                  <li
+                    key={s.name}
+                    className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 gap-y-1 py-3 first:pt-0 last:pb-0 sm:grid-cols-[200px_110px_minmax(0,1fr)_auto]"
+                    data-testid="service-row"
+                  >
+                    <span className="inline-flex min-w-0 items-center gap-2 text-sm text-fg">
+                      <span aria-hidden className={`size-2 shrink-0 rounded-full ${s.ok ? "bg-bid" : "bg-warn"}`} />
+                      <span className="num truncate">{s.name}</span>
                     </span>
-                    <span className="text-sm text-fg-muted">{s.ok ? "Operational" : "Degraded"}: {s.detail}</span>
-                    <span className="ml-auto text-xs text-fg-subtle">{s.lastSeenAt ? `Seen ${formatUtc(s.lastSeenAt)}` : "Never seen"}</span>
+                    <span className={`text-sm sm:order-none ${s.ok ? "text-fg-muted" : "text-warn"}`}>{s.ok ? "Operational" : "Degraded"}</span>
+                    <span className="col-span-2 text-sm text-fg-muted sm:col-span-1">{s.detail}</span>
+                    <span className="col-span-2 text-xs text-fg-subtle sm:col-span-1 sm:text-right">{s.lastSeenAt ? `Seen ${formatUtc(s.lastSeenAt)}` : "Never seen"}</span>
                   </li>
                 ))}
               </ul>

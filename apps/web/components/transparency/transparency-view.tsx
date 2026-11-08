@@ -119,34 +119,48 @@ export function TransparencyView() {
             )}
           </Panel>
 
-          <div className="grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-            <Panel title="Guard halts log" id="halts">
-              {d.guardEvents.length ? (
-                <GuardTimeline events={d.guardEvents} showAgent />
-              ) : (
-                <EmptyState title="No guard events" detail="No agent has been halted or throttled by a guard on this network." className="border-0 p-0" />
-              )}
-            </Panel>
-            <Panel title="Suspensions" id="suspensions">
-              {d.suspensions.length ? (
-                <ul className="flex flex-col gap-3">
-                  {d.suspensions.map((s) => (
-                    <li key={`${s.agentId}-${s.at}`} className="rounded-lg border border-halt/30 bg-halt-soft px-4 py-3">
-                      <div className="flex items-baseline justify-between gap-2 text-sm">
-                        <Link href={`/agents/${s.agentId}${network === "mainnet" ? "?network=mainnet" : ""}`} className="font-medium text-fg hover:underline">
-                          Agent #{s.agentId}
-                        </Link>
-                        <time className="text-xs text-fg-muted">{formatUtc(s.at)}</time>
-                      </div>
-                      <p className="mt-1 text-sm text-fg-muted">{s.reason}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <EmptyState title="No suspensions" detail="No agent has been suspended on this network." className="border-0 p-0" />
-              )}
-            </Panel>
-          </div>
+          {(() => {
+            const halts = (
+              <Panel title="Guard halts log" id="halts">
+                {d.guardEvents.length ? (
+                  <GuardTimeline events={d.guardEvents} showAgent />
+                ) : (
+                  <EmptyState title="No guard events" detail="No agent has been halted or throttled by a guard on this network." className="border-0 p-0" />
+                )}
+              </Panel>
+            );
+            const items = d.suspensions.map((s) => (
+              <li key={`${s.agentId}-${s.at}`} className="min-w-0 flex-1 rounded-lg border border-halt/30 bg-halt-soft px-4 py-3" data-testid="suspension">
+                <div className="flex items-baseline justify-between gap-2 text-sm">
+                  <Link href={`/agents/${s.agentId}${network === "mainnet" ? "?network=mainnet" : ""}`} className="font-medium text-fg hover:underline">
+                    Agent #{s.agentId}
+                  </Link>
+                  <time className="text-xs text-fg-muted">{formatUtc(s.at)}</time>
+                </div>
+                <p className="mt-1 text-sm text-fg-muted">{s.reason}</p>
+              </li>
+            ));
+            const empty = <EmptyState title="No suspensions" detail="No agent has been suspended on this network." className="border-0 p-0" />;
+            // Few suspensions read better as one full-width strip than as a mostly empty column.
+            if (d.suspensions.length < 3) {
+              return (
+                <>
+                  <Panel title="Suspensions" id="suspensions">
+                    {items.length ? <ul className="flex flex-col gap-3 sm:flex-row">{items}</ul> : empty}
+                  </Panel>
+                  {halts}
+                </>
+              );
+            }
+            return (
+              <div className="grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
+                {halts}
+                <Panel title="Suspensions" id="suspensions">
+                  <ul className="flex flex-col gap-3">{items}</ul>
+                </Panel>
+              </div>
+            );
+          })()}
 
           <Panel title="Epoch attestations" id="epochs">
             {d.epochs.length ? (

@@ -11,7 +11,7 @@ const LABELS = {
   closed: { text: "Offline", tone: "bg-halt", pulse: false },
   idle: { text: "Connecting", tone: "bg-fg-subtle", pulse: false },
   polling: { text: "Refreshing every 15s", tone: "bg-fg-subtle", pulse: false },
-  mock: { text: "Simulated feed", tone: "bg-halt", pulse: true },
+  mock: { text: "Simulated feed", tone: "bg-fg-subtle", pulse: false },
 } as const;
 
 export function LiveIndicator({ network, className }: { network: NetworkName; className?: string }) {

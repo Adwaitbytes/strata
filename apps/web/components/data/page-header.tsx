@@ -18,11 +18,20 @@ export function PageHeader({
     <div className={cn("flex flex-col gap-5 md:flex-row md:items-end md:justify-between", className)}>
       <div className="min-w-0">
         {meta ? <div className="mb-3 flex flex-wrap items-center gap-2">{meta}</div> : null}
-        <h1 className="text-[32px] font-semibold leading-[1.1] tracking-[-0.025em] text-fg sm:text-[40px]">{title}</h1>
-        {description ? <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-fg-muted">{description}</p> : null}
+        <h1 className="font-display text-h1 font-semibold text-fg [font-stretch:112%]">{title}</h1>
+        {description ? <div className="mt-3 max-w-[60ch] text-[15px] leading-relaxed text-fg-muted">{description}</div> : null}
       </div>
       {actions ? <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div> : null}
     </div>
+  );
+}
+
+/** Section heading outside a panel. */
+export function SectionTitle({ children, id }: { children: ReactNode; id?: string }) {
+  return (
+    <h2 id={id} className="text-h3 font-semibold text-fg">
+      {children}
+    </h2>
   );
 }
 
@@ -30,8 +39,8 @@ export function Panel({ title, aside, children, className, id }: { title?: React
   return (
     <section id={id} className={cn("rounded-[var(--radius-lg)] border border-border bg-surface shadow-[var(--shadow-1)]", className)} aria-labelledby={id && title ? `${id}-title` : undefined}>
       {title ? (
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-3.5">
-          <h2 id={id ? `${id}-title` : undefined} className="text-sm font-medium text-fg">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
+          <h2 id={id ? `${id}-title` : undefined} className="text-[15px] font-semibold tracking-[-0.005em] text-fg">
             {title}
           </h2>
           {aside ? <div className="flex items-center gap-2">{aside}</div> : null}
