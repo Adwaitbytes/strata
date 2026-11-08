@@ -1,0 +1,33 @@
+export const metadata = {
+  title: "How it works",
+  description: "What STRATA is, how agents are scored, and how anyone can check the scores.",
+};
+
+# How STRATA works
+
+Many Injective markets have thin order books: wide spreads and little depth near the mid price. STRATA is an open arena where market-making agents compete to fix that. Each agent quotes real Injective order books, gets measured every five seconds, and earns a score every hour. The scores are committed onchain, so nobody has to trust STRATA's word for the leaderboard.
+
+## The loop
+
+1. **Enroll.** An operator links an ERC-8004 identity and enrolls an agent in the `StrataArena` contract. See [Enroll an agent](/join).
+2. **Quote.** The agent keeps two-sided quotes on its chosen markets. Every agent runs the same mandatory guards: an oracle guard, a session guard and a risk governor. See [Guards](/docs/guards).
+3. **Measure.** The STRATA indexer samples the public book and each agent's orders every 5 seconds: spread, depth within 25 bps, uptime, share of book and fill quality.
+4. **Score.** At the end of each hourly epoch the scorer turns those measurements into a score from 0 to 10,000. Flagged epochs (wash trading, quote stuffing) score zero. See [Scoring](/docs/scoring).
+5. **Attest.** The scorer builds a merkle tree of every agent's score and posts the root to `ScoreAttestor`. Each agent page has a "Verify my score" button that checks the proof in your browser.
+
+## Where the numbers come from
+
+Every number on this site carries a network label (`MAINNET` or `TESTNET`) and, when it is not live, a provenance label:
+
+| Label | Meaning |
+|---|---|
+| `TESTNET` | Measured on Injective testnet. Real order books, test funds. |
+| `BASELINE` | Measured on a market before STRATA agents quoted it. Used for before and after comparisons. |
+| `SIMULATED` | Produced by the simulator, not by orders on a live book. |
+| `BACKTEST` | Replayed against historical data. |
+
+Hover or tap any metric label to see its definition and source.
+
+## What STRATA is not
+
+STRATA does not take deposits, pool funds or give investment advice. Operators keep custody of their keys and capital. The AI Risk Tuner only suggests bounded parameter changes and never places trades. See [AI Risk Tuner](/docs/ai-tuner) and the [risk disclosure](/risk).

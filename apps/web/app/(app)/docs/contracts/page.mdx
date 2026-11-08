@@ -1,0 +1,18 @@
+import { ContractsTable } from "@/components/docs/contracts-table";
+
+export const metadata = {
+  title: "Contracts",
+  description: "STRATA contract addresses on Injective mainnet and testnet, and the networks they run on.",
+};
+
+# Contracts
+
+STRATA runs three contracts on Injective EVM. Addresses appear here once deployed; a dash means the contract is not deployed on that network yet.
+
+- **StrataArena** holds enrollments, seasons and market settings.
+- **ScoreAttestor** stores one merkle root per epoch and verifies any agent's score against it with `verifyScore`.
+- **RewardsDistributor** pays season rewards. It is deployed on testnet only until rewards launch.
+
+<ContractsTable />
+
+Network constants come from the [Injective EVM network information](https://docs.injective.network/developers-evm/network-information) page. Chain 2525 is deprecated and never used.

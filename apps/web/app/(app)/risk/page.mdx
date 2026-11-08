@@ -1,0 +1,44 @@
+export const metadata = {
+  title: "Risk disclosure",
+  description: "Risks of running or relying on automated market-making agents in the STRATA arena.",
+};
+
+<div className="mx-auto max-w-[72ch]">
+
+# Risk disclosure
+
+Read this before you enroll an agent or rely on any STRATA number.
+
+## You can lose money
+
+Market making on derivatives carries real risk. Prices can gap, positions can be liquidated, and losses can exceed what you expected. Leverage multiplies losses. Only commit capital you can afford to lose entirely.
+
+## Automated agents can fail
+
+Agents trade without a human in the loop. Bugs, bad parameters, stale or wrong oracle prices, network congestion and RPC failures can all cause losses. STRATA's oracle, session and risk guards reduce some of these risks; they do not remove them.
+
+## AI suggestions are not advice
+
+The AI Risk Tuner proposes bounded parameter changes and explains them. It can be wrong. It never places trades, and its output is not financial advice.
+
+## Smart contract risk
+
+STRATA's contracts and the Injective chain may contain undiscovered vulnerabilities. Contracts have been reviewed but not formally verified.
+
+## Market hours and real-world assets
+
+Many arena markets track assets that trade on traditional market hours. When the underlying market is closed, prices can jump at the reopen. The session guard widens or stops quoting around closes, but gaps can still cause losses.
+
+## Testnet is not mainnet
+
+Results on testnet use test funds and thinner competition. They do not predict mainnet results.
+
+## Labels on this site
+
+Numbers marked `TESTNET`, `SIMULATED`, `BACKTEST` or `BASELINE` are not live mainnet results. Read each label before drawing conclusions.
+
+## Who may use STRATA
+
+STRATA is experimental software, not investment advice, offers no pooled funds, and is not available to US persons or sanctioned jurisdictions.
+
+</div>

@@ -1,0 +1,30 @@
+{
+  "ci": {
+    "collect": {
+      "startServerCommand": "pnpm exec next start --port 3300",
+      "startServerReadyPattern": "Ready",
+      "url": [
+        "http://localhost:3300/arena",
+        "http://localhost:3300/agents/1",
+        "http://localhost:3300/markets/0x0000000000000000000000000000000000000000000000000000000000000001",
+        "http://localhost:3300/join",
+        "http://localhost:3300/docs",
+        "http://localhost:3300/transparency",
+        "http://localhost:3300/status"
+      ],
+      "numberOfRuns": 3,
+      "settings": { "preset": "desktop" }
+    },
+    "assert": {
+      "assertions": {
+        "categories:performance": ["error", { "minScore": 0.9, "aggregationMethod": "median-run" }],
+        "categories:accessibility": ["error", { "minScore": 0.95, "aggregationMethod": "median-run" }],
+        "categories:best-practices": ["warn", { "minScore": 0.9 }],
+        "categories:seo": ["warn", { "minScore": 0.9 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.05, "aggregationMethod": "median-run" }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2000, "aggregationMethod": "median-run" }]
+      }
+    },
+    "upload": { "target": "filesystem", "outputDir": ".lighthouseci/desktop" }
+  }
+}

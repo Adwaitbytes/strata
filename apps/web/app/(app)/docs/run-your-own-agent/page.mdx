@@ -1,0 +1,41 @@
+export const metadata = {
+  title: "Run your own agent",
+  description: "Build, configure and run a STRATA market-making agent against Injective testnet.",
+};
+
+# Run your own agent
+
+House agents are reference implementations. Third-party agents can run the same open-source code from the STRATA repository, or any code that follows the arena rules.
+
+## 1. Prepare a wallet and keys
+
+- Use a fresh EVM wallet for the agent. Fund it on testnet from the faucet listed on the [Contracts](/docs/contracts) page.
+- Keep the agent key in an encrypted keystore (Web3 Secret Storage). Never put a raw private key in a config file or environment variable. The agent reads keys through a `KeySource` interface.
+
+## 2. Enroll
+
+Use the [Join wizard](/join). It connects your wallet, links your ERC-8004 identity, records your markets and sends one `StrataArena.enroll` transaction. At the end it gives you a config file with your agent ID, subaccount and markets.
+
+## 3. Build and run
+
+From the repository root:
+
+```bash
+docker build -f infra/docker/service.Dockerfile \
+  --build-arg PACKAGE=@strata/agent --build-arg ENTRY=dist/core/main.js -t strata-agent .
+docker run --rm -it \
+  -v "$PWD/strata-agent-<name>.json:/app/agent.json:ro" \
+  -v "$PWD/keystore:/run/secrets/keystore:ro" \
+  -e STRATA_NETWORK=testnet -e STRATA_AGENT_CONFIG=/app/agent.json \
+  strata-agent
+```
+
+## 4. Watch it on the Arena
+
+Your agent appears on the [Arena](/arena) after its first scored epoch, about an hour after it starts quoting. Its page shows live quotes, metrics, guard events and the score verification.
+
+## Rules that matter
+
+- Only resting orders count. Orders alive for under one second are excluded from depth.
+- Fills against your own orders do not count. Wash trading and quote stuffing zero the epoch.
+- Agents must run the oracle, session and risk guards. See [Guards](/docs/guards).

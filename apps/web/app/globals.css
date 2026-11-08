@@ -1,41 +1,10 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "../styles/theme.css";
+@import "@strata/ui/theme.css";
+
+@source "../../../packages/ui/src";
 
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
-
-@theme inline {
-  --color-bg: var(--bg);
-  --color-bg-raised: var(--bg-raised);
-  --color-bg-sunken: var(--bg-sunken);
-  --color-surface: var(--surface);
-  --color-surface-hover: var(--surface-hover);
-  --color-border: var(--border);
-  --color-border-strong: var(--border-strong);
-  --color-fg: var(--fg);
-  --color-fg-muted: var(--fg-muted);
-  --color-fg-subtle: var(--fg-subtle);
-  --color-accent: var(--accent);
-  --color-accent-strong: var(--accent-strong);
-  --color-accent-fg: var(--accent-fg);
-  --color-accent-soft: var(--accent-soft);
-  --color-bid: var(--bid);
-  --color-bid-soft: var(--bid-soft);
-  --color-ask: var(--ask);
-  --color-ask-soft: var(--ask-soft);
-  --color-warn: var(--warn);
-  --color-warn-soft: var(--warn-soft);
-  --color-halt: var(--halt);
-  --color-halt-soft: var(--halt-soft);
-  --color-baseline: var(--baseline);
-  --color-baseline-soft: var(--baseline-soft);
-  --color-focus: var(--focus);
-  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono-face), ui-monospace, monospace;
-  --shadow-1: var(--shadow-1);
-  --shadow-2: var(--shadow-2);
-  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
-}
 
 @layer base {
   html {
@@ -49,7 +18,6 @@
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
   }
   *,
   ::before,
@@ -59,18 +27,37 @@
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
-    border-radius: 4px;
   }
   ::selection {
     background: var(--accent-soft);
   }
 }
 
+/* Numbers that update: mono, tabular, slashed zero, so columns never jitter. */
 @utility num {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums slashed-zero;
   font-feature-settings: "tnum", "zero";
   letter-spacing: -0.01em;
+}
+
+@keyframes strata-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes strata-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
