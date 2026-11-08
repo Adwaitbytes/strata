@@ -43,12 +43,23 @@ export function createDb(url: string = resolveDatabaseUrl(), options: { max?: nu
   const needsTls = !/@(localhost|127\.0\.0\.1|db)(:|\/)/.test(url) && !/sslmode=disable/.test(url);
   // Neon's pooled endpoint is PgBouncer in transaction mode, which cannot keep prepared statements.
   const pooled = /-pooler\./.test(url);
-  const sql = postgres(url, {
-    max: options.max ?? 5,
-    prepare: !pooled,
-    ssl: needsTls ? "require" : false,
-    onnotice: () => {},
-    connection: { application_name: "strata" },
-  });
-  return { sql, db: drizzle(sql, { schema }), close: () => sql.end({ timeout: 5 }) };
+  const open = (max: number) =>
+    postgres(url, {
+      max,
+      prepare: !pooled,
+      ssl: needsTls ? "require" : false,
+      onnotice: () => {},
+      connection: { application_name: "strata" },
+    });
+  // drizzle-orm's postgres-js driver replaces the client's date/json serializers with pass-through
+  // ones, which breaks Date and sql.json() parameters in raw queries. Raw SQL gets its own client.
+  const sql = open(options.max ?? 5);
+  const drizzleClient = open(Math.max(1, Math.ceil((options.max ?? 5) / 2)));
+  return {
+    sql,
+    db: drizzle(drizzleClient, { schema }),
+    close: async () => {
+      await Promise.all([sql.end({ timeout: 5 }), drizzleClient.end({ timeout: 5 })]);
+    },
+  };
 }

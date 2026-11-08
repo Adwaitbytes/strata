@@ -4,7 +4,8 @@
  * Oracle price and publish timestamp come from the Indexer oracle price stream; markets with no
  * stream tick yet fall back to the polled oracle price with a null timestamp.
  */
-import type { Db } from "@strata/db";
+import type { Db, Sql } from "@strata/db";
+import { downsampleBaseline } from "../store/retention.js";
 import type { Market, NetworkName, Provenance } from "@strata/sdk";
 import type { InjectiveReader, OracleTick } from "../injective/reader.js";
 import { errMsg, log } from "../lib/log.js";
@@ -21,7 +22,8 @@ export interface BaselineOptions {
   reader: InjectiveReader;
   db: Db;
   source: string;
-  configured: readonly Pick<Market, "marketId">[];
+  /** Arena-enabled markets from @strata/config; always recorded. */
+  configured: readonly Pick<Market, "marketId" | "assetClass">[];
   intervalMs?: number;
   refreshMarketsMs?: number;
   maxMarkets?: number;
@@ -29,6 +31,9 @@ export interface BaselineOptions {
   /** Full stored depth (maxStoredLevels) only on samples aligned to this period; top of book otherwise. */
   levelsEveryMs?: number;
   maxStoredLevels?: number;
+  /** Raw SQL handle for retention; with `downsampleAfterHours` it thins old BASELINE rows hourly. */
+  sql?: Sql;
+  downsampleAfterHours?: number;
 }
 
 export class BaselineRecorder {
@@ -39,6 +44,7 @@ export class BaselineRecorder {
   private running = false;
   private stopped = false;
   private lastRefresh = 0;
+  private lastRetention = 0;
   private stats = { samples: 0, rows: 0, skippedOverlap: 0, errors: 0, lastError: null as string | null, lastLatencyMs: 0 };
 
   constructor(private readonly o: BaselineOptions) {}
@@ -137,6 +143,7 @@ export class BaselineRecorder {
     try {
       if (Date.now() - this.lastRefresh > (this.o.refreshMarketsMs ?? 600_000)) await this.refreshMarkets();
       const inserted = await this.sampleOnce(at);
+      await this.maybeDownsample();
       await upsertHeartbeat(this.o.db, this.o.network, "baseline", new Date(), {
         markets: this.markets.length,
         lastSampleAt: at.toISOString(),
@@ -153,6 +160,14 @@ export class BaselineRecorder {
     } finally {
       this.running = false;
     }
+  }
+
+  private async maybeDownsample(): Promise<void> {
+    const { sql, downsampleAfterHours } = this.o;
+    if (!sql || downsampleAfterHours === undefined || Date.now() - this.lastRetention < 3_600_000) return;
+    this.lastRetention = Date.now();
+    const removed = await downsampleBaseline(sql, this.o.network, downsampleAfterHours);
+    log("info", "baseline downsampled", { network: this.o.network, removed, afterHours: downsampleAfterHours });
   }
 
   async start(): Promise<void> {

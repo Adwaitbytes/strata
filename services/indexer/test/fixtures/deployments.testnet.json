@@ -1,0 +1,38 @@
+{
+  "network": "testnet",
+  "chainId": 1439,
+  "deployer": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+  "owner": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+  "attestor": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+  "identityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "explorer": "https://testnet.blockscout.injective.network",
+  "deployedAt": "+058824-10-19T00:45:41.000Z",
+  "contracts": {
+    "StrataArena": {
+      "address": "0x33d6c1239e15d3a5875d9ef1351eb6b583731f24",
+      "txHash": "0x2d0cfd9620a7ee21eac013c967a3af8af99d4dac9919e87753a6e5d0f88909be",
+      "block": 147650528,
+      "constructorArgs": [
+        "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+        "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+        "0x8004A818BFB912233c491871b3d84c89A494BD9e"
+      ]
+    },
+    "ScoreAttestor": {
+      "address": "0x1332434661332088379a98f821bd19eb2b1d8282",
+      "txHash": "0x85946786adeb78f4013035d05e80d6619de6846cbbafcfa2f356a3eb3062ea6f",
+      "block": 147650530,
+      "constructorArgs": [
+        "0x33D6c1239E15d3A5875D9ef1351eb6B583731F24"
+      ]
+    },
+    "RewardsDistributor": {
+      "address": "0x84dcd928627dba5b43bd565743e29f55f42b814d",
+      "txHash": "0x7d24e101afbf1fc195cc591de2d32971dda4fe7e1397e494bf3f53e4357ae80d",
+      "block": 147650533,
+      "constructorArgs": [
+        "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54"
+      ]
+    }
+  }
+}

@@ -34,14 +34,15 @@ function rank(m: CandidateMarket, configured: ReadonlySet<string>): number {
 export function selectBaselineMarkets(
   network: NetworkName,
   markets: readonly RawDerivativeMarket[],
-  configured: readonly Pick<Market, "marketId">[] = [],
+  configured: readonly Pick<Market, "marketId" | "assetClass">[] = [],
   maxMarkets = Number.POSITIVE_INFINITY,
 ): CandidateMarket[] {
   const configuredIds = new Set(configured.map((m) => m.marketId));
+  const configuredClass = new Map(configured.map((m) => [m.marketId, m.assetClass]));
   const picked: CandidateMarket[] = [];
   for (const m of markets) {
     if (m.marketStatus !== "active" || !m.isPerpetual) continue;
-    const assetClass = classifyRwa(m.ticker);
+    const assetClass = classifyRwa(m.ticker) ?? configuredClass.get(m.marketId) ?? null;
     if (assetClass === null && !configuredIds.has(m.marketId)) continue;
     picked.push({
       network,

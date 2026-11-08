@@ -4,9 +4,11 @@
  */
 import {
   IndexerGrpcDerivativesApi,
+  IndexerGrpcDerivativesStream,
   IndexerGrpcOracleApi,
   IndexerGrpcOracleStream,
 } from "@injectivelabs/sdk-ts";
+import { IndexerOrder, IndexerPosition, IndexerTrade } from "../live/records.js";
 import type { NetworkName } from "@strata/sdk";
 import { indexerEndpoint } from "./endpoints.js";
 
@@ -48,6 +50,33 @@ export interface InjectiveReader {
     handlers: { onEnd: () => void; onError: (e: unknown) => void },
     signal: AbortSignal,
   ): void;
+  /** Newest-first page of trades in [startTime, endTime] (ms). */
+  fetchTrades(q: { marketIds: readonly string[]; startTime?: number; endTime?: number; limit: number }): Promise<IndexerTrade[]>;
+  fetchOrders(q: { subaccountId: string; marketIds: readonly string[] }): Promise<IndexerOrder[]>;
+  fetchPositions(q: { subaccountId: string; marketIds: readonly string[] }): Promise<IndexerPosition[]>;
+  streamTrades(marketIds: readonly string[], onTrade: (t: IndexerTrade) => void, h: StreamCallbacks, signal: AbortSignal): void;
+  streamOrders(subaccountId: string, onOrder: (o: IndexerOrder) => void, h: StreamCallbacks, signal: AbortSignal): void;
+  streamPositions(subaccountId: string, onPosition: (p: IndexerPosition) => void, h: StreamCallbacks, signal: AbortSignal): void;
+}
+
+export interface StreamCallbacks {
+  onEnd: () => void;
+  onError: (e: unknown) => void;
+}
+
+function statusHandlers(h: StreamCallbacks) {
+  return {
+    onEndCallback: () => h.onEnd(),
+    onStatusCallback: (s: { code: number; details: string }) => h.onError(new Error(`stream status ${s.code}: ${s.details}`)),
+  };
+}
+
+/** Parses one record; a malformed record is reported to the stream, not thrown into the SDK. */
+function parseOr<T>(schema: { safeParse: (v: unknown) => { success: true; data: T } | { success: false; error: unknown } }, v: unknown, h: StreamCallbacks): T | null {
+  const r = schema.safeParse(v);
+  if (r.success) return r.data;
+  h.onError(new Error(`malformed indexer record: ${String(r.error).slice(0, 200)}`));
+  return null;
 }
 
 /** Indexer rejects more than 100 market IDs per orderbooks request (observed live 2026-11-09). */
@@ -65,6 +94,7 @@ export function createInjectiveReader(network: NetworkName): InjectiveReader {
   const derivatives = new IndexerGrpcDerivativesApi(endpoint);
   const oracle = new IndexerGrpcOracleApi(endpoint);
   const oracleStream = new IndexerGrpcOracleStream(endpoint);
+  const derivativesStream = new IndexerGrpcDerivativesStream(endpoint);
 
   return {
     async fetchMarkets() {
@@ -108,6 +138,56 @@ export function createInjectiveReader(network: NetworkName): InjectiveReader {
         },
         onEndCallback: () => handlers.onEnd(),
         onStatusCallback: (s) => handlers.onError(new Error(`stream status ${s.code}: ${s.details}`)),
+        signal,
+      });
+    },
+    async fetchTrades(q) {
+      const res = await derivatives.fetchTrades({
+        marketIds: [...q.marketIds],
+        ...(q.startTime === undefined ? {} : { startTime: q.startTime }),
+        ...(q.endTime === undefined ? {} : { endTime: q.endTime }),
+        pagination: { limit: q.limit },
+      });
+      return res.trades.map((t) => IndexerTrade.parse(t));
+    },
+    async fetchOrders(q) {
+      const res = await derivatives.fetchOrders({ subaccountId: q.subaccountId, marketIds: [...q.marketIds], pagination: { limit: 100 } });
+      return res.orders.map((o) => IndexerOrder.parse(o));
+    },
+    async fetchPositions(q) {
+      const res = await derivatives.fetchPositionsV2({ subaccountId: q.subaccountId, marketIds: [...q.marketIds], pagination: { limit: 100 } });
+      return res.positions.map((p) => IndexerPosition.parse(p));
+    },
+    streamTrades(marketIds, onTrade, h, signal) {
+      derivativesStream.streamTrades({
+        marketIds: [...marketIds],
+        callback: (r) => {
+          const t = r.trade ? parseOr(IndexerTrade, r.trade, h) : null;
+          if (t) onTrade(t);
+        },
+        ...statusHandlers(h),
+        signal,
+      });
+    },
+    streamOrders(subaccountId, onOrder, h, signal) {
+      derivativesStream.streamOrders({
+        subaccountId,
+        callback: (r) => {
+          const o = r.order ? parseOr(IndexerOrder, r.order, h) : null;
+          if (o) onOrder(o);
+        },
+        ...statusHandlers(h),
+        signal,
+      });
+    },
+    streamPositions(subaccountId, onPosition, h, signal) {
+      derivativesStream.streamPositionsV2({
+        subaccountId,
+        callback: (r) => {
+          const p = r.position ? parseOr(IndexerPosition, r.position, h) : null;
+          if (p) onPosition(p);
+        },
+        ...statusHandlers(h),
         signal,
       });
     },

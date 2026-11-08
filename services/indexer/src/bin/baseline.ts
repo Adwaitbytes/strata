@@ -6,6 +6,7 @@
  *   BASELINE_MAX_MARKETS               optional cap per network (story markets first)
  *   BASELINE_LEVELS_EVERY_MS           full stored depth period, default 60000; top of book otherwise
  *   BASELINE_MAX_LEVELS                levels per side on full-depth samples, default 5
+ *   BASELINE_DOWNSAMPLE_AFTER_HOURS    thin BASELINE rows older than this to 1 min (unset: keep all)
  *
  * Storage: Neon free tier is 0.5 GB (D26), so production runs with a market cap and minute-level
  * stored depth. Spread, depth and mid are computed from the full book on every sample regardless.
@@ -25,12 +26,13 @@ const Env = z.object({
   BASELINE_MAX_MARKETS: z.coerce.number().int().positive().optional(),
   BASELINE_LEVELS_EVERY_MS: z.coerce.number().int().min(1000).default(60_000),
   BASELINE_MAX_LEVELS: z.coerce.number().int().min(1).max(50).default(5),
+  BASELINE_DOWNSAMPLE_AFTER_HOURS: z.coerce.number().positive().optional(),
 });
 const env = Env.parse(process.env);
 const networks = z.array(NetworkName).parse(env.BASELINE_NETWORKS.split(",").map((s) => s.trim()).filter(Boolean));
 
 const url = resolveDatabaseUrl();
-const { db, close } = createDb(url, { max: 4 });
+const { db, sql, close } = createDb(url, { max: 4 });
 log("info", "baseline recorder starting", { db: describeDatabaseUrl(url), networks, ...env });
 
 const recorders = networks.map(
@@ -40,10 +42,12 @@ const recorders = networks.map(
       reader: createInjectiveReader(network),
       db,
       source: `${indexerEndpoint(network)} IndexerGrpcDerivativesApi.fetchMarkets`,
-      configured: getMarkets(network),
+      configured: getMarkets(network).filter((m) => m.arenaEnabled),
       intervalMs: env.BASELINE_INTERVAL_MS,
       levelsEveryMs: env.BASELINE_LEVELS_EVERY_MS,
       maxStoredLevels: env.BASELINE_MAX_LEVELS,
+      sql,
+      ...(env.BASELINE_DOWNSAMPLE_AFTER_HOURS === undefined ? {} : { downsampleAfterHours: env.BASELINE_DOWNSAMPLE_AFTER_HOURS }),
       ...(env.BASELINE_MAX_MARKETS === undefined ? {} : { maxMarkets: env.BASELINE_MAX_MARKETS }),
     }),
 );
