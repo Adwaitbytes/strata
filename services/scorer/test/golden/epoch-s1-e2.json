@@ -1,0 +1,165 @@
+{
+  "document": {
+    "contract": "0xc0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0c0",
+    "endTime": 1765000900000,
+    "epoch": 2,
+    "merkleRoot": "0xdd4f9e94db975b5d21af83f6d1fdfcf6a833621676c80020fedf81d79280f3a9",
+    "network": "testnet",
+    "scores": [
+      {
+        "agentId": 1,
+        "epoch": 2,
+        "flagNames": [],
+        "flags": 0,
+        "leaf": "0x3c95c2751a44bd8cd9243dcbdd17e890b6dd0ddd9bdde49db7b371426c9371f4",
+        "metrics": {
+          "bookShare": 0.3781905454545456,
+          "depthUsd25": 13200.320000000007,
+          "markout60s": 4.001600640256728,
+          "maxDrawdownUsd": 0,
+          "pnlUsd": 2.4500000000000455,
+          "quotedSpreadBps": 6.1774632553078845,
+          "samples": 110,
+          "spreadImprovementBps": 12.909090909090908,
+          "uptimeBps": 10000
+        },
+        "network": "testnet",
+        "proof": [
+          "0xe21e577115f487f45c063295b5437d45cd7bb359c53160193aeb8b1ddda370c8",
+          "0xcf59b85180e35e6c01526364422ab85bdb3a718b225dc2760f0bafd6679a032a",
+          "0xd7dbe2ff813b7710e07631b06eec4bf0a35ebb034ba1fdf40b1df31f182091d6"
+        ],
+        "provenance": "TESTNET",
+        "score": 10000,
+        "season": 1
+      },
+      {
+        "agentId": 2,
+        "epoch": 2,
+        "flagNames": [],
+        "flags": 0,
+        "leaf": "0xe21e577115f487f45c063295b5437d45cd7bb359c53160193aeb8b1ddda370c8",
+        "metrics": {
+          "bookShare": 0.09582916666666666,
+          "depthUsd25": 1916.5833333333333,
+          "markout60s": -9.990009990010842,
+          "maxDrawdownUsd": 1,
+          "pnlUsd": -0.4800000000000182,
+          "quotedSpreadBps": 19.999999999998863,
+          "samples": 60,
+          "spreadImprovementBps": 12,
+          "uptimeBps": 5000
+        },
+        "network": "testnet",
+        "proof": [
+          "0x3c95c2751a44bd8cd9243dcbdd17e890b6dd0ddd9bdde49db7b371426c9371f4",
+          "0xcf59b85180e35e6c01526364422ab85bdb3a718b225dc2760f0bafd6679a032a",
+          "0xd7dbe2ff813b7710e07631b06eec4bf0a35ebb034ba1fdf40b1df31f182091d6"
+        ],
+        "provenance": "TESTNET",
+        "score": 2447,
+        "season": 1
+      },
+      {
+        "agentId": 3,
+        "epoch": 2,
+        "flagNames": [
+          "WASH"
+        ],
+        "flags": 1,
+        "leaf": "0x3ce91aa1ee781dfec63815fcfaa1aa3cf5487851c893605e4bfd1d7fe932e895",
+        "metrics": {
+          "bookShare": 0.17065493333333343,
+          "depthUsd25": 2559.824000000002,
+          "markout60s": 0,
+          "maxDrawdownUsd": 0,
+          "pnlUsd": 0.20000000000004547,
+          "quotedSpreadBps": 8.00000000000125,
+          "samples": 50,
+          "spreadImprovementBps": 14,
+          "uptimeBps": 10000
+        },
+        "network": "testnet",
+        "proof": [
+          "0x289fa59c4f203451f9490c934bebc72c0e6b54676f5c182266650772b3947368",
+          "0x6e093b8c5c154c5f416d25ec71150d0a18fb60b7035b32be91a367c828df643a",
+          "0xd7dbe2ff813b7710e07631b06eec4bf0a35ebb034ba1fdf40b1df31f182091d6"
+        ],
+        "provenance": "TESTNET",
+        "score": 0,
+        "season": 1
+      },
+      {
+        "agentId": 4,
+        "epoch": 2,
+        "flagNames": [
+          "WASH"
+        ],
+        "flags": 1,
+        "leaf": "0x289fa59c4f203451f9490c934bebc72c0e6b54676f5c182266650772b3947368",
+        "metrics": {
+          "bookShare": 0.1706842666666669,
+          "depthUsd25": 2560.264000000002,
+          "markout60s": 0,
+          "maxDrawdownUsd": 0.3000000000000682,
+          "pnlUsd": -0.3000000000000682,
+          "quotedSpreadBps": 12.000000000000455,
+          "samples": 50,
+          "spreadImprovementBps": 14,
+          "uptimeBps": 10000
+        },
+        "network": "testnet",
+        "proof": [
+          "0x3ce91aa1ee781dfec63815fcfaa1aa3cf5487851c893605e4bfd1d7fe932e895",
+          "0x6e093b8c5c154c5f416d25ec71150d0a18fb60b7035b32be91a367c828df643a",
+          "0xd7dbe2ff813b7710e07631b06eec4bf0a35ebb034ba1fdf40b1df31f182091d6"
+        ],
+        "provenance": "TESTNET",
+        "score": 0,
+        "season": 1
+      },
+      {
+        "agentId": 5,
+        "epoch": 2,
+        "flagNames": [],
+        "flags": 0,
+        "leaf": "0xd7dbe2ff813b7710e07631b06eec4bf0a35ebb034ba1fdf40b1df31f182091d6",
+        "metrics": {
+          "bookShare": 0,
+          "depthUsd25": 0,
+          "markout60s": 0,
+          "maxDrawdownUsd": 0,
+          "pnlUsd": 0,
+          "quotedSpreadBps": 0,
+          "samples": 60,
+          "spreadImprovementBps": 0,
+          "uptimeBps": 0
+        },
+        "network": "testnet",
+        "proof": [
+          "0x6f4c067873309f08f3c5e6a78f8b6611a698709ca080f0bbd37449871aac8dee"
+        ],
+        "provenance": "TESTNET",
+        "score": 0,
+        "season": 1
+      }
+    ],
+    "season": 1,
+    "startTime": 1765000600000,
+    "version": 1
+  },
+  "documentHash": "0x6fe2d64cecdad5c2a1e16b433e2b889a517677c8fdbd348bd6b1804a465592df",
+  "evidence": [
+    {
+      "agentId": 3,
+      "detail": "Fill 0xf3:0: the counterparty is agent 4, which has the same operator.",
+      "flag": "WASH"
+    },
+    {
+      "agentId": 4,
+      "detail": "Fill 0xf3:1: the counterparty is agent 3, which has the same operator.",
+      "flag": "WASH"
+    }
+  ],
+  "merkleRoot": "0xdd4f9e94db975b5d21af83f6d1fdfcf6a833621676c80020fedf81d79280f3a9"
+}

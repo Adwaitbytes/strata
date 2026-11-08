@@ -223,3 +223,22 @@ export const killCommands = pgTable("kill_commands", {
   requestedAt: ts("requested_at").notNull(),
   signatureExpiresAt: ts("signature_expires_at").notNull(),
 }, (t) => [index("kill_commands_network_requested_idx").on(t.network, t.requestedAt)]);
+
+/**
+ * Scorer state per epoch (migration 0004, owned by W5). The scheduler cursor, skip reasons and the
+ * postEpoch tx being tracked. status: computed | submitted | posted | skipped | failed.
+ */
+export const epochRuns = pgTable("epoch_runs", {
+  network: networkEnum("network").notNull(),
+  season: integer("season").notNull(),
+  epoch: integer("epoch").notNull(),
+  status: text("status").notNull(),
+  merkleRoot: text("merkle_root"),
+  dataUri: text("data_uri"),
+  documentHash: text("document_hash"),
+  txHash: text("tx_hash"),
+  reason: text("reason"),
+  attempts: integer("attempts").notNull().default(0),
+  detail: jsonb("detail").notNull(),
+  updatedAt: ts("updated_at").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.season, t.epoch] })]);
