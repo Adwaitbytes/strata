@@ -1,0 +1,8 @@
+# 2026-11-08T20:01:53Z after internal kill
+$ tsx src/injective/bin/open-orders.ts strata-test-3
+2026-11-08T20:01:53.251Z strata-test-3 agent=3 LINK/USDC PERP open=0
+2026-11-08T20:01:53.251Z strata-test-3 agent=3 MUN-PERP open=0
+2026-11-08T20:01:53.251Z total open orders: 0
+$ tsx src/injective/bin/recent-txs.ts strata-test-3 --limit 4
+strata-test-3 2026-11-08T20:01:50Z h=147657711 code=0 memo=strata:cancel-all 80E997A349BB67F2DE66DE02234446E095299E255A30B0FD59A2C6643A98D77E
+strata-test-3 2026-11-08T20:01:48Z h=147657708 code=0 memo=strata:cancel-all E5A7D4707AA6A9FD8DCB12AEB7FBC5CEFC22EE998F53772476C00BBE945DD171

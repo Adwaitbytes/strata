@@ -1,0 +1,13 @@
+# 2026-11-08T20:04:56Z after clear-stops and restart: quoting resumed (agents restarted 20:03:48Z / 20:04:07Z / 20:03:48Z, killed=false restored)
+$ tsx src/injective/bin/open-orders.ts
+2026-11-08T20:04:56.585Z strata-test-1 agent=1 BTC/USDC PERP open=4 [B 0.0001@75697, B 0.0002@75621, S 0.0001@76002, S 0.0002@76077]
+2026-11-08T20:04:56.585Z strata-test-1 agent=1 ETH/USDC PERP open=4 [B 0.0072@1916.8, B 0.0062@1916.9, S 0.0053@2232.8, S 0.008@2235]
+2026-11-08T20:04:56.585Z strata-test-2 agent=2 INJ/USDC PERP open=4 [B 1.04@4.898, B 0.81@4.899, S 0.49@8.1, S 0.74@8.108]
+2026-11-08T20:04:56.585Z strata-test-2 agent=2 BHA-PERP open=0
+2026-11-08T20:04:56.585Z strata-test-3 agent=3 LINK/USDC PERP open=4 [B 0.69@8.65, B 0.71@8.64, S 0.56@10.7, S 0.84@10.71]
+2026-11-08T20:04:56.585Z strata-test-3 agent=3 MUN-PERP open=0
+2026-11-08T20:04:56.585Z total open orders: 16
+$ tsx src/injective/bin/recent-txs.ts --limit 3
+strata-test-1 2026-11-08T20:04:43Z h=147658026 code=0 memo=strata:batch 8D5858CA815FB5DBCB10E172AE3C8BBD640CCB685319E7D0A19D4AB60636B657
+strata-test-2 2026-11-08T20:04:52Z h=147658042 code=0 memo=strata:batch 60222B31D26B514D09269A642A6DE23C61535E8FE6DF7C470EBBE13E8F162331
+strata-test-3 2026-11-08T20:04:32Z h=147658006 code=0 memo=strata:batch D71E69873A26D06C477B10622D8F8BFF760E47D3A96CB69FCA6E6DA33C80EC85

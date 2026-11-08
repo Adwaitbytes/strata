@@ -14,7 +14,10 @@
     "rampStartSizeFraction": 0.5,
     "maxDailyLossUsd": 3,
     "maxDrawdownUsd": 5,
-    "unhealthyBookPolicy": "widen"
+    "unhealthyBookPolicy": "widen",
+    "minCycleMs": 10000,
+    "maxCycleMs": 30000,
+    "highVolSigmaBps": 50
   },
   "markets": [
     {

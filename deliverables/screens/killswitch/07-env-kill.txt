@@ -1,0 +1,17 @@
+# 2026-11-08T20:02:06Z env flag path (RUNBOOK 6.3) on strata-test-2: .run/testnet.env = KILL_SWITCH=true, KILL_SWITCH_CLOSE=false; restart the agent process (SIGTERM, supervisor restarts it with the flag)
+$ kill $(cat .run/strata-test-2.child)
+$ tail .run/logs/strata-test-2.log
+{"level":"info","msg":"agent started","agent":"strata-test-2","network":"testnet","adapter":"injective","markets":"INJ/USDC PERP,BHA-PERP","tuner":"shadow","killed":false,"at":"2026-11-08T19:54:13.244Z"}
+{"level":"info","msg":"shutdown: cancelling all orders","at":"2026-11-08T20:02:06.186Z"}
+{"t":"2026-11-08T20:02:16Z","level":"error","msg":"strata-test-2 exited, restarting in 10s","code":0}
+{"t":"2026-11-08T20:02:26Z","level":"info","msg":"supervisor starting strata-test-2"}
+{"level":"info","msg":"restored persisted safety state","stoppedForDay":false,"stoppedForSeason":false,"killed":false,"at":"2026-11-08T20:02:33.794Z"}
+{"level":"info","msg":"agent started","agent":"strata-test-2","network":"testnet","adapter":"injective","markets":"INJ/USDC PERP,BHA-PERP","tuner":"shadow","killed":true,"at":"2026-11-08T20:02:37.702Z"}
+# 2026-11-08T20:02:37Z
+$ tsx src/injective/bin/open-orders.ts strata-test-2
+2026-11-08T20:02:37.951Z strata-test-2 agent=2 INJ/USDC PERP open=0
+2026-11-08T20:02:37.951Z strata-test-2 agent=2 BHA-PERP open=0
+2026-11-08T20:02:37.951Z total open orders: 0
+$ tsx src/injective/bin/recent-txs.ts strata-test-2 --limit 4
+strata-test-2 2026-11-08T20:02:42Z h=147657806 code=0 memo=strata:cancel-all 3573B6B5C75417649CF24A44D0F72F57AB197302FA3B38067635679C517B1C9C
+strata-test-2 2026-11-08T20:02:15Z h=147657757 code=0 memo=strata:cancel-all AB098999023AA7E4433D4F7D15BB87F71ED4820ED6F6A7BE4C19E18978EFC0C1

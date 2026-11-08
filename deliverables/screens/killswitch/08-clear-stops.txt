@@ -1,0 +1,7 @@
+# 2026-11-08T20:02:50Z clear: .run/testnet.env removed (KILL_SWITCH unset), then human clear of the persisted kill latch
+$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 1 --kill --confirm
+{"cleared":{"kill":true,"season":false,"day":false},"before":{"risk":{"dayKey":"2026-11-08","dayStartEquityUsd":8,"peakEquityUsd":8,"stoppedForDay":false,"stoppedForSeason":false},"kill":{"killed":true,"closePositions":true,"source":"api","at":1794168027728}}}
+$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 2 --kill --confirm
+{"cleared":{"kill":true,"season":false,"day":false},"before":{"risk":{"dayKey":"2026-11-08","dayStartEquityUsd":4,"peakEquityUsd":4,"stoppedForDay":false,"stoppedForSeason":false},"kill":{"killed":true,"closePositions":false,"source":"env","at":1794168153800}}}
+$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 3 --kill --confirm
+{"cleared":{"kill":true,"season":false,"day":false},"before":{"risk":{"dayKey":"2026-11-08","dayStartEquityUsd":4,"peakEquityUsd":4,"stoppedForDay":false,"stoppedForSeason":false},"kill":{"killed":true,"closePositions":false,"source":"telegram","at":1794168092998}}}

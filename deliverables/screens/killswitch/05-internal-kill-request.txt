@@ -1,0 +1,12 @@
+# 2026-11-08T20:01:20Z internal kill path (what the Telegram bot relays), agent strata-test-3, localhost control port 9473, bearer token from .secrets/internal_kill_token (not shown)
+$ curl -X POST http://127.0.0.1:9473/internal/kill -H 'authorization: Bearer <token>' -d '{"closePositions":false}'
+{"error":"malformed request"}
+HTTP 400
+$ curl -X POST http://127.0.0.1:9473/internal/kill -H 'authorization: Bearer wrong'   # negative check
+{"error":"unauthorized"}
+HTTP 401
+
+# 2026-11-08T20:01:32Z retry with the alerts bot body shape {closePositions, source: telegram, requestedAt}
+$ curl -X POST http://127.0.0.1:9473/internal/kill -H 'authorization: Bearer <token>' -d '{"closePositions":false,"source":"telegram","requestedAt":1794168092000}'
+{"killed":true}
+HTTP 202

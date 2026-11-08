@@ -1,0 +1,12 @@
+# 2026-11-08T20:00:25Z signed KillRequest, EIP-191 by owner 0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54 (Foundry keystore)
+# message:
+#   STRATA kill request
+#   network: testnet
+#   target: 1
+#   closePositions: true
+#   nonce: c1593aca5295811f5470a7f9f299bf10
+#   expiresAt: 1794168325000
+# local signature check: Validation succeeded. Address 0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54 signed this message.
+$ curl -X POST https://strata-api-nine.vercel.app/v1/admin/kill -d '{target:1, closePositions:true, network:testnet, nonce, expiresAt, signature}'
+{"accepted":true,"id":"e1ead4bc-0bd9-4e4e-b710-b1373233acfd","network":"testnet","target":1,"closePositions":true,"requestedAt":1794168026868}
+HTTP 202

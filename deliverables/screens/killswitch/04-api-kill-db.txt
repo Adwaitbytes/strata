@@ -1,0 +1,8 @@
+# 2026-11-08T20:01:03Z Neon evidence for kill command e1ead4bc
+{"id": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd", "network": "testnet", "target_agent_id": 1, "close_positions": true, "requested_at": "2026-11-08T20:00:26.868Z"}
+{"agent_id": 1, "guard": "kill_switch", "reason": "kill_switch_api", "action": "halt", "at": "2026-11-08T20:00:30.324Z", "observed": {"source": "api", "closePositions": true}}
+{"agent_id": 1, "guard": "kill_switch", "reason": "kill_switch_api", "action": "halt", "at": "2026-11-08T20:00:28.191Z", "observed": {"source": "api", "closePositions": true}}
+{"agent_id": 1, "guard": "kill_switch", "reason": "kill_switch_api", "action": "halt", "at": "2026-11-08T20:00:27.730Z", "observed": {"killCommandId": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd", "closePositions": true}}
+{"agent_id": 1, "kill": {"at": 1794168027728, "killed": true, "source": "api", "closePositions": true}, "updated_at": "2026-11-08T20:00:27.729Z"}
+{"agent_id": 2, "kill": {"at": null, "killed": false, "source": null, "closePositions": false}, "updated_at": "2026-11-08T19:44:47.824Z"}
+{"agent_id": 3, "kill": {"at": null, "killed": false, "source": null, "closePositions": false}, "updated_at": "2026-11-08T19:44:47.244Z"}

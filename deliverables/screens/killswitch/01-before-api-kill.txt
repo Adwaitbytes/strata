@@ -1,0 +1,5 @@
+$ pnpm --filter @strata/agent inj:open-orders strata-test-1   # before API kill
+$ tsx src/injective/bin/open-orders.ts strata-test-1
+2026-11-08T20:00:15.430Z strata-test-1 agent=1 BTC/USDC PERP open=4 [B 0.0002@75625, B 0.0001@75701, S 0.0002@76081, S 0.0001@76005]
+2026-11-08T20:00:15.430Z strata-test-1 agent=1 ETH/USDC PERP open=4 [B 0.0062@1916.9, B 0.0072@1916.8, S 0.0053@2234.3, S 0.008@2236.5]
+2026-11-08T20:00:15.430Z total open orders: 8
