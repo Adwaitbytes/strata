@@ -1,0 +1,87 @@
+<template>
+  <style>
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/geist-mono.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Archivo Wide"; src: url("assets/fonts/archivo-wide.woff2") format("woff2"); font-weight: 100 900; font-stretch: 125%; }
+    #root {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #07080b;
+      color: #e8ebf0; font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased;
+      --accent: #3ee6d4; --bid: #5fd49a; --ask: #ff7d6b; --warn: #f2b84b; --halt: #ff4d5e;
+      --muted: #9aa3b2; --subtle: #6b7484; --line: #1f242d; --surface: #11141a;
+    }
+    #root .strata-lines { position: absolute; inset: 0;
+      background: repeating-linear-gradient(180deg, transparent 0 47px, rgba(255,255,255,0.02) 47px 48px); }
+    #root .mono { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; }
+    #root .display { font-family: "Archivo Wide", sans-serif; font-stretch: 125%; font-weight: 700; letter-spacing: -0.025em; }
+    #root .ph { color: var(--warn); background: rgba(242,184,75,0.12); border: 2px dashed rgba(242,184,75,0.7); border-radius: 10px; padding: 0 12px; font-family: "Geist Mono", monospace; }
+    #root .tag { display: inline-flex; align-items: center; gap: 10px; font: 600 26px/1 "Geist Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 18px; border-radius: 8px; border: 1px solid #2c333e; color: var(--muted); }
+    #root .tag.t { color: var(--accent); border-color: rgba(62,230,212,0.45); }
+    #root .tag.sim { color: var(--warn); border-color: rgba(242,184,75,0.5); }
+
+    #s5-stage { position: absolute; inset: 0; }
+    #s5-head { position: absolute; left: 144px; right: 144px; top: 110px; display: flex; justify-content: space-between; align-items: center; }
+    #s5-title { font-size: 96px; }
+    #s5-tags { display: flex; gap: 16px; align-items: center; }
+    #s5-chart { position: absolute; left: 144px; width: 1040px; top: 300px; height: 520px; border-left: 2px solid #2c333e; border-bottom: 2px solid #2c333e; }
+    .s5-axis-y { position: absolute; left: 20px; top: 0; font-size: 26px; color: #8b93a7; }
+    #s5-base { position: absolute; left: 0; width: 42%; top: 60px; bottom: 0; background: rgba(139,147,167,0.12); border-right: 2px dashed #8b93a7; }
+    #s5-base span { position: absolute; left: 20px; bottom: 20px; font-size: 26px; color: #8b93a7; }
+    #s5-live { position: absolute; left: 42%; right: 0; top: 60px; bottom: 0; background: rgba(62,230,212,0.06); }
+    #s5-live span { position: absolute; left: 20px; bottom: 20px; font-size: 26px; color: var(--accent); }
+    #s5-data { position: absolute; left: 60px; right: 60px; top: 210px; text-align: center; font-size: 24px; color: var(--warn); padding: 22px; border: 2px dashed rgba(242,184,75,0.65); border-radius: 12px; background: #07080b; }
+    #s5-prov { position: absolute; left: 144px; top: 850px; font-size: 26px; color: var(--muted); }
+    #s5-metrics { position: absolute; left: 1240px; right: 144px; top: 300px; display: flex; flex-direction: column; gap: 24px; }
+    .s5-m { padding: 30px 32px; border-radius: 16px; background: #0d0f14; border: 1px solid #1f242d; }
+    .s5-v { font: 600 54px/1.1 "Geist Mono", monospace; }
+    .s5-l { margin-top: 14px; font-size: 24px; color: var(--muted); }
+    #s5-browser { position: absolute; left: 144px; right: 144px; top: 96px; bottom: 210px; border-radius: 18px; border: 1px solid #2c333e; background: #0d0f14; overflow: hidden; }
+    .s5-bar { height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 22px; border-bottom: 1px solid #1f242d; }
+    .s5-bar i { width: 13px; height: 13px; border-radius: 50%; background: #2c333e; }
+    .s5-bar span { margin-left: 18px; font-size: 26px; color: var(--muted); }
+    .s5-slot { position: absolute; left: 24px; right: 24px; top: 80px; bottom: 24px; border: 2px dashed rgba(242,184,75,0.65); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; color: var(--warn);
+      background: repeating-linear-gradient(135deg, rgba(242,184,75,0.04) 0 16px, transparent 16px 32px); }
+
+  </style>
+  <div id="root" data-composition-id="s5-proof" data-width="1920" data-height="1080" data-composition-variables='[{"id": "market", "type": "string", "label": "Testnet market symbol", "default": "[MARKET_SYMBOL]"}, {"id": "spreadBps", "type": "string", "label": "Median spread change vs baseline (bps)", "default": "[SPREAD_BPS]"}, {"id": "depthUsd", "type": "string", "label": "Depth added within 25 bps (USD)", "default": "[DEPTH_USD]"}]'>
+    <div class="strata-lines"></div>
+    <div id="s5-stage">
+      <div id="s5-head">
+        <div id="s5-title" class="display">Before and after</div>
+        <div id="s5-tags"><span class="tag t">TESTNET</span><span class="ph" style="font-size:26px" data-var-text="market">[MARKET_SYMBOL]</span></div>
+      </div>
+      <div id="s5-chart">
+        <div class="s5-axis-y mono">spread, bps</div>
+        <div id="s5-base"><span class="mono">baseline, 12 h</span></div>
+        <div id="s5-live"><span class="mono">agents live</span></div>
+        <div id="s5-data" class="mono">[SPREAD_SERIES] from /markets/[id], [DATE_RANGE]</div>
+      </div>
+      <div id="s5-prov" class="mono">Every number carries network and provenance: TESTNET, BASELINE</div>
+      <div id="s5-metrics" data-hold>
+        <div class="s5-m"><div class="s5-v"><span class="ph" data-var-text="spreadBps">[SPREAD_BPS]</span></div><div class="s5-l">bps median spread change vs baseline</div></div>
+        <div class="s5-m"><div class="s5-v"><span class="ph" data-var-text="depthUsd">[DEPTH_USD]</span></div><div class="s5-l">depth added within 25 bps of mid</div></div>
+      </div>
+    </div>
+    <div id="s5-browser">
+      <div class="s5-bar"><i></i><i></i><i></i><span class="mono">[TESTNET_APP_URL]/markets/[id]</span></div>
+      <div id="s5-capture" class="s5-slot" data-hold>
+        <div class="display" style="font-size:48px;color:#e8ebf0">Screen capture slot</div>
+        <div class="mono" style="font-size:28px">Market page: depth ladder and spread vs baseline, 8 s, recorded on testnet</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s5-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.2);
+    tl.fromTo("#s5-tags", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.5);
+    tl.fromTo("#s5-chart", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 0.6);
+    tl.fromTo("#s5-base", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 0.9, ease: "power2.inOut" }, 0.9);
+    tl.fromTo("#s5-live", { scaleX: 0, transformOrigin: "0% 50%" }, { scaleX: 1, duration: 1.1, ease: "power2.inOut" }, 1.8);
+    tl.fromTo("#s5-data", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 2.8);
+    tl.fromTo(".s5-m", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out", stagger: 0.3 }, 3.4);
+    tl.fromTo("#s5-prov", { opacity: 0 }, { opacity: 1, duration: 0.4 }, 5.6);
+    tl.to("#s5-stage", { opacity: 0, filter: "blur(10px)", scale: 0.97, duration: 0.35, ease: "power3.in" }, 10.6);
+    tl.fromTo("#s5-browser", { opacity: 0, y: 80, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.8, ease: "expo.out" }, 10.8);
+    window.__timelines["s5-proof"] = tl;
+  </script>
+</template>

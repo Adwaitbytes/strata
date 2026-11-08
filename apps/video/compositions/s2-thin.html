@@ -1,0 +1,92 @@
+<template>
+  <style>
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/geist-mono.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Archivo Wide"; src: url("assets/fonts/archivo-wide.woff2") format("woff2"); font-weight: 100 900; font-stretch: 125%; }
+    #root {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #07080b;
+      color: #e8ebf0; font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased;
+      --accent: #3ee6d4; --bid: #5fd49a; --ask: #ff7d6b; --warn: #f2b84b; --halt: #ff4d5e;
+      --muted: #9aa3b2; --subtle: #6b7484; --line: #1f242d; --surface: #11141a;
+    }
+    #root .strata-lines { position: absolute; inset: 0;
+      background: repeating-linear-gradient(180deg, transparent 0 47px, rgba(255,255,255,0.02) 47px 48px); }
+    #root .mono { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; }
+    #root .display { font-family: "Archivo Wide", sans-serif; font-stretch: 125%; font-weight: 700; letter-spacing: -0.025em; }
+    #root .ph { color: var(--warn); background: rgba(242,184,75,0.12); border: 2px dashed rgba(242,184,75,0.7); border-radius: 10px; padding: 0 12px; font-family: "Geist Mono", monospace; }
+    #root .tag { display: inline-flex; align-items: center; gap: 10px; font: 600 26px/1 "Geist Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 18px; border-radius: 8px; border: 1px solid #2c333e; color: var(--muted); }
+    #root .tag.t { color: var(--accent); border-color: rgba(62,230,212,0.45); }
+    #root .tag.sim { color: var(--warn); border-color: rgba(242,184,75,0.5); }
+
+    #root .book { position: absolute; left: 960px; bottom: 300px; width: 0; height: 0; }
+    #root .book .bar { position: absolute; bottom: 0; width: 60px; border-radius: 4px 4px 0 0; }
+    #root .book .bid { background: linear-gradient(180deg, rgba(95,212,154,0.55), rgba(95,212,154,0.18)); border-top: 2px solid var(--bid); }
+    #root .book .ask { background: linear-gradient(180deg, rgba(255,125,107,0.55), rgba(255,125,107,0.18)); border-top: 2px solid var(--ask); }
+    #root .axis { position: absolute; left: 144px; right: 144px; bottom: 298px; height: 2px; background: #2c333e; }
+    #root .mid { position: absolute; left: 959px; bottom: 300px; width: 2px; height: 420px; background: repeating-linear-gradient(180deg, #8b93a7 0 8px, transparent 8px 16px); opacity: 0.6; }
+    #root .ticks { position: absolute; left: 144px; right: 144px; bottom: 250px; display: flex; justify-content: space-between; font: 500 26px/1 "Geist Mono", monospace; color: #8b93a7; }
+    #root .band { position: absolute; bottom: 0; height: 0; border-radius: 3px; background: rgba(62,230,212,0.22); border-top: 2px solid var(--accent); }
+
+    #s2-title { position: absolute; left: 144px; top: 110px; font-size: 96px; }
+    #s2-note { position: absolute; right: 144px; top: 128px; }
+    #s2-spread { position: absolute; left: 780px; width: 360px; bottom: 340px; height: 120px; }
+    #s2-bracket { position: absolute; left: 0; right: 0; bottom: 0; height: 40px; border: 3px solid var(--warn); border-bottom: none; border-radius: 8px 8px 0 0; }
+    #s2-spread-label { position: absolute; left: 0; right: 0; top: 0; text-align: center; font-size: 30px; color: var(--warn); }
+    #s2-sides { position: absolute; left: 144px; right: 144px; top: 300px; display: flex; justify-content: space-between; font-size: 26px; }
+    #s2-thinnote { position: absolute; left: 144px; right: 144px; top: 360px; text-align: center; font-size: 28px; color: var(--muted); }
+    #s2-bids { color: var(--bid); } #s2-asks { color: var(--ask); }
+
+  </style>
+  <div id="root" data-composition-id="s2-thin" data-width="1920" data-height="1080">
+    <div class="strata-lines"></div>
+    <div id="s2-title" class="display">Thin books</div>
+    <div id="s2-note" class="tag sim">Illustration, not market data</div>
+    <div class="axis"></div>
+    <div class="mid"></div>
+    <div class="book" id="s2-book">
+        <div class="s2-bid bar bid" style="left:-244px;height:22px"></div>
+        <div class="s2-ask bar ask" style="left:180px;height:22px"></div>
+        <div class="s2-bid bar bid" style="left:-308px;height:34px"></div>
+        <div class="s2-ask bar ask" style="left:244px;height:34px"></div>
+        <div class="s2-bid bar bid" style="left:-372px;height:48px"></div>
+        <div class="s2-ask bar ask" style="left:308px;height:48px"></div>
+        <div class="s2-bid bar bid" style="left:-436px;height:70px"></div>
+        <div class="s2-ask bar ask" style="left:372px;height:70px"></div>
+        <div class="s2-bid bar bid" style="left:-500px;height:96px"></div>
+        <div class="s2-ask bar ask" style="left:436px;height:96px"></div>
+        <div class="s2-bid bar bid" style="left:-564px;height:128px"></div>
+        <div class="s2-ask bar ask" style="left:500px;height:128px"></div>
+        <div class="s2-bid bar bid" style="left:-628px;height:166px"></div>
+        <div class="s2-ask bar ask" style="left:564px;height:166px"></div>
+        <div class="s2-bid bar bid" style="left:-692px;height:210px"></div>
+        <div class="s2-ask bar ask" style="left:628px;height:210px"></div>
+        <div class="s2-bid bar bid" style="left:-756px;height:258px"></div>
+        <div class="s2-ask bar ask" style="left:692px;height:258px"></div>
+        <div class="s2-bid bar bid" style="left:-820px;height:310px"></div>
+        <div class="s2-ask bar ask" style="left:756px;height:310px"></div>
+    </div>
+    <div class="ticks mono"><span>-100 bps</span><span>-50</span><span>mid</span><span>+50</span><span>+100 bps</span></div>
+    <div id="s2-spread">
+      <div id="s2-bracket"></div>
+      <div id="s2-spread-label" class="mono">wide spread</div>
+    </div>
+    <div id="s2-thinnote" class="mono">3 levels near mid: almost no size</div>
+    <div id="s2-sides" class="mono"><span id="s2-bids">bids</span><span id="s2-asks">asks</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s2-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.2);
+    tl.fromTo("#s2-note", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.5);
+    tl.fromTo(".axis, .ticks, .mid, #s2-sides", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.3);
+    tl.fromTo(".s2-bid", { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.7, ease: "expo.out", stagger: { each: 0.06, from: "end" } }, 0.6);
+    tl.fromTo(".s2-ask", { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.7, ease: "expo.out", stagger: { each: 0.06, from: "end" } }, 0.6);
+    tl.fromTo("#s2-bracket", { scaleX: 0, transformOrigin: "50% 50%" }, { scaleX: 1, duration: 0.6, ease: "expo.out" }, 3.2);
+    tl.fromTo("#s2-spread-label", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, 3.6);
+    tl.fromTo("#s2-thinnote", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2 }, 5.2);
+    tl.to(".s2-bid:nth-of-type(-n+6), .s2-ask:nth-of-type(-n+6)", { opacity: 0.4, duration: 0.6, ease: "power2.inOut" }, 5.4);
+    tl.to(".s2-bid:nth-of-type(-n+6), .s2-ask:nth-of-type(-n+6)", { opacity: 1, duration: 0.6, ease: "power2.inOut" }, 7.6);
+    tl.to("#s2-bracket, #s2-spread-label, #s2-thinnote", { opacity: 0, duration: 0.3, ease: "power3.in" }, 8.9);
+    window.__timelines["s2-thin"] = tl;
+  </script>
+</template>

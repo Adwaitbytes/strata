@@ -1,1 +1,12 @@
-{ "name": "@strata/video", "version": "0.1.0", "private": true, "type": "module" }
+{
+  "name": "@strata/video",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.9.23 preview",
+    "check": "npx --yes hyperframes@0.9.23 check",
+    "render:draft": "npx --yes hyperframes@0.9.23 render -o ../../deliverables/strata-demo-draft.mp4",
+    "render": "npx --yes hyperframes@0.9.23 render -o ../../deliverables/strata-demo.mp4"
+  }
+}

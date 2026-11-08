@@ -1,0 +1,42 @@
+<template>
+  <style>
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; }
+    #root { position: absolute; inset: 0; }
+    #root { background: transparent; }
+    #root .cap { position: absolute; left: 192px; right: 192px; bottom: 96px; text-align: center; opacity: 0; overflow: visible; }
+    #root .cap span { display: inline-block; font: 500 44px/1.3 "Geist", sans-serif; color: #e8ebf0; padding: 10px 26px; border-radius: 12px; background: rgba(7,8,11,0.72); letter-spacing: -0.005em; }
+
+  </style>
+  <div id="root" data-composition-id="captions" data-width="1920" data-height="1080">
+    <div class="cap" id="cap-0"><span>Injective lists 135 real-world markets.</span></div>
+    <div class="cap" id="cap-1"><span>Equities, FX, commodities and indices, on one onchain order book.</span></div>
+    <div class="cap" id="cap-2"><span>Most of those books are thin.</span></div>
+    <div class="cap" id="cap-3"><span>Wide spreads, and very little size near the price.</span></div>
+    <div class="cap" id="cap-4"><span>STRATA is an open arena for market-making agents.</span></div>
+    <div class="cap" id="cap-5"><span>Agents quote with their own capital. Every five seconds, we measure what they add.</span></div>
+    <div class="cap" id="cap-6"><span>Every hour, the scores go onchain as a merkle root.</span></div>
+    <div class="cap" id="cap-7"><span>Anyone can check a score against the contract.</span></div>
+    <div class="cap" id="cap-8"><span>Every agent runs guards. A price from the future?</span></div>
+    <div class="cap" id="cap-9"><span>The agent halts and cancels its orders.</span></div>
+    <div class="cap" id="cap-10"><span>Thirty minutes before the stock market closes, it quotes wider and smaller.</span></div>
+    <div class="cap" id="cap-11"><span>Five minutes before, it goes flat.</span></div>
+    <div class="cap" id="cap-12"><span>Here is a testnet market before and after STRATA agents.</span></div>
+    <div class="cap" id="cap-13"><span>Spread and depth, measured against a 12 hour baseline.</span></div>
+    <div class="cap" id="cap-14"><span>Every number on the site says which network it came from.</span></div>
+    <div class="cap" id="cap-15"><span>Live on Injective testnet today. Mainnet once it is funded.</span></div>
+    <div class="cap" id="cap-16"><span>Bring your own agent and enroll it onchain.</span></div>
+    <div class="cap" id="cap-17"><span>The code is open source, MIT licensed.</span></div>
+    <div class="cap" id="cap-18"><span>STRATA, built by Aarambh Labs.</span></div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    const caps = [[0.3, 3.9], [4.1, 7.7], [8.2, 12.4], [12.6, 17.7], [18.2, 22.4], [22.6, 26.9], [27.1, 30.9], [31.1, 34.8], [35.2, 38.6], [38.8, 42.6], [42.9, 46.6], [46.8, 49.8], [50.2, 54.6], [54.8, 59.8], [60.2, 64.8], [65.0, 69.8], [70.2, 75.4], [75.6, 80.6], [80.8, 84.8]];
+    caps.forEach(([start, end], i) => {
+      const el = "#cap-" + i;
+      tl.fromTo(el, { opacity: 0, visibility: "visible" }, { opacity: 1, duration: 0.18, ease: "power2.out" }, start);
+      tl.to(el, { opacity: 0, duration: 0.12, ease: "power2.in" }, end - 0.12);
+      tl.set(el, { opacity: 0, visibility: "hidden" }, end);
+    });
+    window.__timelines["captions"] = tl;
+  </script>
+</template>

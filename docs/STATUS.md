@@ -55,4 +55,7 @@ Each stream appends dated entries under its heading: what is done (with evidence
 ## W8 Landing + 3D + motion
 ## W9 DevOps + security tooling
 ## W10 Docs, video, deck, application
+- 2026-11-09: Done. README.md, LICENSE (MIT, root file added by W10 for the README license line), docs/ARCHITECTURE.md + docs/architecture.svg (D25/D26/D27), docs/GUARDS.md, docs/AI_TUNER.md, docs/NAME_CHECK.md, deliverables/APPLICATION.md (Testnet primary per D33, description 228/250 chars), deliverables/STRATA-deck.pdf (10 slides, built from deliverables/deck with `node deliverables/deck/build.mjs`), apps/video HyperFrames project (85 s, 1080p30, captions burned in, CC BY music credited) with draft render deliverables/strata-demo-draft.mp4.
+- Name check: "Strata" is taken in DeFi (Strata Markets, Ethereum tranching protocol with a planned $STRATA token). Alternates MORAINE and DEPTHFIELD proposed. No purchase made.
+- Needs real data from the orchestrator: testnet app URL, contract and epoch tx links, agent and market counts, spread and depth numbers, two screen captures (see apps/video/SPEC.md slot table), owner confirmation of the Aarambh Labs history line.
 ## W11 Security + QA review

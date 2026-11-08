@@ -1,0 +1,136 @@
+<template>
+  <style>
+    @font-face { font-family: "Geist"; src: url("assets/fonts/geist.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Geist Mono"; src: url("assets/fonts/geist-mono.woff2") format("woff2"); font-weight: 100 900; }
+    @font-face { font-family: "Archivo Wide"; src: url("assets/fonts/archivo-wide.woff2") format("woff2"); font-weight: 100 900; font-stretch: 125%; }
+    #root {
+      position: absolute; inset: 0; overflow: hidden;
+      background: #07080b;
+      color: #e8ebf0; font-family: "Geist", sans-serif; -webkit-font-smoothing: antialiased;
+      --accent: #3ee6d4; --bid: #5fd49a; --ask: #ff7d6b; --warn: #f2b84b; --halt: #ff4d5e;
+      --muted: #9aa3b2; --subtle: #6b7484; --line: #1f242d; --surface: #11141a;
+    }
+    #root .strata-lines { position: absolute; inset: 0;
+      background: repeating-linear-gradient(180deg, transparent 0 47px, rgba(255,255,255,0.02) 47px 48px); }
+    #root .mono { font-family: "Geist Mono", monospace; font-variant-numeric: tabular-nums; }
+    #root .display { font-family: "Archivo Wide", sans-serif; font-stretch: 125%; font-weight: 700; letter-spacing: -0.025em; }
+    #root .ph { color: var(--warn); background: rgba(242,184,75,0.12); border: 2px dashed rgba(242,184,75,0.7); border-radius: 10px; padding: 0 12px; font-family: "Geist Mono", monospace; }
+    #root .tag { display: inline-flex; align-items: center; gap: 10px; font: 600 26px/1 "Geist Mono", monospace; letter-spacing: 0.08em; text-transform: uppercase; padding: 12px 18px; border-radius: 8px; border: 1px solid #2c333e; color: var(--muted); }
+    #root .tag.t { color: var(--accent); border-color: rgba(62,230,212,0.45); }
+    #root .tag.sim { color: var(--warn); border-color: rgba(242,184,75,0.5); }
+
+    #root .book { position: absolute; left: 960px; bottom: 300px; width: 0; height: 0; }
+    #root .book .bar { position: absolute; bottom: 0; width: 60px; border-radius: 4px 4px 0 0; }
+    #root .book .bid { background: linear-gradient(180deg, rgba(95,212,154,0.55), rgba(95,212,154,0.18)); border-top: 2px solid var(--bid); }
+    #root .book .ask { background: linear-gradient(180deg, rgba(255,125,107,0.55), rgba(255,125,107,0.18)); border-top: 2px solid var(--ask); }
+    #root .axis { position: absolute; left: 144px; right: 144px; bottom: 298px; height: 2px; background: #2c333e; }
+    #root .mid { position: absolute; left: 959px; bottom: 300px; width: 2px; height: 420px; background: repeating-linear-gradient(180deg, #8b93a7 0 8px, transparent 8px 16px); opacity: 0.6; }
+    #root .ticks { position: absolute; left: 144px; right: 144px; bottom: 250px; display: flex; justify-content: space-between; font: 500 26px/1 "Geist Mono", monospace; color: #8b93a7; }
+    #root .band { position: absolute; bottom: 0; height: 0; border-radius: 3px; background: rgba(62,230,212,0.22); border-top: 2px solid var(--accent); }
+
+    #s4-title { position: absolute; left: 144px; top: 110px; font-size: 96px; }
+    #s4-note { position: absolute; left: 144px; top: 250px; }
+    #s4-halt { position: absolute; left: 410px; top: 400px; width: 460px; text-align: center; font-size: 72px; font-weight: 600; color: var(--halt); letter-spacing: 0.1em; }
+    .s4-card { position: absolute; left: 1150px; right: 144px; top: 300px; padding: 30px 32px; border-radius: 16px; background: #0d0f14; border: 1px solid #2c333e; display: flex; flex-direction: column; gap: 18px; }
+    .s4-k { font-size: 26px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .s4-line { display: flex; justify-content: space-between; font-size: 28px; }
+    .s4-line span:first-child { color: var(--muted); }
+    .s4-diff span:last-child { color: var(--halt); font-weight: 600; }
+    .s4-verdict { font-size: 26px; padding: 14px 16px; border-radius: 10px; }
+    #s4-v1 { color: var(--halt); background: rgba(255,77,94,0.12); border: 1px solid rgba(255,77,94,0.5); }
+    #s4-v2a, #s4-v2b { color: var(--warn); background: rgba(242,184,75,0.1); border: 1px solid rgba(242,184,75,0.45); }
+    #s4-v2b { margin-top: -6px; }
+    #s4-now { position: relative; display: inline-block; width: 150px; height: 34px; text-align: right; }
+    #s4-now span { position: absolute; right: 0; top: 0; }
+    .s4-inv { display: grid; grid-template-columns: 160px 1fr; align-items: center; gap: 16px; font-size: 24px; color: var(--muted); }
+    #s4-inv-track { position: relative; height: 18px; border-radius: 9px; background: #1f242d; }
+    #s4-inv-track b { position: absolute; left: 50%; top: -6px; width: 2px; height: 30px; background: #8b93a7; }
+    #s4-inv-bar { position: absolute; left: 50%; top: 0; height: 18px; width: 40%; border-radius: 0 9px 9px 0; background: var(--bid); }
+
+  </style>
+  <div id="root" data-composition-id="s4-guards" data-width="1920" data-height="1080">
+    <div class="strata-lines"></div>
+    <div id="s4-title" class="display">Guards</div>
+    <div id="s4-note" class="tag sim">Simulated event</div>
+    <div class="axis" style="right:800px"></div>
+    <div class="book" id="s4-book" style="left:640px;transform:scale(0.58);transform-origin:0 100%">
+        <div class="s4-bid bar bid" style="left:-244px;height:22px"></div>
+        <div class="s4-ask bar ask" style="left:180px;height:22px"></div>
+        <div class="s4-bid bar bid" style="left:-308px;height:34px"></div>
+        <div class="s4-ask bar ask" style="left:244px;height:34px"></div>
+        <div class="s4-bid bar bid" style="left:-372px;height:48px"></div>
+        <div class="s4-ask bar ask" style="left:308px;height:48px"></div>
+        <div class="s4-bid bar bid" style="left:-436px;height:70px"></div>
+        <div class="s4-ask bar ask" style="left:372px;height:70px"></div>
+        <div class="s4-bid bar bid" style="left:-500px;height:96px"></div>
+        <div class="s4-ask bar ask" style="left:436px;height:96px"></div>
+        <div class="s4-bid bar bid" style="left:-564px;height:128px"></div>
+        <div class="s4-ask bar ask" style="left:500px;height:128px"></div>
+        <div class="s4-bid bar bid" style="left:-628px;height:166px"></div>
+        <div class="s4-ask bar ask" style="left:564px;height:166px"></div>
+        <div class="s4-bid bar bid" style="left:-692px;height:210px"></div>
+        <div class="s4-ask bar ask" style="left:628px;height:210px"></div>
+        <div class="s4-bid bar bid" style="left:-756px;height:258px"></div>
+        <div class="s4-ask bar ask" style="left:692px;height:258px"></div>
+        <div class="s4-bid bar bid" style="left:-820px;height:310px"></div>
+        <div class="s4-ask bar ask" style="left:756px;height:310px"></div>
+        <div class="s4-band band a0" style="height:36px;left:-68px;width:40px;bottom:0px" data-h="36"></div>
+        <div class="s4-band band a0" style="height:36px;left:28px;width:40px;bottom:0px" data-h="36"></div>
+        <div class="s4-band band a0" style="height:62px;left:-114px;width:40px;bottom:0px" data-h="62"></div>
+        <div class="s4-band band a0" style="height:62px;left:74px;width:40px;bottom:0px" data-h="62"></div>
+        <div class="s4-band band a0" style="height:88px;left:-160px;width:40px;bottom:0px" data-h="88"></div>
+        <div class="s4-band band a0" style="height:88px;left:120px;width:40px;bottom:0px" data-h="88"></div>
+        <div class="s4-band band a1" style="height:36px;left:-68px;width:40px;bottom:42px" data-h="36"></div>
+        <div class="s4-band band a1" style="height:36px;left:28px;width:40px;bottom:42px" data-h="36"></div>
+        <div class="s4-band band a1" style="height:62px;left:-114px;width:40px;bottom:68px" data-h="62"></div>
+        <div class="s4-band band a1" style="height:62px;left:74px;width:40px;bottom:68px" data-h="62"></div>
+        <div class="s4-band band a1" style="height:88px;left:-160px;width:40px;bottom:94px" data-h="88"></div>
+        <div class="s4-band band a1" style="height:88px;left:120px;width:40px;bottom:94px" data-h="88"></div>
+        <div class="s4-band band a2" style="height:36px;left:-68px;width:40px;bottom:84px" data-h="36"></div>
+        <div class="s4-band band a2" style="height:36px;left:28px;width:40px;bottom:84px" data-h="36"></div>
+        <div class="s4-band band a2" style="height:62px;left:-114px;width:40px;bottom:136px" data-h="62"></div>
+        <div class="s4-band band a2" style="height:62px;left:74px;width:40px;bottom:136px" data-h="62"></div>
+        <div class="s4-band band a2" style="height:88px;left:-160px;width:40px;bottom:188px" data-h="88"></div>
+        <div class="s4-band band a2" style="height:88px;left:120px;width:40px;bottom:188px" data-h="88"></div>
+    </div>
+    <div id="s4-halt" class="mono">HALT</div>
+    <div id="s4-oracle" class="s4-card">
+      <div class="s4-k mono">Oracle Guard</div>
+      <div class="s4-line mono"><span>chain time</span><span>14:02:11.0</span></div>
+      <div class="s4-line mono"><span>oracle report</span><span id="s4-report">14:02:16.0</span></div>
+      <div class="s4-line mono s4-diff"><span>ahead of chain</span><span>+5.0 s</span></div>
+      <div class="s4-verdict mono" id="s4-v1">oracle_future_timestamp: all orders cancelled</div>
+      <div class="s4-line mono" id="s4-resume"><span>resumes when</span><span>feed is back in bounds</span></div>
+    </div>
+    <div id="s4-session" class="s4-card">
+      <div class="s4-k mono">Session Guard</div>
+      <div class="s4-line mono"><span>US equities close</span><span id="s4-clock">16:00 ET</span></div>
+      <div class="s4-line mono"><span>now</span><span id="s4-now"><span id="s4-now-a">15:30 ET</span><span id="s4-now-b">15:55 ET</span></span></div>
+      <div class="s4-inv"><span class="mono">inventory</span><div id="s4-inv-track"><i id="s4-inv-bar"></i><b></b></div></div>
+      <div class="s4-verdict mono" id="s4-v2a">session_pre_close: spreads x2, size x0.5</div>
+      <div class="s4-verdict mono" id="s4-v2b">session_flatten: inventory to zero</div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#s4-title", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.2);
+    tl.fromTo("#s4-note", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
+    tl.fromTo("#s4-oracle", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out" }, 0.6);
+    tl.fromTo(".s4-diff", { opacity: 0 }, { opacity: 1, duration: 0.2 }, 2.2);
+    tl.fromTo("#s4-report", { color: "#e8ebf0" }, { color: "#ff4d5e", duration: 0.2 }, 2.2);
+    tl.to(".s4-band", { height: 0, opacity: 0, duration: 0.25, ease: "power3.in", stagger: 0.012 }, 3.2);
+    tl.fromTo("#s4-halt", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, 3.4);
+    tl.fromTo("#s4-v1", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 3.6);
+    tl.fromTo("#s4-resume", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 5.4);
+    tl.to("#s4-oracle, #s4-halt", { opacity: 0, x: -40, duration: 0.3, ease: "power3.in" }, 7.4);
+    tl.fromTo(".s4-band", { height: 0, opacity: 0 }, { height: (i, el) => Number(el.dataset.h) * 0.55, opacity: 1, duration: 0.6, ease: "expo.out", stagger: 0.02 }, 7.8);
+    tl.fromTo(".s4-band", { x: 0 }, { x: (i) => (i % 2 === 0 ? -60 : 60), duration: 0.8, ease: "power2.inOut" }, 9.3);
+    tl.fromTo("#s4-session", { opacity: 0, x: 60 }, { opacity: 1, x: 0, duration: 0.7, ease: "expo.out" }, 7.7);
+    tl.fromTo("#s4-v2a", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 9.3);
+    tl.fromTo("#s4-now-a", { opacity: 1 }, { opacity: 0, duration: 0.15 }, 11.0);
+    tl.fromTo("#s4-now-b", { opacity: 0 }, { opacity: 1, duration: 0.15 }, 11.1);
+    tl.fromTo("#s4-inv-bar", { scaleX: 1, transformOrigin: "0% 50%" }, { scaleX: 0, duration: 1.4, ease: "power2.inOut" }, 11.4);
+    tl.fromTo("#s4-v2b", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 11.4);
+    window.__timelines["s4-guards"] = tl;
+  </script>
+</template>
