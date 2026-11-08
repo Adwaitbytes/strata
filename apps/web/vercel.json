@@ -3,7 +3,7 @@
   "framework": "nextjs",
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
   "buildCommand": "cd ../.. && pnpm turbo run build --filter=@strata/web...",
-  "regions": ["iad1"],
+  "regions": ["sin1"],
   "headers": [
     {
       "source": "/_next/static/(.*)",
