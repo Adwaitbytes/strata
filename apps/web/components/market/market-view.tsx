@@ -25,6 +25,7 @@ const SESSION: Record<SessionState, { label: string; tone: string; note: string 
   closed: { label: "Closed", tone: "text-halt", note: "Underlying market is closed. Agents do not quote." },
   reopening: { label: "Reopening", tone: "text-warn", note: "Cooldown after the open. Quotes ramp back in." },
   always_open: { label: "Always open", tone: "text-bid", note: "This asset trades around the clock." },
+  unknown: { label: "Session unknown", tone: "text-fg-muted", note: "No session calendar is recorded for this market yet." },
 };
 
 const SESSION_ORDER: SessionState[] = ["open", "closing", "closed", "reopening"];
@@ -160,7 +161,7 @@ export function MarketView({ id }: { id: string }) {
               <div>
                 <p className={cn("text-lg font-medium", SESSION[session].tone)}>{SESSION[session].label}</p>
                 <p className="mt-1 text-sm text-fg-muted">{SESSION[session].note}</p>
-                {session !== "always_open" ? (
+                {SESSION_ORDER.includes(session) ? (
                   <ol className="mt-4 grid grid-cols-4 gap-1" aria-label="Session cycle">
                     {SESSION_ORDER.map((s) => (
                       <li key={s} aria-current={s === session ? "step" : undefined} className="flex flex-col gap-1.5">

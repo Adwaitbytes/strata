@@ -33,7 +33,8 @@ export const TimestampMs = z.number().int().nonnegative();
 export const AssetClass = z.enum(["equity", "index", "fx", "commodity", "compute", "crypto"]);
 export type AssetClass = z.infer<typeof AssetClass>;
 
-export const SessionState = z.enum(["open", "closing", "closed", "reopening", "always_open"]);
+/** "unknown": the writer has no session calendar for the market (e.g. the indexer), so no state is claimed. */
+export const SessionState = z.enum(["open", "closing", "closed", "reopening", "always_open", "unknown"]);
 export type SessionState = z.infer<typeof SessionState>;
 
 export const Market = z.object({
