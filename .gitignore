@@ -17,3 +17,4 @@ packages/contracts/broadcast/*/31337/
 *.key
 keystore/
 .secrets/
+.run/

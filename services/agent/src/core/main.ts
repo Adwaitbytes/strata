@@ -75,7 +75,7 @@ async function main(): Promise<void> {
     stopSim = driveSim(built.sim, resolved.map((r) => r.runtime.marketId));
   } else {
     resolved = resolveMarkets(cfg, getMarkets(cfg.network));
-    adapter = await loadInjectiveAdapter({ network: cfg.network, agentName: cfg.name, markets: resolved.map((r) => r.market), secretsDir: env.SECRETS_DIR });
+    adapter = await loadInjectiveAdapter({ network: cfg.network, agentName: cfg.name, markets: resolved.map((r) => r.market), secretsDir: env.STRATA_SECRETS_DIR ?? env.SECRETS_DIR });
   }
 
   const url = databaseUrl(process.env);

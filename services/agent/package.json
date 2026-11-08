@@ -15,7 +15,8 @@
     "inj:testnet-smoke": "tsx src/injective/bin/testnet-smoke.ts",
     "inj:balances": "tsx src/injective/bin/balances.ts",
     "inj:distribute": "tsx ../../scripts/distribute-testnet-funds.ts",
-    "inj:stream-check": "tsx src/injective/bin/stream-check.ts"
+    "inj:stream-check": "tsx src/injective/bin/stream-check.ts",
+    "inj:enroll": "tsx src/injective/bin/enroll-house-agents.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

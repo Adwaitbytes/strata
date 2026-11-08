@@ -128,6 +128,8 @@ export const AgentEnv = z.object({
   KILL_SWITCH: z.string().optional(),
   KILL_SWITCH_CLOSE: z.string().optional(),
   SECRETS_DIR: z.string().default(".secrets"),
+  /** Keystore folder (keystores/<name>.json + <name>.pass); compose mounts it apart from SECRETS_DIR. Defaults to SECRETS_DIR. */
+  STRATA_SECRETS_DIR: z.string().min(1).optional(),
   /** Explicit orchestrator go-ahead for mainnet; mainnet configs also need enabled: true. */
   MAINNET_GO_AHEAD: bool,
 });

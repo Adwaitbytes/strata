@@ -1,0 +1,38 @@
+{
+  "strata-test-1": {
+    "name": "strata-test-1",
+    "evmAddress": "0xa37F84583F356EcEAd212471B49944b35469ed8A",
+    "injAddress": "inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh",
+    "subaccountId": "0xa37f84583f356ecead212471b49944b35469ed8a000000000000000000000000",
+    "erc8004Id": "69",
+    "registerTx": "0xd99af209b9dc84d520f7d4f2f1ecb57f86d4fed0dda78e9dd746fc7794f06c91",
+    "arenaAgentId": 1,
+    "season": 1,
+    "enrollTx": "0x3bb3c02976b5780cde7b829192238e52fd822b140e7d0d0ddce3ecd9dbf9fcc3",
+    "metadataURI": "https://strata-api-nine.vercel.app/v1/agents/1?network=testnet"
+  },
+  "strata-test-2": {
+    "name": "strata-test-2",
+    "evmAddress": "0x4cE919B19D7afc0e92EC0E52f05aAbbF73E28A13",
+    "injAddress": "inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev",
+    "subaccountId": "0x4ce919b19d7afc0e92ec0e52f05aabbf73e28a13000000000000000000000000",
+    "erc8004Id": "70",
+    "registerTx": "0x37cb69db599df98fd97dca1b267c99d3acb44f706451ed74891a8f533d27b8a0",
+    "arenaAgentId": 2,
+    "season": 1,
+    "enrollTx": "0xb12d2670588cf796cc89460531eaf15f64d88e7acd23d1a506105ccf247a5ef7",
+    "metadataURI": "https://strata-api-nine.vercel.app/v1/agents/2?network=testnet"
+  },
+  "strata-test-3": {
+    "name": "strata-test-3",
+    "evmAddress": "0x719641745709e867bB0AC8d19515BBC92b3857d6",
+    "injAddress": "inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t",
+    "subaccountId": "0x719641745709e867bb0ac8d19515bbc92b3857d6000000000000000000000000",
+    "erc8004Id": "71",
+    "registerTx": "0xc432f5bac7c0f1d550cbba3b46d9f17c875bf7aed50436eec4dc03c17fea55b5",
+    "arenaAgentId": 3,
+    "season": 1,
+    "enrollTx": "0x96c375a825d011793419d998513f7012d946e20aa0f7fffd08aa74aaccb31c73",
+    "metadataURI": "https://strata-api-nine.vercel.app/v1/agents/3?network=testnet"
+  }
+}

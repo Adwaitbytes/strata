@@ -2,9 +2,30 @@
   "name": "strata-test-2",
   "network": "testnet",
   "enabled": true,
-  "capitalUsd": 1000,
-  "notes": "Tickers verified against a live testnet LCD query (exchange/v1beta1/derivative/markets, 2026-11-09). Market IDs are resolved at runtime from @strata/config generated markets. agentId comes from AGENT_ID after StrataArena enrollment.",
-  "params": { "baseOrderSizeUsd": 25, "inventoryCapUsd": 200, "maxGrossNotionalUsd": 1000, "maxNetNotionalUsd": 300, "maxDailyLossUsd": 50, "maxDrawdownUsd": 150 },
-  "markets": [{ "ticker": "INJ/USDC PERP" }, { "ticker": "LINK/USDC PERP" }],
-  "tuner": { "mode": "shadow", "intervalMin": 10, "shadowReview": null }
+  "capitalUsd": 4,
+  "notes": "Go-live 2026-11-09: sized for the tiny testnet balances (W3 distribution). Each agent quotes one fresh-oracle crypto perp plus one slow N10Labs index perp, which the Oracle Guard is expected to halt on staleness. No market overlap between house agents. agentId comes from AGENT_ID (config/enrollments.testnet.json).",
+  "params": {
+    "baseOrderSizeUsd": 4,
+    "inventoryCapUsd": 15,
+    "maxGrossNotionalUsd": 60,
+    "maxNetNotionalUsd": 20,
+    "levels": 2,
+    "rampMinutes": 1,
+    "rampStartSizeFraction": 0.5,
+    "maxDailyLossUsd": 3,
+    "maxDrawdownUsd": 5
+  },
+  "markets": [
+    {
+      "ticker": "INJ/USDC PERP"
+    },
+    {
+      "ticker": "BHA-PERP"
+    }
+  ],
+  "tuner": {
+    "mode": "shadow",
+    "intervalMin": 10,
+    "shadowReview": null
+  }
 }
