@@ -265,3 +265,22 @@ describe("failure handling", () => {
     expect(body.markets[0]?.now).toBeNull();
   });
 });
+
+describe("agent metadataURI (L-8)", () => {
+  it.each(["javascript:alert(1)", "data:text/html,<script>x</script>", "http://plain.example/meta.json", "JAVASCRIPT:alert(1)", " https://x"])(
+    "blanks unsafe scheme %s",
+    async (uri) => {
+      repo.data.agents = [agent(1, { metadataURI: uri })];
+      const list = AgentsResponse.parse((await get("/v1/agents?network=testnet")).json());
+      expect(list.agents[0]?.metadataURI).toBe("");
+      const detail = AgentDetailResponse.parse((await get("/v1/agents/1?network=testnet")).json());
+      expect(detail.agent.metadataURI).toBe("");
+    },
+  );
+
+  it.each(["https://strata.example/agent.json", "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi", ""])("keeps %s", async (uri) => {
+    repo.data.agents = [agent(1, { metadataURI: uri })];
+    const list = AgentsResponse.parse((await get("/v1/agents?network=testnet")).json());
+    expect(list.agents[0]?.metadataURI).toBe(uri);
+  });
+});

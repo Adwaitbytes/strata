@@ -9,11 +9,10 @@ import { join } from "node:path";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import postgres from "postgres";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { AgentDetailResponse, EpochResponse, HeroStatsResponse, LeaderboardResponse, MarketDetailResponse, MarketsResponse, StatusResponse } from "@strata/sdk";
+import { killRequestMessage, AgentDetailResponse, EpochResponse, HeroStatsResponse, LeaderboardResponse, MarketDetailResponse, MarketsResponse, StatusResponse } from "@strata/sdk";
 import { schema } from "@strata/db";
 import { connect, DrizzleRepository, type DbConnection } from "../src/repo/drizzle.js";
 import { buildApp } from "../src/create-app.js";
-import { killMessage } from "../src/admin/kill.js";
 import { testConfig } from "./support/config.js";
 import { HEX32, MARKET_A, agent, market, score, attestation } from "./support/fixtures.js";
 
@@ -102,7 +101,7 @@ describe.skipIf(!enabled)("DrizzleRepository against Postgres", () => {
     const owner = privateKeyToAccount(generatePrivateKey());
     const app = await buildApp({ config: testConfig({ STRATA_OWNER_ADDRESS: owner.address }), repo });
     const u = { target: "all" as const, closePositions: true, network: "testnet" as const, nonce: `it-${now}-abcdefgh`, expiresAt: Date.now() + 60_000 };
-    const payload = { ...u, signature: await owner.signMessage({ message: killMessage(u) }) };
+    const payload = { ...u, signature: await owner.signMessage({ message: killRequestMessage(u) }) };
     expect((await app.inject({ method: "POST", url: "/v1/admin/kill", payload })).statusCode).toBe(202);
     expect((await app.inject({ method: "POST", url: "/v1/admin/kill", payload })).statusCode).toBe(401);
     const rows = await conn.db.select().from(schema.killCommands);

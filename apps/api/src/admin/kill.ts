@@ -5,7 +5,7 @@
  */
 import { randomUUID } from "node:crypto";
 import { verifyMessage } from "viem";
-import type { KillRequest } from "@strata/sdk";
+import { killRequestMessage, type KillRequest } from "@strata/sdk";
 import { HttpError } from "../errors.js";
 import type { KillCommandInput, Repository } from "../repo/types.js";
 
@@ -15,25 +15,9 @@ export const KILL_MAX_TTL_MS = 10 * 60_000;
 /** Extra nonce constraints on top of the sdk schema (min 16): bounded length, URL-safe charset. */
 export const NONCE_PATTERN = /^[A-Za-z0-9_-]{16,128}$/;
 
-/**
- * The exact text the owner signs. Field order and labels are part of the protocol and must
- * match `killRequestMessage` in services/agent/src/core/killSwitch.ts, so one signed request
- * is valid on both the API path and the agent's own endpoint.
- */
-export function killMessage(req: Omit<KillRequest, "signature">): string {
-  return [
-    "STRATA kill request",
-    `network: ${req.network}`,
-    `target: ${req.target}`,
-    `closePositions: ${req.closePositions}`,
-    `nonce: ${req.nonce}`,
-    `expiresAt: ${req.expiresAt}`,
-  ].join("\n");
-}
-
 async function signatureMatches(owner: `0x${string}`, req: KillRequest): Promise<boolean> {
   try {
-    return await verifyMessage({ address: owner, message: killMessage(req), signature: req.signature as `0x${string}` });
+    return await verifyMessage({ address: owner, message: killRequestMessage(req), signature: req.signature as `0x${string}` });
   } catch {
     // Malformed signatures throw inside viem; to the caller they are simply not the owner's.
     return false;

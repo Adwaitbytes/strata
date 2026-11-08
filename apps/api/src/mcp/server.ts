@@ -12,6 +12,7 @@ import { Hex32, NetworkName } from "@strata/sdk";
 import { errorBody, HttpError } from "../errors.js";
 import { getAgentDetail, getLeaderboard, getMarketDetail, type ReadContext } from "../services/read.js";
 import { prepareEnrollment } from "./enrollment.js";
+import { SafeMetadataUri } from "../services/metadata-uri.js";
 import { RISK_RULES, SCORING_RULES } from "./rules.js";
 
 type ToolResult = { content: Array<{ type: "text"; text: string }>; isError?: boolean };
@@ -81,7 +82,7 @@ export function createMcpServer(ctx: ReadContext): McpServer {
         network,
         erc8004Id: z.string().regex(/^\d{1,78}$/).describe("ERC-8004 identity token ID owned by the operator"),
         subaccountId: Hex32.describe("Injective subaccount ID the agent trades from"),
-        metadataURI: z.string().max(512).describe("Agent metadata URI"),
+        metadataURI: SafeMetadataUri.describe("Agent metadata URI (https:// or ipfs:// only)"),
       },
       annotations: { readOnlyHint: true, idempotentHint: true },
     },

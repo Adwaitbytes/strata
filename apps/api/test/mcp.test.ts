@@ -87,6 +87,17 @@ describe("MCP server at /mcp", () => {
   });
 });
 
+describe("strata_prepare_enrollment input", () => {
+  it("rejects a metadataURI that is not https or ipfs", async () => {
+    const res = await client.callTool({
+      name: "strata_prepare_enrollment",
+      arguments: { network: "testnet", erc8004Id: "12", subaccountId: HEX32("c"), metadataURI: "javascript:alert(1)" },
+    });
+    expect(res.isError).toBe(true);
+    expect(textOf(res)).not.toContain("not deployed");
+  });
+});
+
 describe("prepareEnrollment", () => {
   it("encodes an unsigned legacy enroll transaction for the arena", () => {
     const arena = `0x${"4".repeat(40)}` as const;
@@ -95,5 +106,9 @@ describe("prepareEnrollment", () => {
     const decoded = decodeFunctionData({ abi: strataArenaAbi, data: tx.data });
     expect(decoded.functionName).toBe("enroll");
     expect(decoded.args).toEqual([12n, HEX32("c"), "ipfs://meta"]);
+  });
+
+  it("refuses unsafe metadata URIs even when called directly", () => {
+    expect(() => prepareEnrollment("testnet", `0x${"4".repeat(40)}`, { erc8004Id: "1", subaccountId: HEX32("c"), metadataURI: "data:text/html,x" })).toThrow("https:// or ipfs://");
   });
 });

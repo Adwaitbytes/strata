@@ -170,6 +170,22 @@ export const KillRequest = z.object({
 });
 export type KillRequest = z.infer<typeof KillRequest>;
 
+/**
+ * Canonical EIP-191 (personal_sign) text the owner wallet signs for a KillRequest. Single copy
+ * shared by apps/api, services/agent and any client that produces kill requests: field order
+ * and labels are part of the protocol, so changing them invalidates every signature.
+ */
+export function killRequestMessage(req: Omit<KillRequest, "signature">): string {
+  return [
+    "STRATA kill request",
+    `network: ${req.network}`,
+    `target: ${req.target}`,
+    `closePositions: ${req.closePositions}`,
+    `nonce: ${req.nonce}`,
+    `expiresAt: ${req.expiresAt}`,
+  ].join("\n");
+}
+
 /* ---------------------------- WebSocket (ws /v1/stream) ---------------------------- */
 
 export const WsChannel = z.union([

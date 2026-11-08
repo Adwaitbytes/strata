@@ -5,6 +5,7 @@
 import { encodeFunctionData } from "viem";
 import { NETWORKS } from "@strata/config";
 import { strataArenaAbi, type NetworkName } from "@strata/sdk";
+import { isSafeMetadataUri } from "../services/metadata-uri.js";
 
 export interface EnrollmentArgs {
   erc8004Id: string;
@@ -24,6 +25,8 @@ export interface UnsignedEnrollmentTx {
 }
 
 export function prepareEnrollment(network: NetworkName, arena: `0x${string}`, args: EnrollmentArgs): UnsignedEnrollmentTx {
+  // Defense in depth: the MCP input schema already enforces this (L-8).
+  if (!isSafeMetadataUri(args.metadataURI)) throw new Error("metadataURI must be an https:// or ipfs:// URI");
   const net = NETWORKS[network];
   return {
     chainId: net.evm.chainId,

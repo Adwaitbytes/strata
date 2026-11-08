@@ -1,9 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { FastifyInstance } from "fastify";
 import { generatePrivateKey, privateKeyToAccount, type PrivateKeyAccount } from "viem/accounts";
-import { ApiError, type KillRequest } from "@strata/sdk";
+import { ApiError, killRequestMessage, type KillRequest } from "@strata/sdk";
 import { buildApp } from "../src/create-app.js";
-import { killMessage, KILL_MAX_TTL_MS } from "../src/admin/kill.js";
+import { KILL_MAX_TTL_MS } from "../src/admin/kill.js";
 import { MemoryRepo } from "./support/memory-repo.js";
 import { testConfig } from "./support/config.js";
 import { NOW } from "./support/fixtures.js";
@@ -30,7 +30,7 @@ function unsigned(over: Partial<Unsigned> = {}): Unsigned {
 }
 
 async function signed(u: Unsigned, signer: PrivateKeyAccount = owner): Promise<KillRequest> {
-  return { ...u, signature: await signer.signMessage({ message: killMessage(u) }) };
+  return { ...u, signature: await signer.signMessage({ message: killRequestMessage(u) }) };
 }
 
 const post = (payload: unknown) => app.inject({ method: "POST", url: "/v1/admin/kill", payload: payload as object });
@@ -99,10 +99,3 @@ describe("POST /v1/admin/kill", () => {
   });
 });
 
-describe("killMessage", () => {
-  it("is a stable, human-readable message covering every field", () => {
-    expect(killMessage(unsigned({ target: 3 }))).toBe(
-      ["STRATA kill request", "network: testnet", "target: 3", "closePositions: true", "nonce: n-0123456789abcdef", `expiresAt: ${NOW + 60_000}`].join("\n"),
-    );
-  });
-});

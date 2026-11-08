@@ -28,6 +28,7 @@ import type {
 } from "@strata/sdk";
 import { HttpError } from "../errors.js";
 import type { Heartbeat, Repository } from "../repo/types.js";
+import { isSafeMetadataUri } from "./metadata-uri.js";
 
 export interface ReadContext {
   repo: Repository;
@@ -129,8 +130,13 @@ export async function getMarketDetail(ctx: ReadContext, network: NetworkName, ma
   };
 }
 
+/** Empty means "no metadata"; any non-https, non-ipfs value is withheld (L-8). */
+function withSafeMetadata(agent: AgentProfile): AgentProfile {
+  return agent.metadataURI === "" || isSafeMetadataUri(agent.metadataURI) ? agent : { ...agent, metadataURI: "" };
+}
+
 export async function getAgents(ctx: ReadContext, network: NetworkName): Promise<AgentsResponse> {
-  return { network, agents: await ctx.repo.listAgents(network), at: ctx.now() };
+  return { network, agents: (await ctx.repo.listAgents(network)).map(withSafeMetadata), at: ctx.now() };
 }
 
 type Scalar = number | string | boolean;
@@ -151,8 +157,9 @@ function agentHeartbeat(beats: Heartbeat[], agentId: number): Heartbeat | undefi
 }
 
 export async function getAgentDetail(ctx: ReadContext, network: NetworkName, agentId: number): Promise<AgentDetailResponse> {
-  const agent = await ctx.repo.getAgent(network, agentId);
-  if (!agent) throw new HttpError("not_found", "agent not found");
+  const found = await ctx.repo.getAgent(network, agentId);
+  if (!found) throw new HttpError("not_found", "agent not found");
+  const agent = withSafeMetadata(found);
   const since = ctx.now() - ctx.freshMs;
   const [quotes, fills, scores, guards, tuners, beats] = await Promise.all([
     ctx.repo.liveQuotes(network, agentId, since),
