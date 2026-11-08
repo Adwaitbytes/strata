@@ -12,10 +12,12 @@ export interface StatProps {
   sparkLabel?: string | undefined;
   sparkColor?: string | undefined;
   footnote?: ReactNode;
+  /** Secondary metrics render muted so the page's focal number stays the brightest. */
+  tone?: "fg" | "muted";
   className?: string;
 }
 
-export function Stat({ metric, value, provenance, spark, sparkLabel, sparkColor, footnote, className }: StatProps) {
+export function Stat({ metric, value, provenance, spark, sparkLabel, sparkColor, footnote, tone = "fg", className }: StatProps) {
   return (
     <div className={cn("flex min-w-0 flex-col gap-2", className)}>
       <div className="flex items-center gap-2 text-[13px] text-fg-muted">
@@ -23,7 +25,7 @@ export function Stat({ metric, value, provenance, spark, sparkLabel, sparkColor,
         {provenance ? <ProvenanceBadge provenance={provenance} /> : null}
       </div>
       <div className="flex items-end justify-between gap-3">
-        <NumberRoll value={value} className="num text-[26px] font-medium leading-none tracking-tight text-fg" />
+        <NumberRoll value={value} className={cn("num text-[26px] font-medium leading-none tracking-tight", tone === "fg" ? "text-fg" : "text-fg-muted")} />
         {spark ? <Sparkline values={spark} label={sparkLabel ?? "Trend"} color={sparkColor} className="hidden shrink-0 sm:block" /> : null}
       </div>
       {footnote ? <div className="text-xs text-fg-subtle">{footnote}</div> : null}

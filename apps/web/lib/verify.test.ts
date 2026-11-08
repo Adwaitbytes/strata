@@ -5,7 +5,7 @@ import { verifyLocally, verifyOnchain } from "./verify";
 
 const epoch = mockEpoch("testnet", 12)!;
 const root = epoch.attestation.merkleRoot as `0x${string}`;
-const score = epoch.scores[2]!;
+const score = { ...epoch.scores[2]!, provenance: "TESTNET" as const };
 
 describe("verifyLocally", () => {
   it("passes for a published score and proof", () => {
@@ -23,6 +23,13 @@ describe("verifyLocally", () => {
 });
 
 describe("verifyOnchain", () => {
+  it("never checks MOCK scores against a real contract", async () => {
+    const readContract = vi.fn();
+    const r = await verifyOnchain({ ...score, provenance: "MOCK" }, "testnet", `0x${"12".repeat(20)}`, { readContract });
+    expect(r.status).toBe("unavailable");
+    expect(readContract).not.toHaveBeenCalled();
+  });
+
   it("is unavailable when the attestor is not deployed", async () => {
     const readContract = vi.fn();
     const r = await verifyOnchain(score, "testnet", null, { readContract });

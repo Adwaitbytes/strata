@@ -5,7 +5,10 @@ test.describe("Agent page", () => {
     await page.goto("/agents/1");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByTestId("data-labels").first()).toContainText("TESTNET");
-    await expect(page.getByText("ERC-8004 identity")).toBeVisible();
+    const focal = page.getByTestId("agent-focal");
+    await expect(focal).toContainText(/Score, epoch #\d+/);
+    await expect(focal).toContainText(/#\d/);
+    await expect(page.locator("#identity").getByText("ERC-8004 identity")).toBeVisible();
     await expect(page.getByRole("table", { name: "Live quotes by level" })).toBeVisible();
     await expect(page.getByRole("group", { name: /Score history over/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Guard events" })).toBeVisible();
@@ -16,8 +19,9 @@ test.describe("Agent page", () => {
     await page.goto("/agents/1");
     await page.getByRole("button", { name: "Verify my score" }).click();
     await expect(page.getByTestId("verify-local")).toContainText("Passed");
-    // ScoreAttestor is not deployed in config yet, so the onchain check says so honestly.
-    await expect(page.getByTestId("verify-onchain")).toContainText(/Not available|Passed/);
+    // MOCK scores are never checked against the real contract.
+    await expect(page.getByTestId("verify-onchain")).toContainText("Not available");
+    await expect(page.getByTestId("verify-onchain")).toContainText("never posted onchain");
   });
 
   test("handles an unknown agent", async ({ page }) => {

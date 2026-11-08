@@ -2,8 +2,9 @@
 
 import { NETWORKS } from "@strata/config";
 import type { AgentDetailResponse, EpochScore } from "@strata/sdk";
-import { Skeleton } from "@strata/ui/data";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { NumberRoll, Skeleton } from "@strata/ui/data";
+import { ArrowLeft, ChevronDown, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { StatusPill } from "@/components/arena/status-pill";
@@ -47,6 +48,8 @@ export function AgentView({ id }: { id: number }) {
     channel: `agent:${id}`,
     apply: (prev, msg) => (msg.type === "agent" ? { ...prev, liveQuotes: msg.data.quotes, recentFills: [...msg.data.fills, ...prev.recentFills].slice(0, 50) } : prev),
   });
+  // Rank lives on the leaderboard, not on the agent record.
+  const board = useQuery({ queryKey: ["leaderboard", network, "rank"], queryFn: ({ signal }) => api.leaderboard(network, { signal }) });
 
   if (q.isPending) return <AgentSkeleton />;
   if (q.isError && !q.data) {
@@ -62,6 +65,54 @@ export function AgentView({ id }: { id: number }) {
   const latest = [...d.scores].sort((x, y) => y.epoch - x.epoch)[0];
   const provenance = dominantProvenance([...d.scores.map((s) => s.provenance), ...d.liveQuotes.map((x) => x.provenance)]);
   const registry = NETWORKS[network].contracts.identityRegistry;
+  const rank = board.data?.rows.find((r) => r.agentId === a.agentId)?.rank ?? null;
+
+  const identity = (
+    <dl className="grid grid-cols-2 gap-x-8 gap-y-4 lg:grid-cols-4">
+      <IdentityRow label="Arena ID">
+        <span className="num">#{a.agentId}</span>
+      </IdentityRow>
+      <IdentityRow label="ERC-8004 identity">
+        {a.erc8004Id == null ? (
+          <span className="text-fg-muted">Not linked</span>
+        ) : registry ? (
+          <a className="inline-flex items-center gap-1 text-accent hover:underline" href={`${explorerUrl(network, "address", registry)}?tab=inventory`} target="_blank" rel="noopener noreferrer">
+            <span className="num">#{a.erc8004Id}</span> <ExternalLink className="size-3" aria-hidden />
+          </a>
+        ) : (
+          <span title="The ERC-8004 registry address on Injective is pending verification, so there is no explorer link yet.">
+            <span className="num">#{a.erc8004Id}</span> <span className="text-xs text-fg-subtle">registry link pending</span>
+          </span>
+        )}
+      </IdentityRow>
+      <IdentityRow label="Operator">
+        <a className="num inline-flex items-center gap-1 text-accent hover:underline" href={explorerUrl(network, "address", a.operator)} target="_blank" rel="noopener noreferrer">
+          {shortHex(a.operator)} <ExternalLink className="size-3" aria-hidden />
+        </a>
+      </IdentityRow>
+      <IdentityRow label="Enrolled">{formatUtc(a.enrolledAt)}</IdentityRow>
+      <IdentityRow label="Injective address">
+        <span className="num" title={a.injAddress}>
+          {shortHex(a.injAddress, 8, 6)}
+        </span>
+      </IdentityRow>
+      <IdentityRow label="Subaccount">
+        <span className="num" title={a.subaccountId}>
+          {shortHex(a.subaccountId, 8, 6)}
+        </span>
+      </IdentityRow>
+      <div className="col-span-2 flex flex-col gap-0.5">
+        <dt className="text-xs text-fg-subtle">Markets</dt>
+        <dd className="flex flex-wrap gap-1.5">
+          {a.marketIds.map((m) => (
+            <Link key={m} href={`/markets/${m}${network === "mainnet" ? "?network=mainnet" : ""}`} className="num rounded-md border border-border px-2 py-0.5 text-xs text-fg-muted hover:border-border-strong hover:text-fg">
+              {shortHex(m, 8, 4)}
+            </Link>
+          ))}
+        </dd>
+      </div>
+    </dl>
+  );
 
   return (
     <div className="flex flex-col gap-8">
@@ -82,60 +133,28 @@ export function AgentView({ id }: { id: number }) {
             <span className="text-fg-subtle">{a.kind === "house" ? "House agent" : "Third-party agent"}</span>
           </span>
         }
-      />
-
-      <Panel title="Identity" id="identity">
-        <dl className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-4">
-          <IdentityRow label="Arena ID">
-            <span className="num">#{a.agentId}</span>
-          </IdentityRow>
-          <IdentityRow label="ERC-8004 identity">
-            {a.erc8004Id == null ? (
-              <span className="text-fg-muted">Not linked</span>
-            ) : registry ? (
-              <a className="inline-flex items-center gap-1 text-accent hover:underline" href={`${explorerUrl(network, "address", registry)}?tab=inventory`} target="_blank" rel="noopener noreferrer">
-                <span className="num">#{a.erc8004Id}</span> <ExternalLink className="size-3" aria-hidden />
-              </a>
-            ) : (
-              <span title="The ERC-8004 registry address on Injective is pending verification, so there is no explorer link yet.">
-                <span className="num">#{a.erc8004Id}</span> <span className="text-xs text-fg-subtle">registry link pending</span>
+        actions={
+          <div className="flex items-end gap-8" data-testid="agent-focal">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[13px] text-fg-muted">
+                <InfoTip metric="score">{latest ? `Score, epoch #${latest.epoch}` : "Score"}</InfoTip>
               </span>
-            )}
-          </IdentityRow>
-          <IdentityRow label="Operator">
-            <a className="num inline-flex items-center gap-1 text-accent hover:underline" href={explorerUrl(network, "address", a.operator)} target="_blank" rel="noopener noreferrer">
-              {shortHex(a.operator)} <ExternalLink className="size-3" aria-hidden />
-            </a>
-          </IdentityRow>
-          <IdentityRow label="Enrolled">{formatUtc(a.enrolledAt)}</IdentityRow>
-          <IdentityRow label="Injective address">
-            <span className="num" title={a.injAddress}>
-              {shortHex(a.injAddress, 8, 6)}
-            </span>
-          </IdentityRow>
-          <IdentityRow label="Subaccount">
-            <span className="num" title={a.subaccountId}>
-              {shortHex(a.subaccountId, 8, 6)}
-            </span>
-          </IdentityRow>
-          <div className="flex flex-col gap-0.5 sm:col-span-2">
-            <dt className="text-xs text-fg-subtle">Markets</dt>
-            <dd className="flex flex-wrap gap-1.5">
-              {a.marketIds.map((m) => (
-                <Link key={m} href={`/markets/${m}${network === "mainnet" ? "?network=mainnet" : ""}`} className="num rounded-md border border-border px-2 py-0.5 text-xs text-fg-muted hover:border-border-strong hover:text-fg">
-                  {shortHex(m, 8, 4)}
-                </Link>
-              ))}
-            </dd>
+              <NumberRoll value={latest ? formatScore(latest.score) : "n/a"} className="num text-[48px] font-medium leading-none tracking-tight text-fg" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[13px] text-fg-muted">
+                <InfoTip metric="rank">Rank</InfoTip>
+              </span>
+              <NumberRoll value={rank ? `#${rank}` : "n/a"} className="num text-[48px] font-medium leading-none tracking-tight text-fg-muted" />
+            </div>
           </div>
-        </dl>
-      </Panel>
+        }
+      />
 
       <section aria-label="Metrics, latest epoch" className="grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-lg)] border border-border bg-border lg:grid-cols-4">
         {latest ? (
           (
             [
-              ["score", formatScore(latest.score), (s: EpochScore) => s.score],
               ["quotedSpreadBps", formatBps(latest.metrics.quotedSpreadBps), (s: EpochScore) => s.metrics.quotedSpreadBps],
               ["depthUsd25", formatUsd(latest.metrics.depthUsd25), (s: EpochScore) => s.metrics.depthUsd25],
               ["uptimeBps", formatUptime(latest.metrics.uptimeBps), (s: EpochScore) => s.metrics.uptimeBps],
@@ -143,10 +162,11 @@ export function AgentView({ id }: { id: number }) {
               ["markout60s", formatUsdSigned(latest.metrics.markout60s), (s: EpochScore) => s.metrics.markout60s],
               ["pnlUsd", formatUsdSigned(latest.metrics.pnlUsd), (s: EpochScore) => s.metrics.pnlUsd],
               ["maxDrawdownUsd", formatUsd(latest.metrics.maxDrawdownUsd), (s: EpochScore) => s.metrics.maxDrawdownUsd],
+              ["spreadImprovementBps", formatBps(latest.metrics.spreadImprovementBps), (s: EpochScore) => s.metrics.spreadImprovementBps],
             ] as const
           ).map(([k, v, pick]) => (
             <div key={k} className="bg-surface p-5">
-              <Stat metric={k} value={v} spark={series(d.scores, pick)} sparkLabel={`Last ${Math.min(24, d.scores.length)} epochs`} />
+              <Stat metric={k} value={v} tone="muted" spark={series(d.scores, pick)} sparkLabel={`Last ${Math.min(24, d.scores.length)} epochs`} />
             </div>
           ))
         ) : (
@@ -156,7 +176,11 @@ export function AgentView({ id }: { id: number }) {
         )}
       </section>
 
-      <div className="grid gap-6 lg:grid-cols-[1.25fr_1fr]">
+      <Panel title={<InfoTip metric="score">Score history</InfoTip>} id="history">
+        {d.scores.length ? <ScoreHistory scores={d.scores} /> : <EmptyState title="No history yet" detail="One bar appears per scored epoch." className="border-0 p-0" />}
+      </Panel>
+
+      <div className="grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
         <Panel title="Live quotes" id="quotes" aside={<span className="text-xs text-fg-subtle">{d.liveQuotes.length} orders resting</span>}>
           {d.liveQuotes.length ? (
             <QuotesVisual quotes={d.liveQuotes} />
@@ -169,11 +193,7 @@ export function AgentView({ id }: { id: number }) {
         </Panel>
       </div>
 
-      <Panel title={<InfoTip metric="score">Score history</InfoTip>} id="history">
-        {d.scores.length ? <ScoreHistory scores={d.scores} /> : <EmptyState title="No history yet" detail="One bar appears per scored epoch." className="border-0 p-0" />}
-      </Panel>
-
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid items-start gap-6 lg:grid-cols-2">
         <Panel title="Guard events" id="guards">
           {d.guardEvents.length ? (
             <GuardTimeline events={d.guardEvents} />
@@ -189,6 +209,17 @@ export function AgentView({ id }: { id: number }) {
           )}
         </Panel>
       </div>
+
+      <Panel title="Identity" id="identity" className="hidden md:block">
+        {identity}
+      </Panel>
+      <details className="group rounded-[var(--radius-lg)] border border-border bg-surface md:hidden">
+        <summary className="flex cursor-pointer list-none items-center justify-between px-5 py-4 text-[15px] font-semibold text-fg">
+          Identity
+          <ChevronDown aria-hidden className="size-4 text-fg-muted transition-transform group-open:rotate-180" />
+        </summary>
+        <div className="border-t border-border p-5">{identity}</div>
+      </details>
     </div>
   );
 }

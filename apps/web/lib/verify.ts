@@ -48,6 +48,9 @@ export async function verifyOnchain(
   attestor: Hex | null,
   client: Pick<PublicClient, "readContract"> = createPublicClient({ chain: CHAINS[network], transport: http() }),
 ): Promise<CheckResult> {
+  if (score.provenance === "MOCK") {
+    return { status: "unavailable", detail: "MOCK scores are development data and are never posted onchain." };
+  }
   if (!attestor || /^0x0{40}$/i.test(attestor)) {
     return { status: "unavailable", detail: `ScoreAttestor is not deployed on ${network} yet, so there is no onchain root to check.` };
   }

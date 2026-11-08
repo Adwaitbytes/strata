@@ -4,6 +4,7 @@ import { NETWORKS } from "@strata/config";
 import type { EpochScore, NetworkName } from "@strata/sdk";
 import { CheckCircle2, CircleDashed, Loader2, ShieldCheck, XCircle } from "lucide-react";
 import { useState } from "react";
+import { Select } from "@/components/data/select";
 import { api, describeError } from "@/lib/api/client";
 import { explorerUrl } from "@/lib/chains";
 import { shortHex } from "@/lib/format";
@@ -75,23 +76,19 @@ export function VerifyScore({ scores, network }: { scores: EpochScore[]; network
       <div className="flex flex-wrap items-end gap-2">
         <label className="flex flex-col gap-1.5 text-xs text-fg-muted">
           Epoch
-          <select
-            value={epoch ?? ""}
-            onChange={(e) => setEpoch(Number(e.target.value))}
-            className="h-9 rounded-lg border border-border-strong bg-bg-sunken px-2.5 text-sm text-fg"
-          >
+          <Select value={epoch ?? ""} onChange={(e) => setEpoch(Number(e.target.value))} className="min-w-[160px]">
             {sorted.map((s) => (
               <option key={s.epoch} value={s.epoch}>
                 #{s.epoch} (season {s.season})
               </option>
             ))}
-          </select>
+          </Select>
         </label>
         <button
           type="button"
           onClick={() => void run()}
           disabled={running}
-          className="inline-flex h-9 items-center gap-2 rounded-lg bg-accent px-3.5 text-sm font-medium text-accent-fg transition-[filter,opacity] hover:brightness-110 disabled:opacity-60"
+          className="inline-flex h-9 items-center gap-2 rounded-lg bg-fg px-3.5 text-sm font-medium text-bg transition-colors hover:bg-fg/85 disabled:bg-surface-hover disabled:text-fg-subtle"
         >
           {running ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <ShieldCheck className="size-4" aria-hidden />}
           Verify my score

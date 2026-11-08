@@ -26,7 +26,15 @@ export function ScoreHistory({ scores }: { scores: EpochScore[] }) {
           {current && current.flagNames.length ? <span className="ml-2 text-halt">{current.flagNames.join(", ")}</span> : null}
         </span>
       </div>
-      <div role="group" aria-label={summary} className="flex items-end gap-[3px]" style={{ height: H }} onMouseLeave={() => setActive(null)}>
+      <div className="relative pl-12" style={{ height: H }}>
+        {/* Recessive y gridlines at fixed score steps; labels sit in the left gutter. */}
+        {[0, 2500, 5000, 7500, 10_000].map((v) => (
+          <div key={v} aria-hidden className="absolute inset-x-0 flex items-center" style={{ bottom: (v / 10_000) * H - 0.5 }}>
+            <span className="num w-10 pr-2 text-right text-[10px] leading-none text-fg-subtle">{v === 0 ? "0" : `${v / 1000}k`}</span>
+            <span className="h-px flex-1 bg-border/70" />
+          </div>
+        ))}
+      <div role="group" aria-label={summary} className="relative flex h-full items-end gap-[3px]" onMouseLeave={() => setActive(null)}>
         {sorted.map((s) => {
           const h = Math.max(2, (s.score / 10_000) * H);
           const flagged = s.flags !== 0;
@@ -52,7 +60,8 @@ export function ScoreHistory({ scores }: { scores: EpochScore[] }) {
           );
         })}
       </div>
-      <div className="mt-2 flex justify-between border-t border-border pt-2 text-[11px] text-fg-subtle num">
+      </div>
+      <div className="num mt-2 flex justify-between pl-12 text-[11px] text-fg-subtle">
         <span>{sorted[0] ? `#${sorted[0].epoch}` : ""}</span>
         <span>{sorted.length ? `#${sorted[sorted.length - 1]!.epoch}` : ""}</span>
       </div>
