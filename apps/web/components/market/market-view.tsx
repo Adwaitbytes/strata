@@ -114,7 +114,7 @@ export function MarketView({ id }: { id: string }) {
         <div className="bg-surface p-5">
           <Stat
             metric="oracle"
-            value={formatPrice(oracle.price)}
+            value={formatPrice(oracle.price, 4)}
             footnote={
               <span className={cn("inline-flex items-center gap-1.5", oracle.healthy ? "text-fg-subtle" : "text-halt")}>
                 <span aria-hidden className={cn("size-1.5 rounded-full", oracle.healthy ? "bg-bid" : "bg-halt")} />
@@ -137,7 +137,7 @@ export function MarketView({ id }: { id: string }) {
         )}
       </Panel>
 
-      <div className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
+      <div className="grid items-start gap-6 lg:grid-cols-[1.3fr_1fr]">
         <Panel title="Depth ladder" id="ladder" aside={book ? <span className="text-xs text-fg-subtle">As of {formatUtc(book.at)}</span> : null}>
           {book && (book.bids.length || book.asks.length) ? (
             <DepthLadder book={book} />
@@ -145,7 +145,7 @@ export function MarketView({ id }: { id: string }) {
             <EmptyState title="Book is empty" detail="No resting orders were seen on this market in the latest snapshot." className="border-0 p-0" />
           )}
         </Panel>
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 lg:sticky lg:top-24">
           <Panel title={<InfoTip metric="strataShare">STRATA share of book</InfoTip>} id="share">
             {now ? (
               <>

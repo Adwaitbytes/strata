@@ -19,8 +19,7 @@ export function formatUsd(value: number | null | undefined): string {
   if (value == null || !Number.isFinite(value)) return NA;
   const abs = Math.abs(value);
   const sign = value < 0 ? MINUS : "";
-  if (abs >= 1_000_000) return `${sign}$${compact(abs, 2)}`;
-  if (abs >= 10_000) return `${sign}$${compact(abs, 1)}`;
+  if (abs >= 1_000) return `${sign}$${compact(abs, 1)}`;
   return `${sign}$${int.format(abs)}`;
 }
 
@@ -53,13 +52,14 @@ export function formatScore(score: number | null | undefined): string {
 }
 
 /** Formats a decimal string (human units) without converting through a float. */
-export function formatPrice(value: string | null | undefined): string {
+export function formatPrice(value: string | null | undefined, maxFraction?: number): string {
   if (value == null) return NA;
   const match = /^(-?)(\d+)(?:\.(\d+))?$/.exec(value);
   if (!match) return NA;
   const [, neg, whole = "0", frac] = match;
   const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return `${neg ? MINUS : ""}${grouped}${frac ? `.${frac}` : ""}`;
+  const shown = frac !== undefined && maxFraction !== undefined ? frac.slice(0, maxFraction) : frac;
+  return `${neg ? MINUS : ""}${grouped}${shown ? `.${shown}` : ""}`;
 }
 
 export function formatCountdown(ms: number): string {

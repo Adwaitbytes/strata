@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 import { formatBps, formatCountdown, formatPct, formatPrice, formatScore, formatUptime, formatUsd, formatUsdSigned, shortHex } from "./format";
 
 describe("format", () => {
-  it("formats USD compactly above 10k and exactly below", () => {
-    expect(formatUsd(1234.5)).toBe("$1,235");
+  it("formats USD compactly from 1k with one fraction digit", () => {
+    expect(formatUsd(999.4)).toBe("$999");
+    expect(formatUsd(1234.5)).toBe("$1.2K");
     expect(formatUsd(25_400)).toBe("$25.4K");
-    expect(formatUsd(3_250_000)).toBe("$3.25M");
+    expect(formatUsd(3_250_000)).toBe("$3.3M");
     expect(formatUsd(0)).toBe("$0");
   });
 
@@ -37,6 +38,9 @@ describe("format", () => {
     expect(formatPrice("100.050")).toBe("100.050");
     expect(formatPrice("12345.5")).toBe("12,345.5");
     expect(formatPrice("-0.25")).toBe("−0.25");
+    // Oracle prices arrive with up to 18 decimals; maxFraction truncates the string, no float rounding.
+    expect(formatPrice("2230.5250740665452999", 4)).toBe("2,230.5250");
+    expect(formatPrice("8.1", 4)).toBe("8.1");
   });
 
   it("formats countdowns", () => {
