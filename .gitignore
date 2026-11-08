@@ -16,3 +16,4 @@ packages/contracts/broadcast/*/31337/
 *.pem
 *.key
 keystore/
+.secrets/

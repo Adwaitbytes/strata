@@ -26,3 +26,19 @@ The owner did not reply to the Section 23.1 questions, so every answer below is 
 | D19 | 2026-11-08 | Shared Drizzle schema and SQL migrations live in **`packages/db`** (owned by W4). | Inside services/indexer | Indexer, scorer, agent and API all import it; a package avoids cross-service imports. | n/a (technical) |
 | D20 | 2026-11-08 | Score merkle tree: single keccak leaf over the 288-byte abi.encode preimage, sorted-pair internal nodes (OZ `MerkleProof`). Reference implementation in `packages/sdk/src/merkle.ts`. | OZ StandardMerkleTree double hash | Matches the PRD leaf definition exactly; leaf and node preimage lengths differ, so no second-preimage risk. | n/a (technical) |
 | D21 | 2026-11-08 | `ScoreAttestor` reads the authorized poster from `StrataArena.attestor()`, so there is one attestor setting, changed only by the arena owner. | Separate attestor role per contract | One source of truth, fewer owner transactions. | n/a (technical) |
+
+## Owner answers received 2026-11-09 (supersede defaults above where they differ)
+
+| # | Date | Decision | Options considered | Reason | Owner approval |
+|---|---|---|---|---|---|
+| D22 | 2026-11-09 | Name stays STRATA for now; owner may supply a final name later. Keep the name in one place (`packages/ui` brand tokens, `apps/web` metadata) so a rename is cheap. | | Owner reply Q1 | Owner |
+| D23 | 2026-11-09 | Domain: Vercel URL only, no purchase. | | Owner reply Q2 | Owner |
+| D24 | 2026-11-09 | GitHub: owner's personal account `Adwaitbytes`, repo `strata`, private until submission. Repo creation was blocked by the session permission classifier; owner to create or allow. | | Owner reply Q3 | Owner |
+| D25 | 2026-11-09 | Hosting: **Vercel** for web and API. Long-running processes (agents, indexer, scorer) cannot live in Vercel Functions at a 1 to 3 s cycle, so they run in Docker on the owner's Mac with `restart: always`, writing to the shared database. Moving them to a cloud VM later is a config change. | Vercel cron-chained workers, paid VM | Owner has no budget; only Vercel was approved. Mac must stay on. Known limitation in SECURITY.md and RUNBOOK.md. | Owner (Vercel), orchestrator (Mac workers) |
+| D26 | 2026-11-09 | Production database: **Neon** (free tier, owner provides the connection string via `.secrets/neon_url`, never pasted in chat). Local dev uses TimescaleDB in Docker on port 5433. Migration 0001 works on both (hypertables when Timescale exists, BRIN indexes otherwise). | Timescale Cloud, RDS | Free, owner offered it | Owner |
+| D27 | 2026-11-09 | **Mainnet capital is $0 today.** Mainnet contract deploy, attestations and house agents need INJ gas and USDC margin. Everything is built and run on testnet; mainnet steps are prepared and stay blocked until the owner funds a wallet. If no funds arrive, the application stage is **Testnet** (PRD 22.1). | | Owner reply Q5: "no money to put in" | Owner |
+| D28 | 2026-11-09 | Wallets: testnet keys generated locally into encrypted keystores (D16); Chrome MCP used for faucets and explorer checks only, never to handle keys. | Create wallets in browser extension | Keys never pass through chat or a browser page we automate | Owner allowed Chrome use |
+| D29 | 2026-11-09 | Anthropic API key: owner will provide via `.secrets/anthropic_api_key`. Tuner stays in shadow mode until then. | | Owner reply Q9 | Owner |
+| D30 | 2026-11-09 | Telegram: owner creates the bot; setup steps delivered in the final report and `docs/RUNBOOK.md`. | | Owner reply Q10 | Owner |
+| D31 | 2026-11-09 | Blender 5.2.1 is installed. No BlenderMCP tools are exposed to this session, so assets are produced by headless Blender Python scripts in `infra/blender/` run by the orchestrator (`blender -b -P`). | | Owner reply Q11 | Owner |
+| D32 | 2026-11-09 | Brand: researched original identity per PRD 12 ("liquidity as terrain"). | | Owner reply Q12 | Owner |

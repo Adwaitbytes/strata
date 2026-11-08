@@ -1,0 +1,16 @@
+# Local and single-host Postgres 16 + TimescaleDB. Bound to localhost only.
+services:
+  db:
+    image: timescale/timescaledb:2.17.2-pg16
+    restart: always
+    environment:
+      POSTGRES_USER: strata
+      POSTGRES_DB: strata
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets: [db_password]
+    ports: ["127.0.0.1:5433:5432"]
+    volumes: [strata-db:/var/lib/postgresql/data, ../../packages/db/migrations:/docker-entrypoint-initdb.d:ro]
+    healthcheck: { test: ["CMD-SHELL", "pg_isready -U strata"], interval: 5s, retries: 20 }
+secrets:
+  db_password: { file: ../../.secrets/db_password }
+volumes: { strata-db: {} }
