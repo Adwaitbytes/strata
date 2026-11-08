@@ -12,9 +12,9 @@
     "fetch-markets": "tsx ../../scripts/fetch-markets.ts",
     "inj:grant-trading": "tsx src/injective/bin/grant-trading.ts",
     "inj:testnet-smoke": "tsx src/injective/bin/testnet-smoke.ts",
-    "inj:fund": "tsx src/injective/bin/fund.ts",
     "inj:balances": "tsx src/injective/bin/balances.ts",
-    "inj:distribute": "tsx ../../scripts/distribute-testnet-funds.ts"
+    "inj:distribute": "tsx ../../scripts/distribute-testnet-funds.ts",
+    "inj:stream-check": "tsx src/injective/bin/stream-check.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.6.0",

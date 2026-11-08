@@ -202,7 +202,9 @@ async function distributeUnlocked(options: DistributeOptions): Promise<Distribut
 
   const deadline = Date.now() + (options.timeoutMs ?? 60 * 60_000);
   let bal = await readBalances(evm, source.evmAddress, source.injAddress);
-  while (bal.injWei <= SOURCE_INJ_RESERVE) {
+  // Funded means: enough INJ to pay gas for the transfers. Gas grants are only sent when the
+  // source holds more than its reserve (planDistribution); stablecoins are split regardless.
+  while (bal.injWei < MIN_GAS_GRANT) {
     log(`waiting for funding: ${source.evmAddress} has ${fmt(bal.injWei, 18)} INJ, ${fmt(bal.usdc, 6)} USDC, ${fmt(bal.usdt, 6)} USDT`);
     if (Date.now() > deadline) throw new Error("timed out waiting for the source wallet to be funded");
     await sleep(options.pollMs ?? 30_000);
