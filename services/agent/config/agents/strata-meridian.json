@@ -1,0 +1,21 @@
+{
+  "name": "strata-meridian",
+  "network": "mainnet",
+  "enabled": false,
+  "capitalUsd": 500,
+  "notes": "MAINNET, DISABLED (D27, D33): release stage is TESTNET. Tickers verified against a live mainnet LCD query (2026-11-09). D6 split across two house agents:  daily loss and  season drawdown each ( and  total). Enabling needs enabled=true, MAINNET_GO_AHEAD=true and owner funding.",
+  "params": {
+    "baseOrderSizeUsd": 20,
+    "inventoryCapUsd": 100,
+    "maxGrossNotionalUsd": 500,
+    "maxNetNotionalUsd": 200,
+    "maxDailyLossUsd": 25,
+    "maxDrawdownUsd": 75,
+    "maxOrdersPerMinute": 60,
+    "minHalfSpreadBps": 15,
+    "minMarginRatio": 2,
+    "criticalMarginRatio": 1.3
+  },
+  "markets": [{ "ticker": "EURUSD/USDC PERP", "sessionClass": "fx" }, { "ticker": "USTECH/USDC PERP", "sessionClass": "us_equity" }],
+  "tuner": { "mode": "shadow", "intervalMin": 10, "shadowReview": null }
+}

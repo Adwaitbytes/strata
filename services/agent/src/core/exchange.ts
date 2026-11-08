@@ -102,6 +102,13 @@ export interface ExchangeAdapter {
   readonly network: "mainnet" | "testnet";
   readonly subaccountId: string;
   readonly address: string;
+  /**
+   * Longest time after broadcast that a tx whose response was lost can still be included
+   * (for Cosmos txs: timeout height minus current height, times block time). The core keeps a
+   * market uncertain at least this long before reconciling (security review L-4). Optional for
+   * adapters that cannot know it; the configured settle window applies then.
+   */
+  readonly txTimeoutMs?: number;
   getMarketState(marketId: string): Promise<MarketState>;
   getOpenOrders(marketId: string): Promise<LiveOrder[]>;
   /** One tx: cancels + creates (MsgBatchUpdateOrders or exchange precompile equivalent). */

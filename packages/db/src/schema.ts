@@ -242,3 +242,16 @@ export const epochRuns = pgTable("epoch_runs", {
   detail: jsonb("detail").notNull(),
   updatedAt: ts("updated_at").notNull(),
 }, (t) => [primaryKey({ columns: [t.network, t.season, t.epoch] })]);
+
+/**
+ * Persisted Risk Governor state and kill latch per agent (migration 0005, owned by W2, review H-2).
+ * `state` is `{ risk: { dayKey, dayStartEquityUsd, peakEquityUsd, stoppedForDay, stoppedForSeason },
+ * kill: { killed, closePositions, source, at } }`. Agents load it at boot and refuse to quote if it
+ * cannot be read.
+ */
+export const agentRiskState = pgTable("agent_risk_state", {
+  network: networkEnum("network").notNull(),
+  agentId: integer("agent_id").notNull(),
+  state: jsonb("state").notNull(),
+  updatedAt: ts("updated_at").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.agentId] })]);

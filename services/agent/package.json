@@ -9,6 +9,7 @@
     "test": "vitest run",
     "coverage": "vitest run --coverage",
     "start": "tsx src/core/main.ts",
+    "clear-stops": "tsx src/core/clearStops.ts",
     "fetch-markets": "tsx ../../scripts/fetch-markets.ts",
     "inj:grant-trading": "tsx src/injective/bin/grant-trading.ts",
     "inj:testnet-smoke": "tsx src/injective/bin/testnet-smoke.ts",

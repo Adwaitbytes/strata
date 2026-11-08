@@ -1,0 +1,10 @@
+{
+  "name": "strata-test-3",
+  "network": "testnet",
+  "enabled": true,
+  "capitalUsd": 1000,
+  "notes": "Tickers verified against a live testnet LCD query (exchange/v1beta1/derivative/markets, 2026-11-09). Market IDs are resolved at runtime from @strata/config generated markets. agentId comes from AGENT_ID after StrataArena enrollment. RWA coverage on testnet is limited: SICI, XAU and FX perps are not listed on injective-888 today, so GOLD/USDT PERP runs on the CME Globex calendar to exercise the session guard.",
+  "params": { "baseOrderSizeUsd": 25, "inventoryCapUsd": 200, "maxGrossNotionalUsd": 1000, "maxNetNotionalUsd": 300, "maxDailyLossUsd": 50, "maxDrawdownUsd": 150 },
+  "markets": [{ "ticker": "GOLD/USDT PERP", "sessionClass": "cme_globex" }, { "ticker": "EVINDEX/USDT PERP" }],
+  "tuner": { "mode": "shadow", "intervalMin": 10, "shadowReview": null }
+}
