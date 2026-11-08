@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>STRATA deck</title>
+<meta name="viewport" content="width=1920">
+<!--
+  STRATA pitch deck, 10 slides at 1920x1080. Build: `node deliverables/deck/build.mjs`
+  (inlines the wordmark from packages/ui and prints deliverables/STRATA-deck.pdf with Chrome).
+  Every number that is not yet real is a .ph placeholder, rendered in amber with a
+  "needs real data" tag, so a draft can never pass for the final deck.
+-->
+<style>
+@font-face{font-family:"Geist";src:url(fonts/geist.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"Geist Mono";src:url(fonts/geist-mono.woff2) format("woff2");font-weight:100 900}
+@font-face{font-family:"Archivo Wide";src:url(fonts/archivo-wide.woff2) format("woff2");font-weight:100 900;font-stretch:125%}
+
+:root{
+  --bg:#07080b;--raised:#0d0f14;--surface:#11141a;--border:#1f242d;--border-strong:#2c333e;
+  --fg:#e8ebf0;--muted:#9aa3b2;--subtle:#6b7484;
+  --accent:#3ee6d4;--accent-soft:rgb(62 230 212 / .12);
+  --bid:#5fd49a;--ask:#ff7d6b;--warn:#f2b84b;--warn-soft:rgb(242 184 75 / .12);--halt:#ff4d5e;--baseline:#8b93a7;
+  --display:"Archivo Wide",Geist,sans-serif;--sans:Geist,system-ui,sans-serif;--mono:"Geist Mono",ui-monospace,monospace;
+}
+@page{size:1920px 1080px;margin:0}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.slide{position:relative;width:1920px;height:1080px;overflow:hidden;background:var(--bg);page-break-after:always;break-after:page;padding:120px 144px 112px}
+.slide:last-child{page-break-after:auto;break-after:auto}
+
+/* strata texture: faint horizontal layers, the brand's stratum line */
+.slide::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(180deg,transparent 0 47px,rgb(255 255 255 / .018) 47px 48px);}
+.slide::after{content:"";position:absolute;left:0;right:0;bottom:0;height:420px;pointer-events:none;
+  background:radial-gradient(1200px 380px at 78% 120%,rgb(62 230 212 / .07),transparent 70%)}
+
+.chrome{position:absolute;left:144px;right:144px;top:56px;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.chrome svg{height:20px;width:auto}
+.chrome .num{font:500 18px/1 var(--mono);color:var(--subtle);letter-spacing:.04em}
+.foot{position:absolute;left:144px;right:144px;bottom:48px;display:flex;justify-content:space-between;font:500 16px/1 var(--mono);color:var(--subtle);letter-spacing:.06em;text-transform:uppercase;z-index:2}
+.content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+
+.eyebrow{font:500 20px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;display:flex;align-items:center;gap:16px}
+.eyebrow::before{content:"";width:40px;height:2px;background:var(--accent)}
+h1{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:84px;line-height:1.02;letter-spacing:-.025em;max-width:1500px}
+h1 .dim{color:var(--subtle)}
+h2{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:64px;line-height:1.05;letter-spacing:-.02em;max-width:1500px}
+.lede{font-size:30px;line-height:1.45;color:var(--muted);max-width:1180px;margin-top:32px}
+.lede strong{color:var(--fg);font-weight:600}
+
+.grid{display:grid;gap:24px}
+.card{background:linear-gradient(180deg,var(--raised),rgb(13 15 20 / .6));border:1px solid var(--border);border-radius:20px;padding:36px 36px 32px;position:relative}
+.card h3{font:600 28px/1.2 var(--sans);letter-spacing:-.01em;margin-bottom:14px}
+.card p{font-size:22px;line-height:1.5;color:var(--muted)}
+.card .k{font:500 16px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);margin-bottom:20px}
+.card.accent{border-color:rgb(62 230 212 / .45);background:linear-gradient(180deg,#0f1f1e,var(--raised))}
+
+.stat .v{font:600 88px/1 var(--mono);letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.stat .l{font-size:22px;line-height:1.4;color:var(--muted);margin-top:16px}
+.src{font:400 15px/1.5 var(--mono);color:var(--subtle);margin-top:auto;padding-top:24px}
+
+/* placeholders: impossible to mistake for real data */
+.ph{display:inline-block;color:var(--warn);background:var(--warn-soft);border:2px dashed rgb(242 184 75 / .7);border-radius:10px;padding:0 .25em;font-family:var(--mono);letter-spacing:-.02em}
+.ph-tag{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--warn);border:1px solid rgb(242 184 75 / .5);border-radius:999px;padding:9px 16px;background:var(--warn-soft)}
+.ph-tag::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--warn)}
+.ph-box{border:2px dashed rgb(242 184 75 / .6);border-radius:20px;background:repeating-linear-gradient(135deg,rgb(242 184 75 / .04) 0 14px,transparent 14px 28px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;color:var(--warn);text-align:center}
+.ph-box b{font:600 28px/1.2 var(--sans);color:var(--fg)}
+.ph-box span{font:400 20px/1.4 var(--mono);color:var(--warn);max-width:640px}
+
+.badge{display:inline-flex;align-items:center;gap:8px;font:600 14px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;padding:8px 12px;border-radius:6px;border:1px solid var(--border-strong);color:var(--muted)}
+.badge.t{color:var(--accent);border-color:rgb(62 230 212 / .4)}
+
+.list{list-style:none;display:flex;flex-direction:column;gap:18px}
+.list li{font-size:24px;line-height:1.45;color:var(--muted);padding-left:32px;position:relative}
+.list li::before{content:"";position:absolute;left:0;top:.62em;width:14px;height:2px;background:var(--accent)}
+.list li strong{color:var(--fg);font-weight:600}
+
+.proof .stat{padding:24px 32px}
+.proof .stat .v{font-size:60px}
+.proof .stat .l{margin-top:10px;font-size:20px}
+table.t{border-collapse:collapse;width:100%}
+table.t td,table.t th{text-align:left;padding:20px 24px;border-bottom:1px solid var(--border);font-size:22px;line-height:1.4;vertical-align:top}
+table.t th{font:500 15px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--subtle);padding-top:0}
+table.t td:first-child{color:var(--muted);width:44%}
+table.t td:last-child{color:var(--fg)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="seam"><rect width="548" height="41.2"/><rect y="45.6" width="548" height="68.6"/></clipPath>
+    <symbol id="wordmark" viewBox="0 0 548 68.6"><path fill="currentColor" clip-path="url(#seam)" d="__WORDMARK_D__"/></symbol>
+  </defs>
+</svg>
+
+<!-- 1. PROBLEM -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6" style="color:var(--fg)"><use href="#wordmark"/></svg><span class="num">01 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">The problem</div>
+    <h1>Injective has the markets.<br><span class="dim">The books are thin.</span></h1>
+    <p class="lede">Equities, FX, commodities and indices trade as perps on Injective's onchain order book. Most of those books have wide spreads and little size near the mid, because market making is left to a handful of firms.</p>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:64px">
+      <div class="card stat"><div class="v">135</div><div class="l">active RWA perpetual markets on Injective</div></div>
+      <div class="card stat"><div class="v">~$230M</div><div class="l">monthly Injective RWA perp volume, against ~$1.4B <em>per day</em> on Hyperliquid builder markets</div></div>
+      <div class="card stat"><div class="v">~$62</div><div class="l">fees earned by Helix in 30 days</div></div>
+    </div>
+    <p class="src">Sources: STRATA PRD research, Nov 2026. Helix fees per DefiLlama. Third-party figures, not STRATA measurements.</p>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Injective Bangkok Hacker House 2026</span></div>
+</section>
+
+<!-- 2. INSIGHT -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">02 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">The insight</div>
+    <h1>Liquidity grows when anyone can prove they supply it.</h1>
+    <p class="lede">Usable liquidity near the mid is the number that matters, and today nobody measures who provides it. Give new market makers, especially AI agents, an open place to compete with their own capital and a public score, and the good ones show up.</p>
+    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:56px">
+      <div class="card">
+        <div class="k">What went wrong elsewhere</div>
+        <ul class="list">
+          <li>A pooled vault took a ~$12M hit from one manipulated market (HLP, JELLY)</li>
+          <li>Future-dated oracle reports drained $18M (Ostium)</li>
+          <li>LLM trading bots mostly lost money (6 of 32 runs profitable)</li>
+          <li>RWA perps gap over weekends while the oracle sleeps</li>
+        </ul>
+      </div>
+      <div class="card accent">
+        <div class="k" style="color:var(--accent)">What STRATA does instead</div>
+        <ul class="list">
+          <li><strong>No pooled vault.</strong> Agents trade their own capital</li>
+          <li><strong>Oracle Guard</strong> halts on stale, future or divergent prices</li>
+          <li><strong>AI never sets prices.</strong> It tunes five bounded risk knobs</li>
+          <li><strong>Session Guard</strong> flattens before the underlying closes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Sources: PRD 3.2 and references</span></div>
+</section>
+
+<!-- 3. PRODUCT -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">03 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">The product</div>
+    <h2>An open arena for market-making agents, scored onchain every hour.</h2>
+    <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-top:64px">
+      <div class="card"><div class="k">01 Enroll</div><h3>Bring an agent</h3><p>Link an ERC-8004 identity and enroll in the StrataArena contract for the season.</p></div>
+      <div class="card"><div class="k">02 Quote</div><h3>Make markets</h3><p>Two-sided ladders on Injective RWA perps every 1 to 3 seconds, behind the guards.</p></div>
+      <div class="card"><div class="k">03 Measure</div><h3>Every 5 seconds</h3><p>Spread, depth within 25 bps, uptime, book share, markouts and PnL, against a recorded baseline.</p></div>
+      <div class="card accent"><div class="k" style="color:var(--accent)">04 Attest</div><h3>Score onchain</h3><p>Hourly merkle root posted to ScoreAttestor. Anyone can verify a score with a proof.</p></div>
+    </div>
+    <div class="card" style="margin-top:24px;padding:28px 36px;display:flex;gap:40px;align-items:center">
+      <div class="k" style="margin:0;flex:none">Public score</div>
+      <code style="font:500 22px/1.5 var(--mono);color:var(--fg)">liquidity = 0.35 depth + 0.25 uptime + 0.20 tightness + 0.20 book share<br><span style="color:var(--muted)">score = 10000 x liquidity x (0.7 + 0.3 x quality)</span></code>
+    </div>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Formula: PRD 10.3, docs/SCORING.md</span></div>
+</section>
+
+<!-- 4. GUARDS -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">04 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">The guards</div>
+    <h2>Every agent stops itself before it can do damage.</h2>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);margin-top:56px">
+      <div class="card"><div class="k" style="color:var(--halt)">Oracle Guard</div><h3>Distrust the price feed</h3><p>Halt on reports older than 30 s, newer than chain time + 2 s, more than 150 bps from the book, or out of line with a second source.</p></div>
+      <div class="card"><div class="k" style="color:var(--warn)">Session Guard</div><h3>Respect market hours</h3><p>Spreads x2 and size x0.5 thirty minutes before close. Flat five minutes before. Cooldown and a 10 minute ramp after reopen.</p></div>
+      <div class="card"><div class="k" style="color:var(--accent)">Risk Governor</div><h3>Hard limits, in code</h3><p>Gross and net notional, daily loss, season drawdown, order rate, margin ratio. Mainnet capital capped in code.</p></div>
+      <div class="card"><div class="k" style="color:var(--fg)">Kill switch</div><h3>Three ways to stop</h3><p>Telegram command, an owner-signed API call, or an env flag. Cancels every order; reduce-only close if needed.</p></div>
+    </div>
+    <p class="src">Each halt is written as a public event with the measured values that caused it. The AI tuner cannot change any guard.</p>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>docs/GUARDS.md</span></div>
+</section>
+
+<!-- 5. LIVE PROOF -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">05 / 10</span></div>
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div class="eyebrow">Live proof</div>
+      <span class="ph-tag">Draft: real numbers pending</span>
+    </div>
+    <h2>Before and after, on the same book.</h2>
+    <div class="grid proof" style="grid-template-columns:1.35fr 1fr;margin-top:48px;flex:1 1 0;min-height:0">
+      <div class="ph-box"><b>Spread over time: baseline band vs agents live</b><span>[MARKET_SYMBOL] on [NETWORK]. Screenshot of the Market page chart goes here.</span></div>
+      <div class="grid" style="grid-template-rows:repeat(3,minmax(0,1fr));gap:20px;min-height:0">
+        <div class="card stat"><div class="v"><span class="ph">[SPREAD_BPS]</span></div><div class="l">bps median spread improvement vs baseline</div></div>
+        <div class="card stat"><div class="v"><span class="ph">[DEPTH_USD]</span></div><div class="l">added depth within 25 bps of mid</div></div>
+        <div class="card stat"><div class="v"><span class="ph">[N_EPOCHS]</span></div><div class="l">epochs attested onchain, latest tx <span class="ph" style="font-size:18px">[EPOCH_TX]</span></div></div>
+      </div>
+    </div>
+    <p class="src">Network and provenance label required on every number: <span class="badge t">[NETWORK]</span> <span class="badge">[PROVENANCE]</span></p>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Source: STRATA API, [DATE_RANGE]</span></div>
+</section>
+
+<!-- 6. ARCHITECTURE -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">06 / 10</span></div>
+  <div class="content" style="flex-direction:row;gap:72px;align-items:center">
+    <div style="flex:0 0 520px">
+      <div class="eyebrow">Architecture</div>
+      <h2 style="font-size:56px">Small contracts. Deterministic agents. Public data.</h2>
+      <ul class="list" style="margin-top:40px">
+        <li><strong>Contracts</strong> hold no funds and cannot be upgraded</li>
+        <li><strong>Agents</strong> run one container each, cancel on any doubt</li>
+        <li><strong>Scores</strong> are merkle roots; proofs verify in the browser</li>
+        <li><strong>Every number</strong> carries its network and source</li>
+      </ul>
+    </div>
+    <div style="flex:1;border:1px solid var(--border);border-radius:20px;overflow:hidden;background:#07080b">
+      <img src="../../docs/architecture.svg" alt="STRATA architecture diagram" style="display:block;width:100%;height:auto">
+    </div>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>docs/ARCHITECTURE.md</span></div>
+</section>
+
+<!-- 7. TRACTION SO FAR -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">07 / 10</span></div>
+  <div class="content">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div class="eyebrow">Traction so far</div>
+      <span class="ph-tag">Draft: links pending</span>
+    </div>
+    <h2>Built in the open, running on <span class="ph">[NETWORK]</span>.</h2>
+    <table class="t" style="margin-top:56px">
+      <tr><th>What</th><th>Status</th></tr>
+      <tr><td>StrataArena and ScoreAttestor, verified on Blockscout</td><td><span class="ph">[CONTRACT_LINKS]</span></td></tr>
+      <tr><td>House agents quoting</td><td><span class="ph">[N_AGENTS]</span> agents on <span class="ph">[MARKETS]</span></td></tr>
+      <tr><td>Hourly onchain attestations</td><td><span class="ph">[N_EPOCHS]</span> epochs posted</td></tr>
+      <tr><td>Guard halts logged in public</td><td><span class="ph">[N_HALTS]</span> events</td></tr>
+      <tr><td>Options writer agent</td><td><span class="ph">[OPTIONS_STATUS]</span></td></tr>
+      <tr><td>Open source, MIT</td><td><span class="ph">[GITHUB_URL]</span></td></tr>
+    </table>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Source: STRATA Transparency page</span></div>
+</section>
+
+<!-- 8. ROADMAP -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">08 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">Roadmap</div>
+    <h2>From proving ground to liquidity layer.</h2>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:56px">
+      <div class="card"><div class="k">R0 &nbsp;Now</div><ul class="list">
+        <li>Arena and attestor contracts</li><li>House agents with guards</li><li>Hourly onchain scores</li><li>Public leaderboard, Season 0 points</li></ul></div>
+      <div class="card accent"><div class="k" style="color:var(--accent)">R1 &nbsp;Hacker House, Dec 1 to 10</div><ul class="list">
+        <li>Rewards distributor, Season 1 incentives</li><li>Options writer on mainnet when Options launches</li><li>Private RFQ for block trades</li><li>Agent SDK on npm, MCP onboarding</li></ul></div>
+      <div class="card"><div class="k">R2 &nbsp;After</div><ul class="list">
+        <li>Audited vault allocating to top agents, behind legal review</li><li>Bittensor subnet mirroring the arena</li><li>Liquidity on day one for new Injective markets</li></ul></div>
+    </div>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>PRD 6</span></div>
+</section>
+
+<!-- 9. TEAM -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">09 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">Team</div>
+    <h1>Aarambh Labs</h1>
+    <p class="lede">A product studio that ships trading and identity infrastructure. STRATA is built on what we learned shipping these:</p>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:56px">
+      <div class="card"><div class="k">Trading</div><h3>Supermission</h3><p>AI DeFi trading terminal. About $100K in grants.</p></div>
+      <div class="card"><div class="k">Developer tools</div><h3>Monsmith</h3><p>IDE for building on Monad.</p></div>
+      <div class="card"><div class="k">Identity</div><h3>Proofly</h3><p>KYC product, incubated at IFIH GIFT City.</p></div>
+    </div>
+    <p class="src">Client work includes DP World and WASL Group. <span class="ph" style="font-size:15px">[OWNER TO CONFIRM BEFORE SHARING]</span></p>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Team</span></div>
+</section>
+
+<!-- 10. ASK -->
+<section class="slide">
+  <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">10 / 10</span></div>
+  <div class="content">
+    <div class="eyebrow">The ask</div>
+    <h1>Ten days in Bangkok to turn the arena into Injective's open liquidity lane.</h1>
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:64px">
+      <div class="card"><div class="k">01</div><h3>Injective integration</h3><p>Options writer access, OLP fit, and a review of our exchange and authz usage.</p></div>
+      <div class="card"><div class="k">02</div><h3>Tokenomics and DeFi design</h3><p>Season 1 rewards that pay for depth and uptime, and resist wash and spam.</p></div>
+      <div class="card"><div class="k">03</div><h3>Ecosystem introductions</h3><p>Agent builders and market makers who want a public scoreboard.</p></div>
+    </div>
+    <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
+      <svg viewBox="0 0 548 68.6" style="height:56px;width:auto;color:var(--fg)"><use href="#wordmark"/></svg>
+      <div style="text-align:right;font:500 24px/1.6 var(--mono);color:var(--muted)"><span class="ph">[APP_URL]</span><br><span class="ph">[GITHUB_URL]</span></div>
+    </div>
+  </div>
+  <div class="foot"><span>Aarambh Labs</span><span>Open to any agent. Verified onchain.</span></div>
+</section>
+
+</body>
+</html>
