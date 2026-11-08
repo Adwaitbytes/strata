@@ -36,6 +36,8 @@ All commands below run from the repo root.
 
 Every secret is a file under `.secrets/` (gitignored, folder mode 700, files mode 600). Compose mounts them read-only at `/run/secrets/<name>`; nothing secret is passed as an env var or baked into an image. Each agent container mounts only its own keystore and passphrase.
 
+**Known limitation (D16, W11 M-5): passphrase files live beside the keystores.** Each encrypted keystore `.secrets/keystores/<name>.json` has its passphrase in `.secrets/<name>.pass` on the same disk, so anyone who can read `.secrets/` as your user can decrypt every key. The encryption protects against a stray copy of the JSON alone (a backup, a pasted file), not against access to the Mac account. Mitigations in place: folder 700 and files 600 (enforced and checked by `infra/scripts/init-secrets.sh`), FileVault, each container mounts only its own pair, testnet keys hold testnet funds only. Stronger option on this Mac: store passphrases in the macOS Keychain (`@strata/keys` supports `passphraseStore: "keychain"`), then delete the `.pass` files; containers cannot read the Keychain, so this suits processes run on the host. A KMS-backed `KeySource` replaces both when a cloud host exists. Listed in `docs/SECURITY.md` known limitations.
+
 | File | Who creates it | Used by |
 |---|---|---|
 | `neon_url` | Owner (D26) | indexer, scorer, agents (as `database_url`) |
@@ -241,7 +243,7 @@ When approved: create and fund `strata-atlas`, `strata-meridian` and `strata-mai
 Everything that runs on the Mac is one compose file, so moving is a copy, not a rewrite.
 
 1. Any Linux VM with Docker Engine and the compose plugin, 2 vCPU and 4 GB RAM minimum. Open no inbound ports except SSH (key only). Prometheus and Grafana stay bound to 127.0.0.1; reach them with `ssh -L 3001:127.0.0.1:3001 vm`.
-2. Copy the repo (git clone) and the `.secrets/` folder (`scp -r`, then `chmod 700 .secrets && chmod 600 .secrets/* .secrets/keystores/*`).
+2. Copy the repo (git clone) and the `.secrets/` folder (`scp -r`), then run `infra/scripts/init-secrets.sh` to set directories to 700 and files to 600 and verify them.
 3. On Linux, bind-mounted files keep host ownership: make the secrets readable by the container user (`sudo chown -R 1000:1000 .secrets`), since containers run as `node` (uid 1000).
 4. Stop the stack on the Mac first (`down`, so agents cancel orders), then `up -d --build` on the VM. Never run two copies of an agent at once: both would quote the same subaccount.
 5. Docker Engine on Linux starts on boot with `sudo systemctl enable docker`; `restart: always` handles the containers. Section 3 no longer applies.
