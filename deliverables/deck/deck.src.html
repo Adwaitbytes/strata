@@ -44,7 +44,7 @@ html,body{background:var(--bg);color:var(--fg);font-family:var(--sans);-webkit-f
 .eyebrow::before{content:"";width:40px;height:2px;background:var(--accent)}
 h1{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:84px;line-height:1.02;letter-spacing:-.025em;max-width:1500px}
 h1 .dim{color:var(--subtle)}
-h2{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:64px;line-height:1.05;letter-spacing:-.02em;max-width:1500px}
+h2{font-family:var(--display);font-stretch:125%;font-weight:700;font-size:64px;line-height:1.05;letter-spacing:-.02em;max-width:1632px}
 .lede{font-size:30px;line-height:1.45;color:var(--muted);max-width:1180px;margin-top:32px}
 .lede strong{color:var(--fg);font-weight:600}
 
@@ -184,21 +184,21 @@ table.t td:last-child{color:var(--fg)}
   <div class="chrome"><svg viewBox="0 0 548 68.6"><use href="#wordmark"/></svg><span class="num">05 / 10</span></div>
   <div class="content">
     <div style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div class="eyebrow">Live proof</div>
+      <div class="eyebrow">Live proof <span class="badge t" style="font-size:16px">Injective testnet</span></div>
       <span class="ph-tag">Draft: real numbers pending</span>
     </div>
-    <h2>Before and after, on the same book.</h2>
+    <h2>Before and after, on the same testnet book.</h2>
     <div class="grid proof" style="grid-template-columns:1.35fr 1fr;margin-top:48px;flex:1 1 0;min-height:0">
-      <div class="ph-box"><b>Spread over time: baseline band vs agents live</b><span>[MARKET_SYMBOL] on [NETWORK]. Screenshot of the Market page chart goes here.</span></div>
+      <div class="ph-box"><b>Spread over time: baseline band vs agents live</b><span>[MARKET_SYMBOL] on Injective testnet. Screenshot of the Market page chart goes here.</span></div>
       <div class="grid" style="grid-template-rows:repeat(3,minmax(0,1fr));gap:20px;min-height:0">
         <div class="card stat"><div class="v"><span class="ph">[SPREAD_BPS]</span></div><div class="l">bps median spread improvement vs baseline</div></div>
         <div class="card stat"><div class="v"><span class="ph">[DEPTH_USD]</span></div><div class="l">added depth within 25 bps of mid</div></div>
         <div class="card stat"><div class="v"><span class="ph">[N_EPOCHS]</span></div><div class="l">epochs attested onchain, latest tx <span class="ph" style="font-size:18px">[EPOCH_TX]</span></div></div>
       </div>
     </div>
-    <p class="src">Network and provenance label required on every number: <span class="badge t">[NETWORK]</span> <span class="badge">[PROVENANCE]</span></p>
+    <p class="src">Network and provenance label required on every number: <span class="badge t">TESTNET</span> <span class="badge">provenance: TESTNET / BASELINE</span></p>
   </div>
-  <div class="foot"><span>Aarambh Labs</span><span>Source: STRATA API, [DATE_RANGE]</span></div>
+  <div class="foot"><span>Aarambh Labs</span><span>Source: STRATA API, Injective testnet, [DATE_RANGE]</span></div>
 </section>
 
 <!-- 6. ARCHITECTURE -->
@@ -230,7 +230,7 @@ table.t td:last-child{color:var(--fg)}
       <div class="eyebrow">Traction so far</div>
       <span class="ph-tag">Draft: links pending</span>
     </div>
-    <h2>Built in the open, running on <span class="ph">[NETWORK]</span>.</h2>
+    <h2>Built in the open on Injective testnet.</h2>
     <table class="t" style="margin-top:56px">
       <tr><th>What</th><th>Status</th></tr>
       <tr><td>StrataArena and ScoreAttestor, verified on Blockscout</td><td><span class="ph">[CONTRACT_LINKS]</span></td></tr>
@@ -238,7 +238,8 @@ table.t td:last-child{color:var(--fg)}
       <tr><td>Hourly onchain attestations</td><td><span class="ph">[N_EPOCHS]</span> epochs posted</td></tr>
       <tr><td>Guard halts logged in public</td><td><span class="ph">[N_HALTS]</span> events</td></tr>
       <tr><td>Options writer agent</td><td><span class="ph">[OPTIONS_STATUS]</span></td></tr>
-      <tr><td>Open source, MIT</td><td><span class="ph">[GITHUB_URL]</span></td></tr>
+      <tr><td>Open source, MIT</td><td>github.com/Adwaitbytes/strata</td></tr>
+      <tr><td>Mainnet</td><td>Contracts and agents ready, waiting on a funded wallet</td></tr>
     </table>
   </div>
   <div class="foot"><span>Aarambh Labs</span><span>Source: STRATA Transparency page</span></div>
@@ -252,9 +253,9 @@ table.t td:last-child{color:var(--fg)}
     <h2>From proving ground to liquidity layer.</h2>
     <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:56px">
       <div class="card"><div class="k">R0 &nbsp;Now</div><ul class="list">
-        <li>Arena and attestor contracts</li><li>House agents with guards</li><li>Hourly onchain scores</li><li>Public leaderboard, Season 0 points</li></ul></div>
+        <li>Arena and attestor contracts</li><li>House agents with guards</li><li>Hourly onchain scores</li><li>Public leaderboard, Season 0 points</li><li>All live on Injective testnet</li></ul></div>
       <div class="card accent"><div class="k" style="color:var(--accent)">R1 &nbsp;Hacker House, Dec 1 to 10</div><ul class="list">
-        <li>Rewards distributor, Season 1 incentives</li><li>Options writer on mainnet when Options launches</li><li>Private RFQ for block trades</li><li>Agent SDK on npm, MCP onboarding</li></ul></div>
+        <li>Mainnet beta once funded: contracts and agents ready</li><li>Rewards distributor, Season 1 incentives</li><li>Options writer on mainnet when Options launches</li><li>Private RFQ for block trades</li><li>Agent SDK on npm, MCP onboarding</li></ul></div>
       <div class="card"><div class="k">R2 &nbsp;After</div><ul class="list">
         <li>Audited vault allocating to top agents, behind legal review</li><li>Bittensor subnet mirroring the arena</li><li>Liquidity on day one for new Injective markets</li></ul></div>
     </div>
@@ -292,7 +293,7 @@ table.t td:last-child{color:var(--fg)}
     </div>
     <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end">
       <svg viewBox="0 0 548 68.6" style="height:56px;width:auto;color:var(--fg)"><use href="#wordmark"/></svg>
-      <div style="text-align:right;font:500 24px/1.6 var(--mono);color:var(--muted)"><span class="ph">[APP_URL]</span><br><span class="ph">[GITHUB_URL]</span></div>
+      <div style="text-align:right;font:500 24px/1.6 var(--mono);color:var(--muted)"><span class="ph">[APP_URL]</span><br>github.com/Adwaitbytes/strata</div>
     </div>
   </div>
   <div class="foot"><span>Aarambh Labs</span><span>Open to any agent. Verified onchain.</span></div>

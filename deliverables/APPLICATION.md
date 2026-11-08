@@ -6,18 +6,16 @@ Form: Injective Bangkok Hacker House (Dec 1 to 10, 2026). Closes **Nov 10, 2026*
 
 Nothing below in square brackets is real yet. Do not submit with a bracket left in.
 
-- [ ] Pick the stage. **Mainnet** only if PRD 1.3 S1, S2 and S5 are all live (contracts verified on mainnet Blockscout, 2+ house agents quoting on mainnet, at least one mainnet epoch attestation). Mainnet capital is $0 today (D27), so the default is **Testnet**. Delete the variant you do not use.
+- [x] Stage is **Testnet** (D33: no mainnet capital). Variant A below is the copy to submit. Variant B is kept only in case a wallet is funded and S1, S2 and S5 go live before the deadline.
 - [ ] `[TESTNET_APP_URL]`: testnet web app (Vercel URL, D23)
-- [ ] `[MAINNET_APP_URL]`: mainnet web app (Mainnet variant only)
-- [ ] `[TESTNET_ARENA_URL]` / `[MAINNET_ARENA_URL]`: the `/arena` leaderboard page
+- [ ] `[TESTNET_ARENA_URL]`: the `/arena` leaderboard page
 - [ ] `[TESTNET_ARENA_CONTRACT_URL]`, `[TESTNET_ATTESTOR_CONTRACT_URL]`: verified contracts on testnet Blockscout
-- [ ] `[MAINNET_ARENA_CONTRACT_URL]`, `[MAINNET_ATTESTOR_CONTRACT_URL]`: Mainnet variant only
-- [ ] `[TESTNET_EPOCH_TX_URL]` / `[MAINNET_EPOCH_TX_URL]`: one `EpochPosted` attestation tx
-- [ ] `[N_TESTNET_AGENTS]`, `[N_MAINNET_AGENTS]`: agents quoting at submission time, counted from the app
-- [ ] `[TESTNET_MARKETS]`, `[MAINNET_MARKETS]`: market symbols the agents quote, from `packages/config`
+- [ ] `[TESTNET_EPOCH_TX_URL]`: one `EpochPosted` attestation tx on testnet Blockscout
+- [ ] `[N_TESTNET_AGENTS]`: agents quoting at submission time, counted from the app
+- [ ] `[TESTNET_MARKETS]`: market symbols the agents quote, from `packages/config`
 - [ ] `[N_EPOCHS]`: epochs attested so far, from the Transparency page
 - [ ] `[OPTIONS_STATUS]`: either "live on testnet" (whitelist granted) or "running in a labeled simulator while we wait for writer access" (D9)
-- [ ] `[GITHUB_URL]`: repo URL once public (D24)
+- [ ] Make the repo public before submitting (it is private until submission, D24)
 - [ ] `[VIDEO_URL]`: demo video
 - [ ] `[DECK_URL]`: `deliverables/STRATA-deck.pdf` hosted somewhere reviewers can open
 - [ ] Owner confirms the "Earlier" sentence (grants figure, clients, incubation) is accurate and OK to state publicly
@@ -47,15 +45,15 @@ AI & agents
 
 ## Stage
 
-`[Testnet | Mainnet]`. Default: **Testnet** (D27).
+**Testnet** (D27, D33). Mainnet contracts and agents are built and wait on a funded wallet.
 
 ## What have you shipped
 
-### Variant A: Testnet (use this unless mainnet is live)
+### Variant A: Testnet (submit this one)
 
 Live on Injective testnet: arena and score attestation contracts on Injective EVM, verified on Blockscout ([TESTNET_ARENA_CONTRACT_URL], [TESTNET_ATTESTOR_CONTRACT_URL]). [N_TESTNET_AGENTS] STRATA agents quoting [TESTNET_MARKETS] behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations ([N_EPOCHS] so far, latest: [TESTNET_EPOCH_TX_URL]) and a public leaderboard at [TESTNET_ARENA_URL]. Options writer agent: [OPTIONS_STATUS]. Mainnet contracts and agents are built and tested, waiting on a funded wallet. Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
 
-### Variant B: Mainnet (only if S1, S2 and S5 are live)
+### Variant B: Mainnet (not in use; only if a wallet is funded and S1, S2 and S5 go live)
 
 Mainnet beta live: arena and score attestation contracts on Injective EVM, verified on Blockscout ([MAINNET_ARENA_CONTRACT_URL], [MAINNET_ATTESTOR_CONTRACT_URL]). [N_MAINNET_AGENTS] STRATA agents quoting [MAINNET_MARKETS] with team capital, behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations (latest: [MAINNET_EPOCH_TX_URL]) and a live leaderboard at [MAINNET_ARENA_URL]. Full feature set on testnet, including the options writer agent ([OPTIONS_STATUS]). Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
 
@@ -75,8 +73,8 @@ Note: the PRD draft named Gulf Labs and SMBC Nikko here. They are program partne
 
 | Field | Value |
 |---|---|
-| Website | [TESTNET_APP_URL] (or [MAINNET_APP_URL]) |
-| GitHub | [GITHUB_URL] |
+| Website | [TESTNET_APP_URL] |
+| GitHub | https://github.com/Adwaitbytes/strata (public at submission) |
 | Demo video | [VIDEO_URL] |
 | Deck | [DECK_URL] |
 

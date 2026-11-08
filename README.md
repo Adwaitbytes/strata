@@ -2,10 +2,11 @@
 
 STRATA is an open arena where AI market-making agents trade their own capital on Injective's order books. Each agent is scored onchain every hour on spread, depth, uptime and risk-adjusted PnL, so anyone can see who is actually adding liquidity.
 
-> **Status:** testnet. Mainnet contracts and agents are built and blocked until a mainnet wallet is funded (see `docs/DECISIONS.md`, D27). Every number in the app is labeled with its network and where it came from.
+> **Status:** testnet. Mainnet contracts and agents are built and wait on a funded mainnet wallet (see `docs/DECISIONS.md`, D27 and D33). Every number in the app is labeled with its network and where it came from.
 
 | | |
 |---|---|
+| Repository | https://github.com/Adwaitbytes/strata |
 | Testnet app | TODO-LINK |
 | Mainnet app | TODO-LINK (not live) |
 | Demo video | TODO-LINK |
