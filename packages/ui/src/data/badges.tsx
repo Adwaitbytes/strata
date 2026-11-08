@@ -54,13 +54,13 @@ export type NetworkLabel = "mainnet" | "testnet";
 export function NetworkBadge({ network, className }: { network: NetworkLabel; className?: string | undefined }) {
   return (
     <DataBadge
-      tone={network === "mainnet" ? "accent" : "warn"}
+      tone="neutral"
       className={className}
       title={network === "mainnet" ? "Injective mainnet (chain 1776)" : "Injective testnet (chain 1439). Testnet funds have no value."}
     >
       <span
         aria-hidden="true"
-        style={{ width: 6, height: 6, borderRadius: 999, background: "currentColor" }}
+        style={{ width: 5, height: 5, background: network === "mainnet" ? "var(--bid)" : "var(--accent)", transform: "rotate(45deg)" }}
       />
       {network === "mainnet" ? "MAINNET" : "TESTNET"}
     </DataBadge>

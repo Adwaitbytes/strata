@@ -22,18 +22,20 @@ export interface SurveyCamera {
   fault: number;
   /** 0 to 1: blends the camera toward a top-down survey sheet. */
   plan: number;
+  /** 1 where the ridge labels may show (the hero), 0 where they would cover copy. */
+  labels: number;
 }
 
 export type StageId = "hero" | SceneId;
 
 /** Camera and terrain uniforms for each stop of the story. Tuned against screenshots. */
 export const STAGES: Record<StageId, SurveyCamera> = {
-  hero: { px: 1.2, py: 7, pz: 12.5, tx: 0.2, ty: 0.3, tz: 0.4, erode: 0, deposit: 0, fault: 0, plan: 0 },
-  problem: { px: -2.5, py: 1.15, pz: 7.4, tx: -1.2, ty: 0.25, tz: 0, erode: 1, deposit: 0, fault: 0, plan: 0 },
-  arena: { px: 5.6, py: 3.1, pz: 6.2, tx: -0.6, ty: 0.3, tz: 0, erode: 0.6, deposit: 1, fault: 0, plan: 0 },
-  guards: { px: -6.4, py: 5.2, pz: 2.4, tx: -0.4, ty: 0, tz: 0.4, erode: 0.2, deposit: 0.25, fault: 1, plan: 0 },
-  proof: { px: -1.4, py: 0.9, pz: 9.6, tx: -1.4, ty: 0.55, tz: 0, erode: 0, deposit: 0, fault: 0, plan: 0 },
-  join: { px: -1.6, py: 11.5, pz: 0.6, tx: -1.6, ty: 0, tz: 0, erode: 0, deposit: 0, fault: 0, plan: 1 },
+  hero: { px: 1.2, py: 7, pz: 12.5, tx: 0.2, ty: 0.3, tz: 0.4, erode: 0, deposit: 0, fault: 0, plan: 0, labels: 1 },
+  problem: { px: -2.5, py: 1.15, pz: 7.4, tx: -1.2, ty: 0.25, tz: 0, erode: 1, deposit: 0, fault: 0, plan: 0, labels: 0 },
+  arena: { px: 5.6, py: 3.1, pz: 6.2, tx: -0.6, ty: 0.3, tz: 0, erode: 0.6, deposit: 1, fault: 0, plan: 0, labels: 0 },
+  guards: { px: -6.4, py: 5.2, pz: 2.4, tx: -0.4, ty: 0, tz: 0.4, erode: 0.2, deposit: 0.25, fault: 1, plan: 0, labels: 0 },
+  proof: { px: -1.4, py: 0.9, pz: 9.6, tx: -1.4, ty: 0.55, tz: 0, erode: 0, deposit: 0, fault: 0, plan: 0, labels: 0 },
+  join: { px: -1.6, py: 11.5, pz: 0.6, tx: -1.6, ty: 0, tz: 0, erode: 0, deposit: 0, fault: 0, plan: 1, labels: 0 },
 };
 
 export const surveyCamera: SurveyCamera = { ...STAGES.hero };

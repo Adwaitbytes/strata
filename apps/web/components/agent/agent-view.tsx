@@ -234,7 +234,7 @@ function BackLink() {
 
 export function AgentSkeleton() {
   return (
-    <div className="flex flex-col gap-8" aria-busy="true" aria-label="Loading agent">
+    <div className="flex flex-col gap-8" role="status" aria-busy="true" aria-label="Loading agent">
       <Skeleton style={{ height: 20, width: 64 }} />
       <div className="flex flex-col gap-3">
         <Skeleton style={{ height: 20, width: 160 }} />

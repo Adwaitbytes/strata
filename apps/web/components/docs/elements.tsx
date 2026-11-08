@@ -3,7 +3,7 @@ import type { ComponentPropsWithoutRef } from "react";
 
 /** Shared element styling for MDX pages and markdown pulled from docs/*.md. */
 export const docsComponents = {
-  h1: (p: ComponentPropsWithoutRef<"h1">) => <h1 className="mb-6 text-[34px] font-semibold leading-tight tracking-[-0.025em] text-fg" {...p} />,
+  h1: (p: ComponentPropsWithoutRef<"h1">) => <h1 className="font-display mb-6 text-h1 text-fg" {...p} />,
   h2: (p: ComponentPropsWithoutRef<"h2">) => <h2 className="mb-3 mt-12 scroll-mt-24 text-[22px] font-semibold tracking-[-0.015em] text-fg" {...p} />,
   h3: (p: ComponentPropsWithoutRef<"h3">) => <h3 className="mb-2 mt-8 text-[17px] font-semibold text-fg" {...p} />,
   p: (p: ComponentPropsWithoutRef<"p">) => <p className="my-4 text-[15px] leading-[1.75] text-fg-muted" {...p} />,

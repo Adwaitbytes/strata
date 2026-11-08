@@ -144,7 +144,7 @@ export const terrainScene: Record<ThemeName, TerrainColors> = {
     bid: "#7CC9A0",
     ask: "#EA8A6A",
     fault: "#F0656E",
-    contourAlpha: 0.22,
+    contourAlpha: 0.3,
     rim: 0.55,
   },
   light: {

@@ -56,6 +56,8 @@ function Terrain({ ridges, theme, labels, onReady, onLowFps, compact }: Omit<Ter
           uDeposit: { value: 0 },
           uFault: { value: 0 },
           uPlan: { value: 0 },
+          // Not read by the shader: the driver eases label visibility through the same damping.
+          uLabels: { value: 1 },
           uHeights: { value: padded([]) },
           uShares: { value: padded([]) },
           uCount: { value: 0 },

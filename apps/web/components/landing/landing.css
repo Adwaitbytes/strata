@@ -144,7 +144,7 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "copy" "legend" "strip";
+  grid-template-areas: "copy" "strip" "legend";
   min-height: calc(100svh - var(--header-h));
   padding-top: clamp(40px, 10vh, 120px);
   padding-bottom: 24px;
@@ -179,8 +179,8 @@
   font-size: clamp(2.625rem, 1.3rem + 4.2vw, 5.5rem);
   font-weight: 480;
   font-variation-settings: "opsz" 96, "wdth" 92;
-  line-height: 0.92;
-  letter-spacing: -0.034em;
+  line-height: 0.95;
+  letter-spacing: -0.027em;
 }
 .hero-line {
   display: block;
@@ -388,8 +388,18 @@
 }
 @media (min-width: 1024px) {
   .scene-body {
+    position: relative;
     padding: 0;
     background: none;
+  }
+  /* A soft pool of basalt under the copy, so contour lines never run through body text. */
+  .scene-body::before {
+    content: "";
+    position: absolute;
+    inset: -64px -96px;
+    z-index: -1;
+    background: radial-gradient(60% 65% at 40% 50%, color-mix(in oklab, var(--bg) 86%, transparent), transparent 78%);
+    pointer-events: none;
   }
 }
 .scene-station {

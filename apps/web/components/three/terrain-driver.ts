@@ -98,6 +98,7 @@ export function stepFrame({ material, camera, survey, targets, pointer, lookAt, 
   ease("uDeposit", survey.deposit);
   const fault = ease("uFault", survey.fault);
   const plan = ease("uPlan", survey.plan);
+  const labelsOn = ease("uLabels", survey.labels);
 
   // A little pointer parallax: the land feels surveyed from a moving station.
   const px = survey.px + pointer.x * 0.6 * (1 - survey.plan);
@@ -111,7 +112,7 @@ export function stepFrame({ material, camera, survey, targets, pointer, lookAt, 
   camera.lookAt(lookAt);
 
   // Pin each ridge label to its crest in screen space; labels fade once the story moves on.
-  const fade = 1 - Math.min(1, erode * 2 + plan * 2 + fault);
+  const fade = labelsOn * (1 - Math.min(1, erode * 2 + plan * 2 + fault));
   for (let i = 0; i < labels.length; i++) {
     const el = labels[i];
     if (!el) continue;

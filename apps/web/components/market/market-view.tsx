@@ -18,6 +18,7 @@ import { dominantProvenance } from "@/lib/api/provenance";
 import { formatAge, formatBps, formatPct, formatPrice, formatUsd, formatUtc } from "@/lib/format";
 import { hasStrataDepth } from "@/lib/liquidity";
 import { cn } from "@/lib/utils";
+import { DepthContour } from "./depth-contour";
 import { DepthLadder } from "./depth-ladder";
 
 const SESSION: Record<SessionState, { label: string; tone: string; note: string }> = {
@@ -147,7 +148,10 @@ export function MarketView({ id }: { id: string }) {
       <div className="grid items-start gap-6 lg:grid-cols-[1.3fr_1fr]">
         <Panel title="Depth ladder" id="ladder" aside={book ? <span className="text-xs text-fg-subtle">As of {formatUtc(book.at)}</span> : null}>
           {book && (book.bids.length || book.asks.length) ? (
-            <DepthLadder book={book} />
+            <>
+              <DepthContour book={book} />
+              <DepthLadder book={book} />
+            </>
           ) : (
             <EmptyState title="Book is empty" detail="No resting orders were seen on this market in the latest snapshot." className="border-0 p-0" />
           )}
@@ -199,7 +203,7 @@ function BackLink() {
 
 export function MarketSkeleton() {
   return (
-    <div className="flex flex-col gap-8" aria-busy="true" aria-label="Loading market">
+    <div className="flex flex-col gap-8" role="status" aria-busy="true" aria-label="Loading market">
       <Skeleton style={{ height: 20, width: 64 }} />
       <div className="flex flex-col gap-3">
         <Skeleton style={{ height: 20, width: 160 }} />

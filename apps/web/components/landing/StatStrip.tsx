@@ -78,7 +78,7 @@ export function StatStrip({ strip }: { strip: StatStripModel }) {
 
 export function StatStripSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading arena data" className="readout">
+    <div role="status" aria-busy="true" aria-label="Loading arena data" className="readout">
       <div className="readout-head">
         <span className="h-4 w-28 rounded-xs bg-surface" />
         <span className="h-5 w-16 rounded-xs bg-surface" />

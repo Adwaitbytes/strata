@@ -120,5 +120,5 @@ export async function Proof({ network }: { network: NetworkName }) {
 }
 
 export function ProofSkeleton() {
-  return <div aria-busy="true" aria-label="Loading comparison" className="h-64 animate-pulse rounded-md bg-surface" />;
+  return <div role="status" aria-busy="true" aria-label="Loading comparison" className="h-64 animate-pulse rounded-md bg-surface" />;
 }

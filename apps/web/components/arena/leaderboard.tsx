@@ -202,7 +202,7 @@ export function Leaderboard({ rows, network, pageProvenance }: { rows: Leaderboa
 
 export function LeaderboardSkeleton() {
   return (
-    <div aria-busy="true" aria-label="Loading leaderboard">
+    <div role="status" aria-busy="true" aria-label="Loading leaderboard">
       <div className="hidden md:block">
         <div className="flex gap-4 border-b border-border px-4 pb-3 pt-1">
           {Array.from({ length: 8 }, (_, i) => (
