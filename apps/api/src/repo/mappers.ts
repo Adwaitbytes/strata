@@ -17,6 +17,7 @@ import {
   type ScoreFlagName,
 } from "@strata/sdk";
 import type { schema } from "@strata/db";
+import { getMarkets } from "@strata/config";
 
 export type InvalidRowReporter = (table: string, issues: string) => void;
 
@@ -44,9 +45,18 @@ export function flagNames(flags: number): string[] {
 
 const JsonObject = z.record(z.string(), z.unknown());
 
+/**
+ * The indexer stores a partial record in markets.data (no symbol, tick sizes or arena limits), so
+ * when the stored record is not a full Market the verified record from @strata/config (written by
+ * scripts/fetch-markets.ts from a LIVE Indexer query) supplies the static fields. Columns always win.
+ */
 export function marketCandidate(r: Row<typeof schema.markets>): unknown {
   const data = JsonObject.safeParse(r.data);
-  return { ...(data.success ? data.data : {}), network: r.network, marketId: r.marketId, ticker: r.ticker, arenaEnabled: r.arenaEnabled, fetchedAt: ms(r.fetchedAt) };
+  const columns = { network: r.network, marketId: r.marketId, ticker: r.ticker, arenaEnabled: r.arenaEnabled, fetchedAt: ms(r.fetchedAt) };
+  const stored = { ...(data.success ? data.data : {}), ...columns };
+  if (Market.safeParse(stored).success) return stored;
+  const verified = getMarkets(r.network).find((m) => m.marketId.toLowerCase() === r.marketId.toLowerCase());
+  return verified ? { ...verified, ...columns } : stored;
 }
 
 export function agentCandidate(r: Row<typeof schema.agents>): unknown {

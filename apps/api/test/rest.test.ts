@@ -76,7 +76,8 @@ describe("empty database is reported honestly", () => {
   });
 
   it("GET /v1/transparency has null contracts until deployment", async () => {
-    const body = TransparencyResponse.parse((await get("/v1/transparency?network=testnet")).json());
+    // Mainnet has no contracts in packages/config (testnet first, D33).
+    const body = TransparencyResponse.parse((await get("/v1/transparency?network=mainnet")).json());
     expect(body.contracts).toEqual({ arena: null, attestor: null, rewards: null });
     expect(body.houseAgents).toEqual([]);
   });

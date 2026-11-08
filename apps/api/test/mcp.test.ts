@@ -72,10 +72,11 @@ describe("MCP server at /mcp", () => {
     expect(text).toContain("Oracle Guard");
   });
 
+  // Mainnet has no arena in packages/config (testnet first, D33).
   it("declines to prepare enrollment while the arena contract is not deployed", async () => {
     const res = await client.callTool({
       name: "strata_prepare_enrollment",
-      arguments: { network: "testnet", erc8004Id: "12", subaccountId: HEX32("c"), metadataURI: "ipfs://x" },
+      arguments: { network: "mainnet", erc8004Id: "12", subaccountId: HEX32("c"), metadataURI: "ipfs://x" },
     });
     expect(res.isError).toBe(true);
     expect(textOf(res)).toContain("not deployed");
