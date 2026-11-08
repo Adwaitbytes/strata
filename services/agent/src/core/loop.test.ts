@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { Fill, GuardEvent, Quote, TunerEvent } from "@strata/sdk";
 import { DEFAULT_PARAMS, zonedTimeToUtc, type RiskParams, type RiskState, type SessionClass } from "@strata/risk";
 import { SimExchange } from "./sim/simExchange.js";
-import { AgentRisk, AgentRunner, MarketQuoter, diffOrders, type AgentIdentity } from "./loop.js";
+import { AgentRisk, AgentRunner, MarketQuoter, diffOrders, quoteCid, type AgentIdentity } from "./loop.js";
 import { KillSwitch } from "./killSwitch.js";
 import type { CancelRecord, EventSink } from "./recorder.js";
 import type { ExchangeAdapter, LiveOrder } from "./exchange.js";
@@ -259,6 +259,38 @@ describe("fills", () => {
     await c.tick();
     const after = c.sim.openOrders(M).filter((o) => o.side === "sell").map((o) => Number(o.price));
     expect(Math.min(...after)).toBeLessThan(Number(before));
+  });
+});
+
+describe("fill keys", () => {
+  it("uses the trade ID as the fill key when the adapter has no tx hash (indexer convention)", () => {
+    const c = setup();
+    c.quoter.handleFill({ marketId: M, orderHash: "0xabc", tradeId: "147700000_3", txHash: "", eventIndex: 3, side: "buy", price: "100", quantity: "0.1", fee: "0.01", isMaker: true, counterpartySubaccountId: null, executedAtMs: T0 });
+    expect(c.sink.fills[0]).toMatchObject({ tradeId: "147700000_3", txHash: "147700000_3", eventIndex: 3 });
+  });
+});
+
+describe("quoteCid", () => {
+  it("tags the quote level as -L<n>- and fits the 36 char Injective cid limit", () => {
+    const cid = quoteCid("strata-test-1", M, 2, 123_456, 4);
+    expect(cid).toMatch(/-L2-/);
+    expect(cid).toMatch(/^[A-Za-z0-9_-]{1,36}$/);
+    expect(cid.startsWith("strata-test-1-aaaaaa-")).toBe(true);
+  });
+
+  it("stays within 36 chars for long names and huge sequence numbers", () => {
+    const cid = quoteCid("a-very-long-agent-name-that-overflows", M, 11, Number.MAX_SAFE_INTEGER, 9);
+    expect(cid.length).toBeLessThanOrEqual(36);
+    expect(cid).toMatch(/-L11-/);
+  });
+
+  it("is what the quoter sends, so every created order carries its level", async () => {
+    const c = setup();
+    const spy = vi.spyOn(c.sim, "batchUpdate");
+    await c.tick();
+    const cids = spy.mock.calls.flatMap(([u]) => u.create.map((o) => o.cid));
+    expect(cids.length).toBeGreaterThan(0);
+    for (const cid of cids) expect(cid).toMatch(/-L\d+-/);
   });
 });
 

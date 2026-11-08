@@ -257,6 +257,22 @@ export interface QuoterDeps {
 
 class TimeoutError extends Error {}
 
+/** Injective cids are 1 to 36 chars of [A-Za-z0-9_-] (see injective/orders.ts). */
+const MAX_CID_LENGTH = 36;
+
+/**
+ * Client order ID for a quote. The `-L<level>-` segment is how the indexer recovers the quote level
+ * from the chain order record (services/indexer/src/live/mappers.ts levelFromCid). The cycle
+ * sequence is base 36 so the ID stays under the 36 char limit for billions of cycles.
+ */
+export function quoteCid(agentName: string, marketId: string, level: number, seq: number, index: number): string {
+  const tail = `-${marketId.slice(2, 8)}-L${level}-${seq.toString(36)}-${index}`;
+  const head = agentName.slice(0, Math.max(1, MAX_CID_LENGTH - tail.length)).replace(/-+$/, "");
+  const cid = `${head}${tail}`;
+  if (cid.length > MAX_CID_LENGTH) throw new Error(`cid ${cid} exceeds ${MAX_CID_LENGTH} chars`);
+  return cid;
+}
+
 function withTimeout<T>(p: Promise<T>, ms: number, what: string): Promise<T> {
   let timer: ReturnType<typeof setTimeout> | undefined;
   const t = new Promise<never>((_, reject) => {
@@ -346,7 +362,9 @@ export class MarketQuoter {
       marketId: fill.marketId,
       orderHash: fill.orderHash,
       tradeId: fill.tradeId,
-      txHash: fill.txHash,
+      // Injective Indexer trades carry no tx hash; the indexer stores the trade ID there, so the
+      // agent does the same and both writers hit the same agent_fills primary key.
+      txHash: fill.txHash === "" ? fill.tradeId : fill.txHash,
       eventIndex: fill.eventIndex,
       side: fill.side,
       price: fill.price,
@@ -480,7 +498,7 @@ export class MarketQuoter {
       quantity: q.quantity,
       postOnly: true,
       reduceOnly: q.reduceOnly,
-      cid: `${this.#d.identity.agentName}-${this.marketId.slice(2, 10)}-${seq}-${i}`,
+      cid: quoteCid(this.#d.identity.agentName, this.marketId, q.level, seq, i),
     }));
     let result: BatchResult;
     try {

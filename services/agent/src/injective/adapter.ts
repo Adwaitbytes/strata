@@ -16,22 +16,30 @@ import { ChainGrpcBankApi, IndexerGrpcDerivativesApi, IndexerGrpcDerivativesStre
 import type { Msgs } from "@injectivelabs/sdk-ts";
 import { getMarkets } from "@strata/config";
 import type { KeyHandle, KeySource } from "@strata/keys";
-import { evmToInjAddress } from "@strata/keys";
+import { KeystoreKeySource, evmToInjAddress } from "@strata/keys";
 import type { Market, NetworkName, Side } from "@strata/sdk";
-import type { BatchResult, BatchUpdate, ExchangeAdapter, FillEvent, L2Level, LiveOrder, MarketState, OraclePoint, PositionState } from "../core/exchange.js";
+import type { BatchResult, BatchUpdate, ExchangeAdapter, FillEvent, L2Level, LiveOrder, MarketState, OraclePoint } from "../core/exchange.js";
 import { ChainExchange, depositToHuman } from "./chain.js";
 import { decodeBatchResponse } from "./decode.js";
 import { getEndpointSet } from "./endpoints.js";
 import type { EndpointSet } from "./endpoints.js";
 import { EvmRpc } from "./evm.js";
 import { readOracle } from "./oracle.js";
+import { fillFromTrade, positionView } from "./mapping.js";
+import type { IndexerTrade } from "./mapping.js";
 import { buildLimitOrder, closeOrder } from "./orders.js";
 import type { DerivativeOrderParams, MarketSpec } from "./orders.js";
 import { ManagedStream } from "./streams.js";
 import type { StreamHealth, StreamLogEvent } from "./streams.js";
-import { CosmosSigner } from "./tx.js";
+import { CosmosSigner, TIMEOUT_BLOCKS } from "./tx.js";
 import type { BroadcastResult } from "./tx.js";
 import { dec, plain, scaleDown } from "./units.js";
+
+/**
+ * Upper bound on Injective block time used for the lost-tx window. The SDK assumes 0.7 s
+ * (`DEFAULT_BLOCK_TIME_IN_SECONDS`, @injectivelabs/utils); 1 s leaves margin for slow blocks.
+ */
+const BLOCK_TIME_UPPER_MS = 1_000;
 
 type V2Params = Parameters<typeof MsgBatchUpdateOrdersV2.fromJSON>[0];
 type V2Order = NonNullable<V2Params["derivativeOrdersToCreate"]>[number];
@@ -97,6 +105,8 @@ export class InjectiveAdapter implements ExchangeAdapter {
   private readonly streams: ManagedStream[] = [];
   private readonly staleBookMs: number;
   private readonly log: (event: AdapterLogEvent) => void;
+  /** Timeout height minus current height, times block time (core settle window, review L-4). */
+  readonly txTimeoutMs = TIMEOUT_BLOCKS * BLOCK_TIME_UPPER_MS;
 
   constructor(
     private readonly key: KeyHandle,
@@ -217,18 +227,7 @@ export class InjectiveAdapter implements ExchangeAdapter {
     return () => this.fillHandlers.delete(handler);
   }
 
-  private emitTrade(t: {
-    tradeId: string;
-    marketId: string;
-    orderHash: string;
-    tradeDirection: string;
-    executionPrice: string;
-    executionQuantity: string;
-    fee: string;
-    executionSide: string;
-    executedAt: number;
-    subaccountId: string;
-  }): void {
+  private emitTrade(t: IndexerTrade): void {
     if (this.seenTrades.has(t.tradeId)) return;
     const spec = this.specs.get(t.marketId);
     if (spec === undefined || t.subaccountId.toLowerCase() !== this.subaccountId.toLowerCase()) return;
@@ -237,24 +236,7 @@ export class InjectiveAdapter implements ExchangeAdapter {
       const first = this.seenTrades.values().next().value;
       if (first !== undefined) this.seenTrades.delete(first);
     }
-    // tradeId is "<blockHeight>_<eventIndex>" (observed on mainnet 2026-11-09). The Indexer trade
-    // record carries no tx hash, so txHash is left empty and consumers key fills on tradeId.
-    const eventIndex = Number(t.tradeId.split("_")[1] ?? "0");
-    const side: Side = t.tradeDirection === "buy" || t.tradeDirection === "long" ? "buy" : "sell";
-    const fill: FillEvent = {
-      marketId: t.marketId,
-      orderHash: t.orderHash,
-      tradeId: t.tradeId,
-      txHash: "",
-      eventIndex: Number.isFinite(eventIndex) ? eventIndex : 0,
-      side,
-      price: scaleDown(t.executionPrice, spec.quoteDecimals),
-      quantity: plain(dec(t.executionQuantity)),
-      fee: scaleDown(t.fee, spec.quoteDecimals),
-      isMaker: t.executionSide === "maker",
-      counterpartySubaccountId: null,
-      executedAtMs: t.executedAt,
-    };
+    const fill = fillFromTrade(t, spec);
     for (const h of this.fillHandlers) {
       try {
         h(fill);
@@ -377,15 +359,7 @@ export class InjectiveAdapter implements ExchangeAdapter {
       this.fundingRate(spec.marketId),
     ]);
 
-    let position: PositionState = { quantity: "0", entryPrice: null, margin: "0", unrealizedPnl: "0" };
-    let marginRatio: number | null = null;
-    if (pos !== null) {
-      const signed = pos.isLong ? dec(pos.quantity) : dec(pos.quantity).neg();
-      const upnl = dec(mark).minus(pos.entryPrice).mul(signed);
-      position = { quantity: plain(signed), entryPrice: pos.entryPrice, margin: pos.margin, unrealizedPnl: plain(upnl) };
-      const maintenance = dec(pos.quantity).mul(mark).mul(spec.maintenanceMarginRatio);
-      if (maintenance.gt(0)) marginRatio = dec(pos.margin).plus(upnl).div(maintenance).toNumber();
-    }
+    const { position, marginRatio } = positionView(pos, mark, spec.maintenanceMarginRatio);
 
     return {
       marketId: spec.marketId,
@@ -507,7 +481,13 @@ export class InjectiveAdapter implements ExchangeAdapter {
       derivativeMarketIdsToCancelAll: [spec.marketId],
       derivativeMarketOrdersToCreate: [this.toV2(order)],
     });
-    await this.broadcast(msg, "strata:close-reduce-only");
+    // broadcast() returns after block inclusion, and Injective matches market orders in the same
+    // block's EndBlocker, so the IOC result is final here. Re-read the position so the caller's
+    // next cycle (and this log) see the post-close size, not a cached one.
+    const res = await this.broadcast(msg, "strata:close-reduce-only");
+    this.markCache.delete(spec.marketId);
+    const after = await this.chain.position(spec.marketId, this.subaccountId);
+    this.log({ kind: "tx", detail: "close-reduce-only result", data: { txHash: res.txHash, residual: after === null ? "0" : after.quantity } });
   }
 
   /** Moves `amount` (human units) of `denom` from the bank balance into the trading subaccount. */
@@ -544,7 +524,43 @@ function normalizeInj(addr: string): string {
 }
 
 
-export async function createInjectiveAdapter(opts: InjectiveAdapterOptions): Promise<InjectiveAdapter> {
+/** Options the agent core passes (services/agent/src/core/bootstrap.ts InjectiveAdapterOptions). */
+export interface AgentAdapterOptions {
+  network: NetworkName;
+  /** Agent name; also the keystore name (one key per agent, PRD 9.1). */
+  agentName: string;
+  markets: readonly Market[];
+  secretsDir: string;
+  log?: (event: AdapterLogEvent) => void;
+}
+
+function isAgentOptions(o: InjectiveAdapterOptions | AgentAdapterOptions): o is AgentAdapterOptions {
+  return "agentName" in o;
+}
+
+/**
+ * Maps the core's options to adapter options. House agents trade their own default subaccount
+ * with their own key: StrataArena H-1 requires the enrolled subaccount's first 20 bytes to equal
+ * the enrolling wallet, so the agent wallet is the operator and the trader (no authz grant).
+ */
+export function toAdapterOptions(opts: InjectiveAdapterOptions | AgentAdapterOptions): InjectiveAdapterOptions {
+  if (!isAgentOptions(opts)) return opts;
+  if (opts.markets.length === 0) throw new Error(`agent ${opts.agentName} has no markets`);
+  for (const m of opts.markets) {
+    if (m.network !== opts.network) throw new Error(`market ${m.ticker} is on ${m.network}, adapter is on ${opts.network}`);
+  }
+  return {
+    network: opts.network,
+    keySource: new KeystoreKeySource({ secretsDir: opts.secretsDir }),
+    keyName: opts.agentName,
+    subaccountIndex: 0,
+    marketIds: opts.markets.map((m) => m.marketId),
+    ...(opts.log === undefined ? {} : { log: opts.log }),
+  };
+}
+
+export async function createInjectiveAdapter(input: InjectiveAdapterOptions | AgentAdapterOptions): Promise<InjectiveAdapter> {
+  const opts = toAdapterOptions(input);
   const key = await opts.keySource.load(opts.keyName);
   const adapter = new InjectiveAdapter(key, opts);
   if (opts.streams !== false) adapter.startStreams();

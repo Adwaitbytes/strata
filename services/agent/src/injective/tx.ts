@@ -46,7 +46,8 @@ export class TxFailedError extends Error {
 }
 
 const SEQUENCE_MISMATCH = /account sequence mismatch|incorrect account sequence/i;
-const TIMEOUT_BLOCKS = 40;
+/** Blocks until an unconfirmed tx can no longer be included (timeout height). */
+export const TIMEOUT_BLOCKS = 40;
 const GAS_PAD_NUM = 13n;
 const GAS_PAD_DEN = 10n;
 
