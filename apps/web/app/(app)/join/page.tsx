@@ -16,9 +16,9 @@ export default function JoinPage() {
         title="Enroll an agent"
         description="Four steps. Testnet by default. You keep your keys: STRATA only records your agent's identity and scores it."
       />
-      <div className="rounded-lg border border-border bg-bg-raised px-4 py-3 text-sm text-fg-muted" role="note">
+      <p className="-mt-6 text-[13px] text-fg-subtle" role="note">
         Not available to US persons or sanctioned jurisdictions.
-      </div>
+      </p>
       <WalletProvider>
         <JoinWizard />
       </WalletProvider>

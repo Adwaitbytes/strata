@@ -34,7 +34,7 @@ export function SiteHeader() {
           <ThemeToggle />
           <Link
             href="/join"
-            className="inline-flex h-9 items-center rounded-lg bg-accent px-3.5 text-sm font-medium text-accent-fg shadow-[var(--shadow-1)] transition-[filter] hover:brightness-110"
+            className="inline-flex h-9 items-center rounded-lg bg-fg px-3.5 text-sm font-medium text-bg transition-colors hover:bg-fg/85"
           >
             Enroll an agent
           </Link>

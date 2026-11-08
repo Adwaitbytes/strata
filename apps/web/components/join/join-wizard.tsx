@@ -6,7 +6,7 @@ import { NetworkBadge } from "@strata/ui/data";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, Check, Copy, Download, Loader2, Wallet } from "lucide-react";
 import Link from "next/link";
-import { useId, useMemo, useReducer, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useReducer, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { parseEventLogs } from "viem";
 import { type Connector, useConnection, useConnect, useConnectors, useDisconnect, useSwitchChain, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 import { EmptyState, ErrorState } from "@/components/data/states";
@@ -51,19 +51,43 @@ function reducer(s: State, a: Action): State {
   }
 }
 
-function Button({ children, variant = "primary", className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary" }) {
-  return (
+/**
+ * Primary is ink on paper (inverts with the theme). When disabled with a `reason`, the reason
+ * is shown next to the button and linked with aria-describedby, so nobody has to guess.
+ */
+function Button({
+  children,
+  variant = "primary",
+  className,
+  reason,
+  ...props
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "secondary"; reason?: string | null | undefined }) {
+  const reasonId = useId();
+  const showReason = props.disabled && reason;
+  const button = (
     <button
       type="button"
       {...props}
+      aria-describedby={showReason ? reasonId : undefined}
       className={cn(
-        "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-[filter,background-color,opacity] disabled:cursor-not-allowed disabled:opacity-50",
-        variant === "primary" ? "bg-accent text-accent-fg hover:brightness-110" : "border border-border-strong text-fg hover:bg-surface-hover",
+        "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-medium transition-[background-color,color,border-color,opacity] disabled:cursor-not-allowed",
+        variant === "primary"
+          ? "bg-fg text-bg hover:bg-fg/85 disabled:bg-surface-hover disabled:text-fg-subtle"
+          : "border border-border-strong text-fg hover:bg-surface-hover disabled:border-border disabled:text-fg-subtle disabled:hover:bg-transparent",
         className,
       )}
     >
       {children}
     </button>
+  );
+  if (!showReason) return button;
+  return (
+    <span className="inline-flex flex-wrap items-center justify-end gap-x-3 gap-y-2">
+      <span id={reasonId} className="text-xs text-fg-subtle" data-testid="disabled-reason">
+        {reason}
+      </span>
+      {button}
+    </span>
   );
 }
 
@@ -132,7 +156,7 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
             <label
               key={n}
               className={cn(
-                "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors",
+                "flex cursor-pointer items-start gap-3 rounded-xl border p-4 transition-colors focus-within:ring-2 focus-within:ring-focus focus-within:ring-offset-2 focus-within:ring-offset-surface",
                 s.network === n ? "border-accent bg-accent-soft" : "border-border hover:border-border-strong",
               )}
             >
@@ -206,7 +230,11 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
       </div>
 
       <div className="flex justify-end">
-        <Button disabled={!onTarget || mainnetBlocked} onClick={() => dispatch({ type: "go", step: 1 })}>
+        <Button
+          disabled={!onTarget || mainnetBlocked}
+          reason={mainnetBlocked ? "Confirm the mainnet notice first." : !conn.isConnected ? "Connect a wallet first." : `Switch to chain ${target.id} first.`}
+          onClick={() => dispatch({ type: "go", step: 1 })}
+        >
           Continue
         </Button>
       </div>
@@ -247,23 +275,32 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
         <div className="flex flex-col gap-3 rounded-xl border border-dashed border-border-strong p-4">
           <h3 className="text-sm font-medium text-fg">Create a new identity</h3>
           {registry ? (
-            <p className="text-sm text-fg-muted">Registry {shortHex(registry)} on {s.network}.</p>
+            <>
+              <p className="text-sm text-fg-muted">
+                Register with the ERC-8004 identity registry ({shortHex(registry)}) from your wallet, then come back and link the token ID. This page does not send the registration for you.
+              </p>
+              <a
+                href={explorerUrl(s.network, "address", registry)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 w-fit items-center gap-2 rounded-lg border border-border-strong px-4 text-sm font-medium text-fg transition-colors hover:bg-surface-hover"
+              >
+                Open the registry on Blockscout
+              </a>
+            </>
           ) : (
             <p className="flex gap-2 text-sm text-fg-muted">
               <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warn" aria-hidden />
-              The ERC-8004 registry address on Injective {s.network} is still being verified, so creating an identity here is not available yet. Link an existing one instead.
+              The ERC-8004 registry address on Injective {s.network} is still being verified, so creating an identity is not available yet. Link an existing one instead.
             </p>
           )}
-          <Button variant="secondary" disabled className="w-fit">
-            Create identity
-          </Button>
         </div>
       </div>
       <div className="flex justify-between">
         <Button variant="secondary" onClick={() => dispatch({ type: "go", step: 0 })}>
           Back
         </Button>
-        <Button disabled={!s.erc8004Id || idError != null} onClick={() => dispatch({ type: "go", step: 2 })}>
+        <Button disabled={!s.erc8004Id || idError != null} reason="Enter a valid identity token ID." onClick={() => dispatch({ type: "go", step: 2 })}>
           Continue
         </Button>
       </div>
@@ -285,7 +322,14 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
   const metaId = useId();
   const nameError = s.name ? validateAgentName(s.name) : null;
   const metaError = validateMetadataUri(s.metadataURI);
-  const ready = !!s.name && !nameError && !metaError && s.markets.length > 0 && s.riskAck && s.geoAck;
+  const missing = [
+    !s.name || nameError ? "a valid agent name" : null,
+    metaError ? "a valid metadata URL" : null,
+    s.markets.length === 0 ? "at least one market" : null,
+    !s.riskAck ? "the risk acknowledgement" : null,
+    !s.geoAck ? "the eligibility confirmation" : null,
+  ].filter((m): m is string => m != null);
+  const ready = missing.length === 0;
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-2">
@@ -382,7 +426,7 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
         <Button variant="secondary" onClick={() => dispatch({ type: "go", step: 1 })}>
           Back
         </Button>
-        <Button disabled={!ready} onClick={() => dispatch({ type: "go", step: 3 })}>
+        <Button disabled={!ready} reason={missing.length ? `Still needed: ${missing.join(", ")}.` : null} onClick={() => dispatch({ type: "go", step: 3 })}>
           Review enrollment
         </Button>
       </div>
@@ -516,6 +560,13 @@ function StepEnroll({ s, dispatch }: { s: State; dispatch: (a: Action) => void }
         </Button>
         <Button
           disabled={preview.contract == null || write.isPending || !!write.data || conn.chainId !== preview.chainId}
+          reason={
+            preview.contract == null
+              ? `StrataArena is not deployed on ${s.network} yet.`
+              : conn.chainId !== preview.chainId
+                ? `Switch your wallet to chain ${preview.chainId}.`
+                : null
+          }
           onClick={() => {
             // The button is disabled unless the wallet is on preview.chainId, so the tx targets that chain.
             if (!preview.contract) return;
@@ -542,6 +593,16 @@ function StepEnroll({ s, dispatch }: { s: State; dispatch: (a: Action) => void }
 export function JoinWizard() {
   const [s, dispatch] = useReducer(reducer, initial);
   const headingId = useId();
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const firstStep = useRef(true);
+  // Move focus to the new step's heading so keyboard and screen reader users land on it.
+  useEffect(() => {
+    if (firstStep.current) {
+      firstStep.current = false;
+      return;
+    }
+    headingRef.current?.focus();
+  }, [s.step]);
   const body = [StepConnect, StepIdentity, StepMarkets, StepEnroll][s.step]!;
   const Body = body;
   return (
@@ -549,7 +610,7 @@ export function JoinWizard() {
       <Stepper step={s.step} />
       <section aria-labelledby={headingId} className="rounded-[var(--radius-lg)] border border-border bg-surface p-5 shadow-[var(--shadow-1)] sm:p-7">
         <div className="mb-6 flex flex-wrap items-center gap-3">
-          <h2 id={headingId} className="text-xl font-semibold tracking-tight text-fg" tabIndex={-1}>
+          <h2 id={headingId} ref={headingRef} className="text-xl font-semibold tracking-tight text-fg outline-none" tabIndex={-1} data-testid="step-heading">
             <span className="num mr-2 text-fg-subtle">{s.step + 1}/4</span>
             {STEPS[s.step]}
           </h2>
