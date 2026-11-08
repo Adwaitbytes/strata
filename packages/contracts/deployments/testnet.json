@@ -1,0 +1,39 @@
+{
+  "network": "testnet",
+  "chainId": 1439,
+  "deployer": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+  "owner": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+  "attestor": "0xdc83322EE104526f473AfC4f8a01e2d57676A953",
+  "identityRegistry": "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+  "explorer": "https://testnet.blockscout.injective.network",
+  "deployedAt": "2026-11-08T19:21:17.194Z",
+  "gitCommit": "ed3a8cf6f27ad48bd9a3574a7cfe4a0884ca3584",
+  "contracts": {
+    "StrataArena": {
+      "address": "0x2046d580f7c710bee8c8efe46cb34ccfd1b40870",
+      "txHash": "0x9ed9a00aa7cb30f9157dbac1ffa3999bb0357c3589b27ed4010ecca46a74110f",
+      "block": 147653265,
+      "constructorArgs": [
+        "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+        "0xdc83322EE104526f473AfC4f8a01e2d57676A953",
+        "0x8004A818BFB912233c491871b3d84c89A494BD9e"
+      ]
+    },
+    "ScoreAttestor": {
+      "address": "0xfb73da045cdc792dcb9f8dcdc300aee348bff4df",
+      "txHash": "0xc84d6497cd1f1c731aa352dbfdbadd8623183f02522d2a35f49567746523f22e",
+      "block": 147653270,
+      "constructorArgs": [
+        "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870"
+      ]
+    },
+    "RewardsDistributor": {
+      "address": "0x917ded5aec9b5ee1ee8430a9f179d600a321d628",
+      "txHash": "0xd18fdf41c0e63597e2376137b239bfdb414d715c7b864b6ab11164c3d37cc79d",
+      "block": 147653275,
+      "constructorArgs": [
+        "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54"
+      ]
+    }
+  }
+}

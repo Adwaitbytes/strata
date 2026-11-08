@@ -55,7 +55,15 @@ export const NETWORKS: Record<NetworkName, NetworkConfig> = {
     },
     precompiles: { bank: BANK, exchange: EXCHANGE },
     gasPriceWei: 160_000_000n,
-    contracts: { arena: null, attestor: null, rewards: null, identityRegistry: null, deployBlock: null },
+    // ERC-8004 identity registry: github.com/InjectiveLabs/injective-agent-sdk packages/sdk/src/config.ts
+    // (commit 381a270), ERC-721 supportsInterface checked live. STRATA contracts are not deployed on mainnet (D27).
+    contracts: {
+      arena: null,
+      attestor: null,
+      rewards: null,
+      identityRegistry: "0x8004A169FB4a3325136EB29fA0ceB6D2e539a432",
+      deployBlock: null,
+    },
   },
   testnet: {
     name: "testnet",
@@ -65,12 +73,21 @@ export const NETWORKS: Record<NetworkName, NetworkConfig> = {
       rpcUrls: ["https://k8s.testnet.json-rpc.injective.network/"],
       wsUrl: "wss://k8s.testnet.ws.injective.network/",
       explorer: "https://testnet.blockscout.injective.network/",
-      explorerApi: "https://testnet.blockscout-api.injective.network/api",
+      // testnet.blockscout-api.injective.network does not resolve (checked 2026-11-09); the explorer host serves /api.
+      explorerApi: "https://testnet.blockscout.injective.network/api",
       faucets: ["https://testnet.faucet.injective.network/", "https://faucet.circle.com/"],
     },
     precompiles: { bank: BANK, exchange: EXCHANGE },
     gasPriceWei: 160_000_000n,
-    contracts: { arena: null, attestor: null, rewards: null, identityRegistry: null, deployBlock: null },
+    // From packages/contracts/deployments/testnet.json (W1 deploy, commit ed3a8cf). Sourcify exact match.
+    // Identity registry: github.com/InjectiveLabs/injective-agent-sdk packages/sdk/src/config.ts (commit 381a270).
+    contracts: {
+      arena: "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+      attestor: "0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF",
+      rewards: "0x917DeD5aEC9B5eE1EE8430A9f179D600A321d628",
+      identityRegistry: "0x8004A818BFB912233c491871b3d84c89A494BD9e",
+      deployBlock: 147653265,
+    },
   },
 };
 
