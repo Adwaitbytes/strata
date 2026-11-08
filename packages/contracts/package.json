@@ -1,0 +1,1 @@
+{ "name": "@strata/contracts", "version": "0.1.0", "private": true, "scripts": { "build": "forge build && node ../../scripts/gen-abis.mjs", "test": "forge test" } }
