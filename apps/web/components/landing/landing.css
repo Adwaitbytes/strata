@@ -1,0 +1,360 @@
+/*
+ * Landing layout and motion. Plain CSS over the theme variables from @strata/ui/theme.css;
+ * utilities come from Tailwind. Motion here is CSS only; scroll motion lives in StoryMotion.
+ */
+
+.landing {
+  --gutter: clamp(16px, 4vw, 48px);
+  --header-h: 64px;
+}
+
+.landing-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -64px;
+  z-index: 60;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: var(--accent-fg);
+  font-size: 14px;
+}
+.skip-link:focus-visible {
+  top: 12px;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  backdrop-filter: saturate(140%) blur(14px);
+  -webkit-backdrop-filter: saturate(140%) blur(14px);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
+}
+
+.nav-link {
+  height: 32px;
+  align-items: center;
+  padding-inline: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--fg-muted);
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+.nav-link:hover {
+  color: var(--fg);
+  background: var(--surface-hover);
+}
+
+/* ------------------------------------------------------------------ buttons */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 44px;
+  padding-inline: 20px;
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  transition:
+    transform var(--dur-fast) var(--ease-out),
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.btn:active {
+  transform: translateY(1px) scale(0.985);
+}
+.btn-sm {
+  height: 34px;
+  padding-inline: 14px;
+  font-size: 14px;
+  border-radius: var(--radius-sm);
+}
+/* Primary is ink-on-paper, not teal: the accent stays reserved for liquidity itself. */
+.btn-primary {
+  background: var(--fg);
+  color: var(--bg);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), 0 1px 2px rgb(0 0 0 / 0.3);
+}
+.btn-primary:hover {
+  background: color-mix(in oklab, var(--fg) 88%, var(--bg));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.25), var(--shadow-2);
+}
+.btn-secondary {
+  border: 1px solid var(--border-strong);
+  color: var(--fg);
+  background: color-mix(in oklab, var(--surface) 60%, transparent);
+}
+.btn-secondary:hover {
+  border-color: var(--fg-subtle);
+  background: var(--surface-hover);
+}
+.btn-ghost {
+  color: var(--fg-muted);
+  padding-inline: 12px;
+}
+.btn-ghost:hover {
+  color: var(--fg);
+}
+
+.footer-link {
+  font-size: 14px;
+  color: var(--fg-muted);
+  border-radius: var(--radius-xs);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.footer-link:hover {
+  color: var(--fg);
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  /* Phones: live numbers before the object, so the first screen is words and data and the
+     headline (not the poster) is the largest paint. */
+  grid-template-areas: "copy" "strip" "visual";
+  column-gap: 32px;
+  padding-top: clamp(32px, 7vh, 88px);
+  padding-bottom: 24px;
+}
+.hero-copy {
+  grid-area: copy;
+  position: relative;
+  z-index: 2;
+}
+.hero-visual {
+  grid-area: visual;
+  height: clamp(240px, 66vw, 460px);
+  margin-top: 24px;
+}
+.hero-strip {
+  grid-area: strip;
+  margin-top: 48px;
+}
+
+@media (min-width: 1024px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    grid-template-areas: "copy visual" "strip strip";
+    min-height: min(calc(100svh - var(--header-h)), 920px);
+    align-content: space-between;
+  }
+  .hero-copy {
+    align-self: center;
+    padding-bottom: 24px;
+  }
+  .hero-visual {
+    height: clamp(400px, 40vw, 540px);
+    margin-top: 0;
+    /* Let the object bleed toward the copy column without covering it. */
+    margin-left: -6%;
+  }
+  .hero-strip {
+    margin-top: 40px;
+  }
+}
+
+.hero-title {
+  font-weight: 460;
+  font-variation-settings: "wdth" 120;
+  font-size: clamp(2.5rem, 1.7rem + 3.2vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.032em;
+  text-wrap: balance;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* One orchestrated entrance: the two lines settle into place like layers. Transform only,
+     so the text is painted (LCP) at first frame and nothing shifts layout. */
+  .hero-title > span {
+    animation: stratum-settle 900ms var(--ease-out) both;
+  }
+  .hero-title > span + span {
+    animation-delay: 90ms;
+  }
+}
+
+@keyframes stratum-settle {
+  from {
+    transform: translateY(0.22em);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* Poster and canvas cross-fade. */
+.strata-poster {
+  transition: opacity var(--dur-scene) var(--ease-out);
+}
+.hero-visual:has(.strata-canvas[data-ready]) .strata-poster {
+  opacity: 0;
+}
+.strata-canvas {
+  bottom: 28px;
+  opacity: 0;
+  /* Feather the canvas edge into the page so bloom haze never reads as a box. */
+  mask-image: radial-gradient(closest-side, #000 72%, transparent);
+  -webkit-mask-image: radial-gradient(closest-side, #000 72%, transparent);
+  transition: opacity 900ms var(--ease-out);
+}
+.strata-canvas[data-ready] {
+  opacity: 1;
+}
+:root[data-theme="light"] .strata-canvas {
+  mask-image: radial-gradient(closest-side, #000 58%, transparent 90%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 58%, transparent 90%);
+}
+
+.stat-popover {
+  margin: auto;
+  color: var(--fg);
+}
+.stat-popover:popover-open {
+  animation: pop-in var(--dur-fast) var(--ease-out);
+}
+@supports (position-area: top) {
+  .stat-popover {
+    margin: 0 0 8px;
+    position-area: top span-right;
+    position-try-fallbacks: flip-block, flip-inline;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px) scale(0.98);
+  }
+}
+
+/* ------------------------------------------------------------------ story */
+
+.story {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+.story-rail {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .story {
+    grid-template-columns: 200px minmax(0, 1fr);
+    column-gap: 72px;
+  }
+  .story-rail {
+    display: block;
+    position: sticky;
+    top: calc(var(--header-h) + 25vh);
+    align-self: start;
+    margin-top: 120px;
+  }
+}
+
+.story-rail ol {
+  display: grid;
+  gap: 6px;
+}
+.story-rail a {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding-block: 6px;
+  border-radius: var(--radius-xs);
+  color: var(--fg-subtle);
+  font-size: 13px;
+  transition: color var(--dur-base) var(--ease-out);
+}
+.story-rail a:hover {
+  color: var(--fg-muted);
+}
+.story-rail-layer {
+  height: 2px;
+  border-radius: 2px;
+  background: var(--border-strong);
+  transition:
+    height var(--dur-slow) var(--ease-out),
+    background-color var(--dur-slow) var(--ease-out);
+}
+.story-rail li[data-active] a {
+  color: var(--fg);
+}
+.story-rail li[data-active] .story-rail-layer {
+  height: 8px;
+  background: var(--fg);
+}
+.story-rail-progress {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 20px);
+  width: 40px;
+  height: 1px;
+  background: var(--fg-subtle);
+  transform-origin: left;
+  transform: scaleX(var(--story-progress, 0));
+  opacity: 0.6;
+}
+
+.scene {
+  padding-block: clamp(72px, 11vh, 120px);
+  scroll-margin-top: var(--header-h);
+}
+@media (min-width: 1280px) {
+  /* Text left, figure promoted to the wider right column. */
+  .scene {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 56px;
+    align-items: start;
+  }
+  .scene > .scene-lede {
+    align-self: start;
+  }
+  .scene > h2,
+  .scene > .scene-lede {
+    grid-column: 1;
+  }
+  .scene > .scene-figure {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin-top: 8px;
+  }
+}
+.scene + .scene {
+  border-top: 1px solid var(--border);
+}
+.scene-title {
+  font-weight: 440;
+  font-variation-settings: "wdth" 108;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+
+/* Each weight is a fill proportional to its share (background-size set inline). */
+.score-layer {
+  background-image: linear-gradient(90deg, color-mix(in oklab, var(--fg) 7%, transparent), color-mix(in oklab, var(--fg) 3%, transparent));
+  background-repeat: no-repeat;
+}

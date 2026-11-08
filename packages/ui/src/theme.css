@@ -1,0 +1,165 @@
+/*
+ * STRATA theme: "Liquidity as terrain". Source of truth is src/tokens.ts; tokens.test.ts checks
+ * that every palette value below matches it and passes WCAG AA.
+ *
+ * Dark is the default and the design reference. Light is a full palette, not an inversion,
+ * selected with data-theme="light" on <html>.
+ *
+ * Import once from the app stylesheet, after tailwindcss:
+ *   @import "@strata/ui/theme.css";
+ */
+
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #07080b;
+  --bg-raised: #0d0f14;
+  --bg-sunken: #050609;
+  --surface: #11141a;
+  --surface-hover: #171b23;
+  --border: #1f242d;
+  --border-strong: #2d343f;
+  --fg: #eceef2;
+  --fg-muted: #a6aebc;
+  --fg-subtle: #808a9b;
+  --accent: #3ee6d4;
+  --accent-strong: #7ff0e3;
+  --accent-fg: #04201d;
+  --bid: #5cd69a;
+  --ask: #ff8170;
+  --warn: #f2b544;
+  --halt: #ff5c66;
+  --baseline: #8c95a8;
+  --focus: #7ff0e3;
+
+  --accent-soft: rgb(62 230 212 / 0.12);
+  --bid-soft: rgb(92 214 154 / 0.14);
+  --ask-soft: rgb(255 129 112 / 0.14);
+  --warn-soft: rgb(242 181 68 / 0.14);
+  --halt-soft: rgb(255 92 102 / 0.14);
+  --baseline-soft: rgb(140 149 168 / 0.16);
+  --accent-glow: rgb(62 230 212 / 0.28);
+
+  /* Layered shadows: a hairline top highlight, a tight contact shadow, a soft ambient one. */
+  --shadow-1: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 1px 2px rgb(0 0 0 / 0.5);
+  --shadow-2: inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.45), 0 12px 32px -12px rgb(0 0 0 / 0.7);
+  --shadow-3: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 2px 4px rgb(0 0 0 / 0.4), 0 24px 64px -16px rgb(0 0 0 / 0.8);
+  --shadow-accent: 0 0 0 1px rgb(62 230 212 / 0.35), 0 8px 28px -8px rgb(62 230 212 / 0.45);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f6f9;
+  --bg-raised: #ffffff;
+  --bg-sunken: #ebeef3;
+  --surface: #ffffff;
+  --surface-hover: #f0f2f6;
+  --border: #dfe3ea;
+  --border-strong: #c6cdd7;
+  --fg: #0a0c10;
+  --fg-muted: #434b59;
+  --fg-subtle: #5a6373;
+  --accent: #006e66;
+  --accent-strong: #00574f;
+  --accent-fg: #ffffff;
+  --bid: #11713f;
+  --ask: #b83525;
+  --warn: #875500;
+  --halt: #b81d2a;
+  --baseline: #576074;
+  --focus: #006e66;
+
+  --accent-soft: rgb(0 110 102 / 0.09);
+  --bid-soft: rgb(17 113 63 / 0.1);
+  --ask-soft: rgb(184 53 37 / 0.1);
+  --warn-soft: rgb(135 85 0 / 0.1);
+  --halt-soft: rgb(184 29 42 / 0.1);
+  --baseline-soft: rgb(87 96 116 / 0.12);
+  --accent-glow: rgb(0 110 102 / 0.16);
+
+  --shadow-1: 0 1px 2px rgb(16 24 40 / 0.06), 0 0 0 1px rgb(16 24 40 / 0.03);
+  --shadow-2: 0 1px 2px rgb(16 24 40 / 0.05), 0 12px 32px -12px rgb(16 24 40 / 0.14);
+  --shadow-3: 0 2px 4px rgb(16 24 40 / 0.05), 0 24px 64px -16px rgb(16 24 40 / 0.2);
+  --shadow-accent: 0 0 0 1px rgb(0 110 102 / 0.3), 0 8px 24px -10px rgb(0 110 102 / 0.35);
+}
+
+:root {
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  --dur-instant: 120ms;
+  --dur-fast: 180ms;
+  --dur-base: 240ms;
+  --dur-slow: 320ms;
+  --dur-scene: 640ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-in: cubic-bezier(0.5, 0, 0.75, 0);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-raised: var(--bg-raised);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-bid: var(--bid);
+  --color-bid-soft: var(--bid-soft);
+  --color-ask: var(--ask);
+  --color-ask-soft: var(--ask-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-halt: var(--halt);
+  --color-halt-soft: var(--halt-soft);
+  --color-baseline: var(--baseline);
+  --color-baseline-soft: var(--baseline-soft);
+  --color-focus: var(--focus);
+
+  --font-sans: var(--font-sans-face), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-face), ui-monospace, monospace;
+  --font-display: var(--font-display-face), var(--font-sans-face), ui-sans-serif, sans-serif;
+
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --shadow-accent: var(--shadow-accent);
+
+  --ease-out: var(--ease-out);
+  --ease-in-out: var(--ease-in-out);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+
+  /* Fluid display sizes: min at 375px viewport, max at 1440px. */
+  --text-display: clamp(2.75rem, 1.43rem + 5.63vw, 6.5rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.035em;
+  --text-h1: clamp(2.125rem, 1.64rem + 2.07vw, 3.5rem);
+  --text-h1--line-height: 1.02;
+  --text-h1--letter-spacing: -0.03em;
+  --text-h2: clamp(1.625rem, 1.41rem + 0.94vw, 2.25rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: 1.25rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.01em;
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.01em;
+}
