@@ -1,0 +1,26 @@
+# slither 0.11.6 on packages/contracts/src (filter: lib/, test/, script/), 2026-11-08T18:50Z
+INFO:Detectors:
+Detector: timestamp
+RewardsDistributor.sweep(uint64,address) (src/RewardsDistributor.sol#124-134) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp < p.claimDeadline (src/RewardsDistributor.sol#127)
+RewardsDistributor._openPool(uint64) (src/RewardsDistributor.sol#156-160) uses timestamp for comparisons
+	Dangerous comparisons:
+	- block.timestamp >= p.claimDeadline (src/RewardsDistributor.sol#159)
+StrataArena.enroll(uint256,bytes32,string) (src/StrataArena.sol#71-109) uses timestamp for comparisons
+	Dangerous comparisons:
+	- ! s.active || block.timestamp >= s.endTime (src/StrataArena.sol#77)
+StrataArena.startSeason(uint64,uint64,uint32) (src/StrataArena.sol#138-149) uses timestamp for comparisons
+	Dangerous comparisons:
+	- endTime <= startTime || endTime <= block.timestamp (src/StrataArena.sol#144)
+StrataArena.endSeason() (src/StrataArena.sol#153-162) uses timestamp for comparisons
+	Dangerous comparisons:
+	- nowTs < s.endTime (src/StrataArena.sol#160)
+Reference: https://github.com/crytic/slither/wiki/Detector-Documentation#block-timestamp
+INFO:Slither:. analyzed (17 contracts with 102 detectors), 5 result(s) found
+
+# Triage (W1, 2026-11-09)
+# Result: 0 High, 0 Medium, 0 Low beyond the 5 `timestamp` results above (informational/low), all accepted:
+# - StrataArena.enroll/startSeason/endSeason and RewardsDistributor.sweep/_openPool compare block.timestamp
+#   against season end times and a 30-day claim deadline. Validator drift is seconds; these windows are
+#   hours to days, so manipulation cannot change any outcome that matters.
