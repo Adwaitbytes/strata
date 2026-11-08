@@ -43,6 +43,7 @@ const recorders = networks.map(
       db,
       source: `${indexerEndpoint(network)} IndexerGrpcDerivativesApi.fetchMarkets`,
       configured: getMarkets(network).filter((m) => m.arenaEnabled),
+      catalog: getMarkets(network),
       intervalMs: env.BASELINE_INTERVAL_MS,
       levelsEveryMs: env.BASELINE_LEVELS_EVERY_MS,
       maxStoredLevels: env.BASELINE_MAX_LEVELS,

@@ -19,7 +19,9 @@ import { computeBookMetrics } from "../book/metrics.js";
 import { insertBookSnapshots, upsertHeartbeat } from "../store/writes.js";
 import { insertOraclePrices, insertPositions, insertTrades, upsertAgentOrders, type OracleRow } from "../store/live.js";
 import { loadAgents, type AgentRef } from "./agents.js";
-import { liveProvenance, mapOrder, mapPosition, mapTrade, strataBookMaps, type FillRow, type OrderRow, type PositionRow, type TradeRow } from "./mappers.js";
+import { closeOrdersMissingFromChain } from "../store/reconcile.js";
+import { upsertMarketCatalog } from "../store/catalog.js";
+import { isOpenOrder, liveProvenance, mapOrder, mapPosition, mapTrade, strataBookMaps, type FillRow, type OrderRow, type PositionRow, type TradeRow } from "./mappers.js";
 import type { IndexerOrder } from "./records.js";
 import { SESSION_UNKNOWN } from "../baseline/snapshot.js";
 
@@ -37,12 +39,19 @@ export interface LiveIndexerOptions {
   snapshotMs?: number;
   refreshMs?: number;
   pollMs?: number;
+  /**
+   * Full Market records from @strata/config, written to markets.data on start and every 2 min
+   * (the baseline recorder may write a partial record for the same row in between).
+   */
+  catalog?: readonly unknown[];
   /** Take book snapshots even before any agent enrolls (tests, local runs). */
   snapshotWithoutAgents?: boolean;
 }
 
 export class LiveIndexer {
   private markets = new Map<string, RawDerivativeMarket>();
+  /** Every live market, for decimals of agent orders placed outside the arena scope. */
+  private allMarkets = new Map<string, RawDerivativeMarket>();
   private agents: AgentRef[] = [];
   private agentBySub = new Map<string, number>();
   private openOrders = new Map<string, IndexerOrder>();
@@ -59,6 +68,7 @@ export class LiveIndexer {
     lastSnapshotAt: null as number | null,
     lastTradeAt: null as number | null,
     lastPoll: null as (PollResult & { at: number }) | null,
+    ordersClosedByReconcile: 0,
   };
   private busy = new Set<string>();
 
@@ -81,6 +91,7 @@ export class LiveIndexer {
   async refresh(): Promise<void> {
     const live = await this.o.reader.fetchMarkets();
     const byId = new Map(live.map((m) => [m.marketId.toLowerCase(), m]));
+    this.allMarkets = byId;
     const wanted = new Set([...(await arenaMarketIds(this.o.sql, this.o.network)), ...this.o.configuredArenaIds, ...(this.o.extraMarketIds ?? [])].map((x) => x.toLowerCase()));
     const next = new Map<string, RawDerivativeMarket>();
     for (const id of wanted) {
@@ -101,34 +112,61 @@ export class LiveIndexer {
     await this.reconcileAgents();
   }
 
-  /** REST reconciliation: rebuilds open orders and samples positions for every agent. */
+  /**
+   * REST reconciliation (every refresh, 30 s): rebuilds open orders from the Indexer for every
+   * agent, upserts them, closes DB-open rows that left the book, and samples positions.
+   * A failed fetch skips that agent, so a transient error never closes live orders.
+   */
   private async reconcileAgents(): Promise<void> {
-    const ids = [...this.markets.keys()];
-    if (ids.length === 0 || this.agents.length === 0) {
+    if (this.agents.length === 0) {
       this.openOrders.clear();
       return;
     }
+    const ids = [...this.markets.keys()];
     const fresh = new Map<string, IndexerOrder>();
-    const now = new Date();
     for (const a of this.agents) {
-      const [orders, positions] = await Promise.all([
-        this.o.reader.fetchOrders({ subaccountId: a.subaccountId, marketIds: ids }),
-        this.o.reader.fetchPositions({ subaccountId: a.subaccountId, marketIds: ids }),
-      ]);
-      for (const ord of orders) {
-        fresh.set(ord.orderHash.toLowerCase(), ord);
-        this.queueOrder(ord, a.agentId);
-      }
-      for (const p of positions) {
-        const m = this.markets.get(p.marketId.toLowerCase());
-        if (m) this.buf.positions.push(mapPosition(p, this.o.network, m.quoteDecimals, a.agentId, now));
+      try {
+        const observedAt = new Date();
+        const [orders, positions] = await Promise.all([
+          this.o.reader.fetchOrders({ subaccountId: a.subaccountId }),
+          ids.length > 0 ? this.o.reader.fetchPositions({ subaccountId: a.subaccountId, marketIds: ids }) : Promise.resolve([]),
+        ]);
+        const open = orders.filter(isOpenOrder);
+        for (const ord of open) {
+          fresh.set(ord.orderHash.toLowerCase(), ord);
+          this.queueOrder(ord, a.agentId);
+        }
+        // Upsert first so a just-seen order exists before the close pass compares against it.
+        await this.flushOrders();
+        const closed = await closeOrdersMissingFromChain(this.o.sql, {
+          network: this.o.network,
+          agentId: a.agentId,
+          open: open.map((o) => ({ orderHash: o.orderHash, postedAt: new Date(o.createdAt) })),
+          observedAt,
+        });
+        this.stats.ordersClosedByReconcile += closed;
+        for (const p of positions) {
+          const m = this.markets.get(p.marketId.toLowerCase());
+          if (m) this.buf.positions.push(mapPosition(p, this.o.network, m.quoteDecimals, a.agentId, observedAt));
+        }
+      } catch (e) {
+        for (const [k, v] of this.openOrders) if (v.subaccountId.toLowerCase() === a.subaccountId) fresh.set(k, v);
+        this.stats.errors += 1;
+        this.stats.lastError = `reconcile agent ${a.agentId}: ${errMsg(e)}`;
+        log("warn", "order reconciliation failed, agent skipped", { network: this.o.network, agentId: a.agentId, error: errMsg(e) });
       }
     }
     this.openOrders = fresh;
   }
 
+  private async flushOrders(): Promise<void> {
+    const orders = this.buf.orders;
+    this.buf.orders = [];
+    await upsertAgentOrders(this.o.db, dedupeOrders(orders));
+  }
+
   private queueOrder(ord: IndexerOrder, agentId: number): void {
-    const m = this.markets.get(ord.marketId.toLowerCase());
+    const m = this.allMarkets.get(ord.marketId.toLowerCase());
     if (!m) return;
     this.buf.orders.push(mapOrder(ord, this.o.network, m.quoteDecimals, agentId));
   }
@@ -183,7 +221,7 @@ export class LiveIndexer {
           (ord) => {
             h.onData();
             const key = ord.orderHash.toLowerCase();
-            if (ord.state === "booked" || ord.state === "partial_filled") this.openOrders.set(key, ord);
+            if (isOpenOrder(ord)) this.openOrders.set(key, ord);
             else this.openOrders.delete(key);
             this.queueOrder(ord, a.agentId);
           },
@@ -284,6 +322,15 @@ export class LiveIndexer {
       this.timers.push(t);
     };
     every(this.o.refreshMs ?? 30_000, this.guard("refresh", () => this.refresh()));
+    if (this.o.catalog && this.o.catalog.length > 0) {
+      const catalog = this.o.catalog;
+      const sync = this.guard("catalog", async () => {
+        const r = await upsertMarketCatalog(this.o.db, catalog);
+        log("info", "market catalog synced", { network: this.o.network, ...r });
+      });
+      sync();
+      every(120_000, sync);
+    }
     every(2_000, this.guard("flush", () => this.flush()));
     every(snapshotMs, this.guard("snapshot", async () => void (await this.snapshot(new Date(Math.floor(Date.now() / snapshotMs) * snapshotMs)))));
     every(10_000, this.guard("heartbeat", () => upsertHeartbeat(this.o.db, this.o.network, "indexer", new Date(), this.heartbeatDetail())));

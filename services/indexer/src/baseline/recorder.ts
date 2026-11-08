@@ -24,6 +24,8 @@ export interface BaselineOptions {
   source: string;
   /** Arena-enabled markets from @strata/config; always recorded. */
   configured: readonly Pick<Market, "marketId" | "assetClass">[];
+  /** Full Market records (all markets, not only arena) written into markets.data when present. */
+  catalog?: readonly Market[];
   intervalMs?: number;
   refreshMarketsMs?: number;
   maxMarkets?: number;
@@ -59,7 +61,8 @@ export class BaselineRecorder {
     const changed = next.map((m) => m.marketId).join() !== this.markets.map((m) => m.marketId).join();
     this.markets = next;
     this.lastRefresh = Date.now();
-    await upsertMarkets(this.o.db, next, this.o.source, new Date());
+    const catalog = new Map((this.o.catalog ?? []).map((m) => [m.marketId.toLowerCase(), m as unknown as Record<string, unknown>]));
+    await upsertMarkets(this.o.db, next, this.o.source, new Date(), catalog);
     if (changed) {
       log("info", "baseline markets", { network: this.o.network, count: next.length, tickers: next.map((m) => m.ticker) });
       this.restartOracleStream();

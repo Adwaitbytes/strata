@@ -6,7 +6,18 @@ import type { CandidateMarket } from "../markets/select.js";
 
 export type BookSnapshotRow = typeof bookSnapshots.$inferInsert;
 
-export async function upsertMarkets(db: Db, list: readonly CandidateMarket[], source: string, fetchedAt: Date): Promise<void> {
+/**
+ * `catalog` holds full sdk Market records from @strata/config by lowercase market ID; when one
+ * exists it is written as markets.data (with the Indexer fields alongside), otherwise the
+ * Indexer-derived partial record is.
+ */
+export async function upsertMarkets(
+  db: Db,
+  list: readonly CandidateMarket[],
+  source: string,
+  fetchedAt: Date,
+  catalog: ReadonlyMap<string, Record<string, unknown>> = new Map(),
+): Promise<void> {
   if (list.length === 0) return;
   const rows = list.map((m) => ({
     network: m.network,
@@ -21,6 +32,7 @@ export async function upsertMarkets(db: Db, list: readonly CandidateMarket[], so
       oracleScaleFactor: m.oracleScaleFactor,
       source,
       indexer: m.raw.raw,
+      ...(catalog.get(m.marketId.toLowerCase()) ?? {}),
     },
     fetchedAt,
   }));

@@ -94,13 +94,18 @@ export function mapOrder(o: IndexerOrder, network: NetworkName, quoteDecimals: n
     quantity: fromFixed18(toFixed18(o.quantity)),
     level: levelFromCid(o.cid),
     postedAt: new Date(o.createdAt),
-    cancelledAt: o.state === "canceled" || o.state === "cancelled" ? new Date(o.updatedAt) : null,
+    // cancelled_at marks "left the book" for every terminal state (cancel, fill, expiry), which is
+    // what the scorer's resting-depth and uptime metrics need.
+    cancelledAt: isOpenOrder(o) ? null : new Date(o.updatedAt || Date.now()),
     provenance: liveProvenance(network),
   };
 }
 
+/** Indexer order states that rest on the book. Anything else (canceled, filled, expired, ...) is closed. */
+const OPEN_STATES = new Set(["booked", "partial_filled", "unfilled"]);
+
 export function isOpenOrder(o: IndexerOrder): boolean {
-  return o.state === "booked" || o.state === "partial_filled";
+  return OPEN_STATES.has(o.state);
 }
 
 export function mapPosition(p: IndexerPosition, network: NetworkName, quoteDecimals: number, agentId: number, at: Date): PositionRow {

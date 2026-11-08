@@ -7,6 +7,10 @@ import { createDb, describeDatabaseUrl, resolveDatabaseUrl } from "@strata/db";
 import { createInjectiveReader } from "../injective/reader.js";
 import { errMsg, log } from "../lib/log.js";
 import { LiveIndexer } from "../live/indexer.js";
+import { getMarkets } from "@strata/config";
+import { NetworkName } from "@strata/sdk";
+import { z } from "zod";
+import { upsertMarketCatalog } from "../store/catalog.js";
 import { configuredArenaIds, IndexerEnv, makePoller } from "./common.js";
 
 const env = IndexerEnv.parse(process.env);
@@ -25,8 +29,29 @@ const indexers = env.INDEXER_NETWORKS.map((network) => {
     configuredArenaIds: configuredArenaIds(network),
     extraMarketIds: env.INDEXER_EXTRA_MARKET_IDS,
     poller,
+    catalog: getMarkets(network),
   });
 });
+
+// The market catalog is static config, so it is also synced for networks this process does not
+// index (mainnet read-only records for the Markets pages). Default: both networks.
+const catalogNetworks = z
+  .string()
+  .default("mainnet,testnet")
+  .transform((s) => s.split(",").map((x) => x.trim()).filter(Boolean))
+  .pipe(z.array(NetworkName))
+  .parse(process.env.INDEXER_CATALOG_NETWORKS);
+const syncOtherCatalogs = async () => {
+  for (const network of catalogNetworks.filter((n) => !env.INDEXER_NETWORKS.includes(n))) {
+    try {
+      log("info", "market catalog synced", { network, ...(await upsertMarketCatalog(db, getMarkets(network))) });
+    } catch (e) {
+      log("error", "market catalog sync failed", { network, error: errMsg(e) });
+    }
+  }
+};
+await syncOtherCatalogs();
+setInterval(() => void syncOtherCatalogs(), 120_000);
 
 for (const [i, idx] of indexers.entries()) {
   for (let attempt = 0; ; attempt++) {

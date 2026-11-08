@@ -52,7 +52,8 @@ export interface InjectiveReader {
   ): void;
   /** Newest-first page of trades in [startTime, endTime] (ms). */
   fetchTrades(q: { marketIds: readonly string[]; startTime?: number; endTime?: number; limit: number }): Promise<IndexerTrade[]>;
-  fetchOrders(q: { subaccountId: string; marketIds: readonly string[] }): Promise<IndexerOrder[]>;
+  /** All open orders of a subaccount (every page), optionally limited to markets. */
+  fetchOrders(q: { subaccountId: string; marketIds?: readonly string[] }): Promise<IndexerOrder[]>;
   fetchPositions(q: { subaccountId: string; marketIds: readonly string[] }): Promise<IndexerPosition[]>;
   streamTrades(marketIds: readonly string[], onTrade: (t: IndexerTrade) => void, h: StreamCallbacks, signal: AbortSignal): void;
   streamOrders(subaccountId: string, onOrder: (o: IndexerOrder) => void, h: StreamCallbacks, signal: AbortSignal): void;
@@ -151,8 +152,18 @@ export function createInjectiveReader(network: NetworkName): InjectiveReader {
       return res.trades.map((t) => IndexerTrade.parse(t));
     },
     async fetchOrders(q) {
-      const res = await derivatives.fetchOrders({ subaccountId: q.subaccountId, marketIds: [...q.marketIds], pagination: { limit: 100 } });
-      return res.orders.map((o) => IndexerOrder.parse(o));
+      const out: IndexerOrder[] = [];
+      const limit = 100;
+      for (let skip = 0; skip < 10_000; skip += limit) {
+        const res = await derivatives.fetchOrders({
+          subaccountId: q.subaccountId,
+          ...(q.marketIds ? { marketIds: [...q.marketIds] } : {}),
+          pagination: { limit, skip },
+        });
+        out.push(...res.orders.map((o) => IndexerOrder.parse(o)));
+        if (res.orders.length < limit) return out;
+      }
+      throw new Error(`fetchOrders: more than 10000 open orders for ${q.subaccountId}`);
     },
     async fetchPositions(q) {
       const res = await derivatives.fetchPositionsV2({ subaccountId: q.subaccountId, marketIds: [...q.marketIds], pagination: { limit: 100 } });
