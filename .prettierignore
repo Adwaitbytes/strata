@@ -1,0 +1,12 @@
+node_modules
+dist
+.next
+.turbo
+coverage
+pnpm-lock.yaml
+packages/contracts/lib
+packages/contracts/out
+packages/contracts/cache
+.claude
+docs/PRD.md
+deliverables

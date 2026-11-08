@@ -1,0 +1,57 @@
+# Evaluated by Prometheus and shown in Grafana (Alerting > Alert rules, Prometheus source).
+# Telegram delivery is done in-process by @strata/alerts; these rules are the second line
+# of defence and the only signal when a service is down and cannot alert for itself.
+groups:
+  - name: strata
+    rules:
+      - alert: StrataTargetDown
+        expr: up{job=~"strata-.*"} == 0
+        for: 2m
+        labels: { severity: critical }
+        annotations:
+          summary: "{{ $labels.instance }} ({{ $labels.network }}) is not answering /metrics"
+
+      - alert: StrataAgentHalted
+        expr: max by (agent, network) (strata_agent_halted) == 1
+        labels: { severity: critical }
+        annotations:
+          summary: "Agent {{ $labels.agent }} on {{ $labels.network }} is halted"
+
+      - alert: StrataDataLag
+        expr: max by (service, network, source) (strata_data_lag_seconds) > 60
+        for: 30s
+        labels: { severity: warning }
+        annotations:
+          summary: "{{ $labels.source }} data is {{ $value | humanizeDuration }} old on {{ $labels.network }}"
+
+      - alert: StrataTxFailureSpike
+        expr: |
+          (
+            sum by (service, network) (increase(strata_tx_total{result="failure"}[5m]))
+            / clamp_min(sum by (service, network) (increase(strata_tx_total[5m])), 1)
+          ) > 0.3
+          and sum by (service, network) (increase(strata_tx_total[5m])) >= 5
+        labels: { severity: warning }
+        annotations:
+          summary: "{{ $labels.service }} tx failure rate {{ $value | humanizePercentage }} on {{ $labels.network }}"
+
+      - alert: StrataEpochPostFailure
+        expr: increase(strata_scorer_epoch_post_failures_total[30m]) > 0
+        labels: { severity: critical }
+        annotations:
+          summary: "Epoch post failed on {{ $labels.network }}"
+
+      - alert: StrataScorerStalled
+        expr: time() - max by (network) (strata_scorer_last_tick_timestamp_seconds) > 600
+        labels: { severity: warning }
+        annotations:
+          summary: "Scorer on {{ $labels.network }} has not ticked for {{ $value | humanizeDuration }}"
+
+      # Display threshold only. The enforced minMarginRatio lives in the risk config
+      # (packages/risk); keep this at or above it.
+      - alert: StrataMarginRatioLow
+        expr: min by (agent, network) (strata_agent_margin_ratio) < 0.2
+        for: 1m
+        labels: { severity: warning }
+        annotations:
+          summary: "Agent {{ $labels.agent }} margin ratio {{ $value }} on {{ $labels.network }}"

@@ -1,0 +1,303 @@
+# STRATA long-running stack (D25): agents, indexer, scorer, Telegram bot, Prometheus and
+# Grafana, running in Docker on the owner's Mac with restart: always. Web and API run on
+# Vercel and read the same database.
+#
+#   Testnet:  docker compose -f infra/compose/stack.yml --profile testnet up -d --build
+#   Stop:     docker compose -f infra/compose/stack.yml --profile testnet down
+#
+# MAINNET PROFILE NEEDS OWNER APPROVAL (D27). Mainnet capital is $0 today; the `mainnet`
+# profile stays off unless the owner has funded the wallets, the Section 16 checklist has
+# passed, and the orchestrator has given an explicit go-ahead. Even when the profile is
+# started, the agent refuses to trade unless STRATA_MAINNET_APPROVED=true is set in
+# the root .env. Do not set it on your own.
+#
+# Secrets: every secret is a file under .secrets/ (gitignored, chmod 600), mounted
+# read-only at /run/secrets/<name>. Nothing secret is passed as an env var or baked
+# into an image. See docs/RUNBOOK.md, Secrets.
+#
+# Every published port is bound to 127.0.0.1. Agent /internal/kill and /metrics ports
+# are reachable only on the private compose network.
+
+name: strata
+
+include:
+  - db.yml
+
+x-hardening: &hardening
+  restart: always
+  init: true
+  read_only: true
+  tmpfs: [/tmp]
+  cap_drop: [ALL]
+  security_opt: ["no-new-privileges:true"]
+  logging:
+    driver: json-file
+    options: { max-size: "20m", max-file: "5" }
+
+x-node-healthcheck: &node-healthcheck
+  test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:9464/healthz').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+  interval: 15s
+  timeout: 5s
+  start_period: 60s
+  retries: 4
+
+x-service-env: &service-env
+  NODE_ENV: production
+  METRICS_PORT: "9464"
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  # Database URL is read from the mounted secret file, never from env.
+  DATABASE_URL_FILE: /run/secrets/database_url
+  TELEGRAM_BOT_TOKEN_FILE: /run/secrets/telegram_bot_token
+  TELEGRAM_CHAT_IDS_FILE: /run/secrets/telegram_chat_ids
+
+# One agent image, one container per agent (PRD 15.2). AGENT_NAME selects the config.
+x-agent: &agent
+  <<: *hardening
+  image: strata/agent:${STRATA_IMAGE_TAG:-local}
+  build:
+    context: ../..
+    dockerfile: infra/docker/service.Dockerfile
+    args: { PACKAGE: "@strata/agent", ENTRY: dist/core/main.js }
+  # SIGTERM triggers cancel-all; give it time to land on chain before SIGKILL.
+  stop_signal: SIGTERM
+  stop_grace_period: 90s
+  healthcheck: *node-healthcheck
+  depends_on:
+    db: { condition: service_healthy }
+  secrets: [database_url, telegram_bot_token, telegram_chat_ids, internal_kill_token, anthropic_api_key]
+
+x-agent-env: &agent-env
+  <<: *service-env
+  AGENT_KEY_SOURCE: keystore
+  # @strata/keys layout (D16): <dir>/keystores/<name>.json and <dir>/<name>.pass.
+  # Each container mounts only its own key pair, so one agent cannot read another's key.
+  STRATA_SECRETS_DIR: /run/strata-secrets
+  INTERNAL_KILL_TOKEN_FILE: /run/secrets/internal_kill_token
+  ANTHROPIC_API_KEY_FILE: /run/secrets/anthropic_api_key
+  # services/agent tuner readSecret() looks up <SECRETS_DIR>/anthropic_api_key.
+  SECRETS_DIR: /run/secrets
+  KILL_SWITCH: ${KILL_SWITCH:-false}
+  KILL_SWITCH_CLOSE: ${KILL_SWITCH_CLOSE:-false}
+
+services:
+  # ---------------------------------------------------------------- testnet
+  indexer:
+    <<: *hardening
+    profiles: [testnet]
+    image: strata/indexer:${STRATA_IMAGE_TAG:-local}
+    build:
+      context: ../..
+      dockerfile: infra/docker/service.Dockerfile
+      args: { PACKAGE: "@strata/indexer", ENTRY: dist/bin/indexer.js }
+    environment:
+      <<: *service-env
+      STRATA_NETWORK: testnet
+      INDEXER_NETWORKS: testnet
+    stop_grace_period: 30s
+    healthcheck: *node-healthcheck
+    depends_on:
+      db: { condition: service_healthy }
+    secrets: [database_url, telegram_bot_token, telegram_chat_ids]
+
+  scorer:
+    <<: *hardening
+    profiles: [testnet]
+    image: strata/scorer:${STRATA_IMAGE_TAG:-local}
+    build:
+      context: ../..
+      dockerfile: infra/docker/service.Dockerfile
+      args: { PACKAGE: "@strata/scorer", ENTRY: dist/main.js }
+    environment:
+      <<: *service-env
+      STRATA_NETWORK: testnet
+      SCORER_ATTESTOR_KEY: strata-testnet-attestor
+      SCORER_METRICS_PORT: "9464"
+      # Public API base the scorer reads metrics from, set in the root .env.
+      SCORER_API_BASE: ${SCORER_API_BASE:-}
+      STRATA_SECRETS_DIR: /run/strata-secrets
+    # An epoch post in flight should finish or be abandoned cleanly, not cut mid-broadcast.
+    stop_grace_period: 60s
+    healthcheck: *node-healthcheck
+    depends_on:
+      db: { condition: service_healthy }
+    secrets: [database_url, telegram_bot_token, telegram_chat_ids]
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-testnet-attestor.json, target: /run/strata-secrets/keystores/strata-testnet-attestor.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-testnet-attestor.pass, target: /run/strata-secrets/strata-testnet-attestor.pass, read_only: true, bind: { create_host_path: false } }
+
+  agent-test-1:
+    <<: *agent
+    profiles: [testnet]
+    environment: { <<: *agent-env, STRATA_NETWORK: testnet, AGENT_NAME: strata-test-1 }
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-test-1.json, target: /run/strata-secrets/keystores/strata-test-1.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-test-1.pass, target: /run/strata-secrets/strata-test-1.pass, read_only: true, bind: { create_host_path: false } }
+
+  agent-test-2:
+    <<: *agent
+    profiles: [testnet]
+    environment: { <<: *agent-env, STRATA_NETWORK: testnet, AGENT_NAME: strata-test-2 }
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-test-2.json, target: /run/strata-secrets/keystores/strata-test-2.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-test-2.pass, target: /run/strata-secrets/strata-test-2.pass, read_only: true, bind: { create_host_path: false } }
+
+  agent-test-3:
+    <<: *agent
+    profiles: [testnet]
+    environment: { <<: *agent-env, STRATA_NETWORK: testnet, AGENT_NAME: strata-test-3 }
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-test-3.json, target: /run/strata-secrets/keystores/strata-test-3.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-test-3.pass, target: /run/strata-secrets/strata-test-3.pass, read_only: true, bind: { create_host_path: false } }
+
+  agent-options:
+    <<: *agent
+    profiles: [testnet]
+    # SIMULATED until options writer access is granted (D9).
+    environment: { <<: *agent-env, STRATA_NETWORK: testnet, AGENT_NAME: strata-options }
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-options.json, target: /run/strata-secrets/keystores/strata-options.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-options.pass, target: /run/strata-secrets/strata-options.pass, read_only: true, bind: { create_host_path: false } }
+
+  telegram-bot:
+    <<: *hardening
+    profiles: [testnet, mainnet]
+    image: strata/telegram-bot:${STRATA_IMAGE_TAG:-local}
+    build:
+      context: ../..
+      dockerfile: infra/docker/service.Dockerfile
+      args: { PACKAGE: "@strata/alerts", ENTRY: dist/bin/telegram-bot.js }
+    environment:
+      METRICS_PORT: "9464"
+      TELEGRAM_BOT_TOKEN_FILE: /run/secrets/telegram_bot_token
+      TELEGRAM_CHAT_IDS_FILE: /run/secrets/telegram_chat_ids
+      INTERNAL_KILL_TOKEN_FILE: /run/secrets/internal_kill_token
+      # Agents reachable for /kill. Mainnet agents are appended by the override in
+      # docs/RUNBOOK.md once the mainnet profile is approved.
+      STRATA_AGENT_ENDPOINTS: ${STRATA_AGENT_ENDPOINTS:-strata-test-1=http://agent-test-1:9464,strata-test-2=http://agent-test-2:9464,strata-test-3=http://agent-test-3:9464,strata-options=http://agent-options:9464}
+    stop_grace_period: 35s
+    healthcheck: *node-healthcheck
+    secrets: [telegram_bot_token, telegram_chat_ids, internal_kill_token]
+
+  # ---------------------------------------------------------------- mainnet
+  # NEEDS OWNER APPROVAL (D27). Not started unless `--profile mainnet` is passed, and the
+  # agents also check STRATA_MAINNET_APPROVED. House agents per PRD 9.9.
+  agent-atlas:
+    <<: *agent
+    profiles: [mainnet]
+    environment:
+      <<: *agent-env
+      STRATA_NETWORK: mainnet
+      AGENT_NAME: strata-atlas
+      STRATA_MAINNET_APPROVED: ${STRATA_MAINNET_APPROVED:-false}
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-atlas.json, target: /run/strata-secrets/keystores/strata-atlas.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-atlas.pass, target: /run/strata-secrets/strata-atlas.pass, read_only: true, bind: { create_host_path: false } }
+
+  agent-meridian:
+    <<: *agent
+    profiles: [mainnet]
+    environment:
+      <<: *agent-env
+      STRATA_NETWORK: mainnet
+      AGENT_NAME: strata-meridian
+      STRATA_MAINNET_APPROVED: ${STRATA_MAINNET_APPROVED:-false}
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-meridian.json, target: /run/strata-secrets/keystores/strata-meridian.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-meridian.pass, target: /run/strata-secrets/strata-meridian.pass, read_only: true, bind: { create_host_path: false } }
+
+  indexer-mainnet:
+    <<: *hardening
+    profiles: [mainnet]
+    image: strata/indexer:${STRATA_IMAGE_TAG:-local}
+    environment:
+      <<: *service-env
+      STRATA_NETWORK: mainnet
+      INDEXER_NETWORKS: mainnet
+    stop_grace_period: 30s
+    healthcheck: *node-healthcheck
+    depends_on:
+      db: { condition: service_healthy }
+    secrets: [database_url, telegram_bot_token, telegram_chat_ids]
+
+  scorer-mainnet:
+    <<: *hardening
+    profiles: [mainnet]
+    image: strata/scorer:${STRATA_IMAGE_TAG:-local}
+    environment:
+      <<: *service-env
+      STRATA_NETWORK: mainnet
+      SCORER_ATTESTOR_KEY: strata-mainnet-attestor
+      SCORER_METRICS_PORT: "9464"
+      SCORER_API_BASE: ${SCORER_API_BASE:-}
+      STRATA_SECRETS_DIR: /run/strata-secrets
+      # Scorer's own mainnet gate (services/scorer/src/config.ts). Owner approval only (D27).
+      SCORER_ALLOW_MAINNET_POSTING: "false"
+      STRATA_MAINNET_APPROVED: ${STRATA_MAINNET_APPROVED:-false}
+    stop_grace_period: 60s
+    healthcheck: *node-healthcheck
+    depends_on:
+      db: { condition: service_healthy }
+    secrets: [database_url, telegram_bot_token, telegram_chat_ids]
+    volumes:
+      - { type: bind, source: ../../.secrets/keystores/strata-mainnet-attestor.json, target: /run/strata-secrets/keystores/strata-mainnet-attestor.json, read_only: true, bind: { create_host_path: false } }
+      - { type: bind, source: ../../.secrets/strata-mainnet-attestor.pass, target: /run/strata-secrets/strata-mainnet-attestor.pass, read_only: true, bind: { create_host_path: false } }
+
+  # ---------------------------------------------------------------- observability
+  prometheus:
+    <<: *hardening
+    image: prom/prometheus:v3.5.0
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+    volumes:
+      - ../prometheus:/etc/prometheus:ro
+      - prometheus-data:/prometheus
+    ports: ["127.0.0.1:9090:9090"]
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:9090/-/ready"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+
+  grafana:
+    <<: *hardening
+    image: grafana/grafana-oss:12.0.2
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD__FILE: /run/secrets/grafana_admin_password
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_ANALYTICS_CHECK_FOR_PLUGIN_UPDATES: "false"
+      GF_NEWS_NEWS_FEED_ENABLED: "false"
+      GF_SERVER_HTTP_PORT: "3000"
+    secrets: [grafana_admin_password]
+    volumes:
+      - ../grafana/provisioning:/etc/grafana/provisioning:ro
+      - ../grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    ports: ["127.0.0.1:3001:3000"]
+    depends_on:
+      prometheus: { condition: service_healthy }
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 4
+
+secrets:
+  # Neon production URL by default (D26). For the local Timescale db, write its URL to
+  # .secrets/local_db_url and set STRATA_DB_URL_SECRET=local_db_url in the root .env.
+  database_url:
+    file: ../../.secrets/${STRATA_DB_URL_SECRET:-neon_url}
+  telegram_bot_token: { file: ../../.secrets/telegram_bot_token }
+  telegram_chat_ids: { file: ../../.secrets/telegram_chat_ids }
+  internal_kill_token: { file: ../../.secrets/internal_kill_token }
+  anthropic_api_key: { file: ../../.secrets/anthropic_api_key }
+  grafana_admin_password: { file: ../../.secrets/grafana_admin_password }
+
+volumes:
+  prometheus-data: {}
+  grafana-data: {}

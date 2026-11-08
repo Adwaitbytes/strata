@@ -1,0 +1,1142 @@
+{
+  "uid": "strata-overview",
+  "title": "STRATA Overview",
+  "tags": [
+    "strata"
+  ],
+  "timezone": "utc",
+  "schemaVersion": 41,
+  "version": 1,
+  "editable": false,
+  "graphTooltip": 1,
+  "refresh": "15s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "network",
+        "label": "Network",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "strata-prometheus"
+        },
+        "query": {
+          "query": "label_values(up{job=~\"strata-.*\"}, network)",
+          "refId": "v"
+        },
+        "definition": "label_values(up{job=~\"strata-.*\"}, network)",
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "sort": 1
+      },
+      {
+        "name": "agent",
+        "label": "Agent",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "strata-prometheus"
+        },
+        "query": {
+          "query": "label_values(strata_agent_halted{network=~\"$network\"}, agent)",
+          "refId": "v"
+        },
+        "definition": "label_values(strata_agent_halted{network=~\"$network\"}, agent)",
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {
+          "selected": true,
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "sort": 1
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "type": "row",
+      "title": "Health",
+      "id": 1,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "panels": []
+    },
+    {
+      "type": "stat",
+      "title": "Targets up",
+      "id": 2,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum(up{job=~\"strata-.*\", network=~\"$network\"})"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Targets down",
+      "id": 3,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "count(up{job=~\"strata-.*\", network=~\"$network\"} == 0) or vector(0)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Agents halted",
+      "id": 4,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum(strata_agent_halted{network=~\"$network\", agent=~\"$agent\"}) or vector(0)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Tx success rate (1h)",
+      "id": 5,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 0.9
+              },
+              {
+                "color": "green",
+                "value": 0.98
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum(increase(strata_tx_total{network=~\"$network\", result=\"success\"}[1h])) / clamp_min(sum(increase(strata_tx_total{network=~\"$network\"}[1h])), 1)"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Max data lag",
+      "id": 6,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 30
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "max(strata_data_lag_seconds{network=~\"$network\"})"
+        }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Epoch post failures (24h)",
+      "id": 7,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "area",
+        "textMode": "auto"
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum(increase(strata_scorer_epoch_post_failures_total{network=~\"$network\"}[24h])) or vector(0)"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Agent loop",
+      "id": 8,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Cycle latency p50 / p95 / p99",
+      "id": 9,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "Quoting cycle duration. Target cycle is 1 to 3 s (PRD 9).",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "histogram_quantile(0.5, sum by (le, agent) (rate(strata_agent_cycle_duration_seconds_bucket{network=~\"$network\", agent=~\"$agent\"}[5m])))",
+          "legendFormat": "p50 {{agent}}"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "B",
+          "expr": "histogram_quantile(0.95, sum by (le, agent) (rate(strata_agent_cycle_duration_seconds_bucket{network=~\"$network\", agent=~\"$agent\"}[5m])))",
+          "legendFormat": "p95 {{agent}}"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "C",
+          "expr": "histogram_quantile(0.99, sum by (le, agent) (rate(strata_agent_cycle_duration_seconds_bucket{network=~\"$network\", agent=~\"$agent\"}[5m])))",
+          "legendFormat": "p99 {{agent}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tx success rate",
+      "id": 10,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.9
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (service) (rate(strata_tx_total{network=~\"$network\", result=\"success\"}[5m])) / clamp_min(sum by (service) (rate(strata_tx_total{network=~\"$network\"}[5m])), 1e-9)",
+          "legendFormat": "{{service}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Guard halts",
+      "id": 11,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "Halts per 5 minutes by guard and reason.",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (agent, guard, reason) (increase(strata_guard_halts_total{network=~\"$network\", agent=~\"$agent\"}[5m]))",
+          "legendFormat": "{{agent}} {{guard}}:{{reason}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Tx outcomes",
+      "id": 12,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (service, result) (rate(strata_tx_total{network=~\"$network\"}[5m]))",
+          "legendFormat": "{{service}} {{result}}"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Risk",
+      "id": 13,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 22
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Inventory (net notional USD)",
+      "id": 14,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (agent, market) (strata_agent_inventory_usd{network=~\"$network\", agent=~\"$agent\"})",
+          "legendFormat": "{{agent}} {{market}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "PnL today (USD)",
+      "id": 15,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 23
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "currencyUSD",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (agent, kind) (strata_agent_pnl_usd{network=~\"$network\", agent=~\"$agent\"})",
+          "legendFormat": "{{agent}} {{kind}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Margin ratio",
+      "id": 16,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0.2
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "min by (agent) (strata_agent_margin_ratio{network=~\"$network\", agent=~\"$agent\"})",
+          "legendFormat": "{{agent}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Halted state",
+      "id": 17,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "1 = halted.",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "max by (agent) (strata_agent_halted{network=~\"$network\", agent=~\"$agent\"})",
+          "legendFormat": "{{agent}}"
+        }
+      ]
+    },
+    {
+      "type": "row",
+      "title": "Data and scoring",
+      "id": 18,
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 39
+      },
+      "panels": []
+    },
+    {
+      "type": "timeseries",
+      "title": "Data lag by source",
+      "id": 19,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "Alert threshold 60 s (PRD 15.3).",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false,
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 60
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "max by (service, source) (strata_data_lag_seconds{network=~\"$network\"})",
+          "legendFormat": "{{service}} {{source}}"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Epoch posts",
+      "id": 20,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum(increase(strata_scorer_epochs_posted_total{network=~\"$network\"}[1h]))",
+          "legendFormat": "posted (1h)"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "B",
+          "expr": "sum(increase(strata_scorer_epoch_post_failures_total{network=~\"$network\"}[1h]))",
+          "legendFormat": "failed (1h)"
+        }
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Telegram alerts",
+      "id": 21,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "strata-prometheus"
+      },
+      "description": "",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 48
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "custom": {
+            "lineWidth": 1,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "strata-prometheus"
+          },
+          "refId": "A",
+          "expr": "sum by (kind, status) (increase(strata_alerts_total{network=~\"$network\"}[15m]))",
+          "legendFormat": "{{kind}} {{status}}"
+        }
+      ]
+    }
+  ]
+}

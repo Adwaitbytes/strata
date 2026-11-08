@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# Enabled with: git config core.hooksPath .githooks   (done by `pnpm install` via the root prepare script)
+set -euo pipefail
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+  echo "pre-commit: gitleaks is not installed. Install it (macOS: brew install gitleaks) and retry." >&2
+  echo "pre-commit: see docs/RUNBOOK.md, Secret scanning." >&2
+  exit 1
+fi
+# Scans only what is staged; --redact keeps any finding out of the terminal scrollback.
+gitleaks git --pre-commit --staged --redact --no-banner --config .gitleaks.toml
+
+scripts/check-copy.sh --staged

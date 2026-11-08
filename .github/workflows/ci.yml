@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  NODE_VERSION: "22"
+  TURBO_TELEMETRY_DISABLED: "1"
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  copy:
+    name: Copy rules (em dash, hype words, emoji)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - run: scripts/check-copy.sh
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      # Official image, pinned. Scans full history so a secret removed later still fails.
+      - name: gitleaks
+        run: |
+          docker run --rm -v "$PWD:/repo" -w /repo ghcr.io/gitleaks/gitleaks:v8.28.0 \
+            git /repo --config /repo/.gitleaks.toml --redact --no-banner --verbose
+
+  node:
+    name: Lint, typecheck, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+      - name: Install (lockfile must be current)
+        run: pnpm install --frozen-lockfile
+      - name: Lint (package scripts)
+        run: pnpm lint
+      - name: Lint (root TypeScript rules)
+        run: pnpm lint:root
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
+  audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: pnpm audit (fails on high or critical)
+        run: pnpm audit --audit-level high
+
+  contracts:
+    name: Contracts (forge test, coverage, slither)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: packages/contracts
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+      - name: forge fmt check
+        run: forge fmt --check
+      - name: forge build
+        run: forge build --sizes
+      - name: forge test
+        run: forge test -vvv
+      - name: forge coverage
+        run: forge coverage --report summary --report lcov --no-match-coverage "(test|script|lib)/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forge-coverage
+          path: packages/contracts/lcov.info
+          if-no-files-found: error
+      - name: slither
+        uses: crytic/slither-action@v0.4.1
+        with:
+          target: packages/contracts
+          fail-on: high
+          slither-args: --filter-paths "lib/|test/|script/"
+
+  compose:
+    name: Compose and image builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate compose file (all profiles)
+        run: |
+          docker compose -f infra/compose/stack.yml config -q
+          docker compose -f infra/compose/stack.yml --profile testnet --profile mainnet config -q
+      - name: Build service images
+        run: docker compose -f infra/compose/stack.yml --profile testnet build
+
+  workflows:
+    name: Lint workflows (actionlint)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+      - name: actionlint
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.7 -color

@@ -1,0 +1,30 @@
+# Scrapes every STRATA service on the private compose network (port 9464, /metrics).
+# Metric names are the contract in packages/alerts/src/metrics.ts.
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    host: owner-mac
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["127.0.0.1:9090"]
+
+  - job_name: strata-testnet
+    static_configs:
+      - targets: ["indexer:9464"]
+        labels: { service: indexer, network: testnet }
+      - targets: ["scorer:9464"]
+        labels: { service: scorer, network: testnet }
+      - targets: ["agent-test-1:9464", "agent-test-2:9464", "agent-test-3:9464", "agent-options:9464"]
+        labels: { service: agent, network: testnet }
+
+  # Mainnet targets live in a file so nothing mainnet is scraped (or shown as down) until
+  # the owner approves the mainnet profile (D27). Uncomment the entries in that file then.
+  - job_name: strata-mainnet
+    file_sd_configs:
+      - files: ["/etc/prometheus/targets/mainnet.yml"]

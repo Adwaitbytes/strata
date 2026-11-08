@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Rejects commit messages containing the em dash (CLAUDE.md: no em dashes in commits).
+set -euo pipefail
+if grep -q "$(printf '\xe2\x80\x94')" "$1"; then
+  echo "commit-msg: the message contains an em dash (U+2014). Use a comma, colon or period." >&2
+  exit 1
+fi

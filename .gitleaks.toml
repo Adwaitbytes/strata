@@ -1,2 +1,15 @@
+# gitleaks config: default ruleset plus a narrow allowlist for known false positives.
+# Used by the pre-commit hook (.githooks/pre-commit) and CI (.github/workflows/ci.yml).
+title = "strata"
+
 [extend]
 useDefault = true
+
+[allowlist]
+description = "Public data that the generic-api-key rule mistakes for secrets"
+# A 20-byte EVM address is public chain data, never a secret. A 32-byte private key is
+# 64 hex chars and still fails the scan.
+regexes = ['''^0x[0-9a-fA-F]{40}$''']
+regexTarget = "secret"
+# Vendored InjectiveLabs agent skills (D17): third-party docs with public token addresses.
+paths = ['''^\.claude/skills/''']

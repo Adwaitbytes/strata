@@ -1,0 +1,9 @@
+# Mainnet scrape targets. NEEDS OWNER APPROVAL (D27): keep empty until the mainnet
+# compose profile is approved and running. Then replace [] with:
+# - targets: ["agent-atlas:9464", "agent-meridian:9464"]
+#   labels: { service: agent, network: mainnet }
+# - targets: ["indexer-mainnet:9464"]
+#   labels: { service: indexer, network: mainnet }
+# - targets: ["scorer-mainnet:9464"]
+#   labels: { service: scorer, network: mainnet }
+[]

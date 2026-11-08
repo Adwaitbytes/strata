@@ -1,0 +1,34 @@
+# Applies to infra/docker/service.Dockerfile (BuildKit per-Dockerfile ignore file).
+# Secrets and keys must never enter the build context.
+.secrets
+**/.secrets
+**/.env
+**/.env.*
+!**/.env.example
+**/*.pem
+**/*.key
+**/keystore
+**/keystores
+
+.git
+**/node_modules
+**/dist
+**/.turbo
+**/coverage
+**/.next
+**/.vercel
+**/*.log
+.DS_Store
+
+# Large and irrelevant to the Node services.
+deliverables
+infra/blender
+infra/grafana
+infra/prometheus
+apps/video/public
+apps/video/renders
+apps/web/public
+packages/contracts/lib
+packages/contracts/out
+packages/contracts/cache
+packages/contracts/broadcast
