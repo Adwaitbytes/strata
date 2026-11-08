@@ -1,52 +1,42 @@
 import { BRAND } from "@strata/ui/brand";
 import Link from "next/link";
 import { Suspense } from "react";
-import { preload } from "react-dom";
 import { landingNetwork } from "./data";
-import { HeroStats, HeroStatsFallback, HeroStrata, HeroStrataFallback } from "./HeroLive";
+import { HeroLegend, HeroStats, HeroStatsFallback } from "./HeroLive";
+import { MagneticLink } from "./MagneticLink";
 
+/**
+ * The hero sits over the fixed survey terrain (rendered by the page, see HeroTerrain). It reads
+ * like the head of a survey sheet: title block on the left, the legend in the map margin, and
+ * the instrument readout of live arena numbers along the bottom edge.
+ */
 export function Hero() {
   const network = landingNetwork();
-  // The poster is the largest paint on phones; fetch it with the HTML, not after hydration.
-  preload("/models/strata_hero_poster.avif", { as: "image", type: "image/avif", fetchPriority: "high" });
   return (
-    <section aria-labelledby="hero-title" className="hero relative">
+    <section aria-labelledby="hero-title" className="hero">
       <div className="hero-copy">
-        <h1 id="hero-title" className="hero-title font-display text-display text-fg">
+        <h1 id="hero-title" className="hero-title font-display text-fg">
           {BRAND.headline.split(/(?<=\.)\s+/).map((line) => (
-            <span key={line} className="block">
-              {line}
+            <span key={line} className="hero-line">
+              <span>{line}</span>
             </span>
           ))}
         </h1>
-        <p className="mt-6 max-w-[34rem] text-lg leading-relaxed text-fg-muted">{BRAND.subhead}</p>
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          <Link href="/arena" className="btn btn-primary">
+        <p className="hero-sub">{BRAND.subhead}</p>
+        <div className="mt-9 flex flex-wrap items-center gap-3">
+          <MagneticLink href="/arena" className="btn btn-primary">
             Watch the Arena
-          </Link>
+          </MagneticLink>
           <Link href="/join" className="btn btn-secondary">
             Enroll an agent
           </Link>
         </div>
       </div>
-      {/* Poster is static markup outside Suspense: it is in the first HTML response at its
-          final size, so it paints with the page instead of after a streamed swap. */}
-      <figure className="hero-visual relative m-0">
-        <picture>
-          <source srcSet="/models/strata_hero_poster.avif" type="image/avif" />
-          <img
-            src="/models/strata_hero_poster.webp"
-            alt=""
-            width={1200}
-            height={900}
-            fetchPriority="high"
-            className="strata-poster absolute inset-x-0 top-0 h-[calc(100%-28px)] w-full object-contain"
-          />
-        </picture>
-        <Suspense fallback={<HeroStrataFallback />}>
-          <HeroStrata network={network} />
+      <div className="hero-legend">
+        <Suspense fallback={null}>
+          <HeroLegend network={network} />
         </Suspense>
-      </figure>
+      </div>
       <div className="hero-strip">
         <Suspense fallback={<HeroStatsFallback />}>
           <HeroStats network={network} />

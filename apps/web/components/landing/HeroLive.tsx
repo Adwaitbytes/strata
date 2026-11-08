@@ -1,13 +1,22 @@
 import type { NetworkName } from "@strata/sdk";
 import { getHeroStats } from "./data";
-import { buildStatStrip, buildStrataLayout } from "./model";
+import { buildStatStrip, buildTerrainField } from "./model";
 import { StatStrip, StatStripSkeleton } from "./StatStrip";
-import { StrataCaption, StrataStage } from "./StrataStage";
+import { SurveyStage } from "./SurveyStage";
+import { TerrainLegend } from "./TerrainLegend";
 
-/** Fetches /v1/stats once; the same response sizes the 3D strata and fills the stat strip. */
-export async function HeroStrata({ network }: { network: NetworkName }) {
+/**
+ * /v1/stats is fetched once per request (Next dedupes the cached fetch); the same response shapes
+ * the terrain, labels its legend and fills the stat strip.
+ */
+export async function HeroTerrain({ network }: { network: NetworkName }) {
   const result = await getHeroStats(network);
-  return <StrataStage layout={buildStrataLayout(result.status === "ok" ? result.data : null)} />;
+  return <SurveyStage field={buildTerrainField(result.status === "ok" ? result.data : null)} />;
+}
+
+export async function HeroLegend({ network }: { network: NetworkName }) {
+  const result = await getHeroStats(network);
+  return <TerrainLegend field={buildTerrainField(result.status === "ok" ? result.data : null)} />;
 }
 
 export async function HeroStats({ network }: { network: NetworkName }) {
@@ -15,8 +24,13 @@ export async function HeroStats({ network }: { network: NetworkName }) {
   return <StatStrip strip={buildStatStrip(result.status === "ok" ? result.data : null, network)} />;
 }
 
-export function HeroStrataFallback() {
-  return <StrataCaption live={false} text="Loading live depth" />;
+/** The poster alone: identical to the stage before WebGL, so streaming in the stage never shifts it. */
+export function HeroTerrainFallback() {
+  return (
+    <div className="survey-stage" aria-hidden>
+      <div className="survey-poster" />
+    </div>
+  );
 }
 
 export { StatStripSkeleton as HeroStatsFallback };

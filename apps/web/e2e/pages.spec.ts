@@ -103,6 +103,6 @@ test.describe("Platform", () => {
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
     const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(bg).toBe("rgb(244, 246, 249)");
+    expect(bg).toBe("rgb(236, 238, 231)");
   });
 });

@@ -37,7 +37,7 @@ export function ThemeToggle() {
         }
       }}
       aria-label={`Switch to ${next} theme`}
-      className="inline-flex size-9 items-center justify-center rounded-lg text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg"
+      className="inline-flex size-9 items-center justify-center rounded-sm text-fg-muted transition-colors hover:bg-surface-hover hover:text-fg"
     >
       {theme === "dark" ? <Sun className="size-4" aria-hidden /> : <Moon className="size-4" aria-hidden />}
     </button>

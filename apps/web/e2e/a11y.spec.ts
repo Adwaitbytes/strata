@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "./fixtures";
 
-const PAGES = ["/arena", "/agents/1", `/markets/0x${"0".repeat(63)}1`, "/join", "/docs", "/docs/scoring", "/transparency", "/status", "/terms", "/risk"];
+const PAGES = ["/", "/arena", "/agents/1", `/markets/0x${"0".repeat(63)}1`, "/join", "/docs", "/docs/scoring", "/transparency", "/status", "/terms", "/risk"];
 
 for (const theme of ["dark", "light"] as const) {
   test.describe(`axe (${theme})`, () => {

@@ -108,66 +108,72 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
   };
 }
 
-/* ------------------------------------ 3D strata layout ------------------------------------ */
-
-export interface StrataSlab {
-  key: string;
-  /** "book" is depth other makers provide; "strata" is depth STRATA agents add on top. */
-  kind: "book" | "strata" | "neutral";
-  /** Thickness in scene units. */
-  thickness: number;
-  label: string;
-}
-
-export interface StrataLayout {
-  live: boolean;
-  slabs: StrataSlab[];
-  caption: string;
-}
-
-export const MAX_MARKET_LAYERS = 6;
-const NEUTRAL_LAYERS = 7;
-const NEUTRAL_THICKNESS = 0.12;
-const MIN_MARKET = 0.09;
-const MAX_MARKET = 0.42;
-const MIN_STRATA = 0.018;
+/* ------------------------------------ 3D survey terrain ------------------------------------ */
 
 /**
- * Maps live per-market depth to slab thickness. Square-root scaling keeps a deep market from
- * flattening the rest; the STRATA share rides on top of each market as its own accent slab.
+ * One ridge per market in the hero terrain. The ridge runs along the price axis (bids on the
+ * left of mid, asks on the right); its height is the market's live depth within 25 bps of mid,
+ * and the STRATA share of that depth is drawn as a luminous stratum along the crest.
  */
-export function buildStrataLayout(stats: HeroStatsResponse | null): StrataLayout {
+export interface TerrainRidge {
+  key: string;
+  symbol: string;
+  depthUsd25: number;
+  strataDepthUsd25: number;
+  /** Ridge height, 0 to 1, square-root scaled against the deepest market. */
+  height: number;
+  /** STRATA share of this market's depth, 0 to 1. */
+  strataShare: number;
+}
+
+export interface TerrainField {
+  live: boolean;
+  ridges: TerrainRidge[];
+  /** What the visitor is looking at, with network and provenance when live. */
+  caption: string;
+  network: NetworkName | null;
+  provenance: Provenance | null;
+}
+
+export const MAX_RIDGES = 6;
+const MIN_RIDGE_HEIGHT = 0.08;
+
+/**
+ * Maps live per-market depth to ridge heights. Square-root scaling keeps one deep market from
+ * flattening the rest. Markets with no depth are left out: an empty book is not a ridge. With no
+ * data, or no depth anywhere, the field is empty and the terrain renders as a labeled flat survey.
+ */
+export function buildTerrainField(stats: HeroStatsResponse | null): TerrainField {
   const layers = (stats?.layers ?? [])
     .filter((l) => l.depthUsd25 > 0)
     .sort((a, b) => b.depthUsd25 - a.depthUsd25)
-    .slice(0, MAX_MARKET_LAYERS);
+    .slice(0, MAX_RIDGES);
 
   if (!stats || layers.length === 0) {
     return {
       live: false,
-      caption: stats ? "Neutral state: no market depth reported yet" : "Neutral state: live depth not available yet",
-      slabs: Array.from({ length: NEUTRAL_LAYERS }, (_, i) => ({
-        key: `neutral-${i}`,
-        kind: "neutral" as const,
-        thickness: NEUTRAL_THICKNESS,
-        label: "No data",
-      })),
+      ridges: [],
+      caption: stats ? "Flat survey: no market reports depth yet" : "Flat survey: live depth not available yet",
+      network: stats?.network ?? null,
+      provenance: stats?.provenance ?? null,
     };
   }
 
   const maxRoot = Math.sqrt(Math.max(...layers.map((l) => l.depthUsd25)));
-  const slabs: StrataSlab[] = [];
-  for (const l of layers) {
-    const total = MIN_MARKET + (MAX_MARKET - MIN_MARKET) * (Math.sqrt(l.depthUsd25) / maxRoot);
-    const share = Math.min(1, l.strataDepthUsd25 / l.depthUsd25);
-    const strata = share > 0 ? Math.max(MIN_STRATA, total * share) : 0;
-    slabs.push({ key: `${l.marketId}-book`, kind: "book", thickness: Math.max(MIN_STRATA, total - strata), label: l.symbol });
-    if (strata > 0) slabs.push({ key: `${l.marketId}-strata`, kind: "strata", thickness: strata, label: `${l.symbol} STRATA` });
-  }
+  const ridges = layers.map((l) => ({
+    key: l.marketId,
+    symbol: l.symbol,
+    depthUsd25: l.depthUsd25,
+    strataDepthUsd25: l.strataDepthUsd25,
+    height: Math.max(MIN_RIDGE_HEIGHT, Math.sqrt(l.depthUsd25) / maxRoot),
+    strataShare: Math.min(1, l.strataDepthUsd25 / l.depthUsd25),
+  }));
   return {
     live: true,
-    caption: `Layer thickness is live depth within 25 bps per market, ${stats.network} ${stats.provenance}`,
-    slabs,
+    ridges,
+    caption: "Ridge height is each market's depth within 25 bps of mid. Ridge profile is schematic.",
+    network: stats.network,
+    provenance: stats.provenance,
   };
 }
 
@@ -206,4 +212,35 @@ export function buildProofRows(markets: MarketsResponse | null): ProofRow[] {
     });
   }
   return rows.sort((a, b) => b.nowDepthUsd - a.nowDepthUsd).slice(0, 6);
+}
+
+/**
+ * Core samples for the Proof scene when no before/after pair exists yet: each market's recorded
+ * BASELINE window, real API data, with the "with STRATA" layer explicitly not measured.
+ */
+export interface BaselineCore {
+  marketId: string;
+  symbol: string;
+  depthUsd: number;
+  spreadBps: number | null;
+  samples: number;
+  windowStart: number;
+  windowEnd: number;
+}
+
+export function buildBaselineCores(markets: MarketsResponse | null): BaselineCore[] {
+  if (!markets) return [];
+  return markets.markets
+    .filter((m) => m.baseline && m.baseline.samples > 0)
+    .map((m) => ({
+      marketId: m.market.marketId,
+      symbol: m.market.symbol,
+      depthUsd: m.baseline?.depthUsd25 ?? 0,
+      spreadBps: m.baseline?.spreadBps ?? null,
+      samples: m.baseline?.samples ?? 0,
+      windowStart: m.baseline?.windowStart ?? 0,
+      windowEnd: m.baseline?.windowEnd ?? 0,
+    }))
+    .sort((a, b) => b.depthUsd - a.depthUsd)
+    .slice(0, 6);
 }

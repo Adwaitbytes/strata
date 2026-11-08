@@ -1,6 +1,6 @@
 import type { HeroStatsResponse, MarketsResponse } from "@strata/sdk";
 import { describe, expect, it } from "vitest";
-import { buildProofRows, buildStatStrip, buildStrataLayout, MAX_MARKET_LAYERS, NOT_LIVE, NOT_MEASURED } from "./model";
+import { buildBaselineCores, buildProofRows, buildStatStrip, buildTerrainField, MAX_RIDGES, NOT_LIVE, NOT_MEASURED } from "./model";
 
 const id = (n: number) => `0x${n.toString(16).padStart(64, "0")}`;
 
@@ -62,46 +62,48 @@ describe("buildStatStrip", () => {
   });
 });
 
-describe("buildStrataLayout", () => {
-  it("falls back to a labeled neutral state without data", () => {
-    const layout = buildStrataLayout(null);
-    expect(layout.live).toBe(false);
-    expect(layout.caption).toMatch(/Neutral state/);
-    expect(new Set(layout.slabs.map((s) => s.thickness)).size).toBe(1);
-    expect(layout.slabs.every((s) => s.kind === "neutral")).toBe(true);
+describe("buildTerrainField", () => {
+  it("falls back to a labeled flat survey without data", () => {
+    const f = buildTerrainField(null);
+    expect(f.live).toBe(false);
+    expect(f.ridges).toHaveLength(0);
+    expect(f.caption).toMatch(/not available/);
   });
 
-  it("treats a response with no depth as neutral", () => {
-    expect(buildStrataLayout(stats({ layers: [] })).live).toBe(false);
+  it("treats a response with no depth as a flat survey, keeping its network", () => {
+    const f = buildTerrainField(stats({ layers: [{ marketId: id(1), symbol: "AAA", depthUsd25: 0, strataDepthUsd25: 0 }] }));
+    expect(f.live).toBe(false);
+    expect(f.network).toBe("testnet");
+    expect(f.caption).toMatch(/no market reports depth/);
   });
 
-  it("makes deeper markets thicker and splits out the STRATA share", () => {
-    const layout = buildStrataLayout(stats());
-    expect(layout.live).toBe(true);
-    const books = layout.slabs.filter((s) => s.kind === "book");
-    const strata = layout.slabs.filter((s) => s.kind === "strata");
-    expect(books).toHaveLength(2);
-    expect(strata).toHaveLength(2);
-    const total = (sym: string) =>
-      layout.slabs.filter((s) => s.label.startsWith(sym)).reduce((sum, s) => sum + s.thickness, 0);
-    expect(total("AAA")).toBeGreaterThan(total("BBB"));
+  it("orders ridges by depth, scales height by square root and keeps the STRATA share", () => {
+    const f = buildTerrainField(stats());
+    expect(f.live).toBe(true);
+    expect(f.ridges.map((r) => r.symbol)).toEqual(["AAA/USDT", "BBB/USDT"]);
+    expect(f.ridges[0]?.height).toBe(1);
+    expect(f.ridges[1]?.height).toBeCloseTo(0.5, 5);
+    expect(f.ridges[0]?.strataShare).toBeCloseTo(0.25, 5);
+    expect(f.provenance).toBe("TESTNET");
   });
 
-  it("omits the accent slab when STRATA adds nothing", () => {
-    const layout = buildStrataLayout(
-      stats({ layers: [{ marketId: id(1), symbol: "AAA/USDT", depthUsd25: 5_000, strataDepthUsd25: 0 }] }),
+  it("reports no STRATA share when STRATA adds nothing", () => {
+    const f = buildTerrainField(
+      stats({ layers: [{ marketId: id(1), symbol: "AAA", depthUsd25: 5_000, strataDepthUsd25: 0 }] }),
     );
-    expect(layout.slabs.map((s) => s.kind)).toEqual(["book"]);
+    expect(f.ridges[0]?.strataShare).toBe(0);
   });
 
-  it("caps the number of market layers", () => {
-    const layers = Array.from({ length: 10 }, (_, i) => ({
+  it("caps the number of ridges and keeps tiny markets visible", () => {
+    const layers = Array.from({ length: 9 }, (_, i) => ({
       marketId: id(i + 1),
       symbol: `M${i}`,
-      depthUsd25: 1000 * (i + 1),
+      depthUsd25: i === 0 ? 1_000_000 : 1,
       strataDepthUsd25: 0,
     }));
-    expect(buildStrataLayout(stats({ layers })).slabs).toHaveLength(MAX_MARKET_LAYERS);
+    const f = buildTerrainField(stats({ layers }));
+    expect(f.ridges).toHaveLength(MAX_RIDGES);
+    for (const r of f.ridges) expect(r.height).toBeGreaterThanOrEqual(0.08);
   });
 });
 
@@ -143,5 +145,12 @@ describe("buildProofRows", () => {
     const noStrata = market(4, 100, true);
     noStrata.now = { ...noStrata.now!, strataDepthUsd25: 0, strataBookShare: 0 };
     expect(buildProofRows({ network: "testnet", at: 1, markets: [noStrata] })).toEqual([]);
+  });
+
+  it("builds BASELINE core samples only for markets with a recorded window", () => {
+    const cores = buildBaselineCores({ network: "testnet", at: 1, markets: [market(1, 100, false), market(2, 0, true)] });
+    expect(cores).toHaveLength(1);
+    expect(cores[0]).toMatchObject({ symbol: "M1/USDT", depthUsd: 3000, spreadBps: 20, samples: 100 });
+    expect(buildBaselineCores(null)).toEqual([]);
   });
 });

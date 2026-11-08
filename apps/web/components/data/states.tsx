@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 export function ErrorState({ error, onRetry, className, compact }: { error: unknown; onRetry?: () => void; className?: string; compact?: boolean }) {
   const { title, detail } = describeError(error);
   return (
-    <div role="alert" className={cn("flex flex-col items-start gap-3 rounded-xl border border-dashed border-border-strong px-5", compact ? "py-4" : "py-8", className)}>
+    <div role="alert" className={cn("flex flex-col items-start gap-3 rounded-md border border-dashed border-border-strong px-5", compact ? "py-4" : "py-8", className)}>
       <div className="flex items-center gap-2 text-sm font-medium text-fg">
         <AlertTriangle className="size-4 text-warn" aria-hidden />
         {title}
@@ -18,7 +18,7 @@ export function ErrorState({ error, onRetry, className, compact }: { error: unkn
         <button
           type="button"
           onClick={onRetry}
-          className="inline-flex h-8 items-center gap-1.5 rounded-md border border-border-strong px-3 text-sm text-fg transition-colors hover:bg-surface-hover"
+          className="inline-flex h-8 items-center gap-1.5 rounded-sm border border-border-strong px-3 text-sm text-fg transition-colors hover:bg-surface-hover"
         >
           <RotateCw className="size-3.5" aria-hidden /> Retry
         </button>
@@ -29,7 +29,7 @@ export function ErrorState({ error, onRetry, className, compact }: { error: unkn
 
 export function EmptyState({ title, detail, action, className }: { title: string; detail: ReactNode; action?: ReactNode; className?: string }) {
   return (
-    <div className={cn("flex flex-col items-start gap-2 rounded-xl border border-dashed border-border-strong px-5 py-8", className)}>
+    <div className={cn("flex flex-col items-start gap-2 rounded-md border border-dashed border-border-strong px-5 py-8", className)}>
       <div className="flex items-center gap-2 text-sm font-medium text-fg">
         <Inbox className="size-4 text-fg-subtle" aria-hidden />
         {title}

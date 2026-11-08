@@ -15,9 +15,7 @@
     "lhci:mobile": "lhci autorun --config=./lighthouserc.mobile.json"
   },
   "dependencies": {
-    "@react-three/drei": "10.7.9",
     "@react-three/fiber": "9.8.2",
-    "@react-three/postprocessing": "3.2.2",
     "@strata/config": "workspace:*",
     "@strata/sdk": "workspace:*",
     "@strata/ui": "workspace:*",
@@ -31,7 +29,6 @@
     "lucide-react": "^1.70.0",
     "motion": "^14.10.1",
     "next": "16.4.5",
-    "postprocessing": "6.39.6",
     "radix-ui": "^1.8.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",

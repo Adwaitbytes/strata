@@ -2,14 +2,15 @@
  * STRATA design tokens: the typed source of truth. `theme.css` mirrors these values as CSS
  * custom properties (a test keeps the two in sync), and the 3D scene reads them directly.
  *
- * Variable names match the interim W7 theme so swapping the import changes no component.
+ * Concept: the order book as a geological survey (docs/DESIGN.md). Variable names are stable
+ * across redesigns so components never reference a hex value.
  */
 
 export const THEMES = ["dark", "light"] as const;
 export type ThemeName = (typeof THEMES)[number];
 
 export interface Palette {
-  /** Page canvas: deep ink in dark, cool paper in light. */
+  /** Page canvas: basalt in dark, survey paper in light. */
   bg: string;
   bgRaised: string;
   bgSunken: string;
@@ -20,7 +21,7 @@ export interface Palette {
   fg: string;
   fgMuted: string;
   fgSubtle: string;
-  /** The single signature accent: liquidity. */
+  /** The single survey color: STRATA depth, index contours, instrument marks. */
   accent: string;
   accentStrong: string;
   /** Text and icons placed on a solid accent fill. */
@@ -35,47 +36,49 @@ export interface Palette {
 }
 
 export const palette: Record<ThemeName, Palette> = {
+  /* Basalt: a warm mineral dark with a faint green-grey bias, chalk text, one ochre survey color. */
   dark: {
-    bg: "#07080B",
-    bgRaised: "#0D0F14",
-    bgSunken: "#050609",
-    surface: "#11141A",
-    surfaceHover: "#171B23",
-    border: "#1F242D",
-    borderStrong: "#2D343F",
-    fg: "#ECEEF2",
-    fgMuted: "#A6AEBC",
-    fgSubtle: "#808A9B",
-    accent: "#3EE6D4",
-    accentStrong: "#7FF0E3",
-    accentFg: "#04201D",
-    bid: "#5CD69A",
-    ask: "#FF8170",
-    warn: "#F2B544",
-    halt: "#FF5C66",
-    baseline: "#8C95A8",
-    focus: "#7FF0E3",
+    bg: "#0D0F0E",
+    bgRaised: "#121513",
+    bgSunken: "#090B0A",
+    surface: "#161917",
+    surfaceHover: "#1C201E",
+    border: "#262B28",
+    borderStrong: "#373D39",
+    fg: "#ECE8DF",
+    fgMuted: "#B4AFA3",
+    fgSubtle: "#8E897E",
+    accent: "#E9A94B",
+    accentStrong: "#F4C47A",
+    accentFg: "#1C1205",
+    bid: "#7CC9A0",
+    ask: "#EA8A6A",
+    warn: "#E2D25E",
+    halt: "#F0656E",
+    baseline: "#9AA39C",
+    focus: "#F4C47A",
   },
+  /* Survey paper: pale celadon map stock, iron-gall ink, burnt ochre for the survey color. */
   light: {
-    bg: "#F4F6F9",
-    bgRaised: "#FFFFFF",
-    bgSunken: "#EBEEF3",
-    surface: "#FFFFFF",
-    surfaceHover: "#F0F2F6",
-    border: "#DFE3EA",
-    borderStrong: "#C6CDD7",
-    fg: "#0A0C10",
-    fgMuted: "#434B59",
-    fgSubtle: "#5A6373",
-    accent: "#006E66",
-    accentStrong: "#00574F",
+    bg: "#ECEEE7",
+    bgRaised: "#F7F8F3",
+    bgSunken: "#E3E6DD",
+    surface: "#F7F8F3",
+    surfaceHover: "#E4E7DF",
+    border: "#D2D6CB",
+    borderStrong: "#B5BBAE",
+    fg: "#141613",
+    fgMuted: "#474C45",
+    fgSubtle: "#5A5F57",
+    accent: "#8A560E",
+    accentStrong: "#6F440A",
     accentFg: "#FFFFFF",
-    bid: "#11713F",
-    ask: "#B83525",
-    warn: "#875500",
-    halt: "#B81D2A",
-    baseline: "#576074",
-    focus: "#006E66",
+    bid: "#1D6A47",
+    ask: "#A6432A",
+    warn: "#5A5F00",
+    halt: "#B0222F",
+    baseline: "#535B55",
+    focus: "#8A560E",
   },
 };
 
@@ -86,7 +89,8 @@ export const TEXT_BACKGROUNDS = ["bg", "bgRaised", "surface", "surfaceHover"] as
 /** 8px spacing scale. Tailwind's 4px base stays, and layouts use only even steps (p-2 = 8px). */
 export const space = [0, 8, 16, 24, 32, 40, 48, 64, 80, 96, 128, 160] as const;
 
-export const radius = { xs: 4, sm: 6, md: 10, lg: 14, xl: 20, pill: 999 } as const;
+/** Survey instruments are machined, not pillowy: small radii, larger only on touch targets. */
+export const radius = { xs: 2, sm: 3, md: 4, lg: 6, xl: 10, pill: 999 } as const;
 
 export const motion = {
   duration: { instant: 120, fast: 180, base: 240, slow: 320, scene: 640 },
@@ -101,17 +105,58 @@ export const motion = {
 
 /** Type scale (px / line-height / tracking em). Display sizes are fluid in CSS between min and max. */
 export const typeScale = {
-  display: { min: 44, max: 104, leading: 0.94, tracking: -0.035 },
-  h1: { min: 34, max: 56, leading: 1.02, tracking: -0.03 },
-  h2: { min: 26, max: 36, leading: 1.1, tracking: -0.02 },
-  h3: { size: 20, leading: 1.3, tracking: -0.01 },
+  display: { min: 44, max: 112, leading: 0.92, tracking: -0.032 },
+  h1: { min: 34, max: 60, leading: 0.98, tracking: -0.028 },
+  h2: { min: 26, max: 38, leading: 1.06, tracking: -0.02 },
+  h3: { size: 20, leading: 1.25, tracking: -0.01 },
   body: { size: 16, leading: 1.6, tracking: 0 },
   small: { size: 14, leading: 1.5, tracking: 0 },
   micro: { size: 12, leading: 1.4, tracking: 0.01 },
 } as const;
 
-/** Colors the 3D strata scene uses per theme. Kept beside the palette so both modes stay in step. */
-export const strataScene: Record<ThemeName, { glass: string; core: string; neutral: string; bloom: number }> = {
-  dark: { glass: "#9FE9E1", core: "#3EE6D4", neutral: "#8C95A8", bloom: 0.55 },
-  light: { glass: "#7FC9C1", core: "#006E66", neutral: "#576074", bloom: 0 },
+/**
+ * Colors the 3D survey terrain uses per theme, kept beside the palette so both modes stay in
+ * step. Rock is shaded between `rockLow` and `rockHigh`; contour lines are drawn in `contour`
+ * with every fifth (index) line heavier; STRATA depth glows in `strata`.
+ */
+export interface TerrainColors {
+  fog: string;
+  rockLow: string;
+  rockHigh: string;
+  contour: string;
+  strata: string;
+  bid: string;
+  ask: string;
+  fault: string;
+  /** Opacity of ordinary contour lines; index lines are drawn at roughly twice this. */
+  contourAlpha: number;
+  /** Rim light strength on ridge silhouettes. */
+  rim: number;
+}
+
+export const terrainScene: Record<ThemeName, TerrainColors> = {
+  dark: {
+    fog: "#0D0F0E",
+    rockLow: "#101311",
+    rockHigh: "#2A2F2B",
+    contour: "#ECE8DF",
+    strata: "#E9A94B",
+    bid: "#7CC9A0",
+    ask: "#EA8A6A",
+    fault: "#F0656E",
+    contourAlpha: 0.22,
+    rim: 0.55,
+  },
+  light: {
+    fog: "#ECEEE7",
+    rockLow: "#E6E9E1",
+    rockHigh: "#BAC0B2",
+    contour: "#141613",
+    strata: "#8A560E",
+    bid: "#1D6A47",
+    ask: "#A6432A",
+    fault: "#B0222F",
+    contourAlpha: 0.5,
+    rim: 0.2,
+  },
 };
