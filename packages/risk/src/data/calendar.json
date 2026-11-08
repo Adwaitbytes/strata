@@ -1,0 +1,140 @@
+{
+  "version": 1,
+  "timezone": "America/New_York",
+  "generatedAt": "2026-11-09",
+  "validUntil": "2027-12-31",
+  "notes": "Times are New York local wall-clock time. Sessions are evaluated in code by packages/risk/src/sessionGuard.ts. Update this file each December for the next year and cite the source pages below. After validUntil every session-bound market is treated as closed (fail closed).",
+  "classes": {
+    "us_equity": {
+      "kind": "daily",
+      "description": "NYSE and Nasdaq regular session. Used for single-stock and US index perps (for example USTECH).",
+      "open": "09:30",
+      "close": "16:00",
+      "weekdays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "holidays": [
+        "2026-01-01",
+        "2026-01-19",
+        "2026-02-16",
+        "2026-04-03",
+        "2026-05-25",
+        "2026-06-19",
+        "2026-07-03",
+        "2026-09-07",
+        "2026-11-26",
+        "2026-12-25",
+        "2027-01-01",
+        "2027-01-18",
+        "2027-02-15",
+        "2027-03-26",
+        "2027-05-31",
+        "2027-06-18",
+        "2027-07-05",
+        "2027-09-06",
+        "2027-11-25",
+        "2027-12-24"
+      ],
+      "earlyCloses": {
+        "2026-11-27": "13:00",
+        "2026-12-24": "13:00",
+        "2027-11-26": "13:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.nyse.com/markets/hours-calendars",
+          "retrieved": "2026-11-09",
+          "note": "2026 holidays: Jan 1, Jan 19, Feb 16, Apr 3, May 25, Jun 19, Jul 3 (Independence Day observed), Sep 7, Nov 26, Dec 25. Early close 1:00 p.m. on Nov 27 and Dec 24, 2026. No 2026 early close on Jul 2. 2027 holidays: Jan 1, Jan 18, Feb 15, Mar 26, May 31, Jun 18 (observed), Jul 5 (observed), Sep 6, Nov 25, Dec 24 (Christmas observed). Early close 1:00 p.m. on Nov 26, 2027."
+        }
+      ]
+    },
+    "fx": {
+      "kind": "weekly",
+      "description": "Spot FX weekly session, Sunday 17:00 to Friday 17:00 New York. Used for EURUSD and other FX perps.",
+      "openDay": 0,
+      "openTime": "17:00",
+      "closeDay": 5,
+      "closeTime": "17:00",
+      "holidays": [
+        "2026-01-01",
+        "2026-12-25",
+        "2027-01-01",
+        "2027-12-24"
+      ],
+      "sources": [
+        {
+          "url": "https://docs.pyth.network/price-feeds/market-hours",
+          "retrieved": "2026-11-09",
+          "note": "Pyth FX feeds publish during the weekly FX session; Injective FX perps use Pyth oracles (live LCD query 2026-11-09 shows oracle_type PythPro for EURUSD/USDC PERP)."
+        }
+      ]
+    },
+    "cme_globex": {
+      "kind": "globex",
+      "description": "CME Globex metals and energy (gold, silver, WTI). Sunday to Friday 18:00 to 17:00 New York with a daily 60 minute break.",
+      "openTime": "18:00",
+      "closeTime": "17:00",
+      "tradeDays": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "holidays": [
+        "2026-01-01",
+        "2026-04-03",
+        "2026-12-25",
+        "2027-01-01",
+        "2027-03-26",
+        "2027-12-24"
+      ],
+      "conservativeEarlyHalts": {
+        "2026-01-19": "13:00",
+        "2026-02-16": "13:00",
+        "2026-05-25": "13:00",
+        "2026-06-19": "13:00",
+        "2026-07-03": "13:00",
+        "2026-09-07": "13:00",
+        "2026-11-26": "13:00",
+        "2026-11-27": "13:00",
+        "2026-12-24": "13:00",
+        "2027-01-18": "13:00",
+        "2027-02-15": "13:00",
+        "2027-05-31": "13:00",
+        "2027-06-18": "13:00",
+        "2027-07-05": "13:00",
+        "2027-09-06": "13:00",
+        "2027-11-25": "13:00",
+        "2027-11-26": "13:00"
+      },
+      "sources": [
+        {
+          "url": "https://www.cmegroup.com/trading-hours.html",
+          "retrieved": "2026-11-09",
+          "note": "Globex metals and energy: Sunday to Friday 6:00 p.m. to 5:00 p.m. ET with a 60 minute break each day beginning at 5:00 p.m. ET."
+        },
+        {
+          "url": "https://www.cmegroup.com/trading-hours.html#holidayCalendar",
+          "retrieved": "2026-11-09",
+          "note": "CME publishes per-holiday halts. On US holidays where the exact halt time was not confirmed we halt at 13:00 New York, which is earlier than or equal to the CME halt and therefore conservative."
+        }
+      ]
+    },
+    "always_open": {
+      "kind": "always",
+      "description": "Crypto and compute markets trade 24/7 unless the oracle provider documents otherwise.",
+      "sources": [
+        {
+          "url": "https://docs.pyth.network/price-feeds/market-hours",
+          "retrieved": "2026-11-09",
+          "note": "Crypto feeds publish continuously."
+        }
+      ]
+    }
+  }
+}
