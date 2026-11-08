@@ -6,6 +6,7 @@ import type { IChartApi, UTCTimestamp } from "lightweight-charts";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useThemeTokens, withAlpha } from "@/hooks/use-theme-tokens";
 import { formatBps, formatUtc } from "@/lib/format";
+import { splitSpreadSeries } from "./spread-series";
 
 interface Props {
   history: LiquiditySample[];
@@ -65,31 +66,29 @@ export function SpreadChart({ history, baselineSpreadBps, height = 280 }: Props)
       chartRef.current = chart;
       const fmt = { type: "custom" as const, formatter: (p: number) => `${p.toFixed(1)}`, minMove: 0.1 };
 
-      const baselinePts = points.filter((p) => p.baseline);
-      const livePts = points.filter((p) => !p.baseline);
-      if (baselinePts.length > 0) {
-        const area = chart.addSeries(AreaSeries, {
-          lineColor: tokens["--baseline"],
-          topColor: withAlpha(tokens["--baseline"], 0.28),
-          bottomColor: withAlpha(tokens["--baseline"], 0.04),
-          lineWidth: 2,
-          priceFormat: fmt,
-          lastValueVisible: false,
-          priceLineVisible: false,
-        });
-        area.setData(baselinePts.map(({ time, value }) => ({ time, value })));
-      }
-      const line = chart.addSeries(LineSeries, {
-        color: tokens["--accent"],
-        lineWidth: 2,
-        priceFormat: fmt,
-        priceLineVisible: false,
-      });
-      // Join the two segments so there is no visual gap where quoting began.
-      const joined = baselinePts.length > 0 && livePts.length > 0 ? [baselinePts[baselinePts.length - 1]!, ...livePts] : livePts;
-      line.setData(joined.map(({ time, value }) => ({ time, value })));
-      if (baselineSpreadBps != null) {
-        line.createPriceLine({
+      const { baseline: baselinePts, live: joined } = splitSpreadSeries(points);
+      // A series is added only when it has data: a price line on an empty series throws "Value is null".
+      const area =
+        baselinePts.length > 0
+          ? chart.addSeries(AreaSeries, {
+              lineColor: tokens["--baseline"],
+              topColor: withAlpha(tokens["--baseline"], 0.28),
+              bottomColor: withAlpha(tokens["--baseline"], 0.04),
+              lineWidth: 2,
+              priceFormat: fmt,
+              lastValueVisible: false,
+              priceLineVisible: false,
+            })
+          : null;
+      area?.setData(baselinePts.map(({ time, value }) => ({ time, value })));
+      const line =
+        joined.length > 0
+          ? chart.addSeries(LineSeries, { color: tokens["--accent"], lineWidth: 2, priceFormat: fmt, priceLineVisible: false })
+          : null;
+      line?.setData(joined.map(({ time, value }) => ({ time, value })));
+      const priceLineHost = line ?? area;
+      if (baselineSpreadBps != null && priceLineHost) {
+        priceLineHost.createPriceLine({
           price: baselineSpreadBps,
           color: tokens["--baseline"],
           lineStyle: LineStyle.Dashed,
@@ -158,8 +157,8 @@ export function SpreadChart({ history, baselineSpreadBps, height = 280 }: Props)
               </tr>
             </thead>
             <tbody>
-              {points.map((p) => (
-                <tr key={p.time} className="border-t border-border">
+              {points.map((p, i) => (
+                <tr key={`${p.time}-${i}`} className="border-t border-border">
                   <td className="px-3 py-1">{formatUtc(p.time * 1000)}</td>
                   <td className="num px-3 py-1 text-right text-fg">{formatBps(p.value)}</td>
                   <td className="px-3 py-1">{p.baseline ? "Baseline" : "With STRATA"}</td>

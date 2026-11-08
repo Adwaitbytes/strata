@@ -4,7 +4,7 @@ import type { NetworkName, WsChannel, WsServerMessage } from "@strata/sdk";
 import { useQuery, useQueryClient, type QueryKey } from "@tanstack/react-query";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { StrataApiError } from "@/lib/api/client";
-import { DATA_MODE } from "@/lib/env";
+import { API_BASE, DATA_MODE } from "@/lib/env";
 import { getStream } from "@/lib/stream-registry";
 import type { StreamState } from "@/lib/stream";
 
@@ -66,6 +66,8 @@ export function useStreamState(network: NetworkName): StreamState | "mock" | "po
     () => "idle" as StreamState,
   );
   if (DATA_MODE === "mock") return "mock";
-  if (!stream) return "polling";
+  // Decided from config, not from `stream`: getStream is null on the server, and keying on it
+  // would render "polling" in SSR but "idle" during hydration (React #418).
+  if (DATA_MODE !== "live" || !API_BASE) return "polling";
   return state;
 }
