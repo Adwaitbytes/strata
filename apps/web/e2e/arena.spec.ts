@@ -36,6 +36,21 @@ test.describe("Arena", () => {
     await expect(page).toHaveURL(/\/markets\/0x0{63}1$/);
   });
 
+  test("whole row navigates, while the name link stays the only tab stop", async ({ page }) => {
+    await page.goto("/arena");
+    const row = page.getByTestId("leaderboard-row").first();
+    await expect(row.locator("a, button:not([aria-label])").filter({ hasNot: page.locator("th") })).toHaveCount(1);
+    await row.locator("td").nth(4).click();
+    await expect(page).toHaveURL(/\/agents\/\d+$/);
+  });
+
+  test("shows the filtered row count in the toolbar", async ({ page }) => {
+    await page.goto("/arena");
+    await expect(page.getByTestId("row-count")).toHaveText("6 of 6");
+    await page.getByRole("combobox", { name: "Market" }).selectOption({ index: 1 });
+    await expect(page.getByTestId("row-count")).toHaveText("2 of 6");
+  });
+
   test("navigates to an agent page", async ({ page }) => {
     await page.goto("/arena");
     await page.getByTestId("leaderboard-row").first().getByRole("link").click();
