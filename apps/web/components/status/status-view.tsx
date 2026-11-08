@@ -47,7 +47,7 @@ export function StatusView() {
             <p className="text-sm font-medium text-fg">
               {d.services.length === 0 ? `No services reporting on ${network}` : allOk ? "All services operational" : `${d.services.filter((s) => !s.ok).length} of ${d.services.length} services need attention`}
             </p>
-            <span className="ml-auto text-xs text-fg-subtle">Checked {formatUtc(d.at)}</span>
+            <span className="ml-auto text-xs text-fg-muted">Checked {formatUtc(d.at)}</span>
           </div>
 
           <section aria-label="Data freshness" className="grid grid-cols-1 gap-px overflow-hidden rounded-[var(--radius-lg)] border border-border bg-border sm:grid-cols-3">

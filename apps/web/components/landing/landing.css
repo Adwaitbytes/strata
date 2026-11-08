@@ -189,6 +189,7 @@
 }
 .hero-line > span {
   display: block;
+  text-wrap: balance;
 }
 .hero-sub {
   margin-top: 28px;
@@ -396,9 +397,9 @@
   .scene-body::before {
     content: "";
     position: absolute;
-    inset: -64px -96px;
+    inset: -72px -180px -72px -96px;
     z-index: -1;
-    background: radial-gradient(60% 65% at 40% 50%, color-mix(in oklab, var(--bg) 86%, transparent), transparent 78%);
+    background: radial-gradient(62% 68% at 38% 50%, color-mix(in oklab, var(--bg) 93%, transparent) 40%, transparent 80%);
     pointer-events: none;
   }
 }

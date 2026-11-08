@@ -92,7 +92,7 @@ export const terrainVertex = /* glsl */ `
     strata += deposit;
 
     float fd = faultTrace(p);
-    float throwSide = smoothstep(-0.04, 0.04, fd);
+    float throwSide = smoothstep(-0.12, 0.12, fd);
     float h = base + ridges + deposit - uFault * 0.36 * throwSide;
 
     vec4 world = modelMatrix * vec4(p.x, h, p.y, 1.0);

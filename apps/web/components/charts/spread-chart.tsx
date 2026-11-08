@@ -60,7 +60,7 @@ export function SpreadChart({ history, baselineSpreadBps, network, height = 280 
         autoSize: true,
         layout: { background: { color: "transparent" }, textColor: tokens["--fg-subtle"], fontFamily: tokens["--font-mono-face"] || "ui-monospace, monospace", fontSize: 11, attributionLogo: true },
         grid: { vertLines: { visible: false }, horzLines: { color: tokens["--border"] } },
-        rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.12, bottom: 0.08 } },
+        rightPriceScale: { borderVisible: false, scaleMargins: { top: 0.18, bottom: 0.08 } },
         timeScale: { borderVisible: false, timeVisible: true, secondsVisible: false },
         crosshair: {
           mode: CrosshairMode.Magnet,

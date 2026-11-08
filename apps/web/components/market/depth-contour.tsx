@@ -19,7 +19,8 @@ export function DepthContour({ book }: { book: BookSnapshot }) {
   const lo = p.minPrice - edge;
   const hi = p.maxPrice + edge;
   const x = (price: number) => PAD.l + ((price - lo) / (hi - lo)) * (W - PAD.l - PAD.r);
-  const y = (q: number) => H - PAD.b - (q / p.maxCumulative) * (H - PAD.t - PAD.b);
+  // Square-root scale: one deep level would otherwise flatten every other step to a line.
+  const y = (q: number) => H - PAD.b - Math.sqrt(q / p.maxCumulative) * (H - PAD.t - PAD.b);
   const floor = H - PAD.b;
 
   // Stepped outline from the inside (best price) outward, closed to the floor.
@@ -71,7 +72,10 @@ export function DepthContour({ book }: { book: BookSnapshot }) {
         <text x={PAD.l} y={H - 6} className="fill-bid coord">bids</text>
         <text x={W - PAD.r} y={H - 6} textAnchor="end" className="fill-ask coord">asks</text>
       </svg>
-      <figcaption className="mt-2 text-xs text-fg-subtle">Cumulative size per side, dashed contours at quarters of the deeper side.</figcaption>
+      <figcaption className="mt-2 text-xs text-fg-subtle">
+        Cumulative size per side in base units, square-root scale. Dashed contours at quarters of the deeper side. {p.bids.length}{" "}
+        {p.bids.length === 1 ? "bid level" : "bid levels"}, {p.asks.length} {p.asks.length === 1 ? "ask level" : "ask levels"} in this snapshot.
+      </figcaption>
     </figure>
   );
 }

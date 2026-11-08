@@ -70,7 +70,7 @@ export function NetworkBadge({ network, className }: { network: NetworkLabel; cl
 export type ProvenanceLabel = "LIVE" | "TESTNET" | "SIMULATED" | "BACKTEST" | "BASELINE" | "MOCK";
 
 const provenanceInfo: Record<Exclude<ProvenanceLabel, "LIVE">, { tone: BadgeTone; title: string }> = {
-  TESTNET: { tone: "warn", title: "Measured on Injective testnet. Not real liquidity." },
+  TESTNET: { tone: "neutral", title: "Measured on Injective testnet. Not real liquidity." },
   SIMULATED: { tone: "warn", title: "Produced by the simulator, not by orders on a live book." },
   BACKTEST: { tone: "neutral", title: "Replayed against historical data." },
   BASELINE: { tone: "baseline", title: "Measured before STRATA agents quoted this market." },
