@@ -171,3 +171,55 @@ export const adminNonces = pgTable("admin_nonces", {
   nonce: text("nonce").primaryKey(),
   usedAt: ts("used_at").notNull(),
 });
+
+/** Raw arena contract logs from Blockscout (migration 0002). Keyed by tx hash + log index. */
+export const arenaEvents = pgTable("arena_events", {
+  network: networkEnum("network").notNull(),
+  contract: text("contract").notNull(),
+  txHash: text("tx_hash").notNull(),
+  logIndex: integer("log_index").notNull(),
+  blockNumber: bigint("block_number", { mode: "number" }).notNull(),
+  blockTime: ts("block_time").notNull(),
+  event: text("event").notNull(),
+  args: jsonb("args").notNull(),
+  ingestedAt: ts("ingested_at").notNull().defaultNow(),
+}, (t) => [primaryKey({ columns: [t.network, t.txHash, t.logIndex] })]);
+
+/** Resume points for pollers and backfills (migration 0002). */
+export const indexerCursors = pgTable("indexer_cursors", {
+  network: networkEnum("network").notNull(),
+  source: text("source").notNull(),
+  cursor: jsonb("cursor").notNull(),
+  updatedAt: ts("updated_at").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.source] })]);
+
+/** Agent position samples (migration 0002, hypertable on `at`). */
+export const agentPositions = pgTable("agent_positions", {
+  network: networkEnum("network").notNull(),
+  agentId: integer("agent_id").notNull(),
+  marketId: text("market_id").notNull(),
+  at: ts("at").notNull(),
+  direction: text("direction").notNull(),
+  quantity: numeric("quantity").notNull(),
+  entryPrice: numeric("entry_price").notNull(),
+  margin: numeric("margin").notNull(),
+  markPrice: numeric("mark_price"),
+  provenance: provenanceEnum("provenance").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.agentId, t.marketId, t.at] })]);
+
+/**
+ * Accepted kill-switch commands (PRD 9.6 b), written by apps/api after verifying the owner
+ * signature. Agents poll rows newer than their cursor where target_agent_id is NULL (all)
+ * or their own id, and acknowledge by writing a guard_events row with reason
+ * `kill_switch_api` and observed.killCommandId. `pg_notify('strata_kill', id)` fires on insert.
+ */
+export const killCommands = pgTable("kill_commands", {
+  id: text("id").primaryKey(),
+  network: networkEnum("network").notNull(),
+  targetAgentId: integer("target_agent_id"),
+  closePositions: boolean("close_positions").notNull(),
+  signer: text("signer").notNull(),
+  nonce: text("nonce").notNull().unique().references(() => adminNonces.nonce),
+  requestedAt: ts("requested_at").notNull(),
+  signatureExpiresAt: ts("signature_expires_at").notNull(),
+}, (t) => [index("kill_commands_network_requested_idx").on(t.network, t.requestedAt)]);

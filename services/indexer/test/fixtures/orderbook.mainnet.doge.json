@@ -1,0 +1,57 @@
+{
+ "source": "IndexerGrpcDerivativesApi.fetchOrderbooksV2 + fetchMarkets, mainnet, recorded 2026-11-09",
+ "market": {
+  "marketId": "0xb562b7a440a435e0065d1a22ab74f1f40f25e35476854cd62ee2897c444a287d",
+  "ticker": "DOGE/USDC PERP",
+  "oracleType": "chainlinkdatastreams",
+  "oracleBase": "0x000356ca64d3b32135e17dc0dc721a645bf50d0303be8ceb2cdca0a50bab8fdc",
+  "oracleQuote": "0x00038f83323b6b08116d1614cf33a9bd71ab5e0abf0c9f1b783a74a43e7bd992",
+  "oracleScaleFactor": 6,
+  "isPerpetual": true,
+  "marketStatus": "active",
+  "quoteDenom": "erc20:0xa00C59fF5a080D2b954d0c75e46E22a0c371235a",
+  "quoteDecimals": 6
+ },
+ "orderbook": {
+  "sequence": 900917,
+  "buys": [
+   {
+    "price": "71200",
+    "quantity": "13465",
+    "timestamp": 1794163013891
+   },
+   {
+    "price": "71100",
+    "quantity": "57666",
+    "timestamp": 1794163003950
+   },
+   {
+    "price": "70900",
+    "quantity": "160000",
+    "timestamp": 1794162936138
+   },
+   {
+    "price": "68800",
+    "quantity": "60000",
+    "timestamp": 1784869063878
+   },
+   {
+    "price": "68400",
+    "quantity": "84650",
+    "timestamp": 1784869027727
+   }
+  ],
+  "sells": [
+   {
+    "price": "71500",
+    "quantity": "70808",
+    "timestamp": 1794163013891
+   },
+   {
+    "price": "71700",
+    "quantity": "160000",
+    "timestamp": 1794162936138
+   }
+  ]
+ }
+}
