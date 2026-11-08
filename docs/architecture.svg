@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-labelledby="t d">
+  <title id="t">STRATA architecture</title>
+  <desc id="d">Web app and API on Vercel read from a Neon Postgres database. Agents, indexer and scorer run in Docker on the owner's Mac. Agents quote on Injective's exchange module, the indexer reads books, oracle prices and contract events, and the scorer posts an epoch merkle root to the ScoreAttestor contract. The browser can verify a score proof against the contract directly.</desc>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#5EEAD4"/>
+    </marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#8B93A7"/>
+    </marker>
+    <style>
+      .bg{fill:#07080B}
+      .grp{fill:#0D0F14;stroke:#1E2230;stroke-width:1}
+      .grpl{font:600 12px 'Inter',system-ui,sans-serif;letter-spacing:.12em;fill:#8B93A7;text-transform:uppercase}
+      .box{fill:#121520;stroke:#2A3042;stroke-width:1}
+      .key{fill:#0F1F1E;stroke:#5EEAD4;stroke-width:1.2}
+      .h{font:600 17px 'Inter',system-ui,sans-serif;fill:#EEF1F6}
+      .s{font:400 13px 'Inter',system-ui,sans-serif;fill:#A3ABBD}
+      .m{font:500 12px 'JetBrains Mono',ui-monospace,monospace;fill:#5EEAD4}
+      .ln{stroke:#5EEAD4;stroke-width:1.5;fill:none}
+      .lg{stroke:#8B93A7;stroke-width:1.2;fill:none;stroke-dasharray:5 5}
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="800"/>
+
+  <!-- Vercel -->
+  <rect class="grp" x="40" y="30" width="1120" height="150" rx="14"/>
+  <text class="grpl" x="64" y="56">Vercel</text>
+  <rect class="box" x="80" y="72" width="320" height="88" rx="10"/>
+  <text class="h" x="100" y="104">Web app</text>
+  <text class="s" x="100" y="128">Next.js. Arena, Agent, Market,</text>
+  <text class="s" x="100" y="146">Join, Docs, Transparency, Status</text>
+  <rect class="box" x="460" y="72" width="320" height="88" rx="10"/>
+  <text class="h" x="480" y="104">STRATA API</text>
+  <text class="s" x="480" y="128">Fastify on Vercel Functions</text>
+  <text class="s" x="480" y="146">REST /v1, OpenAPI, MCP, x402</text>
+  <line class="ln" x1="400" y1="116" x2="456" y2="116" marker-end="url(#a)"/>
+
+  <!-- Neon -->
+  <rect class="grp" x="400" y="214" width="440" height="120" rx="14"/>
+  <text class="grpl" x="424" y="240">Neon Postgres</text>
+  <rect class="key" x="440" y="252" width="360" height="66" rx="10"/>
+  <text class="h" x="460" y="280">Shared database</text>
+  <text class="s" x="460" y="302">books, quotes, fills, oracle, guards, scores</text>
+  <line class="ln" x1="620" y1="160" x2="620" y2="248" marker-end="url(#a)"/>
+
+  <!-- Mac workers -->
+  <rect class="grp" x="40" y="372" width="1120" height="170" rx="14"/>
+  <text class="grpl" x="64" y="398">Owner's Mac (Docker)</text>
+  <rect class="box" x="80" y="414" width="320" height="110" rx="10"/>
+  <text class="h" x="100" y="444">Agent runtime</text>
+  <text class="s" x="100" y="468">Deterministic quoting engine</text>
+  <text class="s" x="100" y="488">Oracle, Session, Risk guards</text>
+  <text class="s" x="100" y="508">Bounded AI tuner, kill switch</text>
+  <rect class="box" x="460" y="414" width="320" height="110" rx="10"/>
+  <text class="h" x="480" y="444">Indexer</text>
+  <text class="s" x="480" y="468">Injective Indexer streams</text>
+  <text class="s" x="480" y="488">Blockscout contract events</text>
+  <text class="s" x="480" y="508">12 h baseline per market</text>
+  <rect class="box" x="840" y="414" width="300" height="110" rx="10"/>
+  <text class="h" x="860" y="444">Scorer</text>
+  <text class="s" x="860" y="468">Hourly epoch metrics</text>
+  <text class="s" x="860" y="488">Score, flags, merkle root</text>
+  <text class="s" x="860" y="508">Attestor signer</text>
+
+  <path class="ln" d="M340 414 V 300 H 436" marker-end="url(#a)"/>
+  <text class="m" x="186" y="292">quotes, guard events</text>
+  <line class="ln" x1="620" y1="414" x2="620" y2="322" marker-end="url(#a)"/>
+  <path class="ln" d="M804 285 H 990 V 410" marker-end="url(#a)"/>
+  <text class="m" x="870" y="276">epoch inputs</text>
+
+  <!-- Injective -->
+  <rect class="grp" x="40" y="580" width="1120" height="196" rx="14"/>
+  <text class="grpl" x="64" y="606">Injective</text>
+  <text class="m" x="80" y="756" fill="#8B93A7">testnet: EVM 1439 / injective-888    mainnet: EVM 1776 / injective-1</text>
+  <rect class="box" x="80" y="622" width="320" height="104" rx="10"/>
+  <text class="h" x="100" y="652">Exchange module</text>
+  <text class="s" x="100" y="676">RWA perp order books</text>
+  <text class="s" x="100" y="696">Options (testnet)</text>
+  <rect class="box" x="460" y="622" width="320" height="104" rx="10"/>
+  <text class="h" x="480" y="652">Oracle module</text>
+  <text class="s" x="480" y="676">Price and timestamp per market</text>
+  <text class="s" x="480" y="696">Checked by Oracle Guard</text>
+  <rect class="key" x="840" y="622" width="300" height="104" rx="10"/>
+  <text class="h" x="860" y="652">Arena contracts (EVM)</text>
+  <text class="s" x="860" y="676">StrataArena, ScoreAttestor</text>
+  <text class="s" x="860" y="696">RewardsDistributor (testnet)</text>
+
+  <line class="ln" x1="200" y1="524" x2="200" y2="618" marker-end="url(#a)"/>
+  <text class="m" x="92" y="572">batch orders</text>
+  <line class="ln" x1="300" y1="618" x2="300" y2="528" marker-end="url(#a)"/>
+  <text class="m" x="310" y="572">book, fills</text>
+  <line class="ln" x1="560" y1="618" x2="560" y2="528" marker-end="url(#a)"/>
+  <text class="m" x="570" y="572">prices</text>
+  <path class="ln" d="M840 650 H 812 V 560 H 720 V 528" marker-end="url(#a)"/>
+  <text class="m" x="728" y="552">events</text>
+  <line class="ln" x1="990" y1="524" x2="990" y2="618" marker-end="url(#a)"/>
+  <text class="m" x="1000" y="572">postEpoch</text>
+
+  <!-- browser verify -->
+  <path class="lg" d="M400 92 H 420 V 50 H 1180 V 674 H 1144" marker-end="url(#g)"/>
+  <text class="s" x="900" y="44" fill="#8B93A7">browser verifies score proofs with viem</text>
+</svg>

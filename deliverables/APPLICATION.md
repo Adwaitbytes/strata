@@ -1,0 +1,93 @@
+# STRATA: Hacker House application copy
+
+Form: Injective Bangkok Hacker House (Dec 1 to 10, 2026). Closes **Nov 10, 2026**. Template: PRD 22.1.
+
+## Fill before submitting
+
+Nothing below in square brackets is real yet. Do not submit with a bracket left in.
+
+- [ ] Pick the stage. **Mainnet** only if PRD 1.3 S1, S2 and S5 are all live (contracts verified on mainnet Blockscout, 2+ house agents quoting on mainnet, at least one mainnet epoch attestation). Mainnet capital is $0 today (D27), so the default is **Testnet**. Delete the variant you do not use.
+- [ ] `[TESTNET_APP_URL]`: testnet web app (Vercel URL, D23)
+- [ ] `[MAINNET_APP_URL]`: mainnet web app (Mainnet variant only)
+- [ ] `[TESTNET_ARENA_URL]` / `[MAINNET_ARENA_URL]`: the `/arena` leaderboard page
+- [ ] `[TESTNET_ARENA_CONTRACT_URL]`, `[TESTNET_ATTESTOR_CONTRACT_URL]`: verified contracts on testnet Blockscout
+- [ ] `[MAINNET_ARENA_CONTRACT_URL]`, `[MAINNET_ATTESTOR_CONTRACT_URL]`: Mainnet variant only
+- [ ] `[TESTNET_EPOCH_TX_URL]` / `[MAINNET_EPOCH_TX_URL]`: one `EpochPosted` attestation tx
+- [ ] `[N_TESTNET_AGENTS]`, `[N_MAINNET_AGENTS]`: agents quoting at submission time, counted from the app
+- [ ] `[TESTNET_MARKETS]`, `[MAINNET_MARKETS]`: market symbols the agents quote, from `packages/config`
+- [ ] `[N_EPOCHS]`: epochs attested so far, from the Transparency page
+- [ ] `[OPTIONS_STATUS]`: either "live on testnet" (whitelist granted) or "running in a labeled simulator while we wait for writer access" (D9)
+- [ ] `[GITHUB_URL]`: repo URL once public (D24)
+- [ ] `[VIDEO_URL]`: demo video
+- [ ] `[DECK_URL]`: `deliverables/STRATA-deck.pdf` hosted somewhere reviewers can open
+- [ ] Owner confirms the "Earlier" sentence (grants figure, clients, incubation) is accurate and OK to state publicly
+- [ ] Any number added from the app keeps its label if it is testnet (say "on testnet")
+- [ ] Re-run the character count if the description changes (command at the bottom)
+
+---
+
+## Project name
+
+STRATA
+
+## Description (max 250 characters)
+
+STRATA is an open arena where AI market-making agents add liquidity to Injective's RWA perps. Agents trade their own capital, get scored onchain every hour on spread, depth and uptime, and earn points for the liquidity they add.
+
+**Character count: 228 / 250** (counted with Python `len()`, no em dashes).
+
+Changes from the PRD draft, and why:
+- Dropped "and options": the options writer is testnet only and may be simulated (D9). Mention it in "What have you shipped" with its real status instead.
+- "earn points" instead of "earn": Season 0 pays points, not tokens (PRD 6, R0 out of scope).
+- Added "every hour": it is specific and true (1 hour epochs, PRD 10.1).
+
+## Category
+
+AI & agents
+
+## Stage
+
+`[Testnet | Mainnet]`. Default: **Testnet** (D27).
+
+## What have you shipped
+
+### Variant A: Testnet (use this unless mainnet is live)
+
+Live on Injective testnet: arena and score attestation contracts on Injective EVM, verified on Blockscout ([TESTNET_ARENA_CONTRACT_URL], [TESTNET_ATTESTOR_CONTRACT_URL]). [N_TESTNET_AGENTS] STRATA agents quoting [TESTNET_MARKETS] behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations ([N_EPOCHS] so far, latest: [TESTNET_EPOCH_TX_URL]) and a public leaderboard at [TESTNET_ARENA_URL]. Options writer agent: [OPTIONS_STATUS]. Mainnet contracts and agents are built and tested, waiting on a funded wallet. Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
+
+### Variant B: Mainnet (only if S1, S2 and S5 are live)
+
+Mainnet beta live: arena and score attestation contracts on Injective EVM, verified on Blockscout ([MAINNET_ARENA_CONTRACT_URL], [MAINNET_ATTESTOR_CONTRACT_URL]). [N_MAINNET_AGENTS] STRATA agents quoting [MAINNET_MARKETS] with team capital, behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations (latest: [MAINNET_EPOCH_TX_URL]) and a live leaderboard at [MAINNET_ARENA_URL]. Full feature set on testnet, including the options writer agent ([OPTIONS_STATUS]). Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
+
+## What will you build in the 10 days
+
+A rewards distributor and Season 1 incentives, designed with input from the Injective team. The options writer agent on mainnet as soon as Options launches there. Private RFQ for institutional block trades (privacy track). A public agent SDK and MCP onboarding so third-party agents can enroll in minutes. Demo flows for the institutional teams in the program.
+
+Note: the PRD draft named Gulf Labs and SMBC Nikko here. They are program partners, not ours, so naming them as if we had flows agreed reads like a partnership claim. Use the generic wording above unless the owner has a written agreement (CLAUDE.md, PRD 16.5).
+
+## Help needed (max 3)
+
+1. Injective Integration
+2. Tokenomics & DeFi Design
+3. Ecosystem Partnerships
+
+## Links
+
+| Field | Value |
+|---|---|
+| Website | [TESTNET_APP_URL] (or [MAINNET_APP_URL]) |
+| GitHub | [GITHUB_URL] |
+| Demo video | [VIDEO_URL] |
+| Deck | [DECK_URL] |
+
+## Team
+
+Aarambh Labs. Owner and contact: Yatharth Urmaliya (Founder and CEO), per the PRD owner line (D14).
+
+---
+
+### Re-count the description
+
+```bash
+python3 -c "s=open('deliverables/APPLICATION.md').read().split('## Description (max 250 characters)')[1].strip().split('\n')[0]; print(len(s), s)"
+```
