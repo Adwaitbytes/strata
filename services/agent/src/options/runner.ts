@@ -223,12 +223,13 @@ export class OptionsRunner {
 
     // 4. New writes.
     let written = 0;
-    if (opts.quote && kill === null && !result.haltAll) {
+    if (kill === null && !result.haltAll) {
       let budget = result.orderBudget;
       for (const spec of d.specs) {
         if ((result.markets[spec.marketId] ?? "normal") !== "normal") continue;
         const r = readings.get(spec.underlying);
-        if (r === undefined || !this.#canWrite(spec, r, now, raised)) continue;
+        // Session and oracle checks run every cycle so their guard state stays current between quotes.
+        if (r === undefined || !this.#canWrite(spec, r, now, raised) || !opts.quote) continue;
         const expiryMs = nextExpiry(spec.sessionClass, now, d.params.minTenorMs);
         if (expiryMs === null) continue;
         for (const kind of ["call", "put"] as const) {

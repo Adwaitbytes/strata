@@ -122,6 +122,16 @@ describe("OptionsRunner", () => {
     expect(h.guards.filter((g) => g.reason === "session_closed")).toHaveLength(1);
   });
 
+  it("keeps a session guard raised across cycles that do not quote", async () => {
+    const h = harness();
+    await h.warm();
+    h.setNow(zonedTimeToUtc(2026, 11, 14, 12, 0, 0, CALENDAR.timezone)); // Saturday
+    await h.runner.cycle({ quote: true });
+    await h.runner.cycle({ quote: false });
+    await h.runner.cycle({ quote: true });
+    expect(h.guards.filter((g) => g.reason === "session_closed")).toHaveLength(1);
+  });
+
   it("halts writes on a stale oracle", async () => {
     const h = harness({ specs: [SICI], prices: (_s, t) => ({ price: 100 + (t / 60_000) % 3, timestampMs: t < T0 + 300_000 ? t : T0 - 3_600_000, source: "test" }) });
     await h.warm();
