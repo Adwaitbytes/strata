@@ -1,0 +1,1006 @@
+{
+ "captures": {
+  "blockscout-epoch-tx": {
+   "file": "blockscout-epoch-tx.png",
+   "url": "https://testnet.blockscout.injective.network/tx/0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a",
+   "requestedUrl": "https://testnet.blockscout.injective.network/tx/0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a",
+   "capturedAt": "2026-11-09T08:46:23.848Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 264,
+      "y": 233,
+      "w": 300,
+      "h": 40,
+      "text": "Transaction details"
+     }
+    ],
+    "txHash": [
+     {
+      "x": 292,
+      "y": 292,
+      "w": 699,
+      "h": 25,
+      "text": "0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a"
+     },
+     {
+      "x": 511,
+      "y": 483,
+      "w": 602,
+      "h": 20,
+      "text": "0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a"
+     }
+    ],
+    "status": [
+     {
+      "x": 529,
+      "y": 527,
+      "w": 57,
+      "h": 20,
+      "text": "Success"
+     }
+    ],
+    "block": [
+     {
+      "x": 511,
+      "y": 571,
+      "w": 86,
+      "h": 20,
+      "text": "147660200"
+     }
+    ],
+    "method": [
+     {
+      "x": 606,
+      "y": 527,
+      "w": 72,
+      "h": 20,
+      "text": "postEpoch"
+     }
+    ],
+    "from": [
+     {
+      "x": 539,
+      "y": 696,
+      "w": 392,
+      "h": 20,
+      "text": "0xdc83322EE104526f473AfC4f8a01e2d57676A953"
+     }
+    ]
+   }
+  },
+  "blockscout-epoch-tx-logs": {
+   "file": "blockscout-epoch-tx-logs.png",
+   "url": "https://testnet.blockscout.injective.network/tx/0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a?tab=logs",
+   "requestedUrl": "https://testnet.blockscout.injective.network/tx/0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a?tab=logs",
+   "capturedAt": "2026-11-09T08:46:33.540Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 264,
+      "y": 233,
+      "w": 300,
+      "h": 40,
+      "text": "Transaction details"
+     }
+    ],
+    "root": [
+     {
+      "x": 812,
+      "y": 687,
+      "w": 525,
+      "h": 17,
+      "text": "0x117a7ecdd28cf13e4089c05958fb7555fdd471e7d3cb73caec1554cb0e6ada77"
+     },
+     {
+      "x": 496,
+      "y": 938,
+      "w": 1160,
+      "h": 116,
+      "text": "0x117a7ecdd28cf13e4089c05958fb7555fdd471e7d3cb73caec1554cb0e6ada770000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000"
+     }
+    ],
+    "event": [
+     {
+      "x": 612,
+      "y": 518,
+      "w": 1028,
+      "h": 20,
+      "text": "EpochPosted(uint64 indexed season, uint64 indexed epoch, bytes32 root, string uri)"
+     }
+    ]
+   }
+  },
+  "blockscout-arena-contract": {
+   "file": "blockscout-arena-contract.png",
+   "url": "https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870?tab=contract",
+   "requestedUrl": "https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870?tab=contract",
+   "capturedAt": "2026-11-09T08:46:46.720Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 264,
+      "y": 233,
+      "w": 252,
+      "h": 40,
+      "text": "Contract details"
+     }
+    ],
+    "verified": [
+     {
+      "x": 276,
+      "y": 477,
+      "w": 334,
+      "h": 24,
+      "text": "Contract source code verified (exact match)"
+     },
+     {
+      "x": 952,
+      "y": 613,
+      "w": 162,
+      "h": 24,
+      "text": "Verified at"
+     }
+    ],
+    "name": [
+     {
+      "x": 411,
+      "y": 533,
+      "w": 529,
+      "h": 24,
+      "text": "StrataArena"
+     },
+     {
+      "x": 411,
+      "y": 653,
+      "w": 529,
+      "h": 24,
+      "text": "src/StrataArena.sol"
+     },
+     {
+      "x": 294,
+      "y": 1019,
+      "w": 94,
+      "h": 34,
+      "text": "StrataArena.sol"
+     },
+     {
+      "x": 315,
+      "y": 1054,
+      "w": 94,
+      "h": 22,
+      "text": "StrataArena.sol"
+     }
+    ],
+    "compiler": [
+     {
+      "x": 952,
+      "y": 533,
+      "w": 162,
+      "h": 24,
+      "text": "Compiler version"
+     },
+     {
+      "x": 328,
+      "y": 709,
+      "w": 85,
+      "h": 32,
+      "text": "Compiler"
+     }
+    ],
+    "address": [
+     {
+      "x": 292,
+      "y": 292,
+      "w": 454,
+      "h": 25,
+      "text": "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870"
+     }
+    ]
+   }
+  },
+  "blockscout-arena-overview": {
+   "file": "blockscout-arena-overview.png",
+   "url": "https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+   "requestedUrl": "https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+   "capturedAt": "2026-11-09T08:46:57.045Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 264,
+      "y": 233,
+      "w": 252,
+      "h": 40,
+      "text": "Contract details"
+     }
+    ],
+    "name": [
+     {
+      "x": 478,
+      "y": 417,
+      "w": 89,
+      "h": 24,
+      "text": "StrataArena"
+     }
+    ],
+    "address": [
+     {
+      "x": 292,
+      "y": 292,
+      "w": 454,
+      "h": 25,
+      "text": "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870"
+     }
+    ]
+   }
+  },
+  "blockscout-attestor-contract": {
+   "file": "blockscout-attestor-contract.png",
+   "url": "https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF?tab=contract",
+   "requestedUrl": "https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF?tab=contract",
+   "capturedAt": "2026-11-09T08:47:14.962Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 264,
+      "y": 233,
+      "w": 252,
+      "h": 40,
+      "text": "Contract details"
+     }
+    ],
+    "verified": [
+     {
+      "x": 276,
+      "y": 477,
+      "w": 334,
+      "h": 24,
+      "text": "Contract source code verified (exact match)"
+     },
+     {
+      "x": 952,
+      "y": 613,
+      "w": 162,
+      "h": 24,
+      "text": "Verified at"
+     }
+    ],
+    "name": [
+     {
+      "x": 411,
+      "y": 533,
+      "w": 529,
+      "h": 24,
+      "text": "ScoreAttestor"
+     },
+     {
+      "x": 411,
+      "y": 653,
+      "w": 529,
+      "h": 24,
+      "text": "src/ScoreAttestor.sol"
+     },
+     {
+      "x": 294,
+      "y": 956,
+      "w": 104,
+      "h": 34,
+      "text": "ScoreAttestor.sol"
+     },
+     {
+      "x": 315,
+      "y": 991,
+      "w": 104,
+      "h": 22,
+      "text": "ScoreAttestor.sol"
+     }
+    ],
+    "compiler": [
+     {
+      "x": 952,
+      "y": 533,
+      "w": 162,
+      "h": 24,
+      "text": "Compiler version"
+     },
+     {
+      "x": 328,
+      "y": 709,
+      "w": 85,
+      "h": 32,
+      "text": "Compiler"
+     }
+    ],
+    "address": [
+     {
+      "x": 292,
+      "y": 292,
+      "w": 457,
+      "h": 25,
+      "text": "0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF"
+     }
+    ]
+   }
+  },
+  "sourcify-arena": {
+   "file": "sourcify-arena.png",
+   "url": "https://repo.sourcify.dev/1439/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+   "requestedUrl": "https://repo.sourcify.dev/1439/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+   "capturedAt": "2026-11-09T08:47:32.224Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 256,
+      "y": 108,
+      "w": 1408,
+      "h": 36,
+      "text": "StrataArena"
+     }
+    ],
+    "h2": [
+     {
+      "x": 256,
+      "y": 684,
+      "w": 203,
+      "h": 28,
+      "text": "Read/Write Contract on:"
+     },
+     {
+      "x": 272,
+      "y": 756,
+      "w": 35,
+      "h": 28,
+      "text": "ABI"
+     },
+     {
+      "x": 256,
+      "y": 894,
+      "w": 116,
+      "h": 28,
+      "text": "Source Code"
+     }
+    ],
+    "match": [
+     {
+      "x": 256,
+      "y": 206,
+      "w": 145,
+      "h": 34,
+      "text": "Exact Match"
+     },
+     {
+      "x": 289,
+      "y": 257,
+      "w": 1029,
+      "h": 20,
+      "text": "Warning: This contract is only matched with runtime bytecode. The constructor may be different from the original one, which could affect the contract's function"
+     },
+     {
+      "x": 269,
+      "y": 944,
+      "w": 113,
+      "h": 26,
+      "text": "Exact Match"
+     }
+    ],
+    "address": [
+     {
+      "x": 256,
+      "y": 148,
+      "w": 403,
+      "h": 24,
+      "text": "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870"
+     }
+    ],
+    "chain": [
+     {
+      "x": 256,
+      "y": 174,
+      "w": 1408,
+      "h": 24,
+      "text": "on Injective Testnet (1439)"
+     }
+    ]
+   }
+  },
+  "explorer-kill-cancel-tx": {
+   "file": "explorer-kill-cancel-tx.png",
+   "url": "https://testnet.injscan.com/transaction/BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925/",
+   "requestedUrl": "https://testnet.injscan.com/transaction/BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925/",
+   "capturedAt": "2026-11-09T08:51:46.443Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 172,
+      "y": 555,
+      "w": 68,
+      "h": 24,
+      "text": "Message"
+     }
+    ],
+    "hash": [
+     {
+      "x": 430,
+      "y": 210,
+      "w": 569,
+      "h": 20,
+      "text": "BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925"
+     }
+    ],
+    "memo": [
+     {
+      "x": 430,
+      "y": 426,
+      "w": 1326,
+      "h": 20,
+      "text": "strata:cancel-all"
+     }
+    ],
+    "status": [
+     {
+      "x": 430,
+      "y": 282,
+      "w": 53,
+      "h": 20,
+      "text": "Success"
+     }
+    ],
+    "block": [
+     {
+      "x": 430,
+      "y": 246,
+      "w": 86,
+      "h": 20,
+      "text": "#147,657,579"
+     }
+    ],
+    "cancelAll": [
+     {
+      "x": 274,
+      "y": 906,
+      "w": 311,
+      "h": 16,
+      "text": "\"derivative_market_ids_to_cancel_all\""
+     }
+    ]
+   }
+  },
+  "explorer-batch-tx": {
+   "file": "explorer-batch-tx.png",
+   "url": "https://testnet.injscan.com/transaction/8D5858CA815FB5DBCB10E172AE3C8BBD640CCB685319E7D0A19D4AB60636B657/",
+   "requestedUrl": "https://testnet.injscan.com/transaction/8D5858CA815FB5DBCB10E172AE3C8BBD640CCB685319E7D0A19D4AB60636B657/",
+   "capturedAt": "2026-11-09T08:52:18.341Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "h1": [
+     {
+      "x": 172,
+      "y": 555,
+      "w": 68,
+      "h": 24,
+      "text": "Message"
+     }
+    ],
+    "hash": [
+     {
+      "x": 430,
+      "y": 210,
+      "w": 573,
+      "h": 20,
+      "text": "8D5858CA815FB5DBCB10E172AE3C8BBD640CCB685319E7D0A19D4AB60636B657"
+     }
+    ],
+    "memo": [
+     {
+      "x": 430,
+      "y": 426,
+      "w": 1326,
+      "h": 20,
+      "text": "strata:batch"
+     }
+    ],
+    "status": [
+     {
+      "x": 430,
+      "y": 282,
+      "w": 53,
+      "h": 20,
+      "text": "Success"
+     }
+    ],
+    "create": [
+     {
+      "x": 274,
+      "y": 970,
+      "w": 244,
+      "h": 16,
+      "text": "\"derivative_orders_to_create\""
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-1": {
+   "file": "explorer-strata-test-1.png",
+   "url": "https://testnet.injscan.com/account/inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh/",
+   "capturedAt": "2026-11-09T08:52:30.824Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 312,
+      "h": 20,
+      "text": "inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh"
+     }
+    ],
+    "usdc": [
+     {
+      "x": 298,
+      "y": 625,
+      "w": 40,
+      "h": 20,
+      "text": "USDC"
+     }
+    ],
+    "inj": [
+     {
+      "x": 172,
+      "y": 284,
+      "w": 1025,
+      "h": 16,
+      "text": "INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 146,
+      "w": 117,
+      "h": 20,
+      "text": "Total INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 190,
+      "w": 69,
+      "h": 16,
+      "text": "INJ Balance"
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-1-txs": {
+   "file": "explorer-strata-test-1-txs.png",
+   "url": "https://testnet.injscan.com/account/inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh/transactions/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh/",
+   "capturedAt": "2026-11-09T08:52:54.531Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 312,
+      "h": 20,
+      "text": "inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh"
+     }
+    ],
+    "batch": [
+     {
+      "x": 613,
+      "y": 614,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 613,
+      "y": 671,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 613,
+      "y": 728,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 613,
+      "y": 785,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 613,
+      "y": 842,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 613,
+      "y": 899,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     }
+    ],
+    "success": [
+     {
+      "x": 444,
+      "y": 613,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 444,
+      "y": 670,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 444,
+      "y": 727,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 444,
+      "y": 784,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 444,
+      "y": 841,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 444,
+      "y": 898,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-2": {
+   "file": "explorer-strata-test-2.png",
+   "url": "https://testnet.injscan.com/account/inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev/",
+   "capturedAt": "2026-11-09T08:53:07.259Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 302,
+      "h": 20,
+      "text": "inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev"
+     }
+    ],
+    "usdc": [
+     {
+      "x": 298,
+      "y": 625,
+      "w": 40,
+      "h": 20,
+      "text": "USDC"
+     }
+    ],
+    "inj": [
+     {
+      "x": 172,
+      "y": 284,
+      "w": 1025,
+      "h": 16,
+      "text": "INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 146,
+      "w": 117,
+      "h": 20,
+      "text": "Total INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 190,
+      "w": 69,
+      "h": 16,
+      "text": "INJ Balance"
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-2-txs": {
+   "file": "explorer-strata-test-2-txs.png",
+   "url": "https://testnet.injscan.com/account/inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev/transactions/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev/",
+   "capturedAt": "2026-11-09T08:53:22.770Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 302,
+      "h": 20,
+      "text": "inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev"
+     }
+    ],
+    "batch": [
+     {
+      "x": 610,
+      "y": 614,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 671,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 728,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 785,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 842,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 899,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     }
+    ],
+    "success": [
+     {
+      "x": 441,
+      "y": 613,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 670,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 727,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 784,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 841,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 898,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-3": {
+   "file": "explorer-strata-test-3.png",
+   "url": "https://testnet.injscan.com/account/inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t/",
+   "capturedAt": "2026-11-09T08:53:36.254Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 324,
+      "h": 20,
+      "text": "inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t"
+     }
+    ],
+    "usdc": [
+     {
+      "x": 298,
+      "y": 625,
+      "w": 40,
+      "h": 20,
+      "text": "USDC"
+     }
+    ],
+    "inj": [
+     {
+      "x": 172,
+      "y": 284,
+      "w": 1025,
+      "h": 16,
+      "text": "INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 146,
+      "w": 117,
+      "h": 20,
+      "text": "Total INJ Balance"
+     },
+     {
+      "x": 1261,
+      "y": 190,
+      "w": 69,
+      "h": 16,
+      "text": "INJ Balance"
+     }
+    ]
+   }
+  },
+  "explorer-strata-test-3-txs": {
+   "file": "explorer-strata-test-3-txs.png",
+   "url": "https://testnet.injscan.com/account/inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t/transactions/",
+   "requestedUrl": "https://testnet.injscan.com/account/inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t/",
+   "capturedAt": "2026-11-09T08:53:53.070Z",
+   "cookieBanner": "none shown",
+   "elements": {
+    "address": [
+     {
+      "x": 268,
+      "y": 145,
+      "w": 324,
+      "h": 20,
+      "text": "inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t"
+     }
+    ],
+    "batch": [
+     {
+      "x": 610,
+      "y": 614,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 671,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 728,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 785,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 842,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     },
+     {
+      "x": 610,
+      "y": 899,
+      "w": 140,
+      "h": 16,
+      "text": "Batch Update Orders V2"
+     }
+    ],
+    "success": [
+     {
+      "x": 441,
+      "y": 613,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 670,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 727,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 784,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 841,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     },
+     {
+      "x": 441,
+      "y": 898,
+      "w": 47,
+      "h": 18,
+      "text": "Success"
+     }
+    ]
+   }
+  }
+ },
+ "meta": {
+  "viewport": {
+   "width": 1920,
+   "height": 1080
+  },
+  "deviceScaleFactor": 2,
+  "units": "CSS px, viewport-relative"
+ }
+}

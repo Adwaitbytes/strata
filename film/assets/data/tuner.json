@@ -1,0 +1,263 @@
+{
+ "source": "Neon Postgres (production DB the API reads), read-only session: tuner_events (payload written by services/agent/src/core/tuner.ts)",
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "network": "testnet",
+ "provenance": "TESTNET",
+ "mode": "shadow: the AI tuner only suggests parameter values; in shadow mode nothing is applied to live quoting, and the tuner never places orders",
+ "appliedFieldNote": "payload.applied is the suggestion after the hard bounds and the 20% step limit (boundSuggestion). In shadow mode the agent keeps payload.before (services/agent/src/core/tuner.ts: next = mode === 'live' ? applied : current), which is why every later row still starts from the same 'before' values.",
+ "hardBounds": {
+  "source": "packages/risk/src/params.ts PARAM_BOUNDS",
+  "maxStepChange": "20% per step (services/agent/src/core/tuner.ts)",
+  "bounds": {
+   "gamma": {
+    "min": 0.001,
+    "max": 5
+   },
+   "minHalfSpreadBps": {
+    "min": 1,
+    "max": 500
+   },
+   "levels": {
+    "min": 1,
+    "max": 10,
+    "integer": true
+   },
+   "sizeMultiplier": {
+    "min": 0.1,
+    "max": 5
+   }
+  }
+ },
+ "total": 42,
+ "modes": {
+  "shadow": 42
+ },
+ "models": {
+  "claude-opus-5-5": 42
+ },
+ "changedSuggestions": 14,
+ "clamped": 0,
+ "rejected": 0,
+ "first": "2026-11-08T20:13:47.21+00:00",
+ "last": "2026-11-09T08:50:03.863+00:00",
+ "examples": [
+  {
+   "id": "acdc3be0-bc9b-47b0-86ff-05a0a740cbc8",
+   "agentId": 3,
+   "market": "LINK/USDC PERP",
+   "mode": "shadow",
+   "model": "claude-opus-5-5",
+   "at": "2026-11-08T20:13:47.21+00:00",
+   "rationale": "An oracle-versus-book deviation guard fired recently, so we slightly widened the minimum spread and trimmed size; with no fills or markouts yet, other settings stay unchanged.",
+   "before": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 1,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 10
+   },
+   "suggested": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 11
+   },
+   "applied": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 11
+   },
+   "clamped": [],
+   "rejected": false,
+   "changes": {
+    "sizeMultiplier": {
+     "before": 1,
+     "suggested": 0.9
+    },
+    "minHalfSpreadBps": {
+     "before": 10,
+     "suggested": 11
+    }
+   }
+  },
+  {
+   "id": "5ff9b7ae-2d14-4da5-81ab-df12591f9885",
+   "agentId": 1,
+   "market": "BTC/USDC PERP",
+   "mode": "shadow",
+   "model": "claude-opus-5-5",
+   "at": "2026-11-08T20:13:47.212+00:00",
+   "rationale": "An oracle-versus-book deviation guard fired recently, so we are modestly widening the minimum half spread and trimming order size; there were no fills or markouts to justify anything else.",
+   "before": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 1,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 10
+   },
+   "suggested": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "applied": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "clamped": [],
+   "rejected": false,
+   "changes": {
+    "sizeMultiplier": {
+     "before": 1,
+     "suggested": 0.9
+    },
+    "minHalfSpreadBps": {
+     "before": 10,
+     "suggested": 12
+    }
+   }
+  },
+  {
+   "id": "8d209335-1fda-4759-bcad-78fa3f85c49d",
+   "agentId": 2,
+   "market": "INJ/USDC PERP",
+   "mode": "shadow",
+   "model": "claude-opus-5-5",
+   "at": "2026-11-08T20:14:05.873+00:00",
+   "rationale": "A recent oracle-book deviation guard fired with no fills or markout data, so we modestly widen the minimum spread, nudge inventory aversion up, and trim size while keeping two levels.",
+   "before": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 1,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 10
+   },
+   "suggested": {
+    "gamma": 0.11,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "applied": {
+    "gamma": 0.11,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "clamped": [],
+   "rejected": false,
+   "changes": {
+    "gamma": {
+     "before": 0.1,
+     "suggested": 0.11
+    },
+    "sizeMultiplier": {
+     "before": 1,
+     "suggested": 0.9
+    },
+    "minHalfSpreadBps": {
+     "before": 10,
+     "suggested": 12
+    }
+   }
+  },
+  {
+   "id": "26671758-4069-4533-bdd4-5ad181f4dd2e",
+   "agentId": 1,
+   "market": "ETH/USDC PERP",
+   "mode": "shadow",
+   "model": "claude-opus-5-5",
+   "at": "2026-11-08T20:13:47.218+00:00",
+   "rationale": "A recent oracle-book deviation guard fired with no fills or markouts to assess, so we modestly widen the minimum half spread and trim order size while keeping other settings unchanged.",
+   "before": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 1,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 10
+   },
+   "suggested": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "applied": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 0.9,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "clamped": [],
+   "rejected": false,
+   "changes": {
+    "sizeMultiplier": {
+     "before": 1,
+     "suggested": 0.9
+    },
+    "minHalfSpreadBps": {
+     "before": 10,
+     "suggested": 12
+    }
+   }
+  },
+  {
+   "id": "3a6539da-48cb-4f53-b89b-f023addb5ef1",
+   "agentId": 3,
+   "market": "LINK/USDC PERP",
+   "mode": "shadow",
+   "model": "claude-opus-5-5",
+   "at": "2026-11-08T20:23:47.214+00:00",
+   "rationale": "Recent data-unavailable and oracle-book deviation guards with no fills or markouts to confirm conditions, so spread is widened slightly, size trimmed and inventory aversion nudged up as a precaution.",
+   "before": {
+    "gamma": 0.1,
+    "levels": 2,
+    "sizeMultiplier": 1,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 10
+   },
+   "suggested": {
+    "gamma": 0.12,
+    "levels": 2,
+    "sizeMultiplier": 0.8,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "applied": {
+    "gamma": 0.12,
+    "levels": 2,
+    "sizeMultiplier": 0.8,
+    "offHoursQuoting": false,
+    "minHalfSpreadBps": 12
+   },
+   "clamped": [],
+   "rejected": false,
+   "changes": {
+    "gamma": {
+     "before": 0.1,
+     "suggested": 0.12
+    },
+    "sizeMultiplier": {
+     "before": 1,
+     "suggested": 0.8
+    },
+    "minHalfSpreadBps": {
+     "before": 10,
+     "suggested": 12
+    }
+   }
+  }
+ ]
+}

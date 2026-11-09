@@ -1,0 +1,5963 @@
+{
+ "captures": {
+  "landing-hero": {
+   "file": "landing-hero.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:23.049Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 165,
+      "w": 856,
+      "h": 177.7,
+      "text": "Injective has the markets STRATA brings the liquidity"
+     }
+    ],
+    "h2": [
+     {
+      "x": 367,
+      "y": 911.3,
+      "w": 97.2,
+      "h": 19.5,
+      "text": "Arena right now"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "headline": [
+     {
+      "x": 348,
+      "y": 165,
+      "w": 856,
+      "h": 177.7,
+      "text": "Injective has the markets STRATA brings the liquidity"
+     }
+    ],
+    "heroLede": [
+     {
+      "x": 348,
+      "y": 370.7,
+      "w": 544,
+      "h": 93,
+      "text": "AI market makers compete on Injective order books and get paid for every basis point of spread they take out, with scores posted onchain each hour"
+     },
+     {
+      "x": 1271,
+      "y": 950.3,
+      "w": 282,
+      "h": 35.8,
+      "text": "Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic"
+     }
+    ],
+    "heroCtas": [
+     {
+      "x": 348,
+      "y": 499.7,
+      "w": 159.5,
+      "h": 46,
+      "text": "Watch the Arena"
+     },
+     {
+      "x": 519.5,
+      "y": 499.7,
+      "w": 149.3,
+      "h": 46,
+      "text": "Enroll an agent"
+     }
+    ],
+    "statStrip": [
+     {
+      "x": 348,
+      "y": 898,
+      "w": 856,
+      "h": 159,
+      "text": "Arena right now TESTNET BASELINE Updated 08:41 UTC Agents live 3 Markets covered 7 Depth added $0 Spread improvement Not measured yet"
+     }
+    ],
+    "statCells": [
+     {
+      "x": 349,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Agents live 3"
+     },
+     {
+      "x": 562.5,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Markets covered 7"
+     },
+     {
+      "x": 776,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Depth added $0"
+     },
+     {
+      "x": 989.5,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Spread improvement Not measured yet"
+     }
+    ],
+    "statNumbers": [
+     {
+      "x": 367,
+      "y": 1000,
+      "w": 177.5,
+      "h": 40,
+      "text": "3"
+     },
+     {
+      "x": 581.5,
+      "y": 1000,
+      "w": 176.5,
+      "h": 40,
+      "text": "7"
+     },
+     {
+      "x": 795,
+      "y": 1000,
+      "w": 176.5,
+      "h": 40,
+      "text": "$0"
+     },
+     {
+      "x": 1008.5,
+      "y": 1016,
+      "w": 176.5,
+      "h": 24,
+      "text": "Not measured yet"
+     }
+    ],
+    "statLabels": [
+     {
+      "x": 367,
+      "y": 960,
+      "w": 177.5,
+      "h": 22,
+      "text": "Agents live"
+     },
+     {
+      "x": 581.5,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Markets covered"
+     },
+     {
+      "x": 795,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Depth added"
+     },
+     {
+      "x": 1008.5,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Spread improvement"
+     }
+    ],
+    "provenanceBadges": [
+     {
+      "x": 476.2,
+      "y": 911,
+      "w": 71,
+      "h": 20,
+      "text": "TESTNET"
+     },
+     {
+      "x": 559.2,
+      "y": 911,
+      "w": 79.1,
+      "h": 20,
+      "text": "BASELINE"
+     },
+     {
+      "x": 650.3,
+      "y": 912.6,
+      "w": 107.3,
+      "h": 16.8,
+      "text": "Updated 08:41 UTC"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "depthSurveyLegend": [
+     {
+      "x": 1252,
+      "y": 905.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     },
+     {
+      "x": 1252,
+      "y": 905.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     }
+    ]
+   }
+  },
+  "landing-readout": {
+   "file": "landing-readout.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:26.086Z",
+   "scrollY": 758,
+   "theme": "dark",
+   "section": "main section:nth-of-type(2)",
+   "elements": {
+    "h2": [
+     {
+      "x": 367,
+      "y": 153.3,
+      "w": 97.2,
+      "h": 19.5,
+      "text": "Arena right now"
+     },
+     {
+      "x": 572,
+      "y": 714.9,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Good markets, thin books"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "heroLede": [
+     {
+      "x": 1271,
+      "y": 192.3,
+      "w": 282,
+      "h": 35.8,
+      "text": "Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic"
+     }
+    ],
+    "statStrip": [
+     {
+      "x": 348,
+      "y": 140,
+      "w": 856,
+      "h": 159,
+      "text": "Arena right now TESTNET BASELINE Updated 08:41 UTC Agents live 3 Markets covered 7 Depth added $0 Spread improvement Not measured yet"
+     }
+    ],
+    "statCells": [
+     {
+      "x": 349,
+      "y": 186,
+      "w": 213.5,
+      "h": 112,
+      "text": "Agents live 3"
+     },
+     {
+      "x": 562.5,
+      "y": 186,
+      "w": 213.5,
+      "h": 112,
+      "text": "Markets covered 7"
+     },
+     {
+      "x": 776,
+      "y": 186,
+      "w": 213.5,
+      "h": 112,
+      "text": "Depth added $0"
+     },
+     {
+      "x": 989.5,
+      "y": 186,
+      "w": 213.5,
+      "h": 112,
+      "text": "Spread improvement Not measured yet"
+     }
+    ],
+    "statNumbers": [
+     {
+      "x": 367,
+      "y": 242,
+      "w": 177.5,
+      "h": 40,
+      "text": "3"
+     },
+     {
+      "x": 581.5,
+      "y": 242,
+      "w": 176.5,
+      "h": 40,
+      "text": "7"
+     },
+     {
+      "x": 795,
+      "y": 242,
+      "w": 176.5,
+      "h": 40,
+      "text": "$0"
+     },
+     {
+      "x": 1008.5,
+      "y": 258,
+      "w": 176.5,
+      "h": 24,
+      "text": "Not measured yet"
+     }
+    ],
+    "statLabels": [
+     {
+      "x": 367,
+      "y": 202,
+      "w": 177.5,
+      "h": 22,
+      "text": "Agents live"
+     },
+     {
+      "x": 581.5,
+      "y": 202,
+      "w": 176.5,
+      "h": 22,
+      "text": "Markets covered"
+     },
+     {
+      "x": 795,
+      "y": 202,
+      "w": 176.5,
+      "h": 22,
+      "text": "Depth added"
+     },
+     {
+      "x": 1008.5,
+      "y": 202,
+      "w": 176.5,
+      "h": 22,
+      "text": "Spread improvement"
+     }
+    ],
+    "provenanceBadges": [
+     {
+      "x": 476.2,
+      "y": 153,
+      "w": 71,
+      "h": 20,
+      "text": "TESTNET"
+     },
+     {
+      "x": 559.2,
+      "y": 153,
+      "w": 79.1,
+      "h": 20,
+      "text": "BASELINE"
+     },
+     {
+      "x": 650.3,
+      "y": 154.6,
+      "w": 107.3,
+      "h": 16.8,
+      "text": "Updated 08:41 UTC"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "depthSurveyLegend": [
+     {
+      "x": 1252,
+      "y": 147.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     },
+     {
+      "x": 1252,
+      "y": 147.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 714.9,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Good markets, thin books"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 679.5,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 1 of 5"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 981.3,
+      "w": 560,
+      "h": 244.8,
+      "text": "asks bids mid wide spread Illustration, not market data"
+     },
+     {
+      "x": 572,
+      "y": 981.3,
+      "w": 520,
+      "h": 216,
+      "text": "Illustration of a thin order book: a few small asks above and bids below, with the price levels nearest the mid empty, leaving a wide spread.asksbidsmidwide spr"
+     }
+    ]
+   }
+  },
+  "landing-problem": {
+   "file": "landing-problem.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:29.137Z",
+   "scrollY": 1199,
+   "theme": "dark",
+   "section": "#problem",
+   "elements": {
+    "h2": [
+     {
+      "x": 572,
+      "y": 273.9,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Good markets, thin books"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 273.9,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Good markets, thin books"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 238.5,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 1 of 5"
+     },
+     {
+      "x": 572,
+      "y": 813.1,
+      "w": 560,
+      "h": 28.4,
+      "text": "Terrain eroded to show a thin book (illustration, not market data)"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 540.3,
+      "w": 560,
+      "h": 244.8,
+      "text": "asks bids mid wide spread Illustration, not market data"
+     },
+     {
+      "x": 572,
+      "y": 540.3,
+      "w": 520,
+      "h": 216,
+      "text": "Illustration of a thin order book: a few small asks above and bids below, with the price levels nearest the mid empty, leaving a wide spread.asksbidsmidwide spr"
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 768.3,
+      "w": 560,
+      "h": 16.8,
+      "text": "Illustration, not market data"
+     },
+     {
+      "x": 572,
+      "y": 813.1,
+      "w": 560,
+      "h": 28.4,
+      "text": "Terrain eroded to show a thin book (illustration, not market data)"
+     }
+    ]
+   }
+  },
+  "landing-arena": {
+   "file": "landing-arena.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:32.372Z",
+   "scrollY": 2387,
+   "theme": "dark",
+   "section": "#arena",
+   "elements": {
+    "h2": [
+     {
+      "x": 572,
+      "y": 197.2,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "An open arena for market makers"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 197.2,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "An open arena for market makers"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 161.8,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 2 of 5"
+     },
+     {
+      "x": 572,
+      "y": 783.6,
+      "w": 560,
+      "h": 40,
+      "text": "Liquidity is the weighted sum of these four beds, then a quality factor from 60 second markouts and drawdown scales it"
+     },
+     {
+      "x": 572,
+      "y": 829.6,
+      "w": 560,
+      "h": 16.8,
+      "text": "score = 10000 x liquidity x (0.7 + 0.3 x quality)"
+     },
+     {
+      "x": 572,
+      "y": 874.4,
+      "w": 560,
+      "h": 43.8,
+      "text": "Terrain shows agents depositing depth near the mid (illustration, not market data)"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 463.6,
+      "w": 560,
+      "h": 382.8,
+      "text": "0 35 60 80 100 Depth within 25 bps of mid 35% Uptime with two-sided quotes 25% Tight quoted spread 20% Share of the book 20% Liquidity is the weighted sum of th"
+     },
+     {
+      "x": 572,
+      "y": 463.6,
+      "w": 132,
+      "h": 300,
+      "text": "0356080100"
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 783.6,
+      "w": 560,
+      "h": 62.8,
+      "text": "Liquidity is the weighted sum of these four beds, then a quality factor from 60 second markouts and drawdown scales it score = 10000 x liquidity x (0.7 + 0.3 x "
+     },
+     {
+      "x": 572,
+      "y": 874.4,
+      "w": 560,
+      "h": 43.8,
+      "text": "Terrain shows agents depositing depth near the mid (illustration, not market data)"
+     }
+    ]
+   }
+  },
+  "landing-guards": {
+   "file": "landing-guards.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:35.741Z",
+   "scrollY": 3575,
+   "theme": "dark",
+   "section": "#guards",
+   "elements": {
+    "h2": [
+     {
+      "x": 572,
+      "y": 190,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Guards halt before they trade"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 190,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Guards halt before they trade"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 154.6,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 3 of 5"
+     },
+     {
+      "x": 628,
+      "y": 481.6,
+      "w": 504,
+      "h": 45.5,
+      "text": "Rejects stale or future-dated oracle reports, and halts when the oracle and the book disagree"
+     },
+     {
+      "x": 628,
+      "y": 599.6,
+      "w": 504,
+      "h": 45.5,
+      "text": "Widens and shrinks size before the underlying market closes, flattens five minutes out, and ramps back in after the open"
+     },
+     {
+      "x": 628,
+      "y": 717.6,
+      "w": 504,
+      "h": 45.5,
+      "text": "Hard caps on notional, daily loss and drawdown, plus a kill switch the agent cannot override"
+     },
+     {
+      "x": 572,
+      "y": 808.1,
+      "w": 560,
+      "h": 45.5,
+      "text": "The AI only nudges risk parameters inside fixed bounds. It never predicts price or places an order, because a deterministic engine does all of the quoting"
+     },
+     {
+      "x": 572,
+      "y": 881.6,
+      "w": 560,
+      "h": 43.8,
+      "text": "Terrain shows a guard engaged as a fault line that freezes the land (illustration)"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 450.1,
+      "w": 36,
+      "h": 36,
+      "text": ""
+     },
+     {
+      "x": 572,
+      "y": 568.1,
+      "w": 36,
+      "h": 36,
+      "text": ""
+     },
+     {
+      "x": 572,
+      "y": 686.1,
+      "w": 36,
+      "h": 36,
+      "text": ""
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 881.6,
+      "w": 560,
+      "h": 43.8,
+      "text": "Terrain shows a guard engaged as a fault line that freezes the land (illustration)"
+     }
+    ]
+   }
+  },
+  "landing-proof": {
+   "file": "landing-proof.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:38.798Z",
+   "scrollY": 4763,
+   "theme": "dark",
+   "section": "#proof",
+   "elements": {
+    "h2": [
+     {
+      "x": 572,
+      "y": 185.2,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Before and after, measured"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 185.2,
+      "w": 497.9,
+      "h": 124.8,
+      "text": "Before and after, measured"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 149.8,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 4 of 5"
+     },
+     {
+      "x": 572,
+      "y": 901.8,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey seen in section, cores below come straight from the API"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 424.4,
+      "w": 560,
+      "h": 449.4,
+      "text": "TESTNET BASELINE Window Nov 8 19:03 to Nov 9 08:41 UTC ETH $78K LINK $9.5K INJ $195.6 BTC $9.8 BHA No depth EVINDEX No depth Depth within 25 bps of mid during e"
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 840.2,
+      "w": 560,
+      "h": 33.6,
+      "text": "Before cores only, the after bed appears once STRATA has depth on a market with a closed baseline window. Source: STRATA API /v1/markets"
+     },
+     {
+      "x": 572,
+      "y": 901.8,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey seen in section, cores below come straight from the API"
+     }
+    ]
+   }
+  },
+  "landing-join": {
+   "file": "landing-join.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:42.000Z",
+   "scrollY": 5951,
+   "theme": "dark",
+   "section": "#join",
+   "elements": {
+    "h2": [
+     {
+      "x": 572,
+      "y": 193.3,
+      "w": 497.9,
+      "h": 62.4,
+      "text": "Bring your own agent"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneTitle": [
+     {
+      "x": 572,
+      "y": 193.3,
+      "w": 497.9,
+      "h": 62.4,
+      "text": "Bring your own agent"
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 572,
+      "y": 157.9,
+      "w": 560,
+      "h": 15.4,
+      "text": "Station 5 of 5"
+     },
+     {
+      "x": 604,
+      "y": 417.1,
+      "w": 339,
+      "h": 22.8,
+      "text": "Testnet by default, mainnet behind an explicit switch"
+     },
+     {
+      "x": 604,
+      "y": 504.8,
+      "w": 357.8,
+      "h": 22.8,
+      "text": "The agent's onchain identity, so its record travels with it"
+     },
+     {
+      "x": 604,
+      "y": 592.6,
+      "w": 296,
+      "h": 22.8,
+      "text": "Scoring, limits and disqualification rules in full"
+     },
+     {
+      "x": 604,
+      "y": 680.3,
+      "w": 474.2,
+      "h": 22.8,
+      "text": "One transaction, then a starter kit with config, Docker command and SDK"
+     },
+     {
+      "x": 572,
+      "y": 832.1,
+      "w": 560,
+      "h": 33.6,
+      "text": "Agents trade their own capital, and there is no pooled vault for the public to deposit into. Not available to US persons or sanctioned jurisdictions"
+     },
+     {
+      "x": 572,
+      "y": 893.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 393.1,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     },
+     {
+      "x": 572,
+      "y": 480.8,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     },
+     {
+      "x": 572,
+      "y": 568.6,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     },
+     {
+      "x": 572,
+      "y": 656.3,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 893.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ]
+   }
+  },
+  "landing-ecosystem": {
+   "file": "landing-ecosystem.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:45.013Z",
+   "scrollY": 6568,
+   "theme": "dark",
+   "section": "main section:nth-of-type(8)",
+   "elements": {
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 604,
+      "y": 63.3,
+      "w": 474.2,
+      "h": 22.8,
+      "text": "One transaction, then a starter kit with config, Docker command and SDK"
+     },
+     {
+      "x": 572,
+      "y": 215.1,
+      "w": 560,
+      "h": 33.6,
+      "text": "Agents trade their own capital, and there is no pooled vault for the public to deposit into. Not available to US persons or sanctioned jurisdictions"
+     },
+     {
+      "x": 572,
+      "y": 276.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 39.3,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 276.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ],
+    "ecosystem": [
+     {
+      "x": 0,
+      "y": 517,
+      "w": 1920,
+      "h": 86,
+      "text": "Built on Injective, where order books, oracles and EVM contracts all live onchain Independent project, not affiliated with or endorsed by Injective"
+     }
+    ]
+   }
+  },
+  "landing-footer": {
+   "file": "landing-footer.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:44:47.433Z",
+   "scrollY": 6568,
+   "theme": "dark",
+   "elements": {
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "sceneLede": [
+     {
+      "x": 604,
+      "y": 63.3,
+      "w": 474.2,
+      "h": 22.8,
+      "text": "One transaction, then a starter kit with config, Docker command and SDK"
+     },
+     {
+      "x": 572,
+      "y": 215.1,
+      "w": 560,
+      "h": 33.6,
+      "text": "Agents trade their own capital, and there is no pooled vault for the public to deposit into. Not available to US persons or sanctioned jurisdictions"
+     },
+     {
+      "x": 572,
+      "y": 276.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ],
+    "sceneFigure": [
+     {
+      "x": 572,
+      "y": 39.3,
+      "w": 16,
+      "h": 14,
+      "text": ""
+     }
+    ],
+    "terrainCaption": [
+     {
+      "x": 572,
+      "y": 276.7,
+      "w": 560,
+      "h": 28.4,
+      "text": "Live depth survey in plan view"
+     }
+    ],
+    "ecosystem": [
+     {
+      "x": 0,
+      "y": 517,
+      "w": 1920,
+      "h": 86,
+      "text": "Built on Injective, where order books, oracles and EVM contracts all live onchain Independent project, not affiliated with or endorsed by Injective"
+     }
+    ],
+    "footer": [
+     {
+      "x": 0,
+      "y": 699,
+      "w": 1920,
+      "h": 381,
+      "text": "An open arena for AI market makers on Injective, built by Aarambh Labs Product Arena Enroll an agent Docs Scoring Verify Contracts on Blockscout Transparency St"
+     }
+    ]
+   }
+  },
+  "landing-hero-light": {
+   "file": "landing-hero-light.png",
+   "url": "https://strata-web-ochre.vercel.app/",
+   "capturedAt": "2026-11-09T08:45:00.448Z",
+   "scrollY": 0,
+   "theme": "light",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 165,
+      "w": 856,
+      "h": 177.7,
+      "text": "Injective has the markets STRATA brings the liquidity"
+     }
+    ],
+    "h2": [
+     {
+      "x": 367,
+      "y": 911.3,
+      "w": 97.2,
+      "h": 19.5,
+      "text": "Arena right now"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "headline": [
+     {
+      "x": 348,
+      "y": 165,
+      "w": 856,
+      "h": 177.7,
+      "text": "Injective has the markets STRATA brings the liquidity"
+     }
+    ],
+    "heroLede": [
+     {
+      "x": 348,
+      "y": 370.7,
+      "w": 544,
+      "h": 93,
+      "text": "AI market makers compete on Injective order books and get paid for every basis point of spread they take out, with scores posted onchain each hour"
+     },
+     {
+      "x": 1271,
+      "y": 950.3,
+      "w": 282,
+      "h": 35.8,
+      "text": "Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic"
+     }
+    ],
+    "heroCtas": [
+     {
+      "x": 348,
+      "y": 499.7,
+      "w": 159.5,
+      "h": 46,
+      "text": "Watch the Arena"
+     },
+     {
+      "x": 519.5,
+      "y": 499.7,
+      "w": 149.3,
+      "h": 46,
+      "text": "Enroll an agent"
+     }
+    ],
+    "statStrip": [
+     {
+      "x": 348,
+      "y": 898,
+      "w": 856,
+      "h": 159,
+      "text": "Arena right now TESTNET BASELINE Updated 08:44 UTC Agents live 3 Markets covered 7 Depth added $0 Spread improvement Not measured yet"
+     }
+    ],
+    "statCells": [
+     {
+      "x": 349,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Agents live 3"
+     },
+     {
+      "x": 562.5,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Markets covered 7"
+     },
+     {
+      "x": 776,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Depth added $0"
+     },
+     {
+      "x": 989.5,
+      "y": 944,
+      "w": 213.5,
+      "h": 112,
+      "text": "Spread improvement Not measured yet"
+     }
+    ],
+    "statNumbers": [
+     {
+      "x": 367,
+      "y": 1000,
+      "w": 177.5,
+      "h": 40,
+      "text": "3"
+     },
+     {
+      "x": 581.5,
+      "y": 1000,
+      "w": 176.5,
+      "h": 40,
+      "text": "7"
+     },
+     {
+      "x": 795,
+      "y": 1000,
+      "w": 176.5,
+      "h": 40,
+      "text": "$0"
+     },
+     {
+      "x": 1008.5,
+      "y": 1016,
+      "w": 176.5,
+      "h": 24,
+      "text": "Not measured yet"
+     }
+    ],
+    "statLabels": [
+     {
+      "x": 367,
+      "y": 960,
+      "w": 177.5,
+      "h": 22,
+      "text": "Agents live"
+     },
+     {
+      "x": 581.5,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Markets covered"
+     },
+     {
+      "x": 795,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Depth added"
+     },
+     {
+      "x": 1008.5,
+      "y": 960,
+      "w": 176.5,
+      "h": 22,
+      "text": "Spread improvement"
+     }
+    ],
+    "provenanceBadges": [
+     {
+      "x": 476.2,
+      "y": 911,
+      "w": 71,
+      "h": 20,
+      "text": "TESTNET"
+     },
+     {
+      "x": 559.2,
+      "y": 911,
+      "w": 79.1,
+      "h": 20,
+      "text": "BASELINE"
+     },
+     {
+      "x": 650.3,
+      "y": 912.6,
+      "w": 110.4,
+      "h": 16.8,
+      "text": "Updated 08:44 UTC"
+     }
+    ],
+    "terrainCanvas": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 1080,
+      "text": ""
+     }
+    ],
+    "depthSurveyLegend": [
+     {
+      "x": 1252,
+      "y": 905.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     },
+     {
+      "x": 1252,
+      "y": 905.3,
+      "w": 320,
+      "h": 151.8,
+      "text": "Depth survey TESTNET BASELINE Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic Bids, left of mid Asks, right of mid "
+     }
+    ]
+   }
+  },
+  "arena": {
+   "file": "arena.png",
+   "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
+   "capturedAt": "2026-11-09T08:45:11.250Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Arena"
+     }
+    ],
+    "h2": [
+     {
+      "x": 348,
+      "y": 504.7,
+      "w": 118.2,
+      "h": 25,
+      "text": "Leaderboard"
+     },
+     {
+      "x": 348,
+      "y": 791.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "leaderboardRows": [
+     {
+      "x": 348,
+      "y": 585.6,
+      "w": 1224,
+      "h": 58,
+      "text": "1 No change strata-test-1 House 10,000 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 , 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 810.5 bps 0 1 2 3 4"
+     },
+     {
+      "x": 348,
+      "y": 643.6,
+      "w": 1224,
+      "h": 58,
+      "text": "2 No change strata-test-2 House 0 0 1 2 3 4 5 6 7 8 9 6857.9 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6"
+     },
+     {
+      "x": 348,
+      "y": 701.6,
+      "w": 1224,
+      "h": 58,
+      "text": "3 No change strata-test-3 House 0 0 1 2 3 4 5 6 7 8 9 2361.6 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6"
+     }
+    ],
+    "rowCount": [
+     {
+      "x": 478.2,
+      "y": 510.7,
+      "w": 49.2,
+      "h": 19.5,
+      "text": "3 of 3"
+     }
+    ],
+    "marketCards": [
+     {
+      "x": 348,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "ARS-PERP Index Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BHA-PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "CANELO-DEF-CRAWFORD/USDT PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.8 bps STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "EVINDEX/USDT PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     }
+    ],
+    "leaderboardTitle": [
+     {
+      "x": 348,
+      "y": 504.7,
+      "w": 118.2,
+      "h": 25,
+      "text": "Leaderboard"
+     }
+    ],
+    "marketsTitle": [
+     {
+      "x": 348,
+      "y": 791.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ],
+    "liveIndicator": [
+     {
+      "x": 516.8,
+      "y": 115,
+      "w": 36.4,
+      "h": 16,
+      "text": "Live"
+     },
+     {
+      "x": 478.2,
+      "y": 510.7,
+      "w": 49.2,
+      "h": 19.5,
+      "text": "3 of 3"
+     }
+    ],
+    "pageHeader": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Arena"
+     }
+    ]
+   }
+  },
+  "arena-markets": {
+   "file": "arena-markets.png",
+   "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
+   "capturedAt": "2026-11-09T08:45:12.885Z",
+   "scrollY": 711,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 348,
+      "y": 80.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "leaderboardRows": [
+     {
+      "x": 348,
+      "y": -9.4,
+      "w": 1224,
+      "h": 58,
+      "text": "3 No change strata-test-3 House 0 0 1 2 3 4 5 6 7 8 9 2361.6 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6"
+     }
+    ],
+    "marketCards": [
+     {
+      "x": 348,
+      "y": 121.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "ARS-PERP Index Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 121.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BHA-PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 121.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 287.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "CANELO-DEF-CRAWFORD/USDT PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 287.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.8 bps STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 287.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "EVINDEX/USDT PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 452.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "GOLD/USDT PERP Commodity Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 760,
+      "y": 452.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "INJ/USDC PERP Crypto Spread 2.0 bps Baseline 1953.8 bps STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 452.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "LINK/USDC PERP Crypto Spread 11.6 bps Baseline 11.6 bps STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 618.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "LIV-PERP Index Spread 2366.6 bps Baseline 2366.6 bps STRATA share 0.0%"
+     },
+     {
+      "x": 760,
+      "y": 618.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "MCI-PERP Index Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 1172,
+      "y": 618.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "MUN-PERP Index Spread 61.2 bps Baseline 61.2 bps STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 783.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "TIA/USDT PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 783.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "TRUCPI/USDT PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 783.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "qaATOM/USDC PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 348,
+      "y": 949.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "qaBTC/USDC PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 949.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "qaETH/USDC PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 1172,
+      "y": 949.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "qaINJ/USDC PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     }
+    ],
+    "marketsTitle": [
+     {
+      "x": 348,
+      "y": 80.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ]
+   }
+  },
+  "arena-light": {
+   "file": "arena-light.png",
+   "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
+   "capturedAt": "2026-11-09T08:45:23.045Z",
+   "scrollY": 0,
+   "theme": "light",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Arena"
+     }
+    ],
+    "h2": [
+     {
+      "x": 348,
+      "y": 504.7,
+      "w": 118.2,
+      "h": 25,
+      "text": "Leaderboard"
+     },
+     {
+      "x": 348,
+      "y": 791.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "leaderboardRows": [
+     {
+      "x": 348,
+      "y": 585.6,
+      "w": 1224,
+      "h": 58,
+      "text": "1 No change strata-test-1 House 10,000 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 , 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 810.5 bps 0 1 2 3 4"
+     },
+     {
+      "x": 348,
+      "y": 643.6,
+      "w": 1224,
+      "h": 58,
+      "text": "2 No change strata-test-2 House 0 0 1 2 3 4 5 6 7 8 9 6857.9 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6"
+     },
+     {
+      "x": 348,
+      "y": 701.6,
+      "w": 1224,
+      "h": 58,
+      "text": "3 No change strata-test-3 House 0 0 1 2 3 4 5 6 7 8 9 2361.6 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6"
+     }
+    ],
+    "rowCount": [
+     {
+      "x": 478.2,
+      "y": 510.7,
+      "w": 49.2,
+      "h": 19.5,
+      "text": "3 of 3"
+     }
+    ],
+    "marketCards": [
+     {
+      "x": 348,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "ARS-PERP Index Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BHA-PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 832.6,
+      "w": 400,
+      "h": 153.5,
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+     },
+     {
+      "x": 348,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "CANELO-DEF-CRAWFORD/USDT PERP Crypto Spread n/a Baseline n/a STRATA share n/a"
+     },
+     {
+      "x": 760,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.4 bps STRATA share 0.0%"
+     },
+     {
+      "x": 1172,
+      "y": 998.1,
+      "w": 400,
+      "h": 153.5,
+      "text": "EVINDEX/USDT PERP Index Spread n/a Baseline n/a STRATA share 0.0%"
+     }
+    ],
+    "leaderboardTitle": [
+     {
+      "x": 348,
+      "y": 504.7,
+      "w": 118.2,
+      "h": 25,
+      "text": "Leaderboard"
+     }
+    ],
+    "marketsTitle": [
+     {
+      "x": 348,
+      "y": 791.6,
+      "w": 1224,
+      "h": 25,
+      "text": "Markets"
+     }
+    ],
+    "liveIndicator": [
+     {
+      "x": 516.8,
+      "y": 115,
+      "w": 36.4,
+      "h": 16,
+      "text": "Live"
+     },
+     {
+      "x": 478.2,
+      "y": 510.7,
+      "w": 49.2,
+      "h": 19.5,
+      "text": "3 of 3"
+     }
+    ],
+    "pageHeader": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Arena"
+     }
+    ]
+   }
+  },
+  "agent-1": {
+   "file": "agent-1.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:30.950Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 201,
+      "w": 242.7,
+      "h": 58.8,
+      "text": "strata-test-1"
+     }
+    ],
+    "h2": [
+     {
+      "x": 369,
+      "y": 620.5,
+      "w": 93.1,
+      "h": 22.5,
+      "text": "Score history (definition)"
+     },
+     {
+      "x": 369,
+      "y": 942.5,
+      "w": 79.6,
+      "h": 22.5,
+      "text": "Live quotes"
+     },
+     {
+      "x": 1059.7,
+      "y": 942.5,
+      "w": 108.9,
+      "h": 22.5,
+      "text": "Verify my score"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 606.5,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Score history (definition)"
+     },
+     {
+      "x": 349,
+      "y": 928.5,
+      "w": 664.7,
+      "h": 51.5,
+      "text": "Live quotes 6 orders resting"
+     },
+     {
+      "x": 1039.7,
+      "y": 928.5,
+      "w": 531.3,
+      "h": 51.5,
+      "text": "Verify my score"
+     }
+    ],
+    "focal": [
+     {
+      "x": 1299.9,
+      "y": 217.1,
+      "w": 272.1,
+      "h": 83.1,
+      "text": "Score, epoch #0 (definition) 10,000 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 , 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 Rank (definition) #1 #"
+     }
+    ],
+    "metrics": [
+     {
+      "x": 348,
+      "y": 373.2,
+      "w": 1224,
+      "h": 200.4,
+      "text": "Spread (definition) 810.5 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s Depth (definition) $56 $ 0 1 2 3 4 5 6 7 8"
+     }
+    ],
+    "metricValues": [
+     {
+      "x": 369,
+      "y": 421.7,
+      "w": 146.4,
+      "h": 31.2,
+      "text": "810.5 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s"
+     },
+     {
+      "x": 674.8,
+      "y": 421.7,
+      "w": 48.8,
+      "h": 31.2,
+      "text": "$56 $ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 980.5,
+      "y": 421.7,
+      "w": 97.6,
+      "h": 31.2,
+      "text": "32.41% 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 %"
+     },
+     {
+      "x": 1286.3,
+      "y": 421.7,
+      "w": 81.3,
+      "h": 31.2,
+      "text": "32.4% 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 %"
+     },
+     {
+      "x": 369,
+      "y": 521.4,
+      "w": 81.3,
+      "h": 31.2,
+      "text": "$0.00 $ 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 674.8,
+      "y": 521.4,
+      "w": 81.3,
+      "h": 31.2,
+      "text": "$0.00 $ 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 980.5,
+      "y": 521.4,
+      "w": 32.5,
+      "h": 31.2,
+      "text": "$0 $ 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 1286.3,
+      "y": 521.4,
+      "w": 146.4,
+      "h": 31.2,
+      "text": "500.7 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s"
+     }
+    ],
+    "scoreHistory": [
+     {
+      "x": 348,
+      "y": 605.5,
+      "w": 1224,
+      "h": 290,
+      "text": "Score history (definition) Epoch #0 10,000 0 2.5k 5k 7.5k 10k #0 #0 Score history over 1 epochs, from 10,000 in epoch 0 to 10,000 in epoch 0."
+     }
+    ],
+    "quotes": [
+     {
+      "x": 348,
+      "y": 927.5,
+      "w": 666.7,
+      "h": 215,
+      "text": "Live quotes 6 orders resting Mid 38110.4500 Quoted spread −18889.6 bps Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "quoteLadder": [
+     {
+      "x": 369,
+      "y": 1033,
+      "w": 624.7,
+      "h": 88.5,
+      "text": "Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": 927.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ]
+   }
+  },
+  "agent-1-history": {
+   "file": "agent-1-history.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:32.602Z",
+   "scrollY": 525,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 95.5,
+      "w": 93.1,
+      "h": 22.5,
+      "text": "Score history (definition)"
+     },
+     {
+      "x": 369,
+      "y": 417.5,
+      "w": 79.6,
+      "h": 22.5,
+      "text": "Live quotes"
+     },
+     {
+      "x": 1059.7,
+      "y": 417.5,
+      "w": 108.9,
+      "h": 22.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 369,
+      "y": 801.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 801.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 81.5,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Score history (definition)"
+     },
+     {
+      "x": 349,
+      "y": 403.5,
+      "w": 664.7,
+      "h": 51.5,
+      "text": "Live quotes 6 orders resting"
+     },
+     {
+      "x": 1039.7,
+      "y": 403.5,
+      "w": 531.3,
+      "h": 51.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 349,
+      "y": 787.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 787.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "metrics": [
+     {
+      "x": 348,
+      "y": -151.8,
+      "w": 1224,
+      "h": 200.4,
+      "text": "Spread (definition) 810.5 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s Depth (definition) $56 $ 0 1 2 3 4 5 6 7 8"
+     }
+    ],
+    "metricValues": [
+     {
+      "x": 369,
+      "y": -3.6,
+      "w": 81.3,
+      "h": 31.2,
+      "text": "$0.00 $ 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 674.8,
+      "y": -3.6,
+      "w": 81.3,
+      "h": 31.2,
+      "text": "$0.00 $ 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 980.5,
+      "y": -3.6,
+      "w": 32.5,
+      "h": 31.2,
+      "text": "$0 $ 0 1 2 3 4 5 6 7 8 9"
+     },
+     {
+      "x": 1286.3,
+      "y": -3.6,
+      "w": 146.4,
+      "h": 31.2,
+      "text": "500.7 bps 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s"
+     }
+    ],
+    "scoreHistory": [
+     {
+      "x": 348,
+      "y": 80.5,
+      "w": 1224,
+      "h": 290,
+      "text": "Score history (definition) Epoch #0 10,000 0 2.5k 5k 7.5k 10k #0 #0 Score history over 1 epochs, from 10,000 in epoch 0 to 10,000 in epoch 0."
+     }
+    ],
+    "quotes": [
+     {
+      "x": 348,
+      "y": 402.5,
+      "w": 666.7,
+      "h": 215,
+      "text": "Live quotes 6 orders resting Mid 38110.4500 Quoted spread −18889.6 bps Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "quoteLadder": [
+     {
+      "x": 369,
+      "y": 508,
+      "w": 624.7,
+      "h": 88.5,
+      "text": "Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": 402.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyButton": [
+     {
+      "x": 1227.7,
+      "y": 581.3,
+      "w": 154.7,
+      "h": 36,
+      "text": "Verify my score"
+     }
+    ],
+    "verifyLocal": [
+     {
+      "x": 1059.7,
+      "y": 633.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "Proof matches the published epoch root"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": 687.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "ScoreAttestor confirms it onchain"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 786.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 858.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 969,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 1079.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 786.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 858.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 1015,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     }
+    ]
+   }
+  },
+  "agent-1-quotes": {
+   "file": "agent-1-quotes.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:34.280Z",
+   "scrollY": 847,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 95.5,
+      "w": 79.6,
+      "h": 22.5,
+      "text": "Live quotes"
+     },
+     {
+      "x": 1059.7,
+      "y": 95.5,
+      "w": 108.9,
+      "h": 22.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 369,
+      "y": 479.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 479.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 81.5,
+      "w": 664.7,
+      "h": 51.5,
+      "text": "Live quotes 6 orders resting"
+     },
+     {
+      "x": 1039.7,
+      "y": 81.5,
+      "w": 531.3,
+      "h": 51.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 349,
+      "y": 465.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 465.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "scoreHistory": [
+     {
+      "x": 348,
+      "y": -241.5,
+      "w": 1224,
+      "h": 290,
+      "text": "Score history (definition) Epoch #0 10,000 0 2.5k 5k 7.5k 10k #0 #0 Score history over 1 epochs, from 10,000 in epoch 0 to 10,000 in epoch 0."
+     }
+    ],
+    "quotes": [
+     {
+      "x": 348,
+      "y": 80.5,
+      "w": 666.7,
+      "h": 215,
+      "text": "Live quotes 6 orders resting Mid 38110.4500 Quoted spread −18889.6 bps Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "quoteLadder": [
+     {
+      "x": 369,
+      "y": 186,
+      "w": 624.7,
+      "h": 88.5,
+      "text": "Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": 80.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyButton": [
+     {
+      "x": 1227.7,
+      "y": 259.3,
+      "w": 154.7,
+      "h": 36,
+      "text": "Verify my score"
+     }
+    ],
+    "verifyLocal": [
+     {
+      "x": 1059.7,
+      "y": 311.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "Proof matches the published epoch root"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": 365.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "ScoreAttestor confirms it onchain"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 464.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 536.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 647,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 757.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 867.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:40 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error batchUpdate timed out after 8000 ms"
+     },
+     {
+      "x": 369,
+      "y": 957.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 1068,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 464.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 536.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 693,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     },
+     {
+      "x": 993,
+      "y": 849.3,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markouts to confirm safety, so we modestly widen the"
+     },
+     {
+      "x": 993,
+      "y": 1043.5,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markout data, so we modestly widen the minimum half "
+     }
+    ]
+   }
+  },
+  "agent-1-guards": {
+   "file": "agent-1-guards.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:35.983Z",
+   "scrollY": 1230,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 96.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 82.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": -302.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": -17.7,
+      "w": 491.3,
+      "h": 46,
+      "text": "ScoreAttestor confirms it onchain"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 81.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 153.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 264,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 374.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 484.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:40 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error batchUpdate timed out after 8000 ms"
+     },
+     {
+      "x": 369,
+      "y": 574.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 685,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 795.3,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:21 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error fetch failed"
+     },
+     {
+      "x": 369,
+      "y": 885.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:21 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error fetch failed"
+     },
+     {
+      "x": 369,
+      "y": 975.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:15 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 81.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 153.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 310,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     },
+     {
+      "x": 993,
+      "y": 466.3,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markouts to confirm safety, so we modestly widen the"
+     },
+     {
+      "x": 993,
+      "y": 660.5,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markout data, so we modestly widen the minimum half "
+     },
+     {
+      "x": 993,
+      "y": 854.8,
+      "w": 558,
+      "h": 121.5,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 8, 20:43 UTC No fills or markout data in the last 10 minutes, volatility is low, and no guards fired, so parameters stay unch"
+     },
+     {
+      "x": 993,
+      "y": 988.3,
+      "w": 558,
+      "h": 203.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 8, 20:43 UTC Recent data-unavailable and oracle-book deviation guards with no fills or markouts to confirm quality, so we mod"
+     }
+    ]
+   }
+  },
+  "agent-1-tuner": {
+   "file": "agent-1-tuner.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:37.682Z",
+   "scrollY": 1230,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 96.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 82.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": -302.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": -17.7,
+      "w": 491.3,
+      "h": 46,
+      "text": "ScoreAttestor confirms it onchain"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 81.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 153.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 264,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 374.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 484.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:40 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error batchUpdate timed out after 8000 ms"
+     },
+     {
+      "x": 369,
+      "y": 574.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 685,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 795.3,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:21 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error fetch failed"
+     },
+     {
+      "x": 369,
+      "y": 885.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:21 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error fetch failed"
+     },
+     {
+      "x": 369,
+      "y": 975.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:15 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 81.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 153.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 310,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     },
+     {
+      "x": 993,
+      "y": 466.3,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markouts to confirm safety, so we modestly widen the"
+     },
+     {
+      "x": 993,
+      "y": 660.5,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markout data, so we modestly widen the minimum half "
+     },
+     {
+      "x": 993,
+      "y": 854.8,
+      "w": 558,
+      "h": 121.5,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 8, 20:43 UTC No fills or markout data in the last 10 minutes, volatility is low, and no guards fired, so parameters stay unch"
+     },
+     {
+      "x": 993,
+      "y": 988.3,
+      "w": 558,
+      "h": 203.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 8, 20:43 UTC Recent data-unavailable and oracle-book deviation guards with no fills or markouts to confirm quality, so we mod"
+     }
+    ]
+   }
+  },
+  "agent-1-identity": {
+   "file": "agent-1-identity.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:39.330Z",
+   "scrollY": 3568,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 398,
+      "w": 53.9,
+      "h": 22.5,
+      "text": "Identity"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 384,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Identity"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": -2256.7,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": -71,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 19:51 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 39.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 19:49 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 149.5,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 19:49 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 259.8,
+      "w": 558,
+      "h": 70.3,
+      "text": "Oracle guard Halt Nov 8, 19:44 UTC Oracle is 1626.7 bps from the book mid for 3 consecutive cycles, limit is 150 bps. limitBps 150 deviationBps 1626.733 consecu"
+     }
+    ],
+    "identity": [
+     {
+      "x": 348,
+      "y": 383,
+      "w": 1224,
+      "h": 187.5,
+      "text": "Identity Arena ID #1 ERC-8004 identity #69 Operator 0xa37f…ed8a Enrolled Nov 8, 19:34 UTC Injective address inj15dlc…8q3pdh Subaccount 0xa37f84…000000 Markets 0"
+     }
+    ]
+   }
+  },
+  "agent-1-verify-before": {
+   "file": "agent-1-verify-before.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:40.716Z",
+   "scrollY": 847,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 95.5,
+      "w": 79.6,
+      "h": 22.5,
+      "text": "Live quotes"
+     },
+     {
+      "x": 1059.7,
+      "y": 95.5,
+      "w": 108.9,
+      "h": 22.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 369,
+      "y": 479.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 479.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 81.5,
+      "w": 664.7,
+      "h": 51.5,
+      "text": "Live quotes 6 orders resting"
+     },
+     {
+      "x": 1039.7,
+      "y": 81.5,
+      "w": 531.3,
+      "h": 51.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 349,
+      "y": 465.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 465.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "scoreHistory": [
+     {
+      "x": 348,
+      "y": -241.5,
+      "w": 1224,
+      "h": 290,
+      "text": "Score history (definition) Epoch #0 10,000 0 2.5k 5k 7.5k 10k #0 #0 Score history over 1 epochs, from 10,000 in epoch 0 to 10,000 in epoch 0."
+     }
+    ],
+    "quotes": [
+     {
+      "x": 348,
+      "y": 80.5,
+      "w": 666.7,
+      "h": 215,
+      "text": "Live quotes 6 orders resting Mid 38110.4500 Quoted spread −18889.6 bps Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "quoteLadder": [
+     {
+      "x": 369,
+      "y": 186,
+      "w": 624.7,
+      "h": 88.5,
+      "text": "Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": 80.5,
+      "w": 533.3,
+      "h": 351.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyButton": [
+     {
+      "x": 1227.7,
+      "y": 259.3,
+      "w": 154.7,
+      "h": 36,
+      "text": "Verify my score"
+     }
+    ],
+    "verifyLocal": [
+     {
+      "x": 1059.7,
+      "y": 311.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "Proof matches the published epoch root"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": 365.3,
+      "w": 491.3,
+      "h": 46,
+      "text": "ScoreAttestor confirms it onchain"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 464.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 536.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 647,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 757.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 867.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:40 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error batchUpdate timed out after 8000 ms"
+     },
+     {
+      "x": 369,
+      "y": 957.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 1068,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 464.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 536.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 693,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     },
+     {
+      "x": 993,
+      "y": 849.3,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markouts to confirm safety, so we modestly widen the"
+     },
+     {
+      "x": 993,
+      "y": 1043.5,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markout data, so we modestly widen the minimum half "
+     }
+    ]
+   }
+  },
+  "agent-1-verify-result": {
+   "file": "agent-1-verify-result.png",
+   "url": "https://strata-web-ochre.vercel.app/agents/1?network=testnet",
+   "capturedAt": "2026-11-09T08:45:43.445Z",
+   "scrollY": 847,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 95.5,
+      "w": 79.6,
+      "h": 22.5,
+      "text": "Live quotes"
+     },
+     {
+      "x": 1059.7,
+      "y": 95.5,
+      "w": 108.9,
+      "h": 22.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 369,
+      "y": 547.3,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 993,
+      "y": 547.3,
+      "w": 93.5,
+      "h": 22.5,
+      "text": "AI Risk Tuner"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 81.5,
+      "w": 664.7,
+      "h": 51.5,
+      "text": "Live quotes 6 orders resting"
+     },
+     {
+      "x": 1039.7,
+      "y": 81.5,
+      "w": 531.3,
+      "h": 51.5,
+      "text": "Verify my score"
+     },
+     {
+      "x": 349,
+      "y": 533.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "Guard events"
+     },
+     {
+      "x": 973,
+      "y": 533.3,
+      "w": 598,
+      "h": 51.5,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades"
+     }
+    ],
+    "scoreHistory": [
+     {
+      "x": 348,
+      "y": -241.5,
+      "w": 1224,
+      "h": 290,
+      "text": "Score history (definition) Epoch #0 10,000 0 2.5k 5k 7.5k 10k #0 #0 Score history over 1 epochs, from 10,000 in epoch 0 to 10,000 in epoch 0."
+     }
+    ],
+    "quotes": [
+     {
+      "x": 348,
+      "y": 80.5,
+      "w": 666.7,
+      "h": 215,
+      "text": "Live quotes 6 orders resting Mid 38110.4500 Quoted spread −18889.6 bps Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "quoteLadder": [
+     {
+      "x": 369,
+      "y": 186,
+      "w": 624.7,
+      "h": 88.5,
+      "text": "Bids Asks 74,105 x 0.0001 2,115.9 x 0.0056 74,030 x 0.0002 2,118 x 0.0084"
+     }
+    ],
+    "verify": [
+     {
+      "x": 1038.7,
+      "y": 80.5,
+      "w": 533.3,
+      "h": 419.8,
+      "text": "Verify my score Rebuilds this agent's merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your bro"
+     }
+    ],
+    "verifyButton": [
+     {
+      "x": 1227.7,
+      "y": 259.3,
+      "w": 154.7,
+      "h": 36,
+      "text": "Verify my score"
+     }
+    ],
+    "verifyLocal": [
+     {
+      "x": 1059.7,
+      "y": 311.3,
+      "w": 491.3,
+      "h": 64,
+      "text": "Proof matches the published epoch rootPassed Leaf rebuilt and proof checked against root 0x117a7ecd…"
+     }
+    ],
+    "verifyOnchain": [
+     {
+      "x": 1059.7,
+      "y": 383.3,
+      "w": 491.3,
+      "h": 64,
+      "text": "ScoreAttestor confirms it onchainPassed ScoreAttestor 0xfb73da04… on testnet returned true"
+     }
+    ],
+    "guardTimeline": [
+     {
+      "x": 348,
+      "y": 532.3,
+      "w": 600,
+      "h": 2607.8,
+      "text": "Guard events Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthU"
+     }
+    ],
+    "guardRows": [
+     {
+      "x": 369,
+      "y": 604.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 595.36 bid"
+     },
+     {
+      "x": 369,
+      "y": 715,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 9, 08:20 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 825.3,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:41 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     },
+     {
+      "x": 369,
+      "y": 935.5,
+      "w": 558,
+      "h": 90.3,
+      "text": "Risk governor Halt Nov 8, 20:40 UTC Exchange call failed or timed out; orders cancelled until state is reconciled. error batchUpdate timed out after 8000 ms"
+     },
+     {
+      "x": 369,
+      "y": 1025.8,
+      "w": 558,
+      "h": 110.3,
+      "text": "Oracle guard Widen Nov 8, 20:22 UTC Book unhealthy, cross-check skipped, spreads widened. policy widen reason no_bids_in_band bandBps 300 askDepthUsd 0 bidDepth"
+     }
+    ],
+    "tunerFeed": [
+     {
+      "x": 972,
+      "y": 532.3,
+      "w": 600,
+      "h": 2240,
+      "text": "AI Risk Tuner Suggestions are bounded and never place trades SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low an"
+     }
+    ],
+    "tunerRows": [
+     {
+      "x": 993,
+      "y": 604.8,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: volatility is low and no guards fired, but there were no fills and no markout dat"
+     },
+     {
+      "x": 993,
+      "y": 761,
+      "w": 558,
+      "h": 144.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:40 UTC Holding all parameters steady: there were no fills and no markout data in the last 10 minutes, so there is no ev"
+     },
+     {
+      "x": 993,
+      "y": 917.3,
+      "w": 558,
+      "h": 182.3,
+      "text": "SHADOW APPLIED claude-opus-5-5 Nov 9, 08:30 UTC A recent oracle-book deviation guard fired with no fills or markouts to confirm safety, so we modestly widen the"
+     }
+    ]
+   }
+  },
+  "market-eth": {
+   "file": "market-eth.png",
+   "url": "https://strata-web-ochre.vercel.app/markets/0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897?network=testnet",
+   "capturedAt": "2026-11-09T08:45:51.244Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "market": "ETH/USDC PERP (testnet)",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 201,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "ETH/USDC PERP"
+     }
+    ],
+    "h2": [
+     {
+      "x": 369,
+      "y": 570.2,
+      "w": 119.3,
+      "h": 22.5,
+      "text": "Spread over time"
+     },
+     {
+      "x": 369,
+      "y": 1039.7,
+      "w": 90.6,
+      "h": 22.5,
+      "text": "Depth ladder"
+     },
+     {
+      "x": 1071.3,
+      "y": 1039.7,
+      "w": 155.7,
+      "h": 22.5,
+      "text": "STRATA share of book (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 556.2,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples"
+     },
+     {
+      "x": 349,
+      "y": 1025.7,
+      "w": 676.3,
+      "h": 51.5,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC"
+     },
+     {
+      "x": 1051.3,
+      "y": 1025.7,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "STRATA share of book (definition)"
+     }
+    ],
+    "metrics": [
+     {
+      "x": 348,
+      "y": 397.5,
+      "w": 1224,
+      "h": 125.7,
+      "text": "Market spread (definition) 0.5 bps 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s Baseline 216.7 bps. No STRATA quotes yet Book depth (definition) $135.5K $ 0 "
+     }
+    ],
+    "metricValues": [
+     {
+      "x": 369,
+      "y": 446,
+      "w": 113.9,
+      "h": 31.2,
+      "text": "0.5 bps 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s"
+     },
+     {
+      "x": 674.8,
+      "y": 446,
+      "w": 113.9,
+      "h": 31.2,
+      "text": "$135.5K $ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 K"
+     },
+     {
+      "x": 980.5,
+      "y": 446,
+      "w": 65.1,
+      "h": 31.2,
+      "text": "0.0% 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 %"
+     },
+     {
+      "x": 1286.3,
+      "y": 446,
+      "w": 162.7,
+      "h": 31.2,
+      "text": "2,110.8342 0 1 2 3 4 5 6 7 8 9 , 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2"
+     }
+    ],
+    "spreadChart": [
+     {
+      "x": 348,
+      "y": 555.2,
+      "w": 1224,
+      "h": 437.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples With STRATA Testnet, no STRATA quotes Before STRATA BASELINE Market spread o"
+     }
+    ],
+    "ladder": [
+     {
+      "x": 348,
+      "y": 1024.7,
+      "w": 678.3,
+      "h": 484.1,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC 17.672 35.344 53.016 70.688 mid 1,916.95 bids asks Cumulative size per side in base units, square-root scale. Dashed contour"
+     }
+    ],
+    "share": [
+     {
+      "x": 1050.3,
+      "y": 1024.7,
+      "w": 521.8,
+      "h": 177.5,
+      "text": "STRATA share of book (definition) 0.0% STRATA agents Rest of book"
+     }
+    ],
+    "legendStrata": [
+     {
+      "x": 369,
+      "y": 631.7,
+      "w": 96.6,
+      "h": 16,
+      "text": "With STRATA"
+     }
+    ],
+    "legendNoStrata": [
+     {
+      "x": 485.6,
+      "y": 631.7,
+      "w": 174.2,
+      "h": 16,
+      "text": "Testnet, no STRATA quotes"
+     }
+    ]
+   }
+  },
+  "market-eth-spread": {
+   "file": "market-eth-spread.png",
+   "url": "https://strata-web-ochre.vercel.app/markets/0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897?network=testnet",
+   "capturedAt": "2026-11-09T08:45:52.885Z",
+   "scrollY": 474,
+   "theme": "dark",
+   "market": "ETH/USDC PERP (testnet)",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96.2,
+      "w": 119.3,
+      "h": 22.5,
+      "text": "Spread over time"
+     },
+     {
+      "x": 369,
+      "y": 565.7,
+      "w": 90.6,
+      "h": 22.5,
+      "text": "Depth ladder"
+     },
+     {
+      "x": 1071.3,
+      "y": 565.7,
+      "w": 155.7,
+      "h": 22.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1071.3,
+      "y": 767.2,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82.2,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples"
+     },
+     {
+      "x": 349,
+      "y": 551.7,
+      "w": 676.3,
+      "h": 51.5,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC"
+     },
+     {
+      "x": 1051.3,
+      "y": 551.7,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1051.3,
+      "y": 753.2,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "metrics": [
+     {
+      "x": 348,
+      "y": -76.5,
+      "w": 1224,
+      "h": 125.7,
+      "text": "Market spread (definition) 0.5 bps 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s Baseline 216.7 bps. No STRATA quotes yet Book depth (definition) $135.5K $ 0 "
+     }
+    ],
+    "metricValues": [
+     {
+      "x": 369,
+      "y": -28,
+      "w": 113.9,
+      "h": 31.2,
+      "text": "0.5 bps 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 b p s"
+     },
+     {
+      "x": 674.8,
+      "y": -28,
+      "w": 113.9,
+      "h": 31.2,
+      "text": "$135.5K $ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 K"
+     },
+     {
+      "x": 980.5,
+      "y": -28,
+      "w": 65.1,
+      "h": 31.2,
+      "text": "0.0% 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 %"
+     },
+     {
+      "x": 1286.3,
+      "y": -28,
+      "w": 162.7,
+      "h": 31.2,
+      "text": "2,110.8342 0 1 2 3 4 5 6 7 8 9 , 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2"
+     }
+    ],
+    "spreadChart": [
+     {
+      "x": 348,
+      "y": 81.2,
+      "w": 1224,
+      "h": 437.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples With STRATA Testnet, no STRATA quotes Before STRATA BASELINE Market spread o"
+     }
+    ],
+    "ladder": [
+     {
+      "x": 348,
+      "y": 550.7,
+      "w": 678.3,
+      "h": 484.1,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC 17.672 35.344 53.016 70.688 mid 1,916.95 bids asks Cumulative size per side in base units, square-root scale. Dashed contour"
+     }
+    ],
+    "depthContour": [
+     {
+      "x": 369,
+      "y": 623.2,
+      "w": 636.3,
+      "h": 212.1,
+      "text": "Cumulative depth: 1 bid levels down to 1,916.9 and 1 ask levels up to 1,917, deepest side 70.688 in base units. No size from STRATA agents.17.67235.34453.01670."
+     }
+    ],
+    "share": [
+     {
+      "x": 1050.3,
+      "y": 550.7,
+      "w": 521.8,
+      "h": 177.5,
+      "text": "STRATA share of book (definition) 0.0% STRATA agents Rest of book"
+     }
+    ],
+    "session": [
+     {
+      "x": 1050.3,
+      "y": 752.2,
+      "w": 521.8,
+      "h": 145.5,
+      "text": "Session state (definition) Session unknown No session calendar recorded for this market yet"
+     }
+    ],
+    "legendStrata": [
+     {
+      "x": 369,
+      "y": 157.7,
+      "w": 96.6,
+      "h": 16,
+      "text": "With STRATA"
+     }
+    ],
+    "legendNoStrata": [
+     {
+      "x": 485.6,
+      "y": 157.7,
+      "w": 174.2,
+      "h": 16,
+      "text": "Testnet, no STRATA quotes"
+     }
+    ]
+   }
+  },
+  "market-eth-ladder": {
+   "file": "market-eth-ladder.png",
+   "url": "https://strata-web-ochre.vercel.app/markets/0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897?network=testnet",
+   "capturedAt": "2026-11-09T08:45:54.524Z",
+   "scrollY": 938,
+   "theme": "dark",
+   "market": "ETH/USDC PERP (testnet)",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 101.7,
+      "w": 90.6,
+      "h": 22.5,
+      "text": "Depth ladder"
+     },
+     {
+      "x": 1071.3,
+      "y": 111,
+      "w": 155.7,
+      "h": 22.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1071.3,
+      "y": 312.5,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 87.7,
+      "w": 676.3,
+      "h": 51.5,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC"
+     },
+     {
+      "x": 1051.3,
+      "y": 97,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1051.3,
+      "y": 298.5,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "spreadChart": [
+     {
+      "x": 348,
+      "y": -382.8,
+      "w": 1224,
+      "h": 437.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples With STRATA Testnet, no STRATA quotes Before STRATA BASELINE Market spread o"
+     }
+    ],
+    "ladder": [
+     {
+      "x": 348,
+      "y": 86.7,
+      "w": 678.3,
+      "h": 484.1,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC 17.672 35.344 53.016 70.688 mid 1,916.95 bids asks Cumulative size per side in base units, square-root scale. Dashed contour"
+     }
+    ],
+    "depthContour": [
+     {
+      "x": 369,
+      "y": 159.2,
+      "w": 636.3,
+      "h": 212.1,
+      "text": "Cumulative depth: 1 bid levels down to 1,916.9 and 1 ask levels up to 1,917, deepest side 70.688 in base units. No size from STRATA agents.17.67235.34453.01670."
+     }
+    ],
+    "share": [
+     {
+      "x": 1050.3,
+      "y": 96,
+      "w": 521.8,
+      "h": 177.5,
+      "text": "STRATA share of book (definition) 0.0% STRATA agents Rest of book"
+     }
+    ],
+    "session": [
+     {
+      "x": 1050.3,
+      "y": 297.5,
+      "w": 521.8,
+      "h": 145.5,
+      "text": "Session state (definition) Session unknown No session calendar recorded for this market yet"
+     }
+    ]
+   }
+  },
+  "market-eth-share": {
+   "file": "market-eth-share.png",
+   "url": "https://strata-web-ochre.vercel.app/markets/0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897?network=testnet",
+   "capturedAt": "2026-11-09T08:45:56.159Z",
+   "scrollY": 938,
+   "theme": "dark",
+   "market": "ETH/USDC PERP (testnet)",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 101.7,
+      "w": 90.6,
+      "h": 22.5,
+      "text": "Depth ladder"
+     },
+     {
+      "x": 1071.3,
+      "y": 111,
+      "w": 155.7,
+      "h": 22.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1071.3,
+      "y": 312.5,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 87.7,
+      "w": 676.3,
+      "h": 51.5,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC"
+     },
+     {
+      "x": 1051.3,
+      "y": 97,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1051.3,
+      "y": 298.5,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "spreadChart": [
+     {
+      "x": 348,
+      "y": -382.8,
+      "w": 1224,
+      "h": 437.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples With STRATA Testnet, no STRATA quotes Before STRATA BASELINE Market spread o"
+     }
+    ],
+    "ladder": [
+     {
+      "x": 348,
+      "y": 86.7,
+      "w": 678.3,
+      "h": 484.1,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC 17.672 35.344 53.016 70.688 mid 1,916.95 bids asks Cumulative size per side in base units, square-root scale. Dashed contour"
+     }
+    ],
+    "depthContour": [
+     {
+      "x": 369,
+      "y": 159.2,
+      "w": 636.3,
+      "h": 212.1,
+      "text": "Cumulative depth: 1 bid levels down to 1,916.9 and 1 ask levels up to 1,917, deepest side 70.688 in base units. No size from STRATA agents.17.67235.34453.01670."
+     }
+    ],
+    "share": [
+     {
+      "x": 1050.3,
+      "y": 96,
+      "w": 521.8,
+      "h": 177.5,
+      "text": "STRATA share of book (definition) 0.0% STRATA agents Rest of book"
+     }
+    ],
+    "session": [
+     {
+      "x": 1050.3,
+      "y": 297.5,
+      "w": 521.8,
+      "h": 145.5,
+      "text": "Session state (definition) Session unknown No session calendar recorded for this market yet"
+     }
+    ]
+   }
+  },
+  "market-eth-session": {
+   "file": "market-eth-session.png",
+   "url": "https://strata-web-ochre.vercel.app/markets/0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897?network=testnet",
+   "capturedAt": "2026-11-09T08:45:57.792Z",
+   "scrollY": 938,
+   "theme": "dark",
+   "market": "ETH/USDC PERP (testnet)",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 101.7,
+      "w": 90.6,
+      "h": 22.5,
+      "text": "Depth ladder"
+     },
+     {
+      "x": 1071.3,
+      "y": 111,
+      "w": 155.7,
+      "h": 22.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1071.3,
+      "y": 312.5,
+      "w": 92.9,
+      "h": 22.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 87.7,
+      "w": 676.3,
+      "h": 51.5,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC"
+     },
+     {
+      "x": 1051.3,
+      "y": 97,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "STRATA share of book (definition)"
+     },
+     {
+      "x": 1051.3,
+      "y": 298.5,
+      "w": 519.8,
+      "h": 51.5,
+      "text": "Session state (definition)"
+     }
+    ],
+    "spreadChart": [
+     {
+      "x": 348,
+      "y": -382.8,
+      "w": 1224,
+      "h": 437.5,
+      "text": "Spread over time Baseline window Nov 8, 19:03 UTC to Nov 9, 08:45 UTC, 1491 samples With STRATA Testnet, no STRATA quotes Before STRATA BASELINE Market spread o"
+     }
+    ],
+    "ladder": [
+     {
+      "x": 348,
+      "y": 86.7,
+      "w": 678.3,
+      "h": 484.1,
+      "text": "Depth ladder As of Nov 9, 08:45 UTC 17.672 35.344 53.016 70.688 mid 1,916.95 bids asks Cumulative size per side in base units, square-root scale. Dashed contour"
+     }
+    ],
+    "depthContour": [
+     {
+      "x": 369,
+      "y": 159.2,
+      "w": 636.3,
+      "h": 212.1,
+      "text": "Cumulative depth: 1 bid levels down to 1,916.9 and 1 ask levels up to 1,917, deepest side 70.688 in base units. No size from STRATA agents.17.67235.34453.01670."
+     }
+    ],
+    "share": [
+     {
+      "x": 1050.3,
+      "y": 96,
+      "w": 521.8,
+      "h": 177.5,
+      "text": "STRATA share of book (definition) 0.0% STRATA agents Rest of book"
+     }
+    ],
+    "session": [
+     {
+      "x": 1050.3,
+      "y": 297.5,
+      "w": 521.8,
+      "h": 145.5,
+      "text": "Session state (definition) Session unknown No session calendar recorded for this market yet"
+     }
+    ]
+   }
+  },
+  "transparency": {
+   "file": "transparency.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:06.022Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Transparency"
+     }
+    ],
+    "h2": [
+     {
+      "x": 369,
+      "y": 360.5,
+      "w": 68.3,
+      "h": 22.5,
+      "text": "Contracts"
+     },
+     {
+      "x": 369,
+      "y": 588,
+      "w": 195.5,
+      "h": 22.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 346.5,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Contracts"
+     },
+     {
+      "x": 349,
+      "y": 574,
+      "w": 1222,
+      "h": 51.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "contracts": [
+     {
+      "x": 348,
+      "y": 345.5,
+      "w": 1224,
+      "h": 195.5,
+      "text": "Contracts StrataArena 0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870 ScoreAttestor 0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF RewardsDistributor 0x917DeD5aEC9B5eE1E"
+     }
+    ],
+    "limits": [
+     {
+      "x": 348,
+      "y": 573,
+      "w": 1224,
+      "h": 2725.5,
+      "text": "House agents and risk limits (definition) strata-test-1 $8 inj15dlcgk…8q3pdh gamma 0.1 kappa 0.5 levels 2 capSkewBps 20 horizonSec 60 maxCycleMs 30000 maxJumpBp"
+     }
+    ]
+   }
+  },
+  "transparency-contracts": {
+   "file": "transparency-contracts.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:07.467Z",
+   "scrollY": 265,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 95.5,
+      "w": 68.3,
+      "h": 22.5,
+      "text": "Contracts"
+     },
+     {
+      "x": 369,
+      "y": 323,
+      "w": 195.5,
+      "h": 22.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 81.5,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Contracts"
+     },
+     {
+      "x": 349,
+      "y": 309,
+      "w": 1222,
+      "h": 51.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "contracts": [
+     {
+      "x": 348,
+      "y": 80.5,
+      "w": 1224,
+      "h": 195.5,
+      "text": "Contracts StrataArena 0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870 ScoreAttestor 0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF RewardsDistributor 0x917DeD5aEC9B5eE1E"
+     }
+    ],
+    "limits": [
+     {
+      "x": 348,
+      "y": 308,
+      "w": 1224,
+      "h": 2725.5,
+      "text": "House agents and risk limits (definition) strata-test-1 $8 inj15dlcgk…8q3pdh gamma 0.1 kappa 0.5 levels 2 capSkewBps 20 horizonSec 60 maxCycleMs 30000 maxJumpBp"
+     }
+    ]
+   }
+  },
+  "transparency-limits": {
+   "file": "transparency-limits.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:08.912Z",
+   "scrollY": 492,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96,
+      "w": 195.5,
+      "h": 22.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82,
+      "w": 1222,
+      "h": 51.5,
+      "text": "House agents and risk limits (definition)"
+     }
+    ],
+    "contracts": [
+     {
+      "x": 348,
+      "y": -146.5,
+      "w": 1224,
+      "h": 195.5,
+      "text": "Contracts StrataArena 0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870 ScoreAttestor 0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF RewardsDistributor 0x917DeD5aEC9B5eE1E"
+     }
+    ],
+    "limits": [
+     {
+      "x": 348,
+      "y": 81,
+      "w": 1224,
+      "h": 2725.5,
+      "text": "House agents and risk limits (definition) strata-test-1 $8 inj15dlcgk…8q3pdh gamma 0.1 kappa 0.5 levels 2 capSkewBps 20 horizonSec 60 maxCycleMs 30000 maxJumpBp"
+     }
+    ]
+   }
+  },
+  "transparency-halts": {
+   "file": "transparency-halts.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:10.392Z",
+   "scrollY": 3423,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96,
+      "w": 104.9,
+      "h": 22.5,
+      "text": "Guard halts log"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Guard halts log"
+     }
+    ],
+    "halts": [
+     {
+      "x": 348,
+      "y": 81,
+      "w": 1224,
+      "h": 8105.8,
+      "text": "Guard halts log Session guard Halt Agent #9001 Nov 9, 08:45 UTC Underlying market is closed; quotes are pulled until it reopens. nextOpenMs 1794234600000 underl"
+     }
+    ],
+    "suspensions": [
+     {
+      "x": 348,
+      "y": -92.5,
+      "w": 1224,
+      "h": 141.5,
+      "text": "Suspensions No suspensions No agent has been suspended on this network"
+     }
+    ]
+   }
+  },
+  "transparency-epochs": {
+   "file": "transparency-epochs.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:11.839Z",
+   "scrollY": 11378,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 278.8,
+      "w": 129.4,
+      "h": 22.5,
+      "text": "Epoch attestations"
+     },
+     {
+      "x": 369,
+      "y": 469.3,
+      "w": 58.8,
+      "h": 22.5,
+      "text": "Security"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 264.8,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Epoch attestations"
+     },
+     {
+      "x": 349,
+      "y": 455.3,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Security"
+     }
+    ],
+    "halts": [
+     {
+      "x": 348,
+      "y": -7874,
+      "w": 1224,
+      "h": 8105.8,
+      "text": "Guard halts log Session guard Halt Agent #9001 Nov 9, 08:45 UTC Underlying market is closed; quotes are pulled until it reopens. nextOpenMs 1794234600000 underl"
+     }
+    ],
+    "epochs": [
+     {
+      "x": 348,
+      "y": 263.8,
+      "w": 1224,
+      "h": 158.5,
+      "text": "Epoch attestations Merkle roots posted to ScoreAttestor, newest first Epoch Window Merkle root Transaction 1.0 Nov 8, 20:22 UTC 0x117a7ecd…0e6ada77 0xc7133de9…5"
+     }
+    ],
+    "epochRows": [
+     {
+      "x": 369,
+      "y": 336.3,
+      "w": 1182,
+      "h": 24,
+      "text": "Epoch Window Merkle root Transaction"
+     },
+     {
+      "x": 369,
+      "y": 360.8,
+      "w": 1182,
+      "h": 40.5,
+      "text": "1.0 Nov 8, 20:22 UTC 0x117a7ecd…0e6ada77 0xc7133de9…5d9d0a"
+     }
+    ],
+    "security": [
+     {
+      "x": 348,
+      "y": 454.3,
+      "w": 1224,
+      "h": 116.3,
+      "text": "Security The security review covers the threat model, static analysis of the contracts, key management and known limitations. Read docs/SECURITY.md in the repos"
+     }
+    ]
+   }
+  },
+  "transparency-security": {
+   "file": "transparency-security.png",
+   "url": "https://strata-web-ochre.vercel.app/transparency?network=testnet",
+   "capturedAt": "2026-11-09T08:46:13.286Z",
+   "scrollY": 11378,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 278.8,
+      "w": 129.4,
+      "h": 22.5,
+      "text": "Epoch attestations"
+     },
+     {
+      "x": 369,
+      "y": 469.3,
+      "w": 58.8,
+      "h": 22.5,
+      "text": "Security"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 264.8,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Epoch attestations"
+     },
+     {
+      "x": 349,
+      "y": 455.3,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Security"
+     }
+    ],
+    "halts": [
+     {
+      "x": 348,
+      "y": -7874,
+      "w": 1224,
+      "h": 8105.8,
+      "text": "Guard halts log Session guard Halt Agent #9001 Nov 9, 08:45 UTC Underlying market is closed; quotes are pulled until it reopens. nextOpenMs 1794234600000 underl"
+     }
+    ],
+    "epochs": [
+     {
+      "x": 348,
+      "y": 263.8,
+      "w": 1224,
+      "h": 158.5,
+      "text": "Epoch attestations Merkle roots posted to ScoreAttestor, newest first Epoch Window Merkle root Transaction 1.0 Nov 8, 20:22 UTC 0x117a7ecd…0e6ada77 0xc7133de9…5"
+     }
+    ],
+    "epochRows": [
+     {
+      "x": 369,
+      "y": 336.3,
+      "w": 1182,
+      "h": 24,
+      "text": "Epoch Window Merkle root Transaction"
+     },
+     {
+      "x": 369,
+      "y": 360.8,
+      "w": 1182,
+      "h": 40.5,
+      "text": "1.0 Nov 8, 20:22 UTC 0x117a7ecd…0e6ada77 0xc7133de9…5d9d0a"
+     }
+    ],
+    "security": [
+     {
+      "x": 348,
+      "y": 454.3,
+      "w": 1224,
+      "h": 116.3,
+      "text": "Security The security review covers the threat model, static analysis of the contracts, key management and known limitations. Read docs/SECURITY.md in the repos"
+     }
+    ]
+   }
+  },
+  "status": {
+   "file": "status.png",
+   "url": "https://strata-web-ochre.vercel.app/status?network=testnet",
+   "capturedAt": "2026-11-09T08:46:20.609Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 348,
+      "y": 149,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Status"
+     }
+    ],
+    "h2": [
+     {
+      "x": 369,
+      "y": 599,
+      "w": 61,
+      "h": 22.5,
+      "text": "Services"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 585,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Services"
+     }
+    ],
+    "freshness": [
+     {
+      "x": 348,
+      "y": 431.5,
+      "w": 1224,
+      "h": 120.5,
+      "text": "Data lag (definition) 4.8s 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 s Last block seen n/a Last epoch posted 1.0 0xc713…9d0a"
+     }
+    ],
+    "freshnessValues": [
+     {
+      "x": 369,
+      "y": 480,
+      "w": 65.1,
+      "h": 31.2,
+      "text": "4.8s 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 s"
+     },
+     {
+      "x": 776.7,
+      "y": 480,
+      "w": 366.7,
+      "h": 26,
+      "text": "n/a"
+     },
+     {
+      "x": 1184.3,
+      "y": 480,
+      "w": 366.7,
+      "h": 26,
+      "text": "1.0"
+     },
+     {
+      "x": 1184.3,
+      "y": 515,
+      "w": 83.2,
+      "h": 14,
+      "text": "0xc713…9d0a"
+     }
+    ],
+    "services": [
+     {
+      "x": 348,
+      "y": 584,
+      "w": 1224,
+      "h": 428.5,
+      "text": "Services database Operational reachable Seen Nov 9, 08:46 UTC agent:1 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC agent:2 Operational heartbeat 10s ago "
+     }
+    ],
+    "serviceRows": [
+     {
+      "x": 369,
+      "y": 656.5,
+      "w": 1182,
+      "h": 33,
+      "text": "database Operational reachable Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 689.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:1 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 734.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:2 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 779.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:3 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 824.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:9001 Operational heartbeat 12s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 869.5,
+      "w": 1182,
+      "h": 45,
+      "text": "baseline Operational heartbeat 4s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 914.5,
+      "w": 1182,
+      "h": 45,
+      "text": "indexer Operational heartbeat 2s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 959.5,
+      "w": 1182,
+      "h": 32,
+      "text": "scorer Operational heartbeat 26s ago Seen Nov 9, 08:45 UTC"
+     }
+    ]
+   }
+  },
+  "status-services": {
+   "file": "status-services.png",
+   "url": "https://strata-web-ochre.vercel.app/status?network=testnet",
+   "capturedAt": "2026-11-09T08:46:22.047Z",
+   "scrollY": 503,
+   "theme": "dark",
+   "elements": {
+    "h2": [
+     {
+      "x": 369,
+      "y": 96,
+      "w": 61,
+      "h": 22.5,
+      "text": "Services"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     },
+     {
+      "x": 349,
+      "y": 82,
+      "w": 1222,
+      "h": 51.5,
+      "text": "Services"
+     }
+    ],
+    "freshness": [
+     {
+      "x": 348,
+      "y": -71.5,
+      "w": 1224,
+      "h": 120.5,
+      "text": "Data lag (definition) 4.8s 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 s Last block seen n/a Last epoch posted 1.0 0xc713…9d0a"
+     }
+    ],
+    "freshnessValues": [
+     {
+      "x": 369,
+      "y": -23,
+      "w": 65.1,
+      "h": 31.2,
+      "text": "4.8s 0 1 2 3 4 5 6 7 8 9 . 0 1 2 3 4 5 6 7 8 9 s"
+     },
+     {
+      "x": 776.7,
+      "y": -23,
+      "w": 366.7,
+      "h": 26,
+      "text": "n/a"
+     },
+     {
+      "x": 1184.3,
+      "y": -23,
+      "w": 366.7,
+      "h": 26,
+      "text": "1.0"
+     },
+     {
+      "x": 1184.3,
+      "y": 12,
+      "w": 83.2,
+      "h": 14,
+      "text": "0xc713…9d0a"
+     }
+    ],
+    "services": [
+     {
+      "x": 348,
+      "y": 81,
+      "w": 1224,
+      "h": 428.5,
+      "text": "Services database Operational reachable Seen Nov 9, 08:46 UTC agent:1 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC agent:2 Operational heartbeat 10s ago "
+     }
+    ],
+    "serviceRows": [
+     {
+      "x": 369,
+      "y": 153.5,
+      "w": 1182,
+      "h": 33,
+      "text": "database Operational reachable Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 186.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:1 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 231.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:2 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 276.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:3 Operational heartbeat 10s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 321.5,
+      "w": 1182,
+      "h": 45,
+      "text": "agent:9001 Operational heartbeat 12s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 366.5,
+      "w": 1182,
+      "h": 45,
+      "text": "baseline Operational heartbeat 4s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 411.5,
+      "w": 1182,
+      "h": 45,
+      "text": "indexer Operational heartbeat 2s ago Seen Nov 9, 08:46 UTC"
+     },
+     {
+      "x": 369,
+      "y": 456.5,
+      "w": 1182,
+      "h": 32,
+      "text": "scorer Operational heartbeat 26s ago Seen Nov 9, 08:45 UTC"
+     }
+    ]
+   }
+  },
+  "docs-scoring": {
+   "file": "docs-scoring.png",
+   "url": "https://strata-web-ochre.vercel.app/docs/scoring",
+   "capturedAt": "2026-11-09T08:46:30.122Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 624,
+      "y": 113,
+      "w": 704.3,
+      "h": 117.6,
+      "text": "How STRATA scores market makers"
+     }
+    ],
+    "h2": [
+     {
+      "x": 624,
+      "y": 476.1,
+      "w": 704.3,
+      "h": 33,
+      "text": "Seasons and epochs"
+     },
+     {
+      "x": 624,
+      "y": 820.6,
+      "w": 704.3,
+      "h": 33,
+      "text": "What data is used"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "article": [
+     {
+      "x": 624,
+      "y": 113,
+      "w": 704.3,
+      "h": 9062.1,
+      "text": "How STRATA scores market makers Every hour, STRATA measures how much real liquidity each enrolled agent provided, turns that into a score from 0 to 10,000, and "
+     }
+    ],
+    "articleH1": [
+     {
+      "x": 624,
+      "y": 113,
+      "w": 704.3,
+      "h": 117.6,
+      "text": "How STRATA scores market makers"
+     }
+    ],
+    "articleH2": [
+     {
+      "x": 624,
+      "y": 476.1,
+      "w": 704.3,
+      "h": 33,
+      "text": "Seasons and epochs"
+     },
+     {
+      "x": 624,
+      "y": 820.6,
+      "w": 704.3,
+      "h": 33,
+      "text": "What data is used"
+     }
+    ],
+    "formulas": [
+     {
+      "x": 1087.4,
+      "y": 283.8,
+      "w": 117.7,
+      "h": 20,
+      "text": "ScoreAttestor"
+     },
+     {
+      "x": 1108,
+      "y": 352.3,
+      "w": 133.9,
+      "h": 20,
+      "text": "services/scorer"
+     },
+     {
+      "x": 624,
+      "y": 404.8,
+      "w": 223.3,
+      "h": 20,
+      "text": "packages/sdk/src/merkle.ts"
+     },
+     {
+      "x": 652,
+      "y": 528.1,
+      "w": 571.8,
+      "h": 45.5,
+      "text": "StrataArena.startSeason(startTime, endTime, epochSeconds)"
+     },
+     {
+      "x": 699.6,
+      "y": 610.6,
+      "w": 20.1,
+      "h": 20,
+      "text": "e"
+     },
+     {
+      "x": 774.3,
+      "y": 610.6,
+      "w": 548.4,
+      "h": 20,
+      "text": "[startTime + e * epochSeconds, startTime + (e + 1) * epochSeconds)"
+     },
+     {
+      "x": 897.3,
+      "y": 724.6,
+      "w": 117.7,
+      "h": 20,
+      "text": "ScoreAttestor"
+     },
+     {
+      "x": 625,
+      "y": 920.8,
+      "w": 702.3,
+      "h": 205,
+      "text": "Table Used for book_snapshots Public book every 5 seconds: mid, spread, total USD depth within 25 bps agent_orders Each agent order: side, price, size, when it "
+     },
+     {
+      "x": 641,
+      "y": 972.8,
+      "w": 118.2,
+      "h": 18,
+      "text": "book_snapshots"
+     },
+     {
+      "x": 641,
+      "y": 1013.8,
+      "w": 103,
+      "h": 18,
+      "text": "agent_orders"
+     },
+     {
+      "x": 641,
+      "y": 1054.8,
+      "w": 95.5,
+      "h": 18,
+      "text": "agent_fills"
+     }
+    ],
+    "sidebar": [
+     {
+      "x": 491.8,
+      "y": 12,
+      "w": 287.9,
+      "h": 32,
+      "text": "Arena Docs Transparency Status"
+     },
+     {
+      "x": 348,
+      "y": 113,
+      "w": 220,
+      "h": 9062.1,
+      "text": "How it works Scoring Guards AI Risk Tuner Run your own agent API and MCP reference Contracts Architecture"
+     },
+     {
+      "x": 348,
+      "y": 113,
+      "w": 220,
+      "h": 284,
+      "text": "How it works Scoring Guards AI Risk Tuner Run your own agent API and MCP reference Contracts Architecture"
+     }
+    ]
+   }
+  },
+  "join-step1": {
+   "file": "join-step1.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:48:56.131Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "wallet": "none",
+   "elements": {
+    "h1": [
+     {
+      "x": 576,
+      "y": 113,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Enroll an agent"
+     }
+    ],
+    "h2": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 182.8,
+      "h": 29,
+      "text": "1/4Connect wallet"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "stepper": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 768,
+      "h": 28,
+      "text": "1Connect wallet 2Identity 3Markets and rules 4Enroll"
+     }
+    ],
+    "stepperItems": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "1Connect wallet"
+     },
+     {
+      "x": 770,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "2Identity"
+     },
+     {
+      "x": 964,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "3Markets and rules"
+     },
+     {
+      "x": 1158,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "4Enroll"
+     }
+    ],
+    "stepHeading": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 182.8,
+      "h": 29,
+      "text": "1/4Connect wallet"
+     }
+    ],
+    "disabledReason": [
+     {
+      "x": 1094,
+      "y": 851,
+      "w": 117.6,
+      "h": 16,
+      "text": "Connect a wallet first"
+     }
+    ],
+    "buttons": [
+     {
+      "x": 1223.6,
+      "y": 839,
+      "w": 91.4,
+      "h": 40,
+      "text": "Continue"
+     }
+    ],
+    "inputs": [
+     {
+      "x": 622,
+      "y": 544,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 981,
+      "y": 544,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     }
+    ],
+    "networkNotice": [
+     {
+      "x": 576,
+      "y": 293.5,
+      "w": 768,
+      "h": 19.5,
+      "text": "Not available to US persons or sanctioned jurisdictions"
+     }
+    ]
+   }
+  },
+  "join-step1-connected": {
+   "file": "join-step1-connected.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:04.378Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "wallet": "read-only stub, public operator address of agent 1, signing rejected",
+   "elements": {
+    "h1": [
+     {
+      "x": 576,
+      "y": 113,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Enroll an agent"
+     }
+    ],
+    "h2": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 182.8,
+      "h": 29,
+      "text": "1/4Connect wallet"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "stepper": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 768,
+      "h": 28,
+      "text": "1Connect wallet 2Identity 3Markets and rules 4Enroll"
+     }
+    ],
+    "stepperItems": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "1Connect wallet"
+     },
+     {
+      "x": 770,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "2Identity"
+     },
+     {
+      "x": 964,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "3Markets and rules"
+     },
+     {
+      "x": 1158,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "4Enroll"
+     }
+    ],
+    "stepHeading": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 182.8,
+      "h": 29,
+      "text": "1/4Connect wallet"
+     }
+    ],
+    "connectedAddress": [
+     {
+      "x": 650,
+      "y": 670,
+      "w": 97,
+      "h": 20,
+      "text": "0xa37F…ed8A"
+     }
+    ],
+    "buttons": [
+     {
+      "x": 1235.3,
+      "y": 672,
+      "w": 62.8,
+      "h": 16,
+      "text": "Disconnect"
+     },
+     {
+      "x": 1223.6,
+      "y": 791,
+      "w": 91.4,
+      "h": 40,
+      "text": "Continue"
+     }
+    ],
+    "inputs": [
+     {
+      "x": 622,
+      "y": 544,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 981,
+      "y": 544,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     }
+    ],
+    "networkNotice": [
+     {
+      "x": 576,
+      "y": 293.5,
+      "w": 768,
+      "h": 19.5,
+      "text": "Not available to US persons or sanctioned jurisdictions"
+     }
+    ]
+   }
+  },
+  "join-step2": {
+   "file": "join-step2.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:06.547Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "identity": "69",
+   "elements": {
+    "h1": [
+     {
+      "x": 576,
+      "y": 113,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Enroll an agent"
+     }
+    ],
+    "h2": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 117,
+      "h": 29,
+      "text": "2/4Identity"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "stepper": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 768,
+      "h": 28,
+      "text": "1Connect wallet 2Identity 3Markets and rules 4Enroll"
+     }
+    ],
+    "stepperItems": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "1Connect wallet"
+     },
+     {
+      "x": 770,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "2Identity"
+     },
+     {
+      "x": 964,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "3Markets and rules"
+     },
+     {
+      "x": 1158,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "4Enroll"
+     }
+    ],
+    "stepHeading": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 117,
+      "h": 29,
+      "text": "2/4Identity"
+     }
+    ],
+    "buttons": [
+     {
+      "x": 605,
+      "y": 786.5,
+      "w": 67,
+      "h": 40,
+      "text": "Back"
+     },
+     {
+      "x": 1223.6,
+      "y": 786.5,
+      "w": 91.4,
+      "h": 40,
+      "text": "Continue"
+     }
+    ],
+    "inputs": [
+     {
+      "x": 622,
+      "y": 641.5,
+      "w": 313,
+      "h": 40,
+      "text": ""
+     }
+    ],
+    "networkNotice": [
+     {
+      "x": 576,
+      "y": 293.5,
+      "w": 768,
+      "h": 19.5,
+      "text": "Not available to US persons or sanctioned jurisdictions"
+     }
+    ]
+   }
+  },
+  "join-step3": {
+   "file": "join-step3.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:08.212Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "elements": {
+    "h1": [
+     {
+      "x": 576,
+      "y": 113,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Enroll an agent"
+     }
+    ],
+    "h2": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 209.5,
+      "h": 29,
+      "text": "3/4Markets and rules"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "stepper": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 768,
+      "h": 28,
+      "text": "1Connect wallet 2Identity 3Markets and rules 4Enroll"
+     }
+    ],
+    "stepperItems": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "1Connect wallet"
+     },
+     {
+      "x": 770,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "2Identity"
+     },
+     {
+      "x": 964,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "3Markets and rules"
+     },
+     {
+      "x": 1158,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "4Enroll"
+     }
+    ],
+    "stepHeading": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 209.5,
+      "h": 29,
+      "text": "3/4Markets and rules"
+     }
+    ],
+    "inputs": [
+     {
+      "x": 605,
+      "y": 523,
+      "w": 384,
+      "h": 40,
+      "text": ""
+     },
+     {
+      "x": 605,
+      "y": 639,
+      "w": 710,
+      "h": 40,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 771.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 771.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 835.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 835.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 899.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 899.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 953.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 953.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 1007.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 1007.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 1061.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 1061.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     }
+    ],
+    "networkNotice": [
+     {
+      "x": 576,
+      "y": 293.5,
+      "w": 768,
+      "h": 19.5,
+      "text": "Not available to US persons or sanctioned jurisdictions"
+     }
+    ]
+   }
+  },
+  "join-step3-filled": {
+   "file": "join-step3-filled.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:09.451Z",
+   "scrollY": 1011,
+   "theme": "dark",
+   "elements": {
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "buttons": [
+     {
+      "x": 605,
+      "y": 657,
+      "w": 67,
+      "h": 40,
+      "text": "Back"
+     },
+     {
+      "x": 1160.6,
+      "y": 657,
+      "w": 154.4,
+      "h": 40,
+      "text": "Review enrollment"
+     }
+    ],
+    "inputs": [
+     {
+      "x": 620,
+      "y": -3.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": -3.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 50.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 50.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 104.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 104.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 158.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 158.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 620,
+      "y": 212.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 979,
+      "y": 212.5,
+      "w": 13,
+      "h": 13,
+      "text": ""
+     },
+     {
+      "x": 605,
+      "y": 532,
+      "w": 16,
+      "h": 16,
+      "text": ""
+     },
+     {
+      "x": 605,
+      "y": 589.5,
+      "w": 16,
+      "h": 16,
+      "text": ""
+     }
+    ],
+    "rules": [
+     {
+      "x": 605,
+      "y": 266,
+      "w": 710,
+      "h": 240,
+      "text": "Arena rules Only orders resting on the book count, and fills against your own orders are excluded Orders alive for less than one second do not count toward dept"
+     }
+    ]
+   }
+  },
+  "join-step4": {
+   "file": "join-step4.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:14.630Z",
+   "scrollY": 0,
+   "theme": "dark",
+   "note": "transaction preview only; nothing signed or sent",
+   "elements": {
+    "h1": [
+     {
+      "x": 576,
+      "y": 113,
+      "w": 550.2,
+      "h": 58.8,
+      "text": "Enroll an agent"
+     }
+    ],
+    "h2": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 98.1,
+      "h": 29,
+      "text": "4/4Enroll"
+     }
+    ],
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "stepper": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 768,
+      "h": 28,
+      "text": "1Connect wallet 2Identity 3Markets and rules 4Enroll"
+     }
+    ],
+    "stepperItems": [
+     {
+      "x": 576,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "1Connect wallet"
+     },
+     {
+      "x": 770,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "2Identity"
+     },
+     {
+      "x": 964,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "3Markets and rules"
+     },
+     {
+      "x": 1158,
+      "y": 353,
+      "w": 186,
+      "h": 28,
+      "text": "4Enroll"
+     }
+    ],
+    "stepHeading": [
+     {
+      "x": 605,
+      "y": 442,
+      "w": 98.1,
+      "h": 29,
+      "text": "4/4Enroll"
+     }
+    ],
+    "txPreview": [
+     {
+      "x": 605,
+      "y": 555,
+      "w": 710,
+      "h": 600,
+      "text": "Network Injective testnet (chain 1439) Contract 0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870 Action StrataArena.enroll Registers your agent for scoring and moves "
+     }
+    ],
+    "networkNotice": [
+     {
+      "x": 576,
+      "y": 293.5,
+      "w": 768,
+      "h": 19.5,
+      "text": "Not available to US persons or sanctioned jurisdictions"
+     }
+    ]
+   }
+  },
+  "join-step4-preview": {
+   "file": "join-step4-preview.png",
+   "url": "https://strata-web-ochre.vercel.app/join",
+   "capturedAt": "2026-11-09T08:49:15.976Z",
+   "scrollY": 474,
+   "theme": "dark",
+   "note": "transaction preview only; nothing signed or sent",
+   "elements": {
+    "header": [
+     {
+      "x": 0,
+      "y": 0,
+      "w": 1920,
+      "h": 57,
+      "text": "Skip to content Arena Docs Transparency Status Enroll an agent"
+     }
+    ],
+    "buttons": [
+     {
+      "x": 605,
+      "y": 705,
+      "w": 67,
+      "h": 40,
+      "text": "Back"
+     },
+     {
+      "x": 1185.4,
+      "y": 705,
+      "w": 129.6,
+      "h": 40,
+      "text": "Sign and enroll"
+     },
+     {
+      "x": 626,
+      "y": 826,
+      "w": 168.8,
+      "h": 40,
+      "text": "Download config"
+     },
+     {
+      "x": 802.8,
+      "y": 826,
+      "w": 190,
+      "h": 40,
+      "text": "Download metadata"
+     },
+     {
+      "x": 1254,
+      "y": 890,
+      "w": 32,
+      "h": 32,
+      "text": ""
+     }
+    ],
+    "kit": [
+     {
+      "x": 605,
+      "y": 769,
+      "w": 710,
+      "h": 336.5,
+      "text": "Agent starter kit Preview, the agent ID is filled in after enrollment Download config Download metadata Run your own agent guide docker build -f infra/docker/se"
+     }
+    ],
+    "txPreview": [
+     {
+      "x": 605,
+      "y": 81,
+      "w": 710,
+      "h": 600,
+      "text": "Network Injective testnet (chain 1439) Contract 0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870 Action StrataArena.enroll Registers your agent for scoring and moves "
+     }
+    ]
+   }
+  }
+ },
+ "meta": {
+  "site": "https://strata-web-ochre.vercel.app",
+  "viewport": {
+   "width": 1920,
+   "height": 1080
+  },
+  "deviceScaleFactor": 2,
+  "imageSize": {
+   "width": 3840,
+   "height": 2160
+  },
+  "units": "CSS px relative to the viewport at capture time; multiply by 2 for image pixels",
+  "method": "Element.getBoundingClientRect() in Chromium (Playwright 1.65, Metal ANGLE)"
+ },
+ "landingSections": [
+  {
+   "i": 0,
+   "id": "",
+   "cls": "hero",
+   "aria": ""
+  },
+  {
+   "i": 1,
+   "id": "",
+   "cls": "readout",
+   "aria": ""
+  },
+  {
+   "i": 2,
+   "id": "problem",
+   "cls": "scene",
+   "aria": ""
+  },
+  {
+   "i": 3,
+   "id": "arena",
+   "cls": "scene",
+   "aria": ""
+  },
+  {
+   "i": 4,
+   "id": "guards",
+   "cls": "scene",
+   "aria": ""
+  },
+  {
+   "i": 5,
+   "id": "proof",
+   "cls": "scene",
+   "aria": ""
+  },
+  {
+   "i": 6,
+   "id": "join",
+   "cls": "scene",
+   "aria": ""
+  },
+  {
+   "i": 7,
+   "id": "",
+   "cls": "ecosystem",
+   "aria": "Ecosystem"
+  }
+ ]
+}

@@ -1,0 +1,196 @@
+{
+ "source": "Neon Postgres (production DB the API reads), read-only session: epochs, scores; scorer log .run/logs/scorer-testnet.log for skipped epochs; tx on https://testnet.blockscout.injective.network",
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "network": "testnet",
+ "provenance": "TESTNET",
+ "posted": [
+  {
+   "network": "testnet",
+   "season": 1,
+   "epoch": 0,
+   "start": "2026-11-08T19:22:00+00:00",
+   "end": "2026-11-08T20:22:00+00:00",
+   "merkleRoot": "0x117a7ecdd28cf13e4089c05958fb7555fdd471e7d3cb73caec1554cb0e6ada77",
+   "dataUri": "https://strata-api-nine.vercel.app/v1/epochs/1/0?network=testnet#keccak256=0x6538c11bfb684d2c2397563e576a18bb8eb56da18119aa40abdf41dc71e418e3",
+   "txHash": "0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a",
+   "postedAt": "2026-11-08T20:24:36+00:00",
+   "contract": "0xfb73da045cdc792dcb9f8dcdc300aee348bff4df"
+  }
+ ],
+ "postedCount": 1,
+ "latest": {
+  "network": "testnet",
+  "season": 1,
+  "epoch": 0,
+  "start": "2026-11-08T19:22:00+00:00",
+  "end": "2026-11-08T20:22:00+00:00",
+  "merkleRoot": "0x117a7ecdd28cf13e4089c05958fb7555fdd471e7d3cb73caec1554cb0e6ada77",
+  "dataUri": "https://strata-api-nine.vercel.app/v1/epochs/1/0?network=testnet#keccak256=0x6538c11bfb684d2c2397563e576a18bb8eb56da18119aa40abdf41dc71e418e3",
+  "txHash": "0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a",
+  "postedAt": "2026-11-08T20:24:36+00:00",
+  "contract": "0xfb73da045cdc792dcb9f8dcdc300aee348bff4df"
+ },
+ "blockscout": [
+  "https://testnet.blockscout.injective.network/tx/0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a"
+ ],
+ "epoch0Block": 147660200,
+ "epoch0BlockSource": "docs/STATUS.md 'First attestation (testnet)'",
+ "scores": [
+  {
+   "network": "testnet",
+   "season": 1,
+   "epoch": 0,
+   "agent_id": 1,
+   "score": 10000,
+   "metrics": {
+    "pnlUsd": 0,
+    "samples": 1049,
+    "bookShare": 0.32418143928864795,
+    "uptimeBps": 3241,
+    "depthUsd25": 55.95092050029044,
+    "markout60s": 0,
+    "maxDrawdownUsd": 0,
+    "quotedSpreadBps": 810.545159380976,
+    "spreadImprovementBps": 500.716058113638
+   },
+   "flags": 0,
+   "leaf": "0xfb494e87824c8ec968dd68773d2d71fd526d5c376ec85e1a7985ef4d7f8866b2",
+   "proof": [
+    "0x9401c0880eea5c15f0120cd2cac3b11dc202db474bec73b8417f80773b2350a9",
+    "0x14e2bad05e135ccd2a63d0ab3bc2680adf53bce50e68c233cf2efe50bcee436f"
+   ],
+   "provenance": "TESTNET"
+  },
+  {
+   "network": "testnet",
+   "season": 1,
+   "epoch": 0,
+   "agent_id": 2,
+   "score": 0,
+   "metrics": {
+    "pnlUsd": 0,
+    "samples": 709,
+    "bookShare": 0.024286122470946424,
+    "uptimeBps": 0,
+    "depthUsd25": 8.14868197461217,
+    "markout60s": 0,
+    "maxDrawdownUsd": 0,
+    "quotedSpreadBps": 6857.864146103761,
+    "spreadImprovementBps": 3950.8299931357715
+   },
+   "flags": 16,
+   "leaf": "0x9401c0880eea5c15f0120cd2cac3b11dc202db474bec73b8417f80773b2350a9",
+   "proof": [
+    "0xfb494e87824c8ec968dd68773d2d71fd526d5c376ec85e1a7985ef4d7f8866b2",
+    "0x14e2bad05e135ccd2a63d0ab3bc2680adf53bce50e68c233cf2efe50bcee436f"
+   ],
+   "provenance": "TESTNET"
+  },
+  {
+   "network": "testnet",
+   "season": 1,
+   "epoch": 0,
+   "agent_id": 3,
+   "score": 0,
+   "metrics": {
+    "pnlUsd": 0,
+    "samples": 1059,
+    "bookShare": 0.00033555060042544694,
+    "uptimeBps": 0,
+    "depthUsd25": 15.837509142857044,
+    "markout60s": 0,
+    "maxDrawdownUsd": 0,
+    "quotedSpreadBps": 2361.554594376272,
+    "spreadImprovementBps": 0
+   },
+   "flags": 0,
+   "leaf": "0x14e2bad05e135ccd2a63d0ab3bc2680adf53bce50e68c233cf2efe50bcee436f",
+   "proof": [
+    "0x8bf609617c49e2539c7aba572ad9c4473775fab54c1a8b4735f67528646367d1"
+   ],
+   "provenance": "TESTNET"
+  }
+ ],
+ "skippedEpochs": [
+  {
+   "season": 1,
+   "epoch": 1,
+   "reason": "book data too sparse: best agent coverage 43.1%, minimum 50%",
+   "at": "2026-11-09T08:20:14.037Z"
+  },
+  {
+   "season": 1,
+   "epoch": 2,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:19.832Z"
+  },
+  {
+   "season": 1,
+   "epoch": 3,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:26.627Z"
+  },
+  {
+   "season": 1,
+   "epoch": 4,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:31.637Z"
+  },
+  {
+   "season": 1,
+   "epoch": 5,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:37.144Z"
+  },
+  {
+   "season": 1,
+   "epoch": 6,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:44.448Z"
+  },
+  {
+   "season": 1,
+   "epoch": 7,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:53.275Z"
+  },
+  {
+   "season": 1,
+   "epoch": 8,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:20:58.994Z"
+  },
+  {
+   "season": 1,
+   "epoch": 9,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:21:04.629Z"
+  },
+  {
+   "season": 1,
+   "epoch": 10,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:21:11.751Z"
+  },
+  {
+   "season": 1,
+   "epoch": 11,
+   "reason": "no book data for any arena market in the epoch window",
+   "at": "2026-11-09T08:21:18.249Z"
+  },
+  {
+   "season": 1,
+   "epoch": 12,
+   "reason": "book data too sparse: best agent coverage 2.7%, minimum 50%",
+   "at": "2026-11-09T08:24:38.717Z"
+  }
+ ],
+ "skippedNote": "The scorer refuses to post an epoch without enough book data; it skips with a logged reason rather than inventing scores.",
+ "contracts": {
+  "source": "packages/config/src/networks.ts (testnet)",
+  "StrataArena": "0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870",
+  "ScoreAttestor": "0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF",
+  "RewardsDistributor": "0x917DeD5aEC9B5eE1EE8430A9f179D600A321d628",
+  "verified": "Blockscout shows 'Contract source code verified (exact match)' for StrataArena and ScoreAttestor (captured 2026-11-09, film/assets/screens/chain/); Sourcify exact match (docs/STATUS.md)"
+ }
+}

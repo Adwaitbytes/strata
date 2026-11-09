@@ -1,0 +1,64 @@
+{
+ "source": "packages/config/src/generated/markets.mainnet.json (written by scripts/fetch-markets.ts from a live query of https://sentry.exchange.grpc-web.injective.network derivatives/markets, active perpetual markets only)",
+ "measuredAt": "2026-11-08T18:56:36Z",
+ "network": "mainnet",
+ "provenance": "LIVE",
+ "activePerpMarkets": 354,
+ "byAssetClass": {
+  "crypto": 166,
+  "equity": 166,
+  "fx": 11,
+  "commodity": 8,
+  "index": 2,
+  "compute": 1
+ },
+ "rwaPerpMarkets": 188,
+ "rwaDefinition": "every asset class except crypto: equity, fx, commodity, index, compute (classification rules in services/agent/src/injective/markets/classify.ts)",
+ "rwaByAssetClass": {
+  "equity": 166,
+  "fx": 11,
+  "commodity": 8,
+  "index": 2,
+  "compute": 1
+ },
+ "rwaExamples": {
+  "commodity": [
+   "BRENT/USDC PERP",
+   "COPPER/USDC PERP",
+   "NATGAS/USDC PERP",
+   "WTI/USDC PERP",
+   "XAG/USDC PERP",
+   "XAU/USDC PERP",
+   "XPD/USDC PERP",
+   "XPT/USDC PERP"
+  ],
+  "index": [
+   "US500/USDC PERP",
+   "USTECH/USDC PERP"
+  ],
+  "fx": [
+   "AUDUSD/USDC PERP",
+   "EURUSD/USDC PERP",
+   "GBPUSD/USDC PERP",
+   "NZDUSD/USDC PERP",
+   "USDCAD/USDC PERP",
+   "USDCHF/USDC PERP",
+   "USDHKD/USDC PERP",
+   "USDJPY/USDC PERP"
+  ],
+  "compute": [
+   "SICI/USDC PERP"
+  ],
+  "equity": [
+   "AAPL/USDC PERP",
+   "ABNB/USDC PERP",
+   "ADBE/USDC PERP",
+   "AFRM/USDC PERP",
+   "AI/USDC PERP",
+   "AMC/USDC PERP",
+   "AMD/USDC PERP",
+   "AMGN/USDC PERP"
+  ]
+ },
+ "note": "docs/STATUS.md line 82 says 187 active RWA perps for the local all-market baseline; this file (the same fetch, 2026-11-08 18:56Z) lists 188. Use 188 with this source, or re-fetch before the final cut."
+}

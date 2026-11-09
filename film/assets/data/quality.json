@@ -1,0 +1,90 @@
+{
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "tests": {
+  "source": "local run of `pnpm turbo run test --concurrency=4 --continue` (vitest per package, forge test for packages/contracts) on commit ab0c4de",
+  "measuredAt": "2026-11-09T08:52:00Z",
+  "passed": 891,
+  "failed": 3,
+  "skipped": 18,
+  "byPackage": {
+   "@strata/contracts (forge)": {
+    "passed": 163,
+    "failed": 0
+   },
+   "@strata/agent": {
+    "passed": 227,
+    "skipped": 5
+   },
+   "@strata/risk": {
+    "passed": 115
+   },
+   "@strata/scorer": {
+    "passed": 89,
+    "failed": 1,
+    "skipped": 3
+   },
+   "@strata/api": {
+    "passed": 88,
+    "skipped": 2
+   },
+   "@strata/web": {
+    "passed": 79
+   },
+   "@strata/ui": {
+    "passed": 55
+   },
+   "@strata/indexer": {
+    "passed": 31,
+    "skipped": 8
+   },
+   "@strata/alerts": {
+    "passed": 22
+   },
+   "@strata/keys": {
+    "passed": 16
+   },
+   "@strata/sdk": {
+    "passed": 5
+   },
+   "@strata/db": {
+    "passed": 1,
+    "failed": 2
+   }
+  },
+  "failures": {
+   "@strata/db migrate.test.ts (2) and four @strata/indexer suites": "need the local TimescaleDB on localhost:5433, which was not running (ECONNREFUSED); environment, not code",
+   "@strata/scorer config.test.ts 'requires contract addresses when the network config has none'": "stale test: testnet contracts are now filled in packages/config, so the expected throw no longer happens"
+  },
+  "filmSafeClaim": "891 tests passing across 12 packages, including 163 Foundry tests on the contracts"
+ },
+ "security": {
+  "source": "docs/SECURITY_REVIEW.md (W11 independent review, snapshot HEAD 78843ec + tree at 2026-11-09 00:30 IST) and docs/STATUS.md for fixes",
+  "findings": {
+   "critical": 0,
+   "high": 2,
+   "medium": 5,
+   "low": 10,
+   "total": 17
+  },
+  "fixedPerStatus": {
+   "H-1": "fixed (enroll binds subaccount to msg.sender, one enrollment per subaccount per season), docs/STATUS.md line 27",
+   "H-2": "fixed (risk stops, peak equity and kill latch persisted in agent_risk_state), docs/STATUS.md line 44",
+   "M-1": "fixed (EpochOutOfWindow), docs/STATUS.md line 28",
+   "M-4": "fixed: the signed admin kill reaches the agent (proven in the kill switch test), docs/STATUS.md 'Kill switch test'",
+   "L-1": "fixed by removal, docs/STATUS.md line 29",
+   "L-8": "fixed (metadataURI scheme check), docs/STATUS.md line 119"
+  },
+  "contractsStaticAnalysis": {
+   "source": "docs/STATUS.md line 32",
+   "slither": "0 High / 0 Medium",
+   "aderyn": "0 High / 0 Medium / 1 Low accepted",
+   "coverageSrc": "100% lines (179/179), statements, branches (50/50), functions (33/33)"
+  }
+ },
+ "lighthouse": {
+  "source": "docs/STATUS.md (Lighthouse 13.6.0 on production)",
+  "landingDesktop": "100 / 100 / 100 / 100",
+  "landingMobile": "100 / 100 / 100 / 100",
+  "arenaDesktop": "98 / 100 / 100 / 100"
+ }
+}

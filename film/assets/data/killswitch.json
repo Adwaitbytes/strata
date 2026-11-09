@@ -1,0 +1,182 @@
+{
+ "source": "docs/STATUS.md 'Kill switch test'; terminal captures deliverables/screens/killswitch/01..09*.txt; Neon kill_commands and guard_events (read-only)",
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "testedAt": "2026-11-08 (UTC)",
+ "network": "testnet",
+ "provenance": "TESTNET",
+ "paths": [
+  {
+   "path": "signed admin API (EIP-191, POST https://strata-api-nine.vercel.app/v1/admin/kill)",
+   "target": "agent 1 strata-test-1",
+   "commandId": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd",
+   "signer": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+   "requestedAt": "2026-11-08T20:00:26.868+00:00",
+   "httpStatus": 202,
+   "agentAckAt": "2026-11-08T20:00:27.730000Z",
+   "ackLatencySec": 0.86,
+   "cancelAllTxs": [
+    {
+     "hash": "BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925",
+     "blockTime": "2026-11-08T20:00:37Z",
+     "height": 147657579
+    },
+    {
+     "hash": "EEC74465762AAEF75F9FB01DB27741456FBCE35F6A0D2427B8E5E96CBA3E421C",
+     "blockTime": "2026-11-08T20:00:41Z",
+     "height": 147657585
+    },
+    {
+     "hash": "0CACA2D8ABF7F4C9C3C5B099EF321C17935A347269296C8DB0926AB676C8E320",
+     "blockTime": "2026-11-08T20:00:44Z",
+     "height": 147657591
+    }
+   ],
+   "requestToFirstCancelTxSec": 10.1,
+   "openOrdersBefore": 8,
+   "openOrdersAfter": 0,
+   "openOrdersAfterCheckedAt": "2026-11-08T20:00:49Z",
+   "othersKeptQuoting": "agents 2 and 3 kept their 8 orders (target honored)",
+   "explorer": "https://testnet.injscan.com/transaction/BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925/"
+  },
+  {
+   "path": "internal kill (the path the Telegram bot relays), localhost control port, bearer token",
+   "target": "agent 3 strata-test-3",
+   "acceptedAt": "2026-11-08T20:01:32Z",
+   "negativeChecks": {
+    "wrongToken": 401,
+    "malformedBody": 400
+   },
+   "cancelAllTxs": [
+    {
+     "hash": "E5A7D4707AA6A9FD8DCB12AEB7FBC5CEFC22EE998F53772476C00BBE945DD171",
+     "blockTime": "2026-11-08T20:01:48Z",
+     "height": 147657708
+    },
+    {
+     "hash": "80E997A349BB67F2DE66DE02234446E095299E255A30B0FD59A2C6643A98D77E",
+     "blockTime": "2026-11-08T20:01:50Z",
+     "height": 147657711
+    }
+   ],
+   "requestToFirstCancelTxSec": 16.0,
+   "openOrdersAfter": 0,
+   "openOrdersAfterCheckedAt": "2026-11-08T20:01:53Z"
+  },
+  {
+   "path": "environment flag KILL_SWITCH=true at restart (RUNBOOK 6.3)",
+   "target": "agent 2 strata-test-2",
+   "restartAt": "2026-11-08T20:02:06Z",
+   "cancelAllTxs": [
+    {
+     "hash": "AB098999023AA7E4433D4F7D15BB87F71ED4820ED6F6A7BE4C19E18978EFC0C1",
+     "blockTime": "2026-11-08T20:02:15Z",
+     "height": 147657757,
+     "note": "shutdown cancel-all"
+    },
+    {
+     "hash": "3573B6B5C75417649CF24A44D0F72F57AB197302FA3B38067635679C517B1C9C",
+     "blockTime": "2026-11-08T20:02:42Z",
+     "height": 147657806,
+     "note": "defensive cancel-all after restart with killed: true"
+    }
+   ],
+   "openOrdersAfter": 0
+  }
+ ],
+ "resume": {
+  "clearedBy": "clear-stops --kill --confirm (human only)",
+  "openOrdersAgain": 16,
+  "checkedAt": "2026-11-08T20:04:56Z"
+ },
+ "latencySummary": "Latch flips within about 1 s (0.86 s measured on the API path). Request to first cancel tx in a block: about 10 s (API) and 16 s (internal); the delay is the next quoting cycle plus block inclusion.",
+ "neon": {
+  "command": {
+   "id": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd",
+   "network": "testnet",
+   "target_agent_id": 1,
+   "close_positions": true,
+   "signer": "0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54",
+   "requested_at": "2026-11-08T20:00:26.868+00:00",
+   "signature_expires_at": "2026-11-08T20:05:25+00:00"
+  },
+  "guardEvents": [
+   {
+    "agentId": 1,
+    "reason": "kill_switch_api",
+    "action": "halt",
+    "detail": "Signed admin kill received; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "killCommandId": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:27.73+00:00"
+   },
+   {
+    "agentId": 1,
+    "reason": "kill_switch_api",
+    "action": "halt",
+    "detail": "Kill switch triggered via api; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "source": "api",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:28.191+00:00"
+   },
+   {
+    "agentId": 1,
+    "reason": "kill_switch_api",
+    "action": "halt",
+    "detail": "Kill switch triggered via api; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "source": "api",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:30.324+00:00"
+   },
+   {
+    "agentId": 3,
+    "reason": "kill_switch_telegram",
+    "action": "halt",
+    "detail": "Kill switch triggered via telegram; all orders cancelled.",
+    "observed": {
+     "source": "telegram",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:01:34.011+00:00"
+   },
+   {
+    "agentId": 3,
+    "reason": "kill_switch_telegram",
+    "action": "halt",
+    "detail": "Kill switch triggered via telegram; all orders cancelled.",
+    "observed": {
+     "source": "telegram",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:01:35.683+00:00"
+   },
+   {
+    "agentId": 2,
+    "reason": "kill_switch_env",
+    "action": "halt",
+    "detail": "Kill switch triggered via env; all orders cancelled.",
+    "observed": {
+     "source": "env",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:02:37.7+00:00"
+   },
+   {
+    "agentId": 2,
+    "reason": "kill_switch_env",
+    "action": "halt",
+    "detail": "Kill switch triggered via env; all orders cancelled.",
+    "observed": {
+     "source": "env",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:02:37.703+00:00"
+   }
+  ]
+ }
+}

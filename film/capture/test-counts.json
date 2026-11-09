@@ -1,0 +1,26 @@
+{
+ "source": "local run of `pnpm turbo run test --concurrency=4 --continue` (vitest per package, forge test for packages/contracts) on commit ab0c4de",
+ "measuredAt": "2026-11-09T08:52:00Z",
+ "passed": 891,
+ "failed": 3,
+ "skipped": 18,
+ "byPackage": {
+  "@strata/contracts (forge)": {"passed": 163, "failed": 0},
+  "@strata/agent": {"passed": 227, "skipped": 5},
+  "@strata/risk": {"passed": 115},
+  "@strata/scorer": {"passed": 89, "failed": 1, "skipped": 3},
+  "@strata/api": {"passed": 88, "skipped": 2},
+  "@strata/web": {"passed": 79},
+  "@strata/ui": {"passed": 55},
+  "@strata/indexer": {"passed": 31, "skipped": 8},
+  "@strata/alerts": {"passed": 22},
+  "@strata/keys": {"passed": 16},
+  "@strata/sdk": {"passed": 5},
+  "@strata/db": {"passed": 1, "failed": 2}
+ },
+ "failures": {
+  "@strata/db migrate.test.ts (2) and four @strata/indexer suites": "need the local TimescaleDB on localhost:5433, which was not running (ECONNREFUSED); environment, not code",
+  "@strata/scorer config.test.ts 'requires contract addresses when the network config has none'": "stale test: testnet contracts are now filled in packages/config, so the expected throw no longer happens"
+ },
+ "filmSafeClaim": "891 tests passing across 12 packages, including 163 Foundry tests on the contracts"
+}

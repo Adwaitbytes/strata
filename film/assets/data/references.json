@@ -1,0 +1,11 @@
+{
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "ostium": {
+  "claim": "Ostium lost about $18M to oracle reports with future-dated timestamps (July 2026)",
+  "prdLine": "Ostium lost $18M to oracle reports with future-dated timestamps",
+  "source": "docs/PRD.md section 'References' and table row 'Ostium lost $18M ...' (section 9.4 Oracle Guard, lesson from Ostium)",
+  "url": "https://www.coindesk.com/business/2026/07/15/ostium-suffers-usd18-million-exploit-as-oracle-attack-wave-continues-to-hit-defi",
+  "date": "2026-07-15 (from the article URL)",
+  "strataResponse": "Oracle Guard in every agent: reject stale or future timestamps, cross-check sources, halt on anomaly"
+ }
+}

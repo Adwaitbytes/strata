@@ -1,0 +1,485 @@
+{
+ "source": "Neon Postgres (production DB the API reads), read-only session: table book_snapshots, network=mainnet, provenance=BASELINE, joined to markets for tickers",
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "provenance": "BASELINE",
+ "network": "mainnet",
+ "label": "BASELINE: read-only recordings of Injective mainnet order books, no STRATA agent quoting",
+ "method": {
+  "sampling": "one full-book sample every 5 s per market by services/indexer (baseline recorder)",
+  "spreadBps": "(best ask - best bid) / mid * 10000, mid = (best bid + best ask) / 2 (services/indexer/src/book/metrics.ts)",
+  "noBidOrAskWithin25Bps": "a sample counts when the book is one-sided or empty, or spread > 50 bps (with a symmetric mid, both best quotes sit within 25 bps of mid exactly when spread <= 50 bps)",
+  "depthUsdWithin25Bps": "sum of price * quantity of all bid and ask levels within 25 bps of mid; 0 when the book has no mid"
+ },
+ "window": {
+  "first": "2026-11-08T18:48:25+00:00",
+  "last": "2026-11-09T08:56:00+00:00"
+ },
+ "coverageGaps": [
+  {
+   "from": "2026-11-08T20:47:45+00:00",
+   "to": "2026-11-09T08:20:10+00:00",
+   "minutes": 692
+  }
+ ],
+ "coverageNote": "The recorder host slept from about 2026-11-08 20:47Z to 2026-11-09 08:20Z (docs/STATUS.md 'Soak restart'); no samples exist in that gap. 2026-11-08 was a Sunday, so equity and index underlyings were closed for the first part of the window.",
+ "totalSamples": 21408,
+ "marketCount": 12,
+ "summary": {
+  "marketsWithNoBidOrAskWithin25BpsInEverySample": 10,
+  "marketsNeverTwoSided": [
+   "BRENT/USDC PERP",
+   "EURUSD/USDC PERP",
+   "GBPUSD/USDC PERP",
+   "SICI/USDC PERP",
+   "US500/USDC PERP",
+   "USDJPY/USDC PERP",
+   "USTECH/USDC PERP"
+  ],
+  "marketsEmptyEverySample": [
+   "SICI/USDC PERP",
+   "US500/USDC PERP",
+   "USTECH/USDC PERP"
+  ],
+  "medianDepthWithin25BpsAllMarketsUsd": 0
+ },
+ "bestVsWorst": {
+  "rule": "median spread, among markets that were two-sided in at least half of their samples",
+  "best": {
+   "ticker": "AAPL/USDC PERP",
+   "spreadBpsMedian": 63.9
+  },
+  "worst": {
+   "ticker": "XAG/USDC PERP",
+   "spreadBpsMedian": 397.0
+  },
+  "ratio": 6.2,
+  "eligible": [
+   "AAPL/USDC PERP",
+   "NVDA/USDC PERP",
+   "WTI/USDC PERP",
+   "XAG/USDC PERP"
+  ]
+ },
+ "markets": [
+  {
+   "ticker": "AAPL/USDC PERP",
+   "marketId": "0xa3d0ef8d845ada306a53baabd04edab9c5525ba9e011648a09aa064db5ca3442",
+   "assetClass": "equity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 1784,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 1.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 0.0,
+   "spreadBpsMedian": 63.9,
+   "spreadBpsP90": 71.6,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 0.9983,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 45350.37,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": 344.905,
+    "spreadBps": 71.03405285513402,
+    "bestBid": "343.68",
+    "bestAsk": "346.13",
+    "oraclePrice": 344.88498489341555,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "NVDA/USDC PERP",
+   "marketId": "0xb9d9202c588e860382c96aee096f9655fce339f6b51833a939a37d2437080c17",
+   "assetClass": "equity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 1784,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 1.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 0.0,
+   "spreadBpsMedian": 102.5,
+   "spreadBpsP90": 215.4,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 0.9765,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 47077.64,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": 179.02,
+    "spreadBps": 52.50809965366998,
+    "bestBid": "178.55",
+    "bestAsk": "179.49",
+    "oraclePrice": 178.60883313249965,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "WTI/USDC PERP",
+   "marketId": "0x9031f3e31fb47dab2cee18fe514e72775228fe2ab869420e59376776fab09af8",
+   "assetClass": "commodity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 1784,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 1.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 0.0,
+   "spreadBpsMedian": 143.7,
+   "spreadBpsP90": 178.5,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": 89.4055,
+    "spreadBps": 178.17695779342435,
+    "bestBid": "88.609",
+    "bestAsk": "90.202",
+    "oraclePrice": 89.150758,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "XAG/USDC PERP",
+   "marketId": "0x1efdfb318a59e7181007579eea4803f866ce5f6b100faf4428c15bb518a7ad3c",
+   "assetClass": "commodity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 1783,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1,
+   "shareTwoSided": 0.9994,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 0.0006,
+   "spreadBpsMedian": 397.0,
+   "spreadBpsP90": 397.2,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": 52.4075,
+    "spreadBps": 81.09526308257406,
+    "bestBid": "52.195",
+    "bestAsk": "52.62",
+    "oraclePrice": 52.50635593190672,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "XAU/USDC PERP",
+   "marketId": "0x8f4ae01ef8027fcefa40b6465638c62da324f71755e7513fad37b2334c9291b5",
+   "assetClass": "commodity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 1,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1783,
+   "shareTwoSided": 0.0006,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 0.9994,
+   "spreadBpsMedian": 1308.6,
+   "spreadBpsP90": 1308.6,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": "3500",
+    "bestAsk": null,
+    "oraclePrice": 4096.901748378133,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "BRENT/USDC PERP",
+   "marketId": "0x866b2956aa0062d65cd85f338da3eb08b7c1276ce62dbc22c09bea000f946c3f",
+   "assetClass": "commodity",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1784,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": "0.001",
+    "bestAsk": null,
+    "oraclePrice": 96.655963,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "EURUSD/USDC PERP",
+   "marketId": "0x220120852298978d37c47c2c7893e7df51e783451fbef1edc7c745a59201c8e5",
+   "assetClass": "fx",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1784,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": "0.00001",
+    "bestAsk": null,
+    "oraclePrice": 1.1187932480279863,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "GBPUSD/USDC PERP",
+   "marketId": "0x22028585eb7edc6a853e746832f96e41442b2f65db1d4d22dcb568fa6528b591",
+   "assetClass": "fx",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1784,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": "0.00001",
+    "bestAsk": null,
+    "oraclePrice": 1.3412716192754628,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "SICI/USDC PERP",
+   "marketId": "0x6751442adea73a2b65adce484dd7bde25d204c9695fc9d5410933171f3417410",
+   "assetClass": "compute",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 1784,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 1.0,
+   "shareNoBidAtAll": 1.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": null,
+    "bestAsk": null,
+    "oraclePrice": 106.423012,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "US500/USDC PERP",
+   "marketId": "0x7b3bcf125dfa50ae8d44ecb60119ef5d52a627ad757b727850b0903b55e49b2c",
+   "assetClass": "index",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 1784,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 1.0,
+   "shareNoBidAtAll": 1.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": null,
+    "bestAsk": null,
+    "oraclePrice": 738.7506191596177,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "USDJPY/USDC PERP",
+   "marketId": "0x3cdf314da4868b824697bca1f9d8ed349224e735d437c12cd59a6fadb7992501",
+   "assetClass": "fx",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 0,
+   "oneSidedSamples": 1784,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 0.0,
+   "shareNoBidAtAll": 0.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": "0.001",
+    "bestAsk": null,
+    "oraclePrice": 158.1463841868499,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  },
+  {
+   "ticker": "USTECH/USDC PERP",
+   "marketId": "0x57d55fd4f27ebc19c453792a636a7471a473ab616e72c3949121684d5186fe3a",
+   "assetClass": "index",
+   "network": "mainnet",
+   "provenance": "BASELINE",
+   "sampleCount": 1784,
+   "window": {
+    "first": "2026-11-08T18:48:25+00:00",
+    "last": "2026-11-09T08:56:00+00:00"
+   },
+   "twoSidedSamples": 0,
+   "emptyBookSamples": 1784,
+   "oneSidedSamples": 0,
+   "shareTwoSided": 0.0,
+   "shareEmptyBook": 1.0,
+   "shareNoBidAtAll": 1.0,
+   "shareNoAskAtAll": 1.0,
+   "spreadBpsMedian": null,
+   "spreadBpsP90": null,
+   "spreadNote": "over two-sided samples only; null when the book was never two-sided",
+   "shareNoBidOrAskWithin25Bps": 1.0,
+   "depthUsdWithin25BpsMedian": 0,
+   "depthUsdWithin25BpsP90": 0,
+   "depthUsdWithin25BpsMax": 0,
+   "lastSample": {
+    "at": "2026-11-09T08:56:00+00:00",
+    "mid": null,
+    "spreadBps": null,
+    "bestBid": null,
+    "bestAsk": null,
+    "oraclePrice": 657.0728607813911,
+    "oracleTs": "2026-11-09T08:55:59+00:00"
+   }
+  }
+ ]
+}

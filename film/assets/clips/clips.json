@@ -1,0 +1,83 @@
+{
+ "clips": {
+  "hero-terrain-idle": {
+   "file": "hero-terrain-idle.mp4",
+   "raw": "hero-terrain-idle.webm",
+   "recordedAt": "2026-11-09T08:51:51.928Z",
+   "trimOffsetSec": 9.997,
+   "url": "https://strata-web-ochre.vercel.app/",
+   "what": "Live 3D hero terrain, idle, no input",
+   "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+     {
+      "codec_name": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "nb_frames": "300"
+     }
+    ],
+    "format": {
+     "duration": "10.000000",
+     "size": "2830748"
+    }
+   },
+   "sourceFrameRate": "Playwright recordVideo writes VP8 webm at 25 fps; the fps=30 filter duplicates frames to a constant 30 fps"
+  },
+  "landing-scroll-story": {
+   "file": "landing-scroll-story.mp4",
+   "raw": "landing-scroll-story.webm",
+   "recordedAt": "2026-11-09T08:52:14.928Z",
+   "trimOffsetSec": 8.812,
+   "url": "https://strata-web-ochre.vercel.app/",
+   "what": "Constant-speed scroll from top to bottom (6568 CSS px in 30 s)",
+   "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+     {
+      "codec_name": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "nb_frames": "899"
+     }
+    ],
+    "format": {
+     "duration": "29.966667",
+     "size": "14192395"
+    }
+   },
+   "encode": "libx264 crf 19 (crf 16 was 21.2 MB, over the 20 MB commit limit)",
+   "sourceFrameRate": "Playwright recordVideo writes VP8 webm at 25 fps; the fps=30 filter duplicates frames to a constant 30 fps"
+  },
+  "arena-live": {
+   "file": "arena-live.mp4",
+   "raw": "arena-live.webm",
+   "recordedAt": "2026-11-09T08:53:02.255Z",
+   "trimOffsetSec": 6.086,
+   "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
+   "what": "Arena leaderboard on testnet with the live stream connected",
+   "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+     {
+      "codec_name": "h264",
+      "width": 1920,
+      "height": 1080,
+      "r_frame_rate": "30/1",
+      "nb_frames": "299"
+     }
+    ],
+    "format": {
+     "duration": "9.966667",
+     "size": "269135"
+    }
+   },
+   "sourceFrameRate": "Playwright recordVideo writes VP8 webm at 25 fps; the fps=30 filter duplicates frames to a constant 30 fps"
+  }
+ }
+}

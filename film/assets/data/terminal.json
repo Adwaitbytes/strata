@@ -1,0 +1,398 @@
+{
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "scrubbed": "No keys, passphrases, DB URLs or hosts, tokens or IP addresses. Every .secrets file value is checked absent (film/capture/check_secrets.sh).",
+ "network": "testnet",
+ "quotes": {
+  "source": "pnpm --filter @strata/agent inj:open-orders (read-only Injective testnet query), film/capture/open-orders.latest.txt",
+  "lines": [
+   "2026-11-09T08:53:29.227Z strata-test-1 agent=1 BTC/USDC PERP open=4 [B 0.0001@74258, B 0.0002@74184, S 0.0001@74557, S 0.0002@74631]",
+   "2026-11-09T08:53:29.227Z strata-test-1 agent=1 ETH/USDC PERP open=4 [B 0.008@1916.8, B 0.0062@1916.9, S 0.0056@2125.3, S 0.0084@2127.5]",
+   "2026-11-09T08:53:29.227Z strata-test-2 agent=2 INJ/USDC PERP open=4 [B 1.06@4.898, B 0.81@4.899, S 0.49@8.022, S 0.74@8.03]",
+   "2026-11-09T08:53:29.227Z strata-test-2 agent=2 BHA-PERP open=0",
+   "2026-11-09T08:53:29.227Z strata-test-3 agent=3 LINK/USDC PERP open=4 [B 0.69@8.65, B 0.75@8.64, S 0.57@10.48, S 0.85@10.49]",
+   "2026-11-09T08:53:29.227Z strata-test-3 agent=3 MUN-PERP open=0",
+   "2026-11-09T08:53:29.227Z total open orders: 16"
+  ]
+ },
+ "killSwitchSessions": [
+  {
+   "source": "deliverables/screens/killswitch/01-before-api-kill.txt",
+   "lines": [
+    "$ pnpm --filter @strata/agent inj:open-orders strata-test-1   # before API kill",
+    "$ tsx src/injective/bin/open-orders.ts strata-test-1",
+    "2026-11-08T20:00:15.430Z strata-test-1 agent=1 BTC/USDC PERP open=4 [B 0.0002@75625, B 0.0001@75701, S 0.0002@76081, S 0.0001@76005]",
+    "2026-11-08T20:00:15.430Z strata-test-1 agent=1 ETH/USDC PERP open=4 [B 0.0062@1916.9, B 0.0072@1916.8, S 0.0053@2234.3, S 0.008@2236.5]",
+    "2026-11-08T20:00:15.430Z total open orders: 8"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/02-api-kill-request.txt",
+   "lines": [
+    "# 2026-11-08T20:00:25Z signed KillRequest, EIP-191 by owner 0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54 (Foundry keystore)",
+    "# message:",
+    "#   STRATA kill request",
+    "#   network: testnet",
+    "#   target: 1",
+    "#   closePositions: true",
+    "#   nonce: c1593aca5295811f5470a7f9f299bf10",
+    "#   expiresAt: 1794168325000",
+    "# local signature check: Validation succeeded. Address 0x7f4ae8c67872E0F3Eb8892e3712598622eFc9b54 signed this message.",
+    "$ curl -X POST https://strata-api-nine.vercel.app/v1/admin/kill -d '{target:1, closePositions:true, network:testnet, nonce, expiresAt, signature}'",
+    "{\"accepted\":true,\"id\":\"e1ead4bc-0bd9-4e4e-b710-b1373233acfd\",\"network\":\"testnet\",\"target\":1,\"closePositions\":true,\"requestedAt\":1794168026868}",
+    "HTTP 202"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/03-after-api-kill.txt",
+   "lines": [
+    "# 2026-11-08T20:00:49Z after API kill",
+    "$ pnpm --filter @strata/agent inj:open-orders",
+    "$ tsx src/injective/bin/open-orders.ts",
+    "2026-11-08T20:00:49.201Z strata-test-1 agent=1 BTC/USDC PERP open=0",
+    "2026-11-08T20:00:49.201Z strata-test-1 agent=1 ETH/USDC PERP open=0",
+    "2026-11-08T20:00:49.201Z strata-test-2 agent=2 INJ/USDC PERP open=4 [B 1.03@4.898, B 0.81@4.899, S 0.73@8.109, S 0.49@8.101]",
+    "2026-11-08T20:00:49.201Z strata-test-2 agent=2 BHA-PERP open=0",
+    "2026-11-08T20:00:49.201Z strata-test-3 agent=3 LINK/USDC PERP open=4 [B 0.71@8.64, B 0.69@8.65, S 0.56@10.69, S 0.84@10.7]",
+    "2026-11-08T20:00:49.201Z strata-test-3 agent=3 MUN-PERP open=0",
+    "2026-11-08T20:00:49.201Z total open orders: 8",
+    "",
+    "$ pnpm --filter @strata/agent inj:recent-txs strata-test-1 --limit 6",
+    "$ tsx src/injective/bin/recent-txs.ts strata-test-1 --limit 6",
+    "strata-test-1 2026-11-08T20:00:44Z h=147657591 code=0 memo=strata:cancel-all 0CACA2D8ABF7F4C9C3C5B099EF321C17935A347269296C8DB0926AB676C8E320",
+    "strata-test-1 2026-11-08T20:00:41Z h=147657585 code=0 memo=strata:cancel-all EEC74465762AAEF75F9FB01DB27741456FBCE35F6A0D2427B8E5E96CBA3E421C",
+    "strata-test-1 2026-11-08T20:00:37Z h=147657579 code=0 memo=strata:cancel-all BA464D0D0445189D230D21D166A9029F79D3F6ABFF2C7731A54AB35C0892D925",
+    "",
+    "$ grep kill .run/logs/strata-test-1.log",
+    "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-1\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"BTC/USDC PERP,ETH/USDC PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:48:16.806Z\"}",
+    "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T19:50:41.777Z\"}",
+    "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-1\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"BTC/USDC PERP,ETH/USDC PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:50:42.908Z\"}",
+    "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T19:54:08.554Z\"}",
+    "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-1\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"BTC/USDC PERP,ETH/USDC PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:54:10.991Z\"}"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/04-api-kill-db.txt",
+   "lines": [
+    "# 2026-11-08T20:01:03Z Neon evidence for kill command e1ead4bc",
+    "{\"id\": \"e1ead4bc-0bd9-4e4e-b710-b1373233acfd\", \"network\": \"testnet\", \"target_agent_id\": 1, \"close_positions\": true, \"requested_at\": \"2026-11-08T20:00:26.868Z\"}",
+    "{\"agent_id\": 1, \"guard\": \"kill_switch\", \"reason\": \"kill_switch_api\", \"action\": \"halt\", \"at\": \"2026-11-08T20:00:30.324Z\", \"observed\": {\"source\": \"api\", \"closePositions\": true}}",
+    "{\"agent_id\": 1, \"guard\": \"kill_switch\", \"reason\": \"kill_switch_api\", \"action\": \"halt\", \"at\": \"2026-11-08T20:00:28.191Z\", \"observed\": {\"source\": \"api\", \"closePositions\": true}}",
+    "{\"agent_id\": 1, \"guard\": \"kill_switch\", \"reason\": \"kill_switch_api\", \"action\": \"halt\", \"at\": \"2026-11-08T20:00:27.730Z\", \"observed\": {\"killCommandId\": \"e1ead4bc-0bd9-4e4e-b710-b1373233acfd\", \"closePositions\": true}}",
+    "{\"agent_id\": 1, \"kill\": {\"at\": 1794168027728, \"killed\": true, \"source\": \"api\", \"closePositions\": true}, \"updated_at\": \"2026-11-08T20:00:27.729Z\"}",
+    "{\"agent_id\": 2, \"kill\": {\"at\": null, \"killed\": false, \"source\": null, \"closePositions\": false}, \"updated_at\": \"2026-11-08T19:44:47.824Z\"}",
+    "{\"agent_id\": 3, \"kill\": {\"at\": null, \"killed\": false, \"source\": null, \"closePositions\": false}, \"updated_at\": \"2026-11-08T19:44:47.244Z\"}"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/05-internal-kill-request.txt",
+   "lines": [
+    "# 2026-11-08T20:01:20Z internal kill path (what the Telegram bot relays), agent strata-test-3, localhost control port 9473, bearer token from .secrets/internal_kill_token (not shown)",
+    "$ curl -X POST http://localhost:9473/internal/kill -H 'authorization: Bearer <token>' -d '{\"closePositions\":false}'",
+    "{\"error\":\"malformed request\"}",
+    "HTTP 400",
+    "$ curl -X POST http://localhost:9473/internal/kill -H 'authorization: Bearer wrong'   # negative check",
+    "{\"error\":\"unauthorized\"}",
+    "HTTP 401",
+    "",
+    "# 2026-11-08T20:01:32Z retry with the alerts bot body shape {closePositions, source: telegram, requestedAt}",
+    "$ curl -X POST http://localhost:9473/internal/kill -H 'authorization: Bearer <token>' -d '{\"closePositions\":false,\"source\":\"telegram\",\"requestedAt\":1794168092000}'",
+    "{\"killed\":true}",
+    "HTTP 202"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/06-after-internal-kill.txt",
+   "lines": [
+    "# 2026-11-08T20:01:53Z after internal kill",
+    "$ tsx src/injective/bin/open-orders.ts strata-test-3",
+    "2026-11-08T20:01:53.251Z strata-test-3 agent=3 LINK/USDC PERP open=0",
+    "2026-11-08T20:01:53.251Z strata-test-3 agent=3 MUN-PERP open=0",
+    "2026-11-08T20:01:53.251Z total open orders: 0",
+    "$ tsx src/injective/bin/recent-txs.ts strata-test-3 --limit 4",
+    "strata-test-3 2026-11-08T20:01:50Z h=147657711 code=0 memo=strata:cancel-all 80E997A349BB67F2DE66DE02234446E095299E255A30B0FD59A2C6643A98D77E",
+    "strata-test-3 2026-11-08T20:01:48Z h=147657708 code=0 memo=strata:cancel-all E5A7D4707AA6A9FD8DCB12AEB7FBC5CEFC22EE998F53772476C00BBE945DD171"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/07-env-kill.txt",
+   "lines": [
+    "# 2026-11-08T20:02:06Z env flag path (RUNBOOK 6.3) on strata-test-2: .run/testnet.env = KILL_SWITCH=true, KILL_SWITCH_CLOSE=false; restart the agent process (SIGTERM, supervisor restarts it with the flag)",
+    "$ kill $(cat .run/strata-test-2.child)",
+    "$ tail .run/logs/strata-test-2.log",
+    "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-2\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"INJ/USDC PERP,BHA-PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:54:13.244Z\"}",
+    "{\"level\":\"info\",\"msg\":\"shutdown: cancelling all orders\",\"at\":\"2026-11-08T20:02:06.186Z\"}",
+    "{\"t\":\"2026-11-08T20:02:16Z\",\"level\":\"error\",\"msg\":\"strata-test-2 exited, restarting in 10s\",\"code\":0}",
+    "{\"t\":\"2026-11-08T20:02:26Z\",\"level\":\"info\",\"msg\":\"supervisor starting strata-test-2\"}",
+    "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T20:02:33.794Z\"}",
+    "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-2\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"INJ/USDC PERP,BHA-PERP\",\"tuner\":\"shadow\",\"killed\":true,\"at\":\"2026-11-08T20:02:37.702Z\"}",
+    "# 2026-11-08T20:02:37Z",
+    "$ tsx src/injective/bin/open-orders.ts strata-test-2",
+    "2026-11-08T20:02:37.951Z strata-test-2 agent=2 INJ/USDC PERP open=0",
+    "2026-11-08T20:02:37.951Z strata-test-2 agent=2 BHA-PERP open=0",
+    "2026-11-08T20:02:37.951Z total open orders: 0",
+    "$ tsx src/injective/bin/recent-txs.ts strata-test-2 --limit 4",
+    "strata-test-2 2026-11-08T20:02:42Z h=147657806 code=0 memo=strata:cancel-all 3573B6B5C75417649CF24A44D0F72F57AB197302FA3B38067635679C517B1C9C",
+    "strata-test-2 2026-11-08T20:02:15Z h=147657757 code=0 memo=strata:cancel-all AB098999023AA7E4433D4F7D15BB87F71ED4820ED6F6A7BE4C19E18978EFC0C1"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/08-clear-stops.txt",
+   "lines": [
+    "# 2026-11-08T20:02:50Z clear: .run/testnet.env removed (KILL_SWITCH unset), then human clear of the persisted kill latch",
+    "$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 1 --kill --confirm",
+    "{\"cleared\":{\"kill\":true,\"season\":false,\"day\":false},\"before\":{\"risk\":{\"dayKey\":\"2026-11-08\",\"dayStartEquityUsd\":8,\"peakEquityUsd\":8,\"stoppedForDay\":false,\"stoppedForSeason\":false},\"kill\":{\"killed\":true,\"closePositions\":true,\"source\":\"api\",\"at\":1794168027728}}}",
+    "$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 2 --kill --confirm",
+    "{\"cleared\":{\"kill\":true,\"season\":false,\"day\":false},\"before\":{\"risk\":{\"dayKey\":\"2026-11-08\",\"dayStartEquityUsd\":4,\"peakEquityUsd\":4,\"stoppedForDay\":false,\"stoppedForSeason\":false},\"kill\":{\"killed\":true,\"closePositions\":false,\"source\":\"env\",\"at\":1794168153800}}}",
+    "$ pnpm --filter @strata/agent clear-stops -- --network testnet --agent-id 3 --kill --confirm",
+    "{\"cleared\":{\"kill\":true,\"season\":false,\"day\":false},\"before\":{\"risk\":{\"dayKey\":\"2026-11-08\",\"dayStartEquityUsd\":4,\"peakEquityUsd\":4,\"stoppedForDay\":false,\"stoppedForSeason\":false},\"kill\":{\"killed\":true,\"closePositions\":false,\"source\":\"telegram\",\"at\":1794168092998}}}"
+   ]
+  },
+  {
+   "source": "deliverables/screens/killswitch/09-resumed.txt",
+   "lines": [
+    "# 2026-11-08T20:04:56Z after clear-stops and restart: quoting resumed (agents restarted 20:03:48Z / 20:04:07Z / 20:03:48Z, killed=false restored)",
+    "$ tsx src/injective/bin/open-orders.ts",
+    "2026-11-08T20:04:56.585Z strata-test-1 agent=1 BTC/USDC PERP open=4 [B 0.0001@75697, B 0.0002@75621, S 0.0001@76002, S 0.0002@76077]",
+    "2026-11-08T20:04:56.585Z strata-test-1 agent=1 ETH/USDC PERP open=4 [B 0.0072@1916.8, B 0.0062@1916.9, S 0.0053@2232.8, S 0.008@2235]",
+    "2026-11-08T20:04:56.585Z strata-test-2 agent=2 INJ/USDC PERP open=4 [B 1.04@4.898, B 0.81@4.899, S 0.49@8.1, S 0.74@8.108]",
+    "2026-11-08T20:04:56.585Z strata-test-2 agent=2 BHA-PERP open=0",
+    "2026-11-08T20:04:56.585Z strata-test-3 agent=3 LINK/USDC PERP open=4 [B 0.69@8.65, B 0.71@8.64, S 0.56@10.7, S 0.84@10.71]",
+    "2026-11-08T20:04:56.585Z strata-test-3 agent=3 MUN-PERP open=0",
+    "2026-11-08T20:04:56.585Z total open orders: 16",
+    "$ tsx src/injective/bin/recent-txs.ts --limit 3",
+    "strata-test-1 2026-11-08T20:04:43Z h=147658026 code=0 memo=strata:batch 8D5858CA815FB5DBCB10E172AE3C8BBD640CCB685319E7D0A19D4AB60636B657",
+    "strata-test-2 2026-11-08T20:04:52Z h=147658042 code=0 memo=strata:batch 60222B31D26B514D09269A642A6DE23C61535E8FE6DF7C470EBBE13E8F162331",
+    "strata-test-3 2026-11-08T20:04:32Z h=147658006 code=0 memo=strata:batch D71E69873A26D06C477B10622D8F8BFF760E47D3A96CB69FCA6E6DA33C80EC85"
+   ]
+  }
+ ],
+ "guardEvents": {
+  "source": "Neon Postgres (production DB the API reads), read-only session: guard_events, formatted one per line for typesetting (values verbatim)",
+  "lines": [
+   {
+    "at": "2026-11-08T19:44:55.247+00:00",
+    "line": "2026-11-08T19:44:55.247+00:00 strata-test-3 guard=oracle action=halt reason=oracle_book_deviation market=MUN-PERP \"Oracle is 3014.1 bps from the book mid for 3 consecutive cycles, limit is 150 bps.\" limitBps=150 deviationBps=3014.122 consecutiveCycles=3"
+   },
+   {
+    "at": "2026-11-08T19:44:56.086+00:00",
+    "line": "2026-11-08T19:44:56.086+00:00 strata-test-2 guard=oracle action=halt reason=oracle_book_deviation market=INJ/USDC PERP \"Oracle is 5134.1 bps from the book mid for 3 consecutive cycles, limit is 150 bps.\" limitBps=150 deviationBps=5134.119 consecutiveCycles=3"
+   },
+   {
+    "at": "2026-11-08T19:44:58.573+00:00",
+    "line": "2026-11-08T19:44:58.573+00:00 strata-test-1 guard=oracle action=halt reason=oracle_book_deviation market=ETH/USDC PERP \"Oracle is 1626.7 bps from the book mid for 3 consecutive cycles, limit is 150 bps.\" limitBps=150 deviationBps=1626.733 consecutiveCycles=3"
+   },
+   {
+    "at": "2026-11-08T20:00:27.73+00:00",
+    "line": "2026-11-08T20:00:27.73+00:00 strata-test-1 guard=kill_switch action=halt reason=kill_switch_api \"Signed admin kill received; all orders cancelled and a reduce-only close requested.\" killCommandId=e1ead4bc-0bd9-4e4e-b710-b1373233acfd closePositions=True"
+   },
+   {
+    "at": "2026-11-08T20:00:28.191+00:00",
+    "line": "2026-11-08T20:00:28.191+00:00 strata-test-1 guard=kill_switch action=halt reason=kill_switch_api market=BTC/USDC PERP \"Kill switch triggered via api; all orders cancelled and a reduce-only close requested.\" source=api closePositions=True"
+   },
+   {
+    "at": "2026-11-08T20:00:30.324+00:00",
+    "line": "2026-11-08T20:00:30.324+00:00 strata-test-1 guard=kill_switch action=halt reason=kill_switch_api market=ETH/USDC PERP \"Kill switch triggered via api; all orders cancelled and a reduce-only close requested.\" source=api closePositions=True"
+   },
+   {
+    "at": "2026-11-08T20:01:34.011+00:00",
+    "line": "2026-11-08T20:01:34.011+00:00 strata-test-3 guard=kill_switch action=halt reason=kill_switch_telegram market=MUN-PERP \"Kill switch triggered via telegram; all orders cancelled.\" source=telegram closePositions=False"
+   },
+   {
+    "at": "2026-11-08T20:01:35.683+00:00",
+    "line": "2026-11-08T20:01:35.683+00:00 strata-test-3 guard=kill_switch action=halt reason=kill_switch_telegram market=LINK/USDC PERP \"Kill switch triggered via telegram; all orders cancelled.\" source=telegram closePositions=False"
+   },
+   {
+    "at": "2026-11-08T20:02:37.7+00:00",
+    "line": "2026-11-08T20:02:37.7+00:00 strata-test-2 guard=kill_switch action=halt reason=kill_switch_env market=INJ/USDC PERP \"Kill switch triggered via env; all orders cancelled.\" source=env closePositions=False"
+   },
+   {
+    "at": "2026-11-08T20:02:37.703+00:00",
+    "line": "2026-11-08T20:02:37.703+00:00 strata-test-2 guard=kill_switch action=halt reason=kill_switch_env market=BHA-PERP \"Kill switch triggered via env; all orders cancelled.\" source=env closePositions=False"
+   },
+   {
+    "at": "2026-11-08T20:21:02.446+00:00",
+    "line": "2026-11-08T20:21:02.446+00:00 strata-test-1 guard=risk action=halt reason=data_unavailable market=BTC/USDC PERP \"Exchange call failed or timed out; orders cancelled until state is reconciled.\" error=fetch failed"
+   },
+   {
+    "at": "2026-11-08T20:21:02.667+00:00",
+    "line": "2026-11-08T20:21:02.667+00:00 strata-test-2 guard=risk action=halt reason=data_unavailable market=INJ/USDC PERP \"Exchange call failed or timed out; orders cancelled until state is reconciled.\" error=fetch failed"
+   },
+   {
+    "at": "2026-11-08T20:22:17.361+00:00",
+    "line": "2026-11-08T20:22:17.361+00:00 strata-test-2 guard=oracle action=halt reason=oracle_stale market=BHA-PERP \"Oracle report is 15880.29 s old, limit is 30 s.\" limitSec=30 oracleAgeSec=15880.289"
+   },
+   {
+    "at": "2026-11-08T20:22:17.363+00:00",
+    "line": "2026-11-08T20:22:17.363+00:00 strata-test-2 guard=session action=halt reason=session_closed market=BHA-PERP \"Underlying market is closed; quotes are pulled until it reopens.\" nextOpenMs=1794234600000 sessionClass=us_equity"
+   },
+   {
+    "at": "2026-11-08T20:40:36.08+00:00",
+    "line": "2026-11-08T20:40:36.08+00:00 strata-test-1 guard=risk action=halt reason=data_unavailable market=BTC/USDC PERP \"Exchange call failed or timed out; orders cancelled until state is reconciled.\" error=batchUpdate timed out after 8000 ms"
+   },
+   {
+    "at": "2026-11-09T08:20:48+00:00",
+    "line": "2026-11-09T08:20:48+00:00 strata-test-3 guard=oracle action=widen reason=oracle_book_deviation market=LINK/USDC PERP \"Book unhealthy, cross-check skipped, spreads widened.\" policy=widen reason=no_bids_in_band bandBps=300 askDepthUsd=0 bidDepthUsd=0 bookHealthy=False minDepthUsd=25"
+   },
+   {
+    "at": "2026-11-09T08:20:57.069+00:00",
+    "line": "2026-11-09T08:20:57.069+00:00 strata-test-2 guard=oracle action=halt reason=oracle_stale market=BHA-PERP \"Oracle report is 58999.81 s old, limit is 30 s.\" limitSec=30 oracleAgeSec=58999.808"
+   },
+   {
+    "at": "2026-11-09T08:20:57.071+00:00",
+    "line": "2026-11-09T08:20:57.071+00:00 strata-test-2 guard=session action=halt reason=session_closed market=BHA-PERP \"Underlying market is closed; quotes are pulled until it reopens.\" nextOpenMs=1794234600000 sessionClass=us_equity"
+   },
+   {
+    "at": "2026-11-09T08:20:59.845+00:00",
+    "line": "2026-11-09T08:20:59.845+00:00 strata-test-1 guard=oracle action=widen reason=oracle_book_deviation market=ETH/USDC PERP \"Book unhealthy, cross-check skipped, spreads widened.\" policy=widen reason=no_bids_in_band bandBps=300 askDepthUsd=595.36 bidDepthUsd=0 bookHealthy=False minDepthUsd=25"
+   },
+   {
+    "at": "2026-11-09T08:20:59.856+00:00",
+    "line": "2026-11-09T08:20:59.856+00:00 strata-test-3 guard=oracle action=halt reason=oracle_stale market=MUN-PERP \"Oracle report is 49791.1 s old, limit is 30 s.\" limitSec=30 oracleAgeSec=49791.104"
+   },
+   {
+    "at": "2026-11-09T08:20:59.858+00:00",
+    "line": "2026-11-09T08:20:59.858+00:00 strata-test-3 guard=session action=halt reason=session_closed market=MUN-PERP \"Underlying market is closed; quotes are pulled until it reopens.\" nextOpenMs=1794234600000 sessionClass=us_equity"
+   },
+   {
+    "at": "2026-11-09T08:20:59.939+00:00",
+    "line": "2026-11-09T08:20:59.939+00:00 strata-test-2 guard=oracle action=widen reason=oracle_book_deviation market=INJ/USDC PERP \"Book unhealthy, cross-check skipped, spreads widened.\" policy=widen reason=no_bids_in_band bandBps=300 askDepthUsd=0 bidDepthUsd=0 bookHealthy=False minDepthUsd=25"
+   }
+  ]
+ },
+ "agentLogs": {
+  "source": ".run/logs/strata-test-{1,2,3}.log (JSON lines, verbatim)",
+  "lines": [
+   {
+    "source": ".run/logs/strata-test-1.log",
+    "at": "2026-11-08T19:44:05.274Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-1\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"BTC/USDC PERP,ETH/USDC PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:44:05.274Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-1.log",
+    "at": "2026-11-08T19:47:58.284Z",
+    "msg": "shutdown: cancelling all orders",
+    "line": "{\"level\":\"info\",\"msg\":\"shutdown: cancelling all orders\",\"at\":\"2026-11-08T19:47:58.284Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-1.log",
+    "at": "2026-11-08T19:48:15.914Z",
+    "msg": "restored persisted safety state",
+    "line": "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T19:48:15.914Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-1.log",
+    "at": "2026-11-08T19:48:16.806Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-1\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"BTC/USDC PERP,ETH/USDC PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:48:16.806Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-2.log",
+    "at": "2026-11-08T19:44:05.459Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-2\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"INJ/USDC PERP,BHA-PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:44:05.459Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-2.log",
+    "at": "2026-11-08T19:47:58.287Z",
+    "msg": "shutdown: cancelling all orders",
+    "line": "{\"level\":\"info\",\"msg\":\"shutdown: cancelling all orders\",\"at\":\"2026-11-08T19:47:58.287Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-2.log",
+    "at": "2026-11-08T19:48:13.643Z",
+    "msg": "restored persisted safety state",
+    "line": "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T19:48:13.643Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-2.log",
+    "at": "2026-11-08T19:48:14.476Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-2\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"INJ/USDC PERP,BHA-PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:48:14.476Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-3.log",
+    "at": "2026-11-08T19:44:05.285Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-3\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"LINK/USDC PERP,MUN-PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:44:05.285Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-3.log",
+    "at": "2026-11-08T19:47:58.288Z",
+    "msg": "shutdown: cancelling all orders",
+    "line": "{\"level\":\"info\",\"msg\":\"shutdown: cancelling all orders\",\"at\":\"2026-11-08T19:47:58.288Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-3.log",
+    "at": "2026-11-08T19:48:16.567Z",
+    "msg": "restored persisted safety state",
+    "line": "{\"level\":\"info\",\"msg\":\"restored persisted safety state\",\"stoppedForDay\":false,\"stoppedForSeason\":false,\"killed\":false,\"at\":\"2026-11-08T19:48:16.567Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-test-3.log",
+    "at": "2026-11-08T19:48:17.355Z",
+    "msg": "agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"agent started\",\"agent\":\"strata-test-3\",\"network\":\"testnet\",\"adapter\":\"injective\",\"markets\":\"LINK/USDC PERP,MUN-PERP\",\"tuner\":\"shadow\",\"killed\":false,\"at\":\"2026-11-08T19:48:17.355Z\"}"
+   }
+  ]
+ },
+ "scorerLogs": {
+  "source": ".run/logs/scorer-testnet.log (JSON lines, verbatim, DB host redacted)",
+  "lines": [
+   {
+    "source": ".run/logs/scorer-testnet.log",
+    "at": "2026-11-08T19:38:52.533Z",
+    "msg": "scorer starting",
+    "line": "{\"level\":\"info\",\"service\":\"scorer\",\"msg\":\"scorer starting\",\"network\":\"testnet\",\"database\":\"<redacted>\",\"arena\":\"0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870\",\"attestor\":\"0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF\",\"signer\":\"0xdc83322EE104526f473AfC4f8a01e2d57676A953\",\"dryRun\":false,\"at\":\"2026-11-08T19:38:52.533Z\"}"
+   },
+   {
+    "source": ".run/logs/scorer-testnet.log",
+    "at": "2026-11-08T20:24:37.961Z",
+    "msg": "epoch root broadcast",
+    "line": "{\"level\":\"info\",\"service\":\"scorer\",\"msg\":\"epoch root broadcast\",\"season\":1,\"epoch\":0,\"txHash\":\"0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a\",\"root\":\"0x117a7ecdd28cf13e4089c05958fb7555fdd471e7d3cb73caec1554cb0e6ada77\",\"at\":\"2026-11-08T20:24:37.961Z\"}"
+   },
+   {
+    "source": ".run/logs/scorer-testnet.log",
+    "at": "2026-11-08T20:24:39.012Z",
+    "msg": "epoch root confirmed",
+    "line": "{\"level\":\"info\",\"service\":\"scorer\",\"msg\":\"epoch root confirmed\",\"season\":1,\"epoch\":0,\"txHash\":\"0xc7133de93833b909c81a1a51aa452ff58d96c46f5c8011b1e23d79db205d9d0a\",\"at\":\"2026-11-08T20:24:39.012Z\"}"
+   },
+   {
+    "source": ".run/logs/scorer-testnet.log",
+    "at": "2026-11-09T08:20:14.037Z",
+    "msg": "epoch skipped",
+    "line": "{\"level\":\"info\",\"service\":\"scorer\",\"msg\":\"epoch skipped\",\"season\":1,\"epoch\":1,\"reason\":\"book data too sparse: best agent coverage 43.1%, minimum 50%\",\"at\":\"2026-11-09T08:20:14.037Z\"}"
+   },
+   {
+    "source": ".run/logs/scorer-testnet.log",
+    "at": "2026-11-09T08:20:19.832Z",
+    "msg": "epoch skipped",
+    "line": "{\"level\":\"info\",\"service\":\"scorer\",\"msg\":\"epoch skipped\",\"season\":1,\"epoch\":2,\"reason\":\"no book data for any arena market in the epoch window\",\"at\":\"2026-11-09T08:20:19.832Z\"}"
+   }
+  ]
+ },
+ "optionsLogs": {
+  "source": ".run/logs/strata-options.log (SIMULATED options writer)",
+  "provenance": "SIMULATED",
+  "lines": [
+   {
+    "source": ".run/logs/strata-options.log",
+    "at": "2026-11-09T08:34:03.503Z",
+    "msg": "options agent started",
+    "line": "{\"level\":\"info\",\"msg\":\"options agent started\",\"provenance\":\"SIMULATED\",\"agentId\":9001,\"underlyings\":6,\"cycleMs\":60000,\"at\":\"2026-11-09T08:34:03.503Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-options.log",
+    "at": "2026-11-09T08:34:05.754Z",
+    "msg": "cycle",
+    "line": "{\"level\":\"info\",\"msg\":\"cycle\",\"provenance\":\"SIMULATED\",\"cycle\":0,\"quote\":true,\"written\":0,\"settled\":0,\"closed\":0,\"prices\":6,\"equityUsd\":10000,\"open\":0,\"vol_SICI\":-1,\"vol_US500\":-1,\"vol_USTECH\":-1,\"vol_XAU\":-1,\"vol_XAG\":-1,\"vol_WTI\":-1,\"at\":\"2026-11-09T08:34:05.754Z\"}"
+   },
+   {
+    "source": ".run/logs/strata-options.log",
+    "at": "2026-11-09T08:35:04.622Z",
+    "msg": "cycle",
+    "line": "{\"level\":\"info\",\"msg\":\"cycle\",\"provenance\":\"SIMULATED\",\"cycle\":0,\"quote\":true,\"written\":0,\"settled\":0,\"closed\":0,\"prices\":6,\"equityUsd\":10000,\"open\":0,\"vol_SICI\":-1,\"vol_US500\":-1,\"vol_USTECH\":-1,\"vol_XAU\":-1,\"vol_XAG\":-1,\"vol_WTI\":-1,\"at\":\"2026-11-09T08:35:04.622Z\"}"
+   }
+  ]
+ }
+}

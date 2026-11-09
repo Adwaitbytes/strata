@@ -1,0 +1,562 @@
+{
+ "source": "Neon Postgres (production DB the API reads), read-only session: tables agents, agent_orders, guard_events (network=testnet)",
+ "measuredAt": "2026-11-09T08:56:02Z",
+ "network": "testnet",
+ "provenance": "TESTNET",
+ "agents": [
+  {
+   "agentId": 1,
+   "name": "strata-test-1",
+   "kind": "house",
+   "simulated": false,
+   "status": "active",
+   "injAddress": "inj15dlcgkplx4hvatfpy3cmfx2ykd2xnmv28q3pdh",
+   "operator": "0xa37f84583f356ecead212471b49944b35469ed8a",
+   "erc8004Id": "69",
+   "enrolledAt": "2026-11-08T19:34:08+00:00",
+   "markets": [
+    {
+     "marketId": "0xfd704649cf3a516c0c145ab0111717c44640d8dbe52a462ae35cadf2f6df1515",
+     "ticker": "BTC/USDC PERP"
+    },
+    {
+     "marketId": "0x135de28700392fb1c17d40d5170a74f30055a4ad522feddafec42fbbbb780897",
+     "ticker": "ETH/USDC PERP"
+    }
+   ]
+  },
+  {
+   "agentId": 2,
+   "name": "strata-test-2",
+   "kind": "house",
+   "simulated": false,
+   "status": "active",
+   "injAddress": "inj1fn53nvva0t7qayhvpef0qk4thae79zsnrekrev",
+   "operator": "0x4ce919b19d7afc0e92ec0e52f05aabbf73e28a13",
+   "erc8004Id": "70",
+   "enrolledAt": "2026-11-08T19:34:17+00:00",
+   "markets": [
+    {
+     "marketId": "0x5cd44dc50348a8d2c9bd9c58765cb4b3f25a88d700f78a24597578ab2484d4da",
+     "ticker": "BHA-PERP"
+    },
+    {
+     "marketId": "0xdc70164d7120529c3cd84278c98df4151210c0447a65a2aab03459cf328de41e",
+     "ticker": "INJ/USDC PERP"
+    }
+   ]
+  },
+  {
+   "agentId": 3,
+   "name": "strata-test-3",
+   "kind": "house",
+   "simulated": false,
+   "status": "active",
+   "injAddress": "inj1wxtyzazhp85x0wc2erge29dmey4ns47kghnt5t",
+   "operator": "0x719641745709e867bb0ac8d19515bbc92b3857d6",
+   "erc8004Id": "71",
+   "enrolledAt": "2026-11-08T19:34:22+00:00",
+   "markets": [
+    {
+     "marketId": "0xeccc2f12a231d55a99e973b7dbfce06de2b12b535cd56ae08a49c60ad0b5feb6",
+     "ticker": "MUN-PERP"
+    },
+    {
+     "marketId": "0xdbb9bb072015238096f6e821ee9aab7affd741f8662a71acc14ac30ee6b687a5",
+     "ticker": "LINK/USDC PERP"
+    }
+   ]
+  },
+  {
+   "agentId": 9001,
+   "name": "strata-options",
+   "kind": "house",
+   "simulated": true,
+   "status": "active",
+   "injAddress": "inj1eqhd4dhzq3ukfhggeqkknlgwhljuddfk7yrvwg",
+   "operator": "0xc82edab6e2047964dd08c82d69fd0ebfe5c6b536",
+   "erc8004Id": null,
+   "enrolledAt": "2026-11-09T08:34:01.712+00:00",
+   "markets": []
+  }
+ ],
+ "agentNote": "Agents 1 to 3 are the house market makers on Injective testnet. Agent 9001 strata-options is SIMULATED (STRATA simulator, no chain orders) and is excluded from attested epochs.",
+ "ordersPosted": {
+  "total": 1659,
+  "distinctOrderHashes": 1659,
+  "first": "2026-11-08T19:44:47.399+00:00",
+  "last": "2026-11-09T08:56:01.102+00:00",
+  "openRowsInTable": 16,
+  "byAgent": [
+   {
+    "agentId": 1,
+    "posted": 1113,
+    "openRows": 8
+   },
+   {
+    "agentId": 2,
+    "posted": 420,
+    "openRows": 4
+   },
+   {
+    "agentId": 3,
+    "posted": 126,
+    "openRows": 4
+   }
+  ],
+  "source": "Neon Postgres (production DB the API reads), read-only session: agent_orders (one row per order posted by agents 1 to 3)",
+  "note": "openRowsInTable over-counts: docs/STATUS.md notes some cancels are not closed in the table. Use openOnChain for 'open now'."
+ },
+ "openOnChain": {
+  "source": "pnpm --filter @strata/agent inj:open-orders (services/agent/src/injective/bin/open-orders.ts, read-only Injective testnet query, no keys loaded); raw output in film/capture/open-orders.latest.txt",
+  "measuredAt": "2026-11-09T08:53:29.227Z",
+  "total": 16,
+  "perMarket": [
+   {
+    "agent": "strata-test-1",
+    "agentId": 1,
+    "market": "BTC/USDC PERP",
+    "open": 4,
+    "orders": [
+     "B 0.0001@74258",
+     "B 0.0002@74184",
+     "S 0.0001@74557",
+     "S 0.0002@74631"
+    ]
+   },
+   {
+    "agent": "strata-test-1",
+    "agentId": 1,
+    "market": "ETH/USDC PERP",
+    "open": 4,
+    "orders": [
+     "B 0.008@1916.8",
+     "B 0.0062@1916.9",
+     "S 0.0056@2125.3",
+     "S 0.0084@2127.5"
+    ]
+   },
+   {
+    "agent": "strata-test-2",
+    "agentId": 2,
+    "market": "INJ/USDC PERP",
+    "open": 4,
+    "orders": [
+     "B 1.06@4.898",
+     "B 0.81@4.899",
+     "S 0.49@8.022",
+     "S 0.74@8.03"
+    ]
+   },
+   {
+    "agent": "strata-test-2",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "open": 0,
+    "orders": []
+   },
+   {
+    "agent": "strata-test-3",
+    "agentId": 3,
+    "market": "LINK/USDC PERP",
+    "open": 4,
+    "orders": [
+     "B 0.69@8.65",
+     "B 0.75@8.64",
+     "S 0.57@10.48",
+     "S 0.85@10.49"
+    ]
+   },
+   {
+    "agent": "strata-test-3",
+    "agentId": 3,
+    "market": "MUN-PERP",
+    "open": 0,
+    "orders": []
+   }
+  ],
+  "orderFormat": "B|S quantity@price"
+ },
+ "guardEvents": {
+  "source": "Neon Postgres (production DB the API reads), read-only session: guard_events",
+  "byReason": [
+   {
+    "provenance": "TESTNET",
+    "guard": "oracle",
+    "reason": "oracle_book_deviation",
+    "action": "widen",
+    "count": 29,
+    "first": "2026-11-08T19:48:59.409+00:00",
+    "last": "2026-11-09T08:20:59.939+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "session",
+    "reason": "session_closed",
+    "action": "halt",
+    "count": 15,
+    "first": "2026-11-08T19:44:48.839+00:00",
+    "last": "2026-11-09T08:20:59.858+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "oracle",
+    "reason": "oracle_stale",
+    "action": "halt",
+    "count": 15,
+    "first": "2026-11-08T19:44:48.837+00:00",
+    "last": "2026-11-09T08:20:59.856+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "risk",
+    "reason": "data_unavailable",
+    "action": "halt",
+    "count": 12,
+    "first": "2026-11-08T20:14:51.86+00:00",
+    "last": "2026-11-08T20:40:36.08+00:00"
+   },
+   {
+    "provenance": "SIMULATED",
+    "guard": "session",
+    "reason": "session_closed",
+    "action": "halt",
+    "count": 12,
+    "first": "2026-11-09T08:34:05.445+00:00",
+    "last": "2026-11-09T08:55:48.17+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "oracle",
+    "reason": "oracle_book_deviation",
+    "action": "halt",
+    "count": 3,
+    "first": "2026-11-08T19:44:55.247+00:00",
+    "last": "2026-11-08T19:44:58.573+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "kill_switch",
+    "reason": "kill_switch_api",
+    "action": "halt",
+    "count": 3,
+    "first": "2026-11-08T20:00:27.73+00:00",
+    "last": "2026-11-08T20:00:30.324+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "kill_switch",
+    "reason": "kill_switch_telegram",
+    "action": "halt",
+    "count": 2,
+    "first": "2026-11-08T20:01:34.011+00:00",
+    "last": "2026-11-08T20:01:35.683+00:00"
+   },
+   {
+    "provenance": "TESTNET",
+    "guard": "kill_switch",
+    "reason": "kill_switch_env",
+    "action": "halt",
+    "count": 2,
+    "first": "2026-11-08T20:02:37.7+00:00",
+    "last": "2026-11-08T20:02:37.703+00:00"
+   }
+  ],
+  "examples": [
+   {
+    "id": "971b41a9-8470-4590-9837-612bb14f7366",
+    "agentId": 1,
+    "market": "BTC/USDC PERP",
+    "guard": "risk",
+    "action": "halt",
+    "reason": "data_unavailable",
+    "detail": "Exchange call failed or timed out; orders cancelled until state is reconciled.",
+    "observed": {
+     "error": "batchUpdate timed out after 8000 ms"
+    },
+    "at": "2026-11-08T20:14:51.86+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "fec30de9-f738-4d62-ba23-fac9c3d66fdb",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "risk",
+    "action": "halt",
+    "reason": "data_unavailable",
+    "detail": "Exchange call failed or timed out; orders cancelled until state is reconciled.",
+    "observed": {
+     "error": "getMarketState timed out after 8000 ms"
+    },
+    "at": "2026-11-08T20:14:52.303+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "a8efd095-fb7b-4c88-9031-d579806e7e29",
+    "agentId": 1,
+    "market": "ETH/USDC PERP",
+    "guard": "risk",
+    "action": "halt",
+    "reason": "data_unavailable",
+    "detail": "Exchange call failed or timed out; orders cancelled until state is reconciled.",
+    "observed": {
+     "error": "batchUpdate timed out after 8000 ms"
+    },
+    "at": "2026-11-08T20:14:54.839+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "5161a348-9a41-4481-809c-29d6f7daf934",
+    "agentId": 1,
+    "market": null,
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_api",
+    "detail": "Signed admin kill received; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "killCommandId": "e1ead4bc-0bd9-4e4e-b710-b1373233acfd",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:27.73+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "c65985a3-920b-4c5b-a2e7-48449cc4eb23",
+    "agentId": 1,
+    "market": "BTC/USDC PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_api",
+    "detail": "Kill switch triggered via api; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "source": "api",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:28.191+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "16895ac4-f136-4b92-b796-b7b0cb159b23",
+    "agentId": 1,
+    "market": "ETH/USDC PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_api",
+    "detail": "Kill switch triggered via api; all orders cancelled and a reduce-only close requested.",
+    "observed": {
+     "source": "api",
+     "closePositions": true
+    },
+    "at": "2026-11-08T20:00:30.324+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "f01506d1-6b46-4746-888b-b1c6ab41ccc5",
+    "agentId": 2,
+    "market": "INJ/USDC PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_env",
+    "detail": "Kill switch triggered via env; all orders cancelled.",
+    "observed": {
+     "source": "env",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:02:37.7+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "b3887089-8536-48cf-8457-4890bb29ced8",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_env",
+    "detail": "Kill switch triggered via env; all orders cancelled.",
+    "observed": {
+     "source": "env",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:02:37.703+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "78f9402d-a61e-4811-a378-71fb32e9f312",
+    "agentId": 3,
+    "market": "MUN-PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_telegram",
+    "detail": "Kill switch triggered via telegram; all orders cancelled.",
+    "observed": {
+     "source": "telegram",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:01:34.011+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "524a9347-04e6-4f59-93af-22e621c1c561",
+    "agentId": 3,
+    "market": "LINK/USDC PERP",
+    "guard": "kill_switch",
+    "action": "halt",
+    "reason": "kill_switch_telegram",
+    "detail": "Kill switch triggered via telegram; all orders cancelled.",
+    "observed": {
+     "source": "telegram",
+     "closePositions": false
+    },
+    "at": "2026-11-08T20:01:35.683+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "921ee661-bbb1-4987-a092-9e96ddc80ec5",
+    "agentId": 3,
+    "market": "MUN-PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_book_deviation",
+    "detail": "Oracle is 3014.1 bps from the book mid for 3 consecutive cycles, limit is 150 bps.",
+    "observed": {
+     "limitBps": 150,
+     "deviationBps": 3014.122,
+     "consecutiveCycles": 3
+    },
+    "at": "2026-11-08T19:44:55.247+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "da914357-8b3a-4bb6-8ed6-dae06529c61c",
+    "agentId": 2,
+    "market": "INJ/USDC PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_book_deviation",
+    "detail": "Oracle is 5134.1 bps from the book mid for 3 consecutive cycles, limit is 150 bps.",
+    "observed": {
+     "limitBps": 150,
+     "deviationBps": 5134.119,
+     "consecutiveCycles": 3
+    },
+    "at": "2026-11-08T19:44:56.086+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "6bb442e9-0b04-4a15-a8de-9ce50e1054bd",
+    "agentId": 1,
+    "market": "ETH/USDC PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_book_deviation",
+    "detail": "Oracle is 1626.7 bps from the book mid for 3 consecutive cycles, limit is 150 bps.",
+    "observed": {
+     "limitBps": 150,
+     "deviationBps": 1626.733,
+     "consecutiveCycles": 3
+    },
+    "at": "2026-11-08T19:44:58.573+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "95e404eb-e5a2-4393-9bda-2fa52ee69584",
+    "agentId": 3,
+    "market": "MUN-PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_stale",
+    "detail": "Oracle report is 4419.4 s old, limit is 30 s.",
+    "observed": {
+     "limitSec": 30,
+     "oracleAgeSec": 4419.399
+    },
+    "at": "2026-11-08T19:44:48.837+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "b8e39372-4768-4694-bca8-05fa90c785c0",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_stale",
+    "detail": "Oracle report is 13631.94 s old, limit is 30 s.",
+    "observed": {
+     "limitSec": 30,
+     "oracleAgeSec": 13631.942
+    },
+    "at": "2026-11-08T19:44:49.038+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "766ced76-4d3c-462d-beca-a506faa76475",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "oracle",
+    "action": "halt",
+    "reason": "oracle_stale",
+    "detail": "Oracle report is 13880.12 s old, limit is 30 s.",
+    "observed": {
+     "limitSec": 30,
+     "oracleAgeSec": 13880.121
+    },
+    "at": "2026-11-08T19:48:57.389+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "c5d768bf-35ad-4cde-a12f-03ebd21cd8d7",
+    "agentId": 3,
+    "market": "MUN-PERP",
+    "guard": "session",
+    "action": "halt",
+    "reason": "session_closed",
+    "detail": "Underlying market is closed; quotes are pulled until it reopens.",
+    "observed": {
+     "nextOpenMs": 1794234600000,
+     "sessionClass": "us_equity"
+    },
+    "at": "2026-11-08T19:44:48.839+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "090f0bbe-322f-47f1-b590-46c207bfe3ce",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "session",
+    "action": "halt",
+    "reason": "session_closed",
+    "detail": "Underlying market is closed; quotes are pulled until it reopens.",
+    "observed": {
+     "nextOpenMs": 1794234600000,
+     "sessionClass": "us_equity"
+    },
+    "at": "2026-11-08T19:44:49.04+00:00",
+    "provenance": "TESTNET"
+   },
+   {
+    "id": "bb8ee24b-7f77-45ec-95f6-3635f12c5c67",
+    "agentId": 2,
+    "market": "BHA-PERP",
+    "guard": "session",
+    "action": "halt",
+    "reason": "session_closed",
+    "detail": "Underlying market is closed; quotes are pulled until it reopens.",
+    "observed": {
+     "nextOpenMs": 1794234600000,
+     "sessionClass": "us_equity"
+    },
+    "at": "2026-11-08T19:48:57.391+00:00",
+    "provenance": "TESTNET"
+   }
+  ],
+  "reasonGlossary": {
+   "oracle_book_deviation": "oracle price too far from the book mid (halt), or book unhealthy so the agent widens",
+   "oracle_stale": "oracle timestamp older than the allowed age; the agent halts that market",
+   "session_closed": "underlying market closed (Session Guard); the agent stops quoting",
+   "data_unavailable": "exchange call failed or timed out; orders cancelled until state reconciles",
+   "kill_switch_api": "signed admin kill via POST /v1/admin/kill",
+   "kill_switch_telegram": "internal kill path the Telegram bot relays",
+   "kill_switch_env": "KILL_SWITCH=true environment flag at start"
+  }
+ }
+}
