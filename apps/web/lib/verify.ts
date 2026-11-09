@@ -34,10 +34,10 @@ export function leafFor(score: EpochScore): Hex {
 export function verifyLocally(score: EpochScore, root: Hex): CheckResult {
   const leaf = leafFor(score);
   if (leaf.toLowerCase() !== score.leaf.toLowerCase()) {
-    return { status: "fail", detail: "The published leaf does not match a leaf rebuilt from the published score fields." };
+    return { status: "fail", detail: "The published leaf does not match a leaf rebuilt from the published score fields" };
   }
   if (!verifyProof(leaf, score.proof as Hex[], root)) {
-    return { status: "fail", detail: "The merkle proof does not lead to the published epoch root." };
+    return { status: "fail", detail: "The merkle proof does not lead to the published epoch root" };
   }
   return { status: "pass", detail: `Leaf rebuilt and proof checked against root ${root.slice(0, 10)}…` };
 }
@@ -49,10 +49,10 @@ export async function verifyOnchain(
   client: Pick<PublicClient, "readContract"> = createPublicClient({ chain: CHAINS[network], transport: http() }),
 ): Promise<CheckResult> {
   if (score.provenance === "MOCK") {
-    return { status: "unavailable", detail: "MOCK scores are development data and are never posted onchain." };
+    return { status: "unavailable", detail: "MOCK scores are development data and are never posted onchain" };
   }
   if (!attestor || /^0x0{40}$/i.test(attestor)) {
-    return { status: "unavailable", detail: `ScoreAttestor is not deployed on ${network} yet, so there is no onchain root to check.` };
+    return { status: "unavailable", detail: `ScoreAttestor is not deployed on ${network} yet, so there is no onchain root to check` };
   }
   const leaf = toLeafInput({
     season: score.season,
@@ -84,8 +84,8 @@ export async function verifyOnchain(
       ],
     });
     return ok
-      ? { status: "pass", detail: `ScoreAttestor ${attestor.slice(0, 10)}… on ${network} returned true.` }
-      : { status: "fail", detail: `ScoreAttestor ${attestor.slice(0, 10)}… on ${network} returned false.` };
+      ? { status: "pass", detail: `ScoreAttestor ${attestor.slice(0, 10)}… on ${network} returned true` }
+      : { status: "fail", detail: `ScoreAttestor ${attestor.slice(0, 10)}… on ${network} returned false` };
   } catch (err) {
     return { status: "unavailable", detail: `Could not reach the ${network} RPC: ${err instanceof Error ? err.message.split("\n")[0] : "unknown error"}` };
   }

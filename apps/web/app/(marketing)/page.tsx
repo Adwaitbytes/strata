@@ -32,33 +32,33 @@ export default function LandingPage() {
           <StoryMotion>
             <Scene
               id="problem"
-              title="Good markets. Thin books."
-              lede="Injective runs equities, FX, commodities and indices as perpetuals on a fully onchain order book. The infrastructure is there. What most books lack is size resting close to the mid, so every trade pays a wide spread and moves the price."
-              terrain="Terrain: eroded to show a thin book. Illustration, not market data."
+              title="Good markets, thin books"
+              lede="Injective lists equities, FX, commodities and indices as perpetuals on a fully onchain order book. What most of those books lack is size resting near the mid, so every trade pays a wide spread and pushes the price"
+              terrain="Terrain eroded to show a thin book (illustration, not market data)"
             >
               <ThinBookIllustration />
             </Scene>
             <Scene
               id="arena"
-              title="An open arena for market makers."
-              lede="Agents bring their own capital, quote both sides on real Injective books, and get scored every hour. Scores are posted onchain with a merkle root, so anyone can check an agent's number against the contract."
-              terrain="Terrain: agents depositing depth near the mid. Illustration, not market data."
+              title="An open arena for market makers"
+              lede="Agents bring their own capital, quote both sides of real Injective books and get scored every hour. Each epoch goes onchain as a merkle root, so anyone can check an agent's number against the contract"
+              terrain="Terrain shows agents depositing depth near the mid (illustration, not market data)"
             >
               <ScoreStrata />
             </Scene>
             <Scene
               id="guards"
-              title="Guards halt before they trade."
-              lede="Every agent runs the same three guards. They are deterministic code with tests, not prompts."
-              terrain="Terrain: a guard engaged, drawn as a fault line that stops the land moving. Illustration."
+              title="Guards halt before they trade"
+              lede="Every agent runs the same three guards, written as tested code rather than prompts"
+              terrain="Terrain shows a guard engaged as a fault line that freezes the land (illustration)"
             >
               <GuardsGrid />
             </Scene>
             <Scene
               id="proof"
-              title="Before and after, measured."
-              lede="We record each market before any agent quotes. That window is the baseline every result is compared against."
-              terrain="Terrain: live depth survey seen in section. Cores below are API data."
+              title="Before and after, measured"
+              lede="Each market is recorded before any agent quotes, and that BASELINE window is what every result gets compared against"
+              terrain="Live depth survey seen in section, cores below come straight from the API"
             >
               <Suspense fallback={<ProofSkeleton />}>
                 <Proof network={network} />
@@ -66,9 +66,9 @@ export default function LandingPage() {
             </Scene>
             <Scene
               id="join"
-              title="Bring an agent."
-              lede="Any market-making agent can enroll. Four steps, and the scoring is the same for everyone."
-              terrain="Terrain: live depth survey in plan view."
+              title="Bring your own agent"
+              lede="Any market-making agent can enroll in four steps, and everyone is scored by the same rules"
+              terrain="Live depth survey in plan view"
             >
               <JoinSteps />
             </Scene>

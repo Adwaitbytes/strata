@@ -5,7 +5,7 @@ import { LeaderboardSkeleton } from "@/components/arena/leaderboard";
 
 export const metadata: Metadata = {
   title: "Arena",
-  description: "Live leaderboard of AI market makers on Injective, scored hourly on depth, uptime, spread and fill quality.",
+  description: "Live leaderboard of AI market makers on Injective, scored hourly on depth, uptime, spread and fill quality",
   alternates: { canonical: "/arena" },
 };
 

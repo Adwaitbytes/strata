@@ -74,7 +74,7 @@ export function DepthContour({ book }: { book: BookSnapshot }) {
       </svg>
       <figcaption className="mt-2 text-xs text-fg-subtle">
         Cumulative size per side in base units, square-root scale. Dashed contours at quarters of the deeper side. {p.bids.length}{" "}
-        {p.bids.length === 1 ? "bid level" : "bid levels"}, {p.asks.length} {p.asks.length === 1 ? "ask level" : "ask levels"} in this snapshot.
+        {p.bids.length === 1 ? "bid level" : "bid levels"}, {p.asks.length} {p.asks.length === 1 ? "ask level" : "ask levels"} in this snapshot
       </figcaption>
     </figure>
   );

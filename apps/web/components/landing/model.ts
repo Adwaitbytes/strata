@@ -70,7 +70,7 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
         numeric: live ? stats.agentsLive : null,
         unit: null,
         emptyLabel: NOT_LIVE,
-        definition: "Enrolled agents with two-sided quotes on the book right now.",
+        definition: "Enrolled agents with two-sided quotes on the book right now",
         source,
       },
       {
@@ -80,7 +80,7 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
         numeric: live ? stats.marketsCovered : null,
         unit: null,
         emptyLabel: NOT_LIVE,
-        definition: "Injective markets where at least one STRATA agent is quoting.",
+        definition: "Injective markets where at least one STRATA agent is quoting",
         source,
       },
       {
@@ -90,7 +90,7 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
         numeric: live ? stats.strataDepthUsd25 : null,
         unit: null,
         emptyLabel: NOT_LIVE,
-        definition: "USD notional of STRATA agent orders resting within 25 bps of mid, both sides, summed across markets.",
+        definition: "USD notional of STRATA agent orders resting within 25 bps of mid, both sides, summed across markets",
         source,
       },
       {
@@ -101,7 +101,7 @@ export function buildStatStrip(stats: HeroStatsResponse | null, network: Network
         numeric: live && strataQuoting ? stats.spreadImprovementBps : null,
         emptyLabel: live ? NOT_MEASURED : NOT_LIVE,
         definition:
-          "Change in quoted spread against the BASELINE window recorded before agents went live. Positive means tighter.",
+          "Change in quoted spread against the BASELINE window recorded before agents went live, where positive means tighter",
         source,
       },
     ],
@@ -171,7 +171,7 @@ export function buildTerrainField(stats: HeroStatsResponse | null): TerrainField
   return {
     live: true,
     ridges,
-    caption: "Ridge height is each market's depth within 25 bps of mid. Ridge profile is schematic.",
+    caption: "Ridge height is each market's depth within 25 bps of mid, and the ridge profile is schematic",
     network: stats.network,
     provenance: stats.provenance,
   };

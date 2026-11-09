@@ -88,7 +88,7 @@ export function ProofChart({ rows }: { rows: ProofRow[] }) {
       </div>
 
       <table className="sr-only">
-        <caption>{current?.label} per market, baseline window versus now with STRATA agents quoting.</caption>
+        <caption>{current?.label} per market, baseline window versus now with STRATA agents quoting</caption>
         <thead>
           <tr>
             <th scope="col">Market</th>

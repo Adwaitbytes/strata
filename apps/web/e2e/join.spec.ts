@@ -3,10 +3,10 @@ import { SIGNING_METHODS, TEST_ADDRESS, expect, installFakeWallet, test, walletC
 test.describe("Join wizard", () => {
   test("without a wallet, explains what to install", async ({ page }) => {
     await page.goto("/join");
-    await expect(page.getByText("Not available to US persons or sanctioned jurisdictions.").first()).toBeVisible();
+    await expect(page.getByText("Not available to US persons or sanctioned jurisdictions").first()).toBeVisible();
     await expect(page.getByText("No browser wallet found")).toBeVisible();
     await expect(page.getByRole("button", { name: "Continue" })).toBeDisabled();
-    await expect(page.getByTestId("disabled-reason")).toHaveText("Connect a wallet first.");
+    await expect(page.getByTestId("disabled-reason")).toHaveText("Connect a wallet first");
   });
 
   test("never asks for a signature on page load", async ({ page }) => {

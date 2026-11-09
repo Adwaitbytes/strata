@@ -23,7 +23,7 @@ export function StatStrip({ strip }: { strip: StatStripModel }) {
               Updated <time dateTime={new Date(strip.asOf).toISOString()}>{timeFmt.format(strip.asOf)} UTC</time>
             </>
           ) : (
-            "Agents have not started quoting. Numbers appear here when they do."
+            "Numbers appear here once agents start quoting"
           )}
         </span>
       </div>

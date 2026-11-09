@@ -57,7 +57,7 @@ export function TransparencyView() {
       <PageHeader
         meta={<DataLabels network={network} provenance={d && d.guardEvents.length ? provenance : null} />}
         title="Transparency"
-        description="Every limit, every halt and every attestation, in one place. If an agent was stopped or suspended, it shows up here with the reason."
+        description="Every limit, halt and attestation on one page. When an agent is stopped or suspended, the reason shows up here"
         actions={<NetworkToggle />}
       />
 
@@ -125,7 +125,7 @@ export function TransparencyView() {
                 {d.guardEvents.length ? (
                   <GuardTimeline events={d.guardEvents} showAgent />
                 ) : (
-                  <EmptyState title="No guard events" detail="No agent has been halted or throttled by a guard on this network." className="border-0 p-0" />
+                  <EmptyState title="No guard events" detail="No agent has been halted or throttled by a guard on this network" className="border-0 p-0" />
                 )}
               </Panel>
             );
@@ -140,7 +140,7 @@ export function TransparencyView() {
                 <p className="mt-1 text-sm text-fg-muted">{s.reason}</p>
               </li>
             ));
-            const empty = <EmptyState title="No suspensions" detail="No agent has been suspended on this network." className="border-0 p-0" />;
+            const empty = <EmptyState title="No suspensions" detail="No agent has been suspended on this network" className="border-0 p-0" />;
             // Few suspensions read better as one full-width strip than as a mostly empty column.
             if (d.suspensions.length < 3) {
               return (
@@ -202,7 +202,7 @@ export function TransparencyView() {
                 </table>
               </div>
             ) : (
-              <EmptyState title="No epochs attested yet" detail="Roots appear here once the scorer posts the first epoch to ScoreAttestor." className="border-0 p-0" />
+              <EmptyState title="No epochs attested yet" detail="Roots appear here once the scorer posts the first epoch to ScoreAttestor" className="border-0 p-0" />
             )}
           </Panel>
         </>
@@ -214,7 +214,7 @@ export function TransparencyView() {
           <a href="https://github.com/Adwaitbytes/strata/blob/main/docs/SECURITY.md" target="_blank" rel="noopener noreferrer" className="text-accent underline underline-offset-4">
             docs/SECURITY.md
           </a>{" "}
-          in the repository.
+          in the repository
         </p>
       </Panel>
     </div>

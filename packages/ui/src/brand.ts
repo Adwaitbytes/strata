@@ -5,9 +5,11 @@
 export const BRAND = {
   name: "STRATA",
   studio: "Aarambh Labs",
-  headline: "Injective has the markets. STRATA brings the liquidity.",
+  headline: "Injective has the markets, STRATA brings the liquidity",
+  /** The headline as set on the hero, one line per clause, no trailing stops. */
+  headlineLines: ["Injective has the markets", "STRATA brings the liquidity"],
   subhead:
-    "AI market makers compete in the open, get scored onchain, and earn for every basis point of spread they remove.",
+    "AI market makers compete on Injective order books and get paid for every basis point of spread they take out, with scores posted onchain each hour",
   concept: "Liquidity as terrain",
 } as const;
 

@@ -166,7 +166,7 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
                   {n === "testnet" ? "Testnet" : "Mainnet"} <NetworkBadge network={n} />
                 </span>
                 <span className="text-xs text-fg-muted">
-                  {n === "testnet" ? "Chain 1439. Free test funds from the faucet. Recommended." : "Chain 1776. Real funds and real risk."}
+                  {n === "testnet" ? "Chain 1439 with free faucet funds, recommended" : "Chain 1776, real funds and real risk"}
                 </span>
               </span>
             </label>
@@ -175,7 +175,7 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
         {s.network === "mainnet" ? (
           <div className="rounded-lg border border-warn/40 bg-warn-soft p-4">
             <Check2 checked={s.mainnetAck} onChange={(v) => dispatch({ type: "set", patch: { mainnetAck: v } })} testId="mainnet-ack">
-              I understand mainnet uses real funds. My agent can lose money, and STRATA does not cover losses.
+              I understand mainnet uses real funds, my agent can lose money and STRATA does not cover losses
             </Check2>
           </div>
         ) : null}
@@ -201,7 +201,7 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
               </p>
             ) : (
               <div className="flex flex-wrap items-center gap-3">
-                <p className="text-sm text-warn">Your wallet is on chain {conn.chainId ?? "unknown"}. Switch to {target.name} (chain {target.id}) to continue.</p>
+                <p className="text-sm text-warn">Your wallet is on chain {conn.chainId ?? "unknown"}. Switch to {target.name} (chain {target.id}) to continue</p>
                 <Button variant="secondary" disabled={mainnetBlocked || switchChain.isPending} onClick={() => switchChain.mutate({ chainId: target.id })}>
                   {switchChain.isPending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}
                   Switch to chain {target.id}
@@ -213,7 +213,7 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
         ) : connectors.length === 0 ? (
           <EmptyState
             title="No browser wallet found"
-            detail="Install a wallet that supports Injective EVM, such as MetaMask or Rabby, then reload this page. Nothing is requested from your wallet until you click connect."
+            detail="Install a wallet that supports Injective EVM, such as MetaMask or Rabby, then reload this page. Nothing is requested from your wallet until you click connect"
           />
         ) : (
           <div className="flex flex-wrap gap-2">
@@ -226,13 +226,13 @@ function StepConnect({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
           </div>
         )}
         {connect.error ? <p className="text-xs text-halt">{connect.error.message.split("\n")[0]}</p> : null}
-        <p className="text-xs text-fg-subtle">Connecting shares your address only. STRATA never asks for a signature until you confirm the enroll transaction in step 4.</p>
+        <p className="text-xs text-fg-subtle">Connecting shares your address only, and STRATA never asks for a signature until you confirm the enroll transaction in step 4</p>
       </div>
 
       <div className="flex justify-end">
         <Button
           disabled={!onTarget || mainnetBlocked}
-          reason={mainnetBlocked ? "Confirm the mainnet notice first." : !conn.isConnected ? "Connect a wallet first." : `Switch to chain ${target.id} first.`}
+          reason={mainnetBlocked ? "Confirm the mainnet notice first" : !conn.isConnected ? "Connect a wallet first" : `Switch to chain ${target.id} first`}
           onClick={() => dispatch({ type: "go", step: 1 })}
         >
           Continue
@@ -249,7 +249,7 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
   return (
     <div className="flex flex-col gap-6">
       <p className="text-sm leading-relaxed text-fg-muted">
-        Every agent needs an ERC-8004 identity: an onchain record of who operates it. Link an identity your wallet already owns, or create one.
+        Every agent needs an ERC-8004 identity, an onchain record of who operates it. Link one your wallet already owns, or create one
       </p>
       <div className="grid gap-4 md:grid-cols-2">
         <div className="flex flex-col gap-3 rounded-xl border border-border p-4">
@@ -269,7 +269,7 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
             className="num h-10 rounded-lg border border-border-strong bg-bg-sunken px-3 text-sm text-fg placeholder:text-fg-subtle"
           />
           <p id={`${inputId}-help`} className={cn("text-xs", idError ? "text-halt" : "text-fg-subtle")}>
-            {idError ?? "StrataArena checks at enrollment that the connected wallet owns this identity."}
+            {idError ?? "StrataArena checks at enrollment that the connected wallet owns this identity"}
           </p>
         </div>
         <div className="flex flex-col gap-3 rounded-xl border border-dashed border-border-strong p-4">
@@ -291,7 +291,7 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
           ) : (
             <p className="flex gap-2 text-sm text-fg-muted">
               <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warn" aria-hidden />
-              The ERC-8004 registry address on Injective {s.network} is still being verified, so creating an identity is not available yet. Link an existing one instead.
+              The ERC-8004 registry address on Injective {s.network} is still being verified, so creating an identity is not available yet. Link an existing one instead
             </p>
           )}
         </div>
@@ -300,7 +300,7 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
         <Button variant="secondary" onClick={() => dispatch({ type: "go", step: 0 })}>
           Back
         </Button>
-        <Button disabled={!s.erc8004Id || idError != null} reason="Enter a valid identity token ID." onClick={() => dispatch({ type: "go", step: 2 })}>
+        <Button disabled={!s.erc8004Id || idError != null} reason="Enter a valid identity token ID" onClick={() => dispatch({ type: "go", step: 2 })}>
           Continue
         </Button>
       </div>
@@ -309,11 +309,11 @@ function StepIdentity({ s, dispatch }: { s: State; dispatch: (a: Action) => void
 }
 
 const RULES = [
-  "Only orders resting on the book count. Fills against your own orders are excluded.",
-  "Orders alive for less than one second do not count toward depth.",
-  "Wash trading between linked accounts and quote stuffing flag the epoch, which then scores zero.",
-  "Scores are computed every hour and committed onchain. Repeated flags lead to suspension, shown publicly on the Transparency page.",
-  "You keep custody of your keys and funds. STRATA never holds or pools user funds.",
+  "Only orders resting on the book count, and fills against your own orders are excluded",
+  "Orders alive for less than one second do not count toward depth",
+  "Wash trading between linked accounts and quote stuffing flag the epoch, which then scores zero",
+  "Scores are computed every hour and committed onchain. Repeated flags lead to suspension, shown publicly on the Transparency page",
+  "You keep custody of your keys and funds, and STRATA never holds or pools user money",
 ];
 
 function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void }) {
@@ -345,7 +345,7 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
           aria-invalid={nameError ? true : undefined}
           className="h-10 max-w-sm rounded-lg border border-border-strong bg-bg-sunken px-3 text-sm text-fg placeholder:text-fg-subtle"
         />
-        {nameError ? <p className="text-xs text-halt">{nameError}</p> : <p className="text-xs text-fg-subtle">Shown publicly on the leaderboard.</p>}
+        {nameError ? <p className="text-xs text-halt">{nameError}</p> : <p className="text-xs text-fg-subtle">Shown publicly on the leaderboard</p>}
       </div>
 
       <div className="flex flex-col gap-2">
@@ -364,7 +364,7 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
         {metaError ? (
           <p className="text-xs text-halt">{metaError}</p>
         ) : (
-          <p className="text-xs text-fg-subtle">Where you host your agent&apos;s metadata JSON. The starter kit includes the file to upload.</p>
+          <p className="text-xs text-fg-subtle">Where you host your agent&apos;s metadata JSON. The starter kit includes the file to upload</p>
         )}
       </div>
 
@@ -375,7 +375,7 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
         ) : markets.isError ? (
           <ErrorState error={markets.error} onRetry={() => void markets.refetch()} compact />
         ) : markets.data.markets.length === 0 ? (
-          <EmptyState title={`No arena markets on ${s.network} yet`} detail="Markets are enabled by the arena owner. Check back after launch." />
+          <EmptyState title={`No arena markets on ${s.network} yet`} detail="The arena owner enables markets, so check back after launch" />
         ) : (
           <div className="grid gap-2 sm:grid-cols-2">
             {markets.data.markets.map(({ market }) => (
@@ -415,10 +415,10 @@ function StepMarkets({ s, dispatch }: { s: State; dispatch: (a: Action) => void 
           <Link href="/risk" className="text-accent underline-offset-4 hover:underline">
             risk disclosure
           </Link>
-          . STRATA is experimental software, not investment advice, and my agent can lose money.
+          . STRATA is experimental software, not investment advice, and my agent can lose money
         </Check2>
         <Check2 checked={s.geoAck} onChange={(v) => dispatch({ type: "set", patch: { geoAck: v } })} testId="geo-ack">
-          I am not a US person and not located in a sanctioned jurisdiction. STRATA is not available to US persons or sanctioned jurisdictions.
+          I am not a US person and not located in a sanctioned jurisdiction. STRATA is not available to US persons or sanctioned jurisdictions
         </Check2>
       </div>
 
@@ -452,7 +452,7 @@ function StarterKit({ s, operator, agentId, dryRun }: { s: State; operator: `0x$
         <h3 id="kit-title" className="text-sm font-medium text-fg">
           Agent starter kit
         </h3>
-        {dryRun ? <span className="text-xs text-warn">Preview. Agent ID is filled in after enrollment.</span> : null}
+        {dryRun ? <span className="text-xs text-warn">Preview, the agent ID is filled in after enrollment</span> : null}
       </div>
       <div className="flex flex-wrap gap-2">
         <Button variant="secondary" onClick={() => download(kit.filename, kit.json)} data-testid="download-kit">
@@ -484,7 +484,7 @@ function StarterKit({ s, operator, agentId, dryRun }: { s: State; operator: `0x$
           {copied ? <Check className="size-4 text-bid" aria-hidden /> : <Copy className="size-4" aria-hidden />}
         </button>
       </div>
-      <p className="text-xs text-fg-subtle">The config holds no keys. Put your agent&apos;s encrypted keystore in ./keystore; it is mounted read-only.</p>
+      <p className="text-xs text-fg-subtle">The config holds no keys. Put your agent&apos;s encrypted keystore in ./keystore, which is mounted read-only</p>
     </section>
   );
 }
@@ -499,7 +499,7 @@ function StepEnroll({ s, dispatch }: { s: State; dispatch: (a: Action) => void }
     [operator, s.network, s.erc8004Id, s.name, s.markets, s.metadataURI],
   );
   if (!operator || !preview) {
-    return <ErrorState error={new Error("Wallet disconnected. Go back to step 1 and reconnect.")} onRetry={() => dispatch({ type: "go", step: 0 })} />;
+    return <ErrorState error={new Error("Wallet disconnected, go back to step 1 and reconnect")} onRetry={() => dispatch({ type: "go", step: 0 })} />;
   }
   const agentId = (() => {
     if (!receipt.data) return null;
@@ -516,7 +516,7 @@ function StepEnroll({ s, dispatch }: { s: State; dispatch: (a: Action) => void }
         <h3 id="preview-title" className="text-sm font-medium text-fg">
           Transaction preview
         </h3>
-        <p className="mt-1 text-sm text-fg-muted">Your wallet will ask you to confirm exactly this. Nothing else is signed.</p>
+        <p className="mt-1 text-sm text-fg-muted">Your wallet asks you to confirm exactly this and nothing else</p>
         <dl className="mt-4 divide-y divide-border rounded-xl border border-border" data-testid="tx-preview">
           {preview.rows.map((r) => (
             <div key={r.label} className="grid gap-1 px-4 py-3 sm:grid-cols-[180px_1fr]">
@@ -534,7 +534,7 @@ function StepEnroll({ s, dispatch }: { s: State; dispatch: (a: Action) => void }
         <div className="flex gap-3 rounded-xl border border-warn/40 bg-warn-soft p-4 text-sm text-fg" role="status">
           <AlertTriangle className="mt-0.5 size-4 shrink-0 text-warn" aria-hidden />
           <p>
-            StrataArena is not deployed on {s.network} yet, so enrollment cannot be sent. Your choices are saved in the starter kit below, which works as soon as the contract is live.
+            StrataArena is not deployed on {s.network} yet, so enrollment cannot be sent. Your choices are saved in the starter kit below, which works as soon as the contract is live
           </p>
         </div>
       ) : null}

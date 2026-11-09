@@ -27,7 +27,7 @@ export function StatusView() {
 
   return (
     <div className="flex flex-col gap-8">
-      <PageHeader meta={<DataLabels network={network} />} title="Status" description="Health of every STRATA service, how far behind the chain the data is, and the last epoch posted onchain." actions={<NetworkToggle />} />
+      <PageHeader meta={<DataLabels network={network} />} title="Status" description="Service health, how far the data trails the chain, and the last epoch posted onchain" actions={<NetworkToggle />} />
 
       {q.isPending ? (
         <div className="flex flex-col gap-6" aria-busy="true">
@@ -99,7 +99,7 @@ export function StatusView() {
                 ))}
               </ul>
             ) : (
-              <EmptyState title="Nothing reporting" detail={network === "mainnet" ? "STRATA services run on testnet today." : "Services report here once they start."} className="border-0 p-0" />
+              <EmptyState title="Nothing reporting" detail={network === "mainnet" ? "STRATA services run on testnet today" : "Services report here once they start"} className="border-0 p-0" />
             )}
           </Panel>
         </>

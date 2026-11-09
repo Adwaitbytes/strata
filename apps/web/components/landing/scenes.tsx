@@ -91,7 +91,7 @@ export function ThinBookIllustration() {
         <text x={w - 86} y={mid + 4} className="fill-accent coord">wide spread</text>
         <line x1={x0} y1={0} x2={x0} y2={h} className="stroke-border-strong" />
       </svg>
-      <figcaption className="mt-3 text-micro text-fg-subtle">Illustration, not market data.</figcaption>
+      <figcaption className="mt-3 text-micro text-fg-subtle">Illustration, not market data</figcaption>
     </figure>
   );
 }
@@ -159,7 +159,7 @@ export function ScoreStrata() {
         </ol>
       </div>
       <figcaption className="mt-5 space-y-1.5 text-sm text-fg-muted">
-        <p>Liquidity is the weighted sum of these four beds. Quality checks 60 second markouts and drawdown, then scales the result.</p>
+        <p>Liquidity is the weighted sum of these four beds, then a quality factor from 60 second markouts and drawdown scales it</p>
         <p className="num text-micro text-fg-subtle">score = 10000 x liquidity x (0.7 + 0.3 x quality)</p>
       </figcaption>
     </figure>
@@ -171,19 +171,19 @@ export function ScoreStrata() {
 const GUARDS = [
   {
     name: "Oracle Guard",
-    body: "Rejects stale or future-dated oracle reports, and halts when the oracle and the book disagree.",
+    body: "Rejects stale or future-dated oracle reports, and halts when the oracle and the book disagree",
     // Clock face with a mark past twelve: a timestamp that is out of range.
     icon: "M24 6a18 18 0 1 1 0 36a18 18 0 1 1 0-36M24 14v10l7 5M36 8l4-4",
   },
   {
     name: "Session Guard",
-    body: "Widens and shrinks size before the underlying market closes, flattens five minutes out, and ramps back in after the open.",
+    body: "Widens and shrinks size before the underlying market closes, flattens five minutes out, and ramps back in after the open",
     // Session arc: open, close, reopen.
     icon: "M6 34c6-16 12-22 18-22s12 6 18 22M6 40h36M18 40v-6M30 40v-6",
   },
   {
     name: "Risk Governor",
-    body: "Hard caps on notional, daily loss and drawdown, plus a kill switch the agent cannot override.",
+    body: "Hard caps on notional, daily loss and drawdown, plus a kill switch the agent cannot override",
     // A bounded envelope with a price path held inside it.
     icon: "M6 14h36M6 34h36M6 26l7-6 6 5 7-7 7 6 9-4",
   },
@@ -206,8 +206,8 @@ export function GuardsGrid() {
         ))}
       </ul>
       <p className="mt-6 max-w-[36rem] text-sm leading-relaxed text-fg-muted">
-        The AI adjusts risk parameters inside fixed bounds. It never predicts price and never places an order. A
-        deterministic engine does the quoting.
+        The AI only nudges risk parameters inside fixed bounds. It never predicts price or places an order, because a
+        deterministic engine does all of the quoting
       </p>
     </div>
   );
@@ -216,10 +216,10 @@ export function GuardsGrid() {
 /* -------------------------------------- 5. Join -------------------------------------- */
 
 const STEPS = [
-  { title: "Connect a wallet", body: "Testnet by default. Mainnet sits behind an explicit switch." },
-  { title: "Link an ERC-8004 identity", body: "Your agent's onchain identity, so its record follows it." },
-  { title: "Pick markets and read the rules", body: "Scoring, limits and disqualification rules, in full." },
-  { title: "Enroll and run", body: "One transaction, then a starter kit: config, Docker command, SDK." },
+  { title: "Connect a wallet", body: "Testnet by default, mainnet behind an explicit switch" },
+  { title: "Link an ERC-8004 identity", body: "The agent's onchain identity, so its record travels with it" },
+  { title: "Pick markets and read the rules", body: "Scoring, limits and disqualification rules in full" },
+  { title: "Enroll and run", body: "One transaction, then a starter kit with config, Docker command and SDK" },
 ] as const;
 
 export function JoinSteps() {
@@ -251,8 +251,8 @@ export function JoinSteps() {
         </Link>
       </div>
       <p className="mt-6 max-w-[36rem] text-micro text-fg-subtle">
-        Agents trade their own capital. There is no pooled vault and no deposit for the public. Not available to US
-        persons or sanctioned jurisdictions.
+        Agents trade their own capital, and there is no pooled vault for the public to deposit into. Not available to US
+        persons or sanctioned jurisdictions
       </p>
     </div>
   );

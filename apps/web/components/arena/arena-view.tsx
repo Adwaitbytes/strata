@@ -52,7 +52,7 @@ export function ArenaView() {
           </>
         }
         title="Arena"
-        description="Agents quote real Injective order books and are scored every hour on depth, uptime, spread and fill quality. Scores are committed onchain so anyone can check them."
+        description="Agents quote real Injective order books and get scored every hour on depth, uptime, spread and fill quality, with every score committed onchain for anyone to check"
         actions={<NetworkToggle />}
       />
 
@@ -114,9 +114,9 @@ export function ArenaView() {
             detail={
               market === ALL
                 ? network === "mainnet"
-                  ? "STRATA runs on testnet today. Mainnet agents appear here once the arena is funded and the first epoch is attested."
-                  : "Agents appear after their first scored epoch, about an hour after they start quoting."
-                : "Pick another market or show all markets."
+                  ? "STRATA runs on testnet today, so mainnet agents show up once the arena is funded and the first epoch is attested"
+                  : "Agents appear after their first scored epoch, about an hour after they start quoting"
+                : "Pick another market or show all of them"
             }
             action={
               <Link href="/join" className="text-sm font-medium text-accent underline-offset-4 hover:underline">

@@ -9,13 +9,13 @@ import { defaultSubaccountId } from "./chains";
 export const AGENT_NAME = /^[a-z0-9][a-z0-9-]{1,30}[a-z0-9]$/;
 
 export function validateAgentName(name: string): string | null {
-  if (!AGENT_NAME.test(name)) return "Use 3 to 32 lowercase letters, digits or hyphens, starting and ending with a letter or digit.";
+  if (!AGENT_NAME.test(name)) return "Use 3 to 32 lowercase letters, digits or hyphens, starting and ending with a letter or digit";
   return null;
 }
 
 export function validateErc8004Id(id: string): string | null {
-  if (!/^\d{1,78}$/.test(id)) return "Enter the numeric token ID of your ERC-8004 identity.";
-  if (BigInt(id) === 0n) return "Token ID 0 is not a valid identity.";
+  if (!/^\d{1,78}$/.test(id)) return "Enter the numeric token ID of your ERC-8004 identity";
+  if (BigInt(id) === 0n) return "Token ID 0 is not a valid identity";
   return null;
 }
 
@@ -37,7 +37,7 @@ const IPFS = /^ipfs:\/\/[A-Za-z0-9._\-/]+$/;
  */
 export function validateMetadataUri(uri: string): string | null {
   if (uri === "") return null;
-  if (uri.length > 512) return "Keep the URL under 512 characters.";
+  if (uri.length > 512) return "Keep the URL under 512 characters";
   if (IPFS.test(uri)) return null;
   try {
     const u = new URL(uri);
@@ -72,15 +72,15 @@ export function buildEnrollPreview(d: EnrollDraft): EnrollPreview {
     rows: [
       { label: "Network", value: `${d.network === "mainnet" ? "Injective mainnet" : "Injective testnet"} (chain ${net.evm.chainId})` },
       { label: "Contract", value: net.contracts.arena ?? "Not deployed on this network yet" },
-      { label: "Action", value: "StrataArena.enroll", hint: "Registers your agent for scoring. Moves no funds." },
-      { label: "Operator", value: d.operator, hint: "The connected wallet. It controls the agent's enrollment." },
+      { label: "Action", value: "StrataArena.enroll", hint: "Registers your agent for scoring and moves no funds" },
+      { label: "Operator", value: d.operator, hint: "The connected wallet, which controls the agent's enrollment" },
       { label: "ERC-8004 identity", value: `#${d.erc8004Id}` },
-      { label: "Subaccount", value: subaccountId, hint: "Default Injective subaccount (index 0) of the operator." },
+      { label: "Subaccount", value: subaccountId, hint: "Default Injective subaccount (index 0) of the operator" },
       { label: "Agent name", value: d.name },
-      { label: "Metadata", value: d.metadataURI || "None", hint: d.metadataURI ? "Public JSON describing the agent." : "You can add it later with updateMetadata." },
+      { label: "Metadata", value: d.metadataURI || "None", hint: d.metadataURI ? "Public JSON describing the agent" : "You can add it later with updateMetadata" },
       { label: "Markets", value: d.marketIds.length ? `${d.marketIds.length} selected` : "None" },
       { label: "Value sent", value: "0 INJ" },
-      { label: "Gas", value: "Legacy transaction, 0.16 gwei gas price", hint: "Injective EVM recommends type 0 transactions." },
+      { label: "Gas", value: "Legacy transaction, 0.16 gwei gas price", hint: "Injective EVM recommends type 0 transactions" },
     ],
   };
 }

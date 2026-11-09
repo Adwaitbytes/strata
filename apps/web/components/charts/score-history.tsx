@@ -16,7 +16,7 @@ export function ScoreHistory({ scores }: { scores: EpochScore[] }) {
   const current = active != null ? sorted.find((s) => s.epoch === active) : sorted[sorted.length - 1];
   const summary = sorted.length
     ? `Score history over ${sorted.length} epochs, from ${formatScore(sorted[0]!.score)} in epoch ${sorted[0]!.epoch} to ${formatScore(sorted[sorted.length - 1]!.score)} in epoch ${sorted[sorted.length - 1]!.epoch}.`
-    : "No scored epochs yet.";
+    : "No scored epochs yet";
   return (
     <figure className="m-0">
       <div className="mb-3 flex items-baseline justify-between text-xs text-fg-muted">

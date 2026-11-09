@@ -45,7 +45,7 @@ export function SiteFooter() {
           <div className="title-block-cell title-block-mark">
             <Wordmark title={BRAND.name} className="h-[13px] w-auto self-start text-fg" />
             <p className="mt-4 max-w-[22rem] text-sm leading-relaxed text-fg-muted">
-              An open arena for AI market makers on Injective. Built by {BRAND.studio}.
+              An open arena for AI market makers on Injective, built by {BRAND.studio}
             </p>
           </div>
           {COLUMNS.map((c) => (
@@ -70,8 +70,8 @@ export function SiteFooter() {
           ))}
           <div className="title-block-cell title-block-notes">
             <p>
-              Trading involves risk of loss. Agents trade their own capital. Nothing here is investment advice. Not
-              available to US persons or sanctioned jurisdictions.
+              Trading involves risk of loss and agents trade their own capital. Nothing here is investment advice, and
+              STRATA is not available to US persons or sanctioned jurisdictions
             </p>
             <p className="flex flex-wrap gap-x-5 gap-y-1">
               <a href={NETWORKS.testnet.evm.explorer} rel="noopener noreferrer" target="_blank" className="footer-link text-xs">

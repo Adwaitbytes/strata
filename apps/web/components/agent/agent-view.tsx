@@ -80,7 +80,7 @@ export function AgentView({ id }: { id: number }) {
             <span className="num">#{a.erc8004Id}</span> <ExternalLink className="size-3" aria-hidden />
           </a>
         ) : (
-          <span title="The ERC-8004 registry address on Injective is pending verification, so there is no explorer link yet.">
+          <span title="The ERC-8004 registry address on Injective is pending verification, so there is no explorer link yet">
             <span className="num">#{a.erc8004Id}</span> <span className="text-xs text-fg-subtle">registry link pending</span>
           </span>
         )}
@@ -171,13 +171,13 @@ export function AgentView({ id }: { id: number }) {
           ))
         ) : (
           <div className="col-span-full bg-surface p-5">
-            <EmptyState title="No scored epochs yet" detail="Metrics appear after this agent's first hourly epoch is scored." className="border-0 p-0" />
+            <EmptyState title="No scored epochs yet" detail="Metrics appear after this agent's first hourly epoch is scored" className="border-0 p-0" />
           </div>
         )}
       </section>
 
       <Panel title={<InfoTip metric="score">Score history</InfoTip>} id="history">
-        {d.scores.length ? <ScoreHistory scores={d.scores} /> : <EmptyState title="No history yet" detail="One bar appears per scored epoch." className="border-0 p-0" />}
+        {d.scores.length ? <ScoreHistory scores={d.scores} /> : <EmptyState title="No history yet" detail="One bar appears per scored epoch" className="border-0 p-0" />}
       </Panel>
 
       <div className="grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
@@ -185,7 +185,7 @@ export function AgentView({ id }: { id: number }) {
           {d.liveQuotes.length ? (
             <QuotesVisual quotes={d.liveQuotes} />
           ) : (
-            <EmptyState title="Not quoting right now" detail={a.status === "active" ? "The agent has no resting orders at this moment." : `The agent is ${a.status}.`} className="border-0 p-0" />
+            <EmptyState title="Not quoting right now" detail={a.status === "active" ? "The agent has no resting orders at this moment" : `The agent is ${a.status}`} className="border-0 p-0" />
           )}
         </Panel>
         <Panel title="Verify my score" id="verify">
@@ -198,14 +198,14 @@ export function AgentView({ id }: { id: number }) {
           {d.guardEvents.length ? (
             <GuardTimeline events={d.guardEvents} />
           ) : (
-            <EmptyState title="No guard events" detail="Oracle, session and risk guards have not intervened for this agent." className="border-0 p-0" />
+            <EmptyState title="No guard events" detail="Oracle, session and risk guards have not stepped in for this agent" className="border-0 p-0" />
           )}
         </Panel>
         <Panel title="AI Risk Tuner" id="tuner" aside={<span className="text-xs text-fg-subtle">Suggestions are bounded and never place trades</span>}>
           {d.tunerEvents.length ? (
             <TunerFeed events={d.tunerEvents} />
           ) : (
-            <EmptyState title="No tuner suggestions" detail="The tuner has not proposed parameter changes for this agent." className="border-0 p-0" />
+            <EmptyState title="No tuner suggestions" detail="The tuner has not proposed parameter changes for this agent" className="border-0 p-0" />
           )}
         </Panel>
       </div>

@@ -39,15 +39,15 @@ export function describeError(err: unknown): { title: string; detail: string } {
   if (err instanceof StrataApiError) {
     switch (err.code) {
       case "not_found":
-        return { title: "Not found", detail: "Nothing exists at this ID on the selected network." };
+        return { title: "Not found", detail: "Nothing exists at this ID on the selected network" };
       case "rate_limited":
-        return { title: "Too many requests", detail: "The API is rate limiting this browser. Retrying shortly." };
+        return { title: "Too many requests", detail: "The API is rate limiting this browser, retrying shortly" };
       case "unconfigured":
-        return { title: "Data API not connected", detail: "This deployment has no STRATA API configured, so there is nothing to show yet." };
+        return { title: "Data API not connected", detail: "This deployment has no STRATA API configured, so there is nothing to show yet" };
       case "invalid_response":
-        return { title: "Unexpected data", detail: "The API returned data that failed validation, so it is not shown." };
+        return { title: "Unexpected data", detail: "The API returned data that failed validation, so it is not shown" };
       case "network":
-        return { title: "Cannot reach the API", detail: "Check your connection. The request will be retried." };
+        return { title: "Cannot reach the API", detail: "Check your connection, the request retries on its own" };
       default:
         return { title: "The API returned an error", detail: err.message };
     }

@@ -4,7 +4,7 @@ import { StatusView } from "@/components/status/status-view";
 
 export const metadata: Metadata = {
   title: "Status",
-  description: "STRATA service health, data lag and the last epoch posted onchain.",
+  description: "STRATA service health, data lag and the last epoch posted onchain",
   alternates: { canonical: "/status" },
 };
 

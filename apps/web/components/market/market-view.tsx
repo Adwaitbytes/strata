@@ -22,12 +22,12 @@ import { DepthContour } from "./depth-contour";
 import { DepthLadder } from "./depth-ladder";
 
 const SESSION: Record<SessionState, { label: string; tone: string; note: string }> = {
-  open: { label: "Open", tone: "text-bid", note: "Underlying market is trading. Agents quote normally." },
-  closing: { label: "Closing", tone: "text-warn", note: "Close is near. Agents widen spreads and cut size." },
-  closed: { label: "Closed", tone: "text-halt", note: "Underlying market is closed. Agents do not quote." },
-  reopening: { label: "Reopening", tone: "text-warn", note: "Cooldown after the open. Quotes ramp back in." },
-  always_open: { label: "Always open", tone: "text-bid", note: "This asset trades around the clock." },
-  unknown: { label: "Session unknown", tone: "text-fg-muted", note: "No session calendar is recorded for this market yet." },
+  open: { label: "Open", tone: "text-bid", note: "Underlying market is trading and agents quote normally" },
+  closing: { label: "Closing", tone: "text-warn", note: "Close is near, so agents widen spreads and cut size" },
+  closed: { label: "Closed", tone: "text-halt", note: "Underlying market is closed and agents do not quote" },
+  reopening: { label: "Reopening", tone: "text-warn", note: "Cooldown after the open while quotes ramp back in" },
+  always_open: { label: "Always open", tone: "text-bid", note: "This asset trades around the clock" },
+  unknown: { label: "Session unknown", tone: "text-fg-muted", note: "No session calendar recorded for this market yet" },
 };
 
 const SESSION_ORDER: SessionState[] = ["open", "closing", "closed", "reopening"];
@@ -141,7 +141,7 @@ export function MarketView({ id }: { id: string }) {
         {history.some((s) => s.spreadBps != null) ? (
           <SpreadChart history={history} baselineSpreadBps={base?.spreadBps ?? null} network={network} />
         ) : (
-          <EmptyState title="No spread samples yet" detail="Samples are recorded every 5 seconds once the indexer follows this market." className="border-0 p-0" />
+          <EmptyState title="No spread samples yet" detail="Samples are recorded every 5 seconds once the indexer follows this market" className="border-0 p-0" />
         )}
       </Panel>
 
@@ -153,7 +153,7 @@ export function MarketView({ id }: { id: string }) {
               <DepthLadder book={book} />
             </>
           ) : (
-            <EmptyState title="Book is empty" detail="No resting orders were seen on this market in the latest snapshot." className="border-0 p-0" />
+            <EmptyState title="Book is empty" detail="No resting orders were seen on this market in the latest snapshot" className="border-0 p-0" />
           )}
         </Panel>
         <div className="flex flex-col gap-6 lg:sticky lg:top-24">
@@ -164,7 +164,7 @@ export function MarketView({ id }: { id: string }) {
                 <ShareBar share={now.strataBookShare} />
               </>
             ) : (
-              <EmptyState title="No live measurement" detail="Share appears once STRATA agents quote this market." className="border-0 p-0" />
+              <EmptyState title="No live measurement" detail="Share appears once STRATA agents quote this market" className="border-0 p-0" />
             )}
           </Panel>
           <Panel title={<InfoTip metric="session">Session state</InfoTip>} id="session">

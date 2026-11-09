@@ -33,7 +33,7 @@ export async function Proof({ network }: { network: NetworkName }) {
           ) : null}
         </div>
         <ProofChart rows={rows} />
-        <p className="mt-4 text-micro text-fg-subtle">{source}. Spread is the quoted spread in bps; depth is USD resting within 25 bps of mid.</p>
+        <p className="mt-4 text-micro text-fg-subtle">{source}. Spread is the quoted spread in bps, depth is USD resting within 25 bps of mid</p>
       </div>
     );
   }
@@ -46,10 +46,10 @@ export async function Proof({ network }: { network: NetworkName }) {
           <NetworkBadge network={network} />
           <ProvenanceBadge provenance="BASELINE" />
         </div>
-        <p className="mt-4 max-w-[34rem] text-fg">No comparison to show yet.</p>
+        <p className="mt-4 max-w-[34rem] text-fg">No comparison to show yet</p>
         <p className="mt-2 max-w-[34rem] text-sm leading-relaxed text-fg-muted">
           Each market&apos;s spread and depth are recorded for at least 12 hours before agents quote. That window is the
-          BASELINE. This section fills in once a market has both a closed baseline and live agent quotes.
+          BASELINE, and this section fills in once a market has both a closed baseline and live agent quotes
         </p>
         <p className="mt-4 text-micro text-fg-subtle">{source}</p>
       </div>
@@ -113,7 +113,7 @@ export async function Proof({ network }: { network: NetworkName }) {
         </div>
       </div>
       <figcaption className="mt-4 text-micro text-fg-subtle">
-        Before cores only. The after bed is drawn once STRATA agents have depth on a market whose baseline window has closed. {source}.
+        Before cores only, the after bed appears once STRATA has depth on a market with a closed baseline window. {source}
       </figcaption>
     </figure>
   );

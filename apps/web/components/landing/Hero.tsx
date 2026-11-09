@@ -16,7 +16,7 @@ export function Hero() {
     <section aria-labelledby="hero-title" className="hero">
       <div className="hero-copy">
         <h1 id="hero-title" className="hero-title font-display text-fg">
-          {BRAND.headline.split(/(?<=\.)\s+/).map((line) => (
+          {BRAND.headlineLines.map((line) => (
             <span key={line} className="hero-line">
               <span>{line}</span>
             </span>

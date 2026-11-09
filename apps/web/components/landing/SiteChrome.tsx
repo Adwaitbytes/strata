@@ -8,9 +8,9 @@ export function EcosystemStrip() {
           <a href="https://injective.com" className="text-fg underline decoration-border-strong underline-offset-4 hover:decoration-fg" rel="noopener noreferrer">
             Injective
           </a>
-          . Fully onchain order books, native oracles, EVM contracts.
+, where order books, oracles and EVM contracts all live onchain
         </p>
-        <p className="text-micro text-fg-subtle">Independent project. Not affiliated with or endorsed by Injective.</p>
+        <p className="text-micro text-fg-subtle">Independent project, not affiliated with or endorsed by Injective</p>
       </div>
     </section>
   );

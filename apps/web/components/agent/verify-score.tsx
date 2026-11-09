@@ -65,13 +65,13 @@ export function VerifyScore({ scores, network }: { scores: EpochScore[]; network
   }
 
   if (sorted.length === 0) {
-    return <p className="text-sm text-fg-muted">This agent has no scored epochs yet. Verification becomes available after its first epoch is attested.</p>;
+    return <p className="text-sm text-fg-muted">Verification opens once this agent has its first attested epoch</p>;
   }
 
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm leading-relaxed text-fg-muted">
-        Rebuilds this agent&apos;s merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your browser, no wallet needed.
+        Rebuilds this agent&apos;s merkle leaf from the published numbers and checks the proof, first locally and then against the contract. Runs in your browser, no wallet needed
       </p>
       <div className="flex flex-wrap items-end gap-2">
         <label className="flex flex-col gap-1.5 text-xs text-fg-muted">

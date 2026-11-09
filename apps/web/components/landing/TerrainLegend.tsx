@@ -19,7 +19,7 @@ export function TerrainLegend({ field }: { field: TerrainField }) {
         {field.provenance ? <ProvenanceBadge provenance={field.provenance} /> : null}
       </div>
       <p className="mt-2 text-[13px] leading-snug text-fg-muted">
-        {mode === "live" ? field.caption : "Still image of the survey terrain, not live data."}
+        {mode === "live" ? field.caption : "Still image of the survey terrain, not live data"}
       </p>
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[12px] text-fg-subtle" aria-label="Legend">
         <li className="flex items-center gap-1.5">

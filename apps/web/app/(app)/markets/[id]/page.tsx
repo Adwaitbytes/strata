@@ -9,7 +9,7 @@ export async function generateMetadata({ params }: PageProps<"/markets/[id]">): 
   const { id } = await params;
   return {
     title: `Market ${id.slice(0, 10)}`,
-    description: "Order book depth, spread against the pre-STRATA baseline, STRATA share of book, oracle and session state.",
+    description: "Order book depth, spread against the pre-STRATA baseline, STRATA share of book, oracle and session state",
     alternates: { canonical: `/markets/${id}` },
   };
 }

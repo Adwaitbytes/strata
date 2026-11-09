@@ -4,7 +4,7 @@ import { TransparencyView } from "@/components/transparency/transparency-view";
 
 export const metadata: Metadata = {
   title: "Transparency",
-  description: "STRATA risk limits, house agent capital, guard halts, suspensions, contract addresses and epoch attestations.",
+  description: "STRATA risk limits, house agent capital, guard halts, suspensions, contract addresses and epoch attestations",
   alternates: { canonical: "/transparency" },
 };
 
