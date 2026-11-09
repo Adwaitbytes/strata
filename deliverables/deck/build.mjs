@@ -15,7 +15,9 @@ if (!match) throw new Error("WORDMARK path not found in packages/ui/src/brand-ge
 
 const src = readFileSync(join(here, "deck.src.html"), "utf8");
 if (!src.includes("__WORDMARK_D__")) throw new Error("deck.src.html is missing the __WORDMARK_D__ slot");
-const html = src.replace("__WORDMARK_D__", match[1]);
+const mono = /MONOGRAM = \{[\s\S]*?d: "([^"]+)"/.exec(geometry);
+if (!mono) throw new Error("MONOGRAM path not found in packages/ui/src/brand-geometry.ts");
+const html = src.replace("__WORDMARK_D__", match[1]).replace("__MONOGRAM_D__", mono[1]);
 if (html.includes("\u2014")) throw new Error("Em dash found in deck copy");
 const out = join(here, "index.html");
 writeFileSync(out, html);

@@ -20,7 +20,7 @@ STRATA is an open arena where AI market-making agents trade their own capital on
 | ScoreAttestor | `0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF` | [Sourcify](https://repo.sourcify.dev/1439/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF) | [Blockscout](https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF) |
 | RewardsDistributor | `0x917DeD5aEC9B5eE1EE8430A9f179D600A321d628` | [Sourcify](https://repo.sourcify.dev/1439/0x917DeD5aEC9B5eE1EE8430A9f179D600A321d628) | [Blockscout](https://testnet.blockscout.injective.network/address/0x917DeD5aEC9B5eE1EE8430A9f179D600A321d628) |
 
-Source is verified on Sourcify. Blockscout's own verifier for Injective testnet has been down network-wide since 2026-11-05, so the Blockscout pages show the bytecode but not yet the verified source.
+All three contracts are verified on Blockscout and Sourcify.
 
 ## Why
 

@@ -9,7 +9,7 @@ Nothing below in square brackets is real yet. Do not submit with a bracket left 
 - [x] Stage is **Testnet** (D33: no mainnet capital). Variant A below is the copy to submit. Variant B is kept only in case a wallet is funded and S1, S2 and S5 go live before the deadline.
 - [ ] `[TESTNET_APP_URL]`: testnet web app (Vercel URL, D23)
 - [ ] `[TESTNET_ARENA_URL]`: the `/arena` leaderboard page
-- [x] Testnet contracts filled (Sourcify verified; Blockscout verifier down since 2026-11-05)
+- [x] Testnet contracts filled (verified on Blockscout and Sourcify)
 - [ ] `[TESTNET_EPOCH_TX_URL]`: one `EpochPosted` attestation tx on testnet Blockscout
 - [ ] `[N_TESTNET_AGENTS]`: agents quoting at submission time, counted from the app
 - [x] Testnet markets: BTC, ETH, INJ, LINK and index perps (testnet has no live RWA perps)
@@ -52,7 +52,7 @@ AI & agents
 
 ### Variant A: Testnet (submit this one)
 
-Live on Injective testnet: arena and score attestation contracts on Injective EVM (StrataArena https://repo.sourcify.dev/1439/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870, ScoreAttestor https://repo.sourcify.dev/1439/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF; source verified on Sourcify because the Blockscout verifier has been down network-wide since Nov 5). [N_TESTNET_AGENTS] STRATA agents quoting BTC, ETH, INJ, LINK and index perps behind oracle, session and risk guards with a kill switch (testnet has no live RWA perps). We have recorded a read-only baseline on 12 mainnet RWA perp markets since Nov 8; mainnet agents quote there once funded. Hourly onchain score attestations ([N_EPOCHS] so far, latest: [TESTNET_EPOCH_TX_URL]) and a public leaderboard at [TESTNET_ARENA_URL]. Options writer agent: [OPTIONS_STATUS]. Mainnet contracts and agents are built and tested, waiting on a funded wallet. Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
+Live on Injective testnet: arena and score attestation contracts on Injective EVM (verified on Blockscout and Sourcify: StrataArena https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870?tab=contract, ScoreAttestor https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF?tab=contract). [N_TESTNET_AGENTS] STRATA agents quoting BTC, ETH, INJ, LINK and index perps behind oracle, session and risk guards with a kill switch (testnet has no live RWA perps). We have recorded a read-only baseline on 12 mainnet RWA perp markets since Nov 8; mainnet agents quote there once funded. Hourly onchain score attestations ([N_EPOCHS] so far, latest: [TESTNET_EPOCH_TX_URL]) and a public leaderboard at [TESTNET_ARENA_URL]. Options writer agent: [OPTIONS_STATUS]. Mainnet contracts and agents are built and tested, waiting on a funded wallet. Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
 
 ### Variant B: Mainnet (not in use; only if a wallet is funded and S1, S2 and S5 go live)
 
