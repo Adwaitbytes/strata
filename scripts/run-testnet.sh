@@ -4,6 +4,7 @@
 #
 #   nohup scripts/run-testnet.sh agent strata-test-1 >/dev/null 2>&1 &
 #   nohup scripts/run-testnet.sh scorer >/dev/null 2>&1 &
+#   nohup scripts/run-testnet.sh options >/dev/null 2>&1 &   (options writer, SIMULATED, no chain orders)
 #
 # Logs: .run/logs/<name>.log (gitignored). Supervisor pid: .run/<name>.pid, child pid: .run/<name>.child.
 # Stop: kill "$(cat .run/<name>.pid)"   (TERM reaches the child, which cancels all orders, then the loop ends)
@@ -14,7 +15,7 @@
 set -u
 cd "$(dirname "$0")/.." || exit 1
 root="$PWD"
-kind="${1:?usage: run-testnet.sh <agent <name>|scorer>}"
+kind="${1:?usage: run-testnet.sh <agent <name>|scorer|options>}"
 
 case "$kind" in
   agent)
@@ -42,6 +43,14 @@ case "$kind" in
       "SCORER_ATTESTOR_KEY=strata-testnet-attestor" "STRATA_SECRETS_DIR=$root/.secrets"
       "SCORER_METRICS_PORT=9480" "SCORER_EPOCH_SECONDS=3600"
     )
+    ;;
+  options)
+    # PRD 9.8 options writer on the STRATA simulator (docs/OPTIONS.md). Loads no keys and sends no
+    # transactions; underlying prices are read-only mainnet oracle queries.
+    name="strata-options"
+    workdir="$root/services/agent"
+    cmd=(node --enable-source-maps dist/options/main.js)
+    envs=("STRATA_NETWORK=testnet")
     ;;
   *) echo "unknown kind: $kind" >&2; exit 2 ;;
 esac

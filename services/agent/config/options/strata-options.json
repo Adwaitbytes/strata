@@ -1,0 +1,46 @@
+{
+  "name": "strata-options",
+  "network": "testnet",
+  "agentId": 9001,
+  "operator": "0xc82edab6e2047964dd08c82d69fd0ebfe5c6b536",
+  "simulated": true,
+  "notes": "Options writer (PRD 9.8) on STRATA's simulator until Injective grants writer access (D9, docs/OPTIONS.md). The book, its USDC and its buyers are SIMULATED; underlying prices are real read-only mainnet oracle reads. agentId 9001 is outside the StrataArena id range on purpose: the agent is not enrolled onchain and is never scored.",
+  "startingCashUsd": 10000,
+  "cycleMs": 60000,
+  "quoteEveryCycles": 5,
+  "underlyings": [
+    { "underlying": "SICI", "ticker": "SICI/USDC PERP" },
+    { "underlying": "US500", "ticker": "US500/USDC PERP" },
+    { "underlying": "USTECH", "ticker": "USTECH/USDC PERP" },
+    { "underlying": "XAU", "ticker": "XAU/USDC PERP" },
+    { "underlying": "XAG", "ticker": "XAG/USDC PERP" },
+    { "underlying": "WTI", "ticker": "WTI/USDC PERP" }
+  ],
+  "strategy": {
+    "targetAbsDelta": 0.2,
+    "minAbsDelta": 0.15,
+    "maxAbsDelta": 0.3,
+    "volFloor": 0.1,
+    "ivFloorMultiple": 1.2,
+    "collateralPerWriteUsd": 400,
+    "callCapMultiple": 1,
+    "baseFillProbability": 0.35,
+    "fillDecay": 3
+  },
+  "runner": {
+    "maxOracleAgeSec": 180,
+    "minTenorHours": 24,
+    "maxOpenPerSeries": 2,
+    "maxCollateralPerUnderlyingUsd": 1600,
+    "closeSpread": 0.05,
+    "ewmaHalfLifeSec": 21600,
+    "minReturns": 20
+  },
+  "risk": {
+    "maxDailyLossUsd": 300,
+    "maxDrawdownUsd": 800,
+    "maxGrossNotionalUsd": 4000,
+    "maxNetNotionalUsd": 1000,
+    "maxOrdersPerMinute": 12
+  }
+}
