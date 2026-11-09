@@ -8,6 +8,7 @@ import { readFileSync } from "node:fs";
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 import { getMarkets, getNetwork } from "@strata/config";
+import { LivenessWatchdog, watchdogConfigFromEnv } from "@strata/db";
 import { DEFAULT_PARAMS, assertMainnetCaps, type RiskParams } from "@strata/risk";
 import { AgentEnv, buildRiskParams, loadAgentConfig, resolveMarkets } from "./config.js";
 import { HeartbeatWriter, KillCommandPoller, heartbeatDetail } from "./control.js";
@@ -25,7 +26,7 @@ import {
 import { assertRunnable, buildSimMarkets, driveSim, loadInjectiveAdapter, provenanceFor, resolveConfigPath } from "./bootstrap.js";
 import { MonotonicClock } from "./clock.js";
 import type { ExchangeAdapter } from "./exchange.js";
-import { KillSwitch, MemoryNonceStore, installShutdownHandlers, killFromEnv, parseOwnerAddress } from "./killSwitch.js";
+import { KillSwitch, MemoryNonceStore, installFatalHandlers, installShutdownHandlers, killFromEnv, parseOwnerAddress } from "./killSwitch.js";
 import { AgentRisk, AgentRunner, MarketQuoter, type AgentIdentity } from "./loop.js";
 import { createControlServer, createMetrics } from "./metrics.js";
 import { ParamStore } from "./paramStore.js";
@@ -53,6 +54,19 @@ function databaseUrl(env: NodeJS.ProcessEnv): string | null {
   const file = env["DATABASE_URL_FILE"]?.trim();
   return file ? readFileSync(file, "utf8").trim() || null : null;
 }
+
+/** Replaced by the cancel-all shutdown path once the runner exists; until then nothing can rest on the book. */
+let fail: (code: number) => void = (code) => process.exit(code);
+installFatalHandlers(process, (code) => fail(code), (kind, err) =>
+  log("error", `${kind}: cancelling all orders and exiting`, {
+    error: err instanceof Error ? err.message : String(err),
+    code: err instanceof Error && "code" in err ? String(err.code) : null,
+    stack: err instanceof Error ? (err.stack ?? null) : null,
+  }),
+);
+
+// Bounds the cancel-all when the database or RPC is dead, so the supervisor can restart us.
+const SHUTDOWN_FORCE_EXIT_MS = 45_000;
 
 async function main(): Promise<void> {
   const env = AgentEnv.parse(process.env);
@@ -196,11 +210,27 @@ async function main(): Promise<void> {
           provenance: identity.provenance,
         }),
     });
-    heartbeat.start((err) => log("warn", "heartbeat write failed", { error: err instanceof Error ? err.message : "unknown" }));
-    background.push(heartbeat);
+    // Soak 2026-11-09: a postgres.js pool on dead sockets never recovered in place; exit and let the supervisor restart.
+    const wdCfg = watchdogConfigFromEnv(process.env, { stallMs: 5 * 60_000 });
+    const watchdog = new LivenessWatchdog({
+      ...wdCfg,
+      onTrip: (trip) => {
+        log("error", "database liveness watchdog tripped: cancelling all orders and exiting", { ...trip, ...wdCfg });
+        fail(1);
+      },
+    });
+    heartbeat.start(
+      (err) => {
+        log("warn", "heartbeat write failed", { error: err instanceof Error ? err.message : "unknown" });
+        watchdog.failure(err);
+      },
+      () => watchdog.success(),
+    );
+    watchdog.start(10_000);
+    background.push(heartbeat, watchdog);
   }
 
-  installShutdownHandlers(
+  fail = installShutdownHandlers(
     process,
     async () => {
       log("info", "shutdown: cancelling all orders");
@@ -217,6 +247,7 @@ async function main(): Promise<void> {
       }
     },
     (code) => process.exit(code),
+    { forceExitMs: SHUTDOWN_FORCE_EXIT_MS },
   );
 
   runner.start();

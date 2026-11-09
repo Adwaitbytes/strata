@@ -5,6 +5,7 @@ import {
   MemoryNonceStore,
   handleInternalKill,
   handleSignedKill,
+  installFatalHandlers,
   installShutdownHandlers,
   killFromEnv,
   killRequestMessage,
@@ -167,5 +168,48 @@ describe("shutdown handlers", () => {
     installShutdownHandlers({ once: (s: string, fn: () => void) => void handlers.set(s, fn) }, () => Promise.reject(new Error("rpc down")), exit);
     handlers.get("SIGTERM")!();
     await vi.waitFor(() => expect(exit).toHaveBeenCalledWith(1));
+  });
+
+  it("returns a fail(code) that cancels all orders, then exits with that code, sharing the once guard", async () => {
+    const handlers = new Map<string, () => void>();
+    const shutdown = vi.fn(() => Promise.resolve());
+    const exit = vi.fn();
+    const fail = installShutdownHandlers({ once: (s: string, fn: () => void) => void handlers.set(s, fn) }, shutdown, exit);
+    fail(1);
+    handlers.get("SIGTERM")!();
+    await vi.waitFor(() => expect(exit).toHaveBeenCalledWith(1));
+    expect(shutdown).toHaveBeenCalledOnce();
+    expect(exit).toHaveBeenCalledOnce();
+  });
+
+  it("forces exit 1 when shutdown hangs past forceExitMs (dead database during cancel-all)", async () => {
+    vi.useFakeTimers();
+    try {
+      const exit = vi.fn();
+      const fail = installShutdownHandlers({ once: () => undefined }, () => new Promise<void>(() => undefined), exit, { forceExitMs: 30_000 });
+      fail(1);
+      await vi.advanceTimersByTimeAsync(29_000);
+      expect(exit).not.toHaveBeenCalled();
+      await vi.advanceTimersByTimeAsync(2_000);
+      expect(exit).toHaveBeenCalledWith(1);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});
+
+describe("fatal handlers", () => {
+  it("an unhandled rejection is logged and triggers cancel-all with exit 1", () => {
+    const listeners = new Map<string, (err: unknown) => void>();
+    const proc = { on: (ev: string, fn: (err: unknown) => void) => void listeners.set(ev, fn) };
+    const fail = vi.fn();
+    const logged: unknown[] = [];
+    installFatalHandlers(proc, fail, (kind, err) => void logged.push([kind, err]));
+    const err = Object.assign(new Error("read ECONNRESET"), { code: "ECONNRESET" });
+    listeners.get("unhandledRejection")!(err);
+    expect(logged).toEqual([["unhandledRejection", err]]);
+    expect(fail).toHaveBeenCalledWith(1);
+    listeners.get("uncaughtException")!(new Error("boom"));
+    expect(fail).toHaveBeenCalledTimes(2);
   });
 });

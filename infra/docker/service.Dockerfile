@@ -25,6 +25,7 @@ RUN corepack enable && corepack install && pnpm --version
 
 FROM base AS build
 COPY pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY patches ./patches
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm fetch
 COPY . .
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm install --frozen-lockfile --offline

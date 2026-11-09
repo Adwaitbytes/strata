@@ -136,9 +136,9 @@ export class HeartbeatWriter {
     return this.#d.sink.write(this.#d.network, `agent:${this.#d.agentId}`, this.#d.now(), this.#d.detail());
   }
 
-  start(onError: (err: unknown) => void = () => undefined): void {
+  start(onError: (err: unknown) => void = () => undefined, onSuccess: () => void = () => undefined): void {
     if (this.#timer !== null) return;
-    const run = (): void => void this.beat().catch(onError);
+    const run = (): void => void this.beat().then(onSuccess, onError);
     run();
     this.#timer = setInterval(run, this.#d.intervalMs);
     this.#timer.unref?.();

@@ -12,6 +12,7 @@ import { errMsg, log } from "../lib/log.js";
 import { resilientStream, type StreamHandle } from "../lib/resilient-stream.js";
 import { selectBaselineMarkets, type CandidateMarket } from "../markets/select.js";
 import { insertBookSnapshots, upsertHeartbeat, upsertMarkets } from "../store/writes.js";
+import type { Liveness } from "../live/indexer.js";
 import { buildSnapshotRow } from "./snapshot.js";
 
 /** Indexer rejects StreamPricesByMarkets with more than 40 market IDs (observed live 2026-11-09). */
@@ -36,6 +37,8 @@ export interface BaselineOptions {
   /** Raw SQL handle for retention; with `downsampleAfterHours` it thins old BASELINE rows hourly. */
   sql?: Sql;
   downsampleAfterHours?: number;
+  /** Told about every tick outcome, so a pool that stops writing restarts the process. */
+  liveness?: Liveness;
 }
 
 export class BaselineRecorder {
@@ -134,7 +137,8 @@ export class BaselineRecorder {
     return inserted;
   }
 
-  private async tick(): Promise<void> {
+  /** One scheduled pass: sample, retention, heartbeat. Never throws; failures are logged and counted. */
+  async tick(): Promise<void> {
     if (this.running) {
       this.stats.skippedOverlap += 1;
       return;
@@ -156,7 +160,9 @@ export class BaselineRecorder {
         dataLagMs: Date.now() - at.getTime(),
         ...this.stats,
       });
+      this.o.liveness?.success();
     } catch (e) {
+      this.o.liveness?.failure(e);
       this.stats.errors += 1;
       this.stats.lastError = errMsg(e);
       log("error", "baseline sample failed", { network: this.o.network, error: errMsg(e) });

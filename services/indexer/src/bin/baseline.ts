@@ -19,6 +19,7 @@ import { BaselineRecorder } from "../baseline/recorder.js";
 import { indexerEndpoint } from "../injective/endpoints.js";
 import { createInjectiveReader } from "../injective/reader.js";
 import { errMsg, log } from "../lib/log.js";
+import { startLivenessWatchdog } from "./common.js";
 
 const Env = z.object({
   BASELINE_NETWORKS: z.string().default("mainnet,testnet"),
@@ -48,6 +49,7 @@ const recorders = networks.map(
       levelsEveryMs: env.BASELINE_LEVELS_EVERY_MS,
       maxStoredLevels: env.BASELINE_MAX_LEVELS,
       sql,
+      liveness: startLivenessWatchdog("baseline", network),
       ...(env.BASELINE_DOWNSAMPLE_AFTER_HOURS === undefined ? {} : { downsampleAfterHours: env.BASELINE_DOWNSAMPLE_AFTER_HOURS }),
       ...(env.BASELINE_MAX_MARKETS === undefined ? {} : { maxMarkets: env.BASELINE_MAX_MARKETS }),
     }),

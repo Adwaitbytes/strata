@@ -199,17 +199,53 @@ export interface SignalTarget {
   once(signal: "SIGTERM" | "SIGINT", listener: () => void): unknown;
 }
 
-/** SIGTERM/SIGINT: cancel every order first, then exit. A second signal does not start a second shutdown. */
-export function installShutdownHandlers(proc: SignalTarget, shutdown: () => Promise<void>, exit: (code: number) => void): void {
+export interface ShutdownOptions {
+  /** Exit 1 if shutdown has not finished by then (a dead database or RPC must not hang the exit). */
+  forceExitMs?: number;
+}
+
+/**
+ * SIGTERM/SIGINT: cancel every order first, then exit. A second signal does not start a second
+ * shutdown. Returns fail(code), the same once-guarded path for fatal errors: cancel all, exit code.
+ */
+export function installShutdownHandlers(
+  proc: SignalTarget,
+  shutdown: () => Promise<void>,
+  exit: (code: number) => void,
+  options: ShutdownOptions = {},
+): (code: number) => void {
   let started = false;
-  const run = (): void => {
+  const run = (code: number): void => {
     if (started) return;
     started = true;
+    const force = options.forceExitMs === undefined ? null : setTimeout(() => exit(1), options.forceExitMs);
     shutdown().then(
-      () => exit(0),
-      () => exit(1),
+      () => (force !== null && clearTimeout(force), exit(code)),
+      () => (force !== null && clearTimeout(force), exit(1)),
     );
   };
-  proc.once("SIGTERM", run);
-  proc.once("SIGINT", run);
+  proc.once("SIGTERM", () => run(0));
+  proc.once("SIGINT", () => run(0));
+  return run;
+}
+
+export interface FatalTarget {
+  on(event: "unhandledRejection" | "uncaughtException", listener: (err: unknown) => void): unknown;
+}
+
+/**
+ * Cancel-on-uncertainty: an error nothing handled means state is unknown, so log it, cancel every
+ * order and exit 1 for a clean supervised restart instead of dying mid-batch with orders resting.
+ */
+export function installFatalHandlers(
+  proc: FatalTarget,
+  fail: (code: number) => void,
+  log: (kind: "unhandledRejection" | "uncaughtException", err: unknown) => void,
+): void {
+  for (const kind of ["unhandledRejection", "uncaughtException"] as const) {
+    proc.on(kind, (err) => {
+      log(kind, err);
+      fail(1);
+    });
+  }
 }

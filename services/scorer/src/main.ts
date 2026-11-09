@@ -7,11 +7,11 @@
  *
  * Exposes Prometheus metrics on :SCORER_METRICS_PORT/metrics and liveness on /healthz.
  */
-import { setTimeout as delay } from "node:timers/promises";
-import { createDb, describeDatabaseUrl, resolveDatabaseUrl } from "@strata/db";
+import { LivenessWatchdog, createDb, describeDatabaseUrl, resolveDatabaseUrl, watchdogConfigFromEnv } from "@strata/db";
 import { KeystoreKeySource } from "@strata/keys";
 import { createAttestorChain } from "./chain.js";
 import { loadScorerConfig } from "./config.js";
+import { runScorerLoop } from "./loop.js";
 import { DEFAULT_PARAMS } from "./params.js";
 import { EpochRunner, type Logger } from "./runner.js";
 import { PgScorerStore } from "./store.js";
@@ -83,33 +83,35 @@ async function main(): Promise<number> {
 
   let lastSuccessMs = Date.now();
   const server = cfg.once ? null : serveMetrics(cfg.metricsPort, metrics, () => Date.now() - lastSuccessMs < cfg.pollMs * (MAX_BACKOFF_FACTOR + 2));
-  let failures = 0;
-  let exitCode = 0;
+  // A hung tick reports nothing, so the stall window must exceed the longest healthy gap between
+  // successes: the full backoff plus a slow tick.
+  const wdCfg = watchdogConfigFromEnv(process.env, { stallMs: Math.max(15 * 60_000, cfg.pollMs * (MAX_BACKOFF_FACTOR + 2)) });
+  const watchdog = new LivenessWatchdog({
+    ...wdCfg,
+    onTrip: (trip) => {
+      log.error("liveness watchdog tripped, exiting for a supervised restart", { ...trip, ...wdCfg });
+      process.exit(1);
+    },
+  });
+  if (!cfg.once) watchdog.start(10_000);
   try {
-    while (!stop.signal.aborted) {
-      try {
-        await runner.tick();
-        await store.heartbeat({ ok: true, dryRun: cfg.dryRun });
-        lastSuccessMs = Date.now();
-        failures = 0;
-      } catch (err) {
-        failures++;
-        exitCode = 1;
-        log.error("tick failed", { error: errorMessage(err), consecutiveFailures: failures });
-        await store.heartbeat({ ok: false, error: errorMessage(err), consecutiveFailures: failures }).catch((hbErr: unknown) => {
-          log.error("heartbeat write failed", { error: errorMessage(hbErr) });
-        });
-      }
-      if (cfg.once) break;
-      exitCode = 0;
-      const wait = cfg.pollMs * Math.min(2 ** failures, MAX_BACKOFF_FACTOR);
-      await delay(wait, undefined, { signal: stop.signal }).catch(() => undefined);
-    }
+    return await runScorerLoop({
+      tick: () => runner.tick(),
+      heartbeat: (detail) => store.heartbeat(detail),
+      pollMs: cfg.pollMs,
+      maxBackoffFactor: MAX_BACKOFF_FACTOR,
+      once: cfg.once,
+      signal: stop.signal,
+      watchdog,
+      log,
+      dryRun: cfg.dryRun,
+      onSuccess: () => void (lastSuccessMs = Date.now()),
+    });
   } finally {
+    watchdog.stop();
     server?.close();
     await dbh.close();
   }
-  return exitCode;
 }
 
 main().then(

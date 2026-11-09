@@ -47,6 +47,13 @@ export interface LiveIndexerOptions {
   catalog?: readonly unknown[];
   /** Take book snapshots even before any agent enrolls (tests, local runs). */
   snapshotWithoutAgents?: boolean;
+  /** Told about every heartbeat write, so a pool that stops writing restarts the process. */
+  liveness?: Liveness;
+}
+
+export interface Liveness {
+  success(): void;
+  failure(err: unknown): void;
 }
 
 export class LiveIndexer {
@@ -334,6 +341,16 @@ export class LiveIndexer {
     };
   }
 
+  async heartbeat(): Promise<void> {
+    try {
+      await upsertHeartbeat(this.o.db, this.o.network, "indexer", new Date(), this.heartbeatDetail());
+    } catch (e) {
+      this.o.liveness?.failure(e);
+      throw e;
+    }
+    this.o.liveness?.success();
+  }
+
   async start(): Promise<void> {
     await this.refresh();
     const snapshotMs = this.o.snapshotMs ?? 5_000;
@@ -353,7 +370,7 @@ export class LiveIndexer {
     }
     every(2_000, this.guard("flush", () => this.flush()));
     every(snapshotMs, this.guard("snapshot", async () => void (await this.snapshot(new Date(Math.floor(Date.now() / snapshotMs) * snapshotMs)))));
-    every(10_000, this.guard("heartbeat", () => upsertHeartbeat(this.o.db, this.o.network, "indexer", new Date(), this.heartbeatDetail())));
+    every(10_000, this.guard("heartbeat", () => this.heartbeat()));
     if (this.o.poller) {
       const poller = this.o.poller;
       const poll = this.guard("arena-poll", async () => {

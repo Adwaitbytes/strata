@@ -9,3 +9,5 @@ auditConfig:
   # high or critical production advisory still fails CI.
   ignoreGhsas:
     - GHSA-mrhx-c7xc-m3w5
+patchedDependencies:
+  postgres@3.4.9: patches/postgres@3.4.9.patch

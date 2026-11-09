@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import type { GuardEvent } from "@strata/sdk";
 import { DEFAULT_PARAMS, INITIAL_RISK_STATE } from "@strata/risk";
 import { KillSwitch } from "./killSwitch.js";
+import { LivenessWatchdog, type WatchdogTrip } from "@strata/db";
 import { HeartbeatWriter, KillCommandPoller, heartbeatDetail } from "./control.js";
 import { MemoryAgentStateStore, StatePersister, persistable, riskStateFrom } from "./persistence.js";
 import type { KillCommandFeed, KillCommandRow } from "./persistence.js";
@@ -142,6 +143,40 @@ describe("heartbeat", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe("HeartbeatWriter liveness", () => {
+  it("trips a LivenessWatchdog after 5 failed heartbeat writes in a row (soak 2026-11-09)", async () => {
+    vi.useFakeTimers();
+    try {
+      const trips: WatchdogTrip[] = [];
+      const watchdog = new LivenessWatchdog({ maxConsecutiveFailures: 5, stallMs: 600_000, onTrip: (t) => void trips.push(t) });
+      const hb = new HeartbeatWriter({
+        sink: { write: async () => Promise.reject(new Error("Failed query: insert into heartbeats")) },
+        network: "testnet",
+        agentId: 7,
+        now: () => 5,
+        detail: () => ({}),
+        intervalMs: 15_000,
+      });
+      hb.start((e) => watchdog.failure(e), () => watchdog.success());
+      await vi.advanceTimersByTimeAsync(15_000 * 3 + 1);
+      expect(trips).toEqual([]);
+      await vi.advanceTimersByTimeAsync(15_000);
+      expect(trips).toEqual([expect.objectContaining({ reason: "consecutive_failures", failures: 5 })]);
+      hb.stop();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("reports successful writes so the streak resets", async () => {
+    const onSuccess = vi.fn();
+    const hb = new HeartbeatWriter({ sink: { write: async () => undefined }, network: "testnet", agentId: 7, now: () => 5, detail: () => ({}), intervalMs: 15_000 });
+    hb.start(() => undefined, onSuccess);
+    await vi.waitFor(() => expect(onSuccess).toHaveBeenCalledOnce());
+    hb.stop();
   });
 });
 

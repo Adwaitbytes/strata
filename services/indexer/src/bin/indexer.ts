@@ -11,7 +11,7 @@ import { getMarkets } from "@strata/config";
 import { NetworkName } from "@strata/sdk";
 import { z } from "zod";
 import { upsertMarketCatalog } from "../store/catalog.js";
-import { configuredArenaIds, IndexerEnv, makePoller } from "./common.js";
+import { configuredArenaIds, IndexerEnv, makePoller, startLivenessWatchdog } from "./common.js";
 
 const env = IndexerEnv.parse(process.env);
 const url = resolveDatabaseUrl();
@@ -30,6 +30,7 @@ const indexers = env.INDEXER_NETWORKS.map((network) => {
     extraMarketIds: env.INDEXER_EXTRA_MARKET_IDS,
     poller,
     catalog: getMarkets(network),
+    liveness: startLivenessWatchdog("indexer", network),
   });
 });
 
