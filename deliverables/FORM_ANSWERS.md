@@ -1,5 +1,7 @@
 # Hacker House form: copy-paste answers
 
+Designed version: deliverables/STRATA-application-answers.pdf
+
 Form: https://xsxo494365r.typeform.com/to/zeKuqtdg (one form per person; all 4 team members submit their own with the same project answers below).
 
 ## Per person (each member fills their own)
@@ -19,14 +21,14 @@ Form: https://xsxo494365r.typeform.com/to/zeKuqtdg (one form per person; all 4 t
 **Project name:** STRATA
 
 **Briefly describe what your project does (250 max):**
-STRATA is an open arena where AI market-making agents add liquidity to Injective's perp markets, RWAs first. Agents trade their own capital, get scored onchain every hour on spread, depth and uptime, and earn points for the liquidity they add.
+Only 3 of Injective's 188 real-world perp markets had a buyer and a seller within 0.25% of price. STRATA is an open arena where AI market makers quote those books with their own capital and get scored onchain every hour.
 
 **Category:** AI & agents
 
 **Stage:** Testnet
 
 **What have you shipped so far?**
-Live on Injective testnet: arena and score attestation contracts verified on Blockscout and Sourcify, three house agents quoting behind oracle, session and risk guards with a tested kill switch, hourly score attestations onchain (4 so far, latest https://testnet.blockscout.injective.network/tx/0x3cdfe8bc1a764a59f2e96927506f189cb3713c0e4e92026e3f1f6f08c816664d), a public leaderboard, and an options writer in a labeled simulator. We measured mainnet: on 9 Nov only 3 of 188 real-world perps had a bid and an ask within 0.25% of price.
+Live on Injective testnet: three AI market-making agents quoting real order books behind oracle, session and risk guards; arena and score contracts verified on Blockscout and Sourcify; 4 hourly score roots attested onchain; a kill switch that cancelled every order onchain 10 seconds after a signed request; a public leaderboard where anyone can verify a score in the browser; and an options writer in a labeled simulator. 163 contract tests, 100% coverage, public security review. We also measured mainnet: only 3 of 188 real-world perps had a two-sided price within 0.25%.
 
 **Website:** https://strata-web-ochre.vercel.app
 
@@ -37,9 +39,9 @@ Live on Injective testnet: arena and score attestation contracts verified on Blo
 **Deck:** https://strata-web-ochre.vercel.app/media/STRATA-deck.pdf
 
 **What do you want to build or ship during the 10 days?**
-Take STRATA to mainnet on Injective's real-world perps with funded house agents, then open the arena to outside agents. Concretely: a rewards distributor and Season 1 incentives designed with the Injective team, the options writer moved from our simulator onto Injective Options once we have writer access, private RFQ for institutional block trades, and a public agent SDK plus MCP onboarding so a new agent can enroll in minutes. Everything stays scored onchain every hour so anyone can check it.
+Take STRATA from testnet to mainnet on Injective's real-world perps, then open the arena to outside agents. In ten days: mainnet arena live (contracts on chain 1776, funded house agents quoting gold, the Nasdaq, FX and SICI, hourly attestations on mainnet); Season 1 rewards with a distributor that pays for depth and uptime, designed with the Injective team and hard to game; the options writer moved from our simulator onto Injective Options as soon as we get writer access; a public agent SDK and MCP server so a new agent can enroll in minutes; and private RFQ for institutional block trades. Every agent stays scored onchain every hour, so the before and after on each book is public.
 
 **Where do you need the most help? (up to 3):** Injective Integration; Tokenomics & DeFi Design; Ecosystem Partnerships
 
 **Anything else you'd like us to know?**
-Watch the 3 minute film: https://strata-web-ochre.vercel.app/media/strata-film.mp4. Every number in it is real and dated, and anything illustrative is labeled. The full code, security review and test suite are public in the repo.
+Watch the 3 minute film: https://strata-web-ochre.vercel.app/media/strata-film.mp4. Every number in it is real and dated, and anything illustrative is labeled. The code, tests and security review are public. Mainnet goes live the day we fund it.

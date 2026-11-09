@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>STRATA: Hacker House application answers</title>
+<style>
+  @font-face { font-family: "Bricolage"; src: url("../deck/fonts/bricolage-grotesque.woff2") format("woff2"); font-weight: 200 800; }
+  @font-face { font-family: "Schibsted"; src: url("../deck/fonts/schibsted-grotesk.woff2") format("woff2"); font-weight: 400 900; }
+  @font-face { font-family: "Schibsted"; src: url("../deck/fonts/schibsted-grotesk-italic.woff2") format("woff2"); font-style: italic; font-weight: 400 900; }
+  @font-face { font-family: "Martian"; src: url("../deck/fonts/martian-mono.woff2") format("woff2"); font-weight: 100 800; }
+  @page { size: A4; margin: 0; }
+  :root { --paper:#ECEEE7; --card:#F4F5F0; --ink:#121412; --muted:#5A5E58; --hair:#CFD2C8; --ochre:#8A560E; --bid:#1E6B4A; --ask:#A3432C; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--paper); color: var(--ink); font-family: "Schibsted", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 210mm; height: 297mm; padding: 18mm 18mm 16mm; position: relative; overflow: hidden; page-break-after: always; }
+  .page:last-child { page-break-after: auto; }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(var(--hair) 0.5px, transparent 0.5px), linear-gradient(90deg, var(--hair) 0.5px, transparent 0.5px); background-size: 12mm 12mm; opacity: .35; pointer-events: none; }
+  .brand { display: flex; align-items: center; gap: 10px; font: 700 15px/1 "Bricolage"; letter-spacing: .32em; position: relative; }
+  .brand i { width: 22px; height: 22px; border-radius: 6px; background: var(--ink); display: inline-block; }
+  .eyebrow { font: 600 9.5px/1 "Martian"; letter-spacing: .14em; text-transform: uppercase; color: var(--ochre); }
+  .mono { font-family: "Martian"; }
+  h1 { font: 800 46px/1.02 "Bricolage"; letter-spacing: -.02em; }
+  h1 em, h2 em { font-style: normal; color: var(--ochre); }
+  h2 { font: 750 21px/1.15 "Bricolage"; letter-spacing: -.01em; }
+  p { font-size: 12.5px; line-height: 1.55; }
+  .pg { position: absolute; right: 18mm; bottom: 10mm; font: 500 9px/1 "Martian"; color: var(--muted); }
+  .foot { position: absolute; left: 18mm; bottom: 10mm; font: 500 8.5px/1 "Martian"; color: var(--muted); }
+
+  /* cover */
+  .big { font: 800 150px/.9 "Bricolage"; letter-spacing: -.04em; color: var(--ask); }
+  .big small { font-size: 54px; color: var(--ink); letter-spacing: -.02em; }
+  .dots { display: grid; grid-template-columns: repeat(19, 1fr); gap: 5px; width: 100%; }
+  .dots span { aspect-ratio: 1; border-radius: 50%; border: 1.2px solid var(--hair); }
+  .dots span.on { background: var(--bid); border-color: var(--bid); }
+  .note { font: italic 600 13px/1.3 "Schibsted"; color: var(--ochre); }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
+  .kpis div { padding: 12px 10px 0 0; }
+  .kpis b { display: block; font: 750 26px/1 "Bricolage"; letter-spacing: -.01em; }
+  .kpis span { display: block; margin-top: 6px; font-size: 10px; line-height: 1.35; color: var(--muted); }
+
+  /* answers */
+  .field { border-top: 1px solid var(--hair); padding: 13px 0 12px; display: grid; grid-template-columns: 46mm 1fr; gap: 6mm; position: relative; }
+  .field .k { font: 600 9px/1.35 "Martian"; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding-top: 3px; }
+  .field .k .req { color: var(--ask); }
+  .field .v { font-size: 12.5px; line-height: 1.55; }
+  .field .v b { font-weight: 700; }
+  .hero { background: var(--card); border: 1px solid var(--hair); border-radius: 10px; padding: 14px 16px; }
+  .hero .q { font: 650 17px/1.38 "Schibsted"; letter-spacing: -.005em; }
+  .hero .q mark { background: none; color: var(--ask); font-weight: 800; }
+  .count { margin-top: 8px; font: 600 9px/1 "Martian"; color: var(--bid); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font: 600 10.5px/1 "Martian"; padding: 6px 9px; border: 1px solid var(--ink); border-radius: 999px; }
+  .chip.sel { background: var(--ink); color: var(--paper); }
+  .chip.off { border-color: var(--hair); color: #9a9d96; }
+  a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ochre); }
+  .links a { font: 500 11px/1.9 "Martian"; }
+  ul.tight { list-style: none; }
+  ul.tight li { font-size: 12.5px; line-height: 1.5; padding-left: 14px; position: relative; margin: 2px 0; }
+  ul.tight li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 1.5px; background: var(--ochre); }
+  .tag { font: 600 8.5px/1 "Martian"; letter-spacing: .08em; padding: 3px 6px; border: 1px solid var(--muted); border-radius: 4px; color: var(--muted); vertical-align: 2px; margin-left: 6px; }
+</style>
+</head>
+<body>
+
+<!-- ================= COVER ================= -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="brand"><i></i>STRATA</div>
+  <div style="position:relative;margin-top:22mm">
+    <div class="eyebrow">Injective Bangkok Hacker House · application answers</div>
+    <h1 style="margin-top:6mm">Injective lists 188 real-world markets.<br>On Monday morning, <em>3</em> had a real two-sided price.</h1>
+  </div>
+
+  <div style="position:relative;margin-top:14mm;display:grid;grid-template-columns:62mm 1fr;gap:10mm;align-items:end">
+    <div>
+      <div class="big">3<small> of 188</small></div>
+      <p style="margin-top:4mm;color:var(--muted)">real-world perps with a bid <b style="color:var(--ink)">and</b> an ask within 0.25% of the price. Injective mainnet, read-only chain sweep, 9 Nov 2026, 08:42 UTC. A second sweep at 09:11 found 4. 134 books were completely empty.</p>
+    </div>
+    <div>
+      <div class="dots" id="dots"></div>
+      <div class="note" style="margin-top:5mm">every dot is one market. Green had a real price on both sides</div>
+    </div>
+  </div>
+
+  <div style="position:relative;margin-top:14mm">
+    <h2>STRATA puts AI market makers on those books, and scores every one of them onchain, every hour</h2>
+    <p style="margin-top:4mm;max-width:150mm;color:var(--muted)">Agents trade their own capital. They quote both sides behind oracle, session and risk guards. We measure them every 5 seconds, score them every hour, and post the merkle root onchain so anyone can check a score in their browser. No pooled vault, nothing to drain.</p>
+  </div>
+
+  <div class="kpis" style="position:relative;margin-top:12mm">
+    <div><b>Live</b><span>on Injective testnet today, public leaderboard</span></div>
+    <div><b>3 + 3</b><span>contracts verified on Blockscout and Sourcify, house agents quoting</span></div>
+    <div><b>10 s</b><span>signed kill request to every order cancelled onchain</span></div>
+    <div><b>4</b><span>hourly score roots attested onchain so far</span></div>
+  </div>
+
+  <div class="foot">Team of 4, all attending in person, Dec 1 to 10</div>
+  <div class="pg">1 / 3</div>
+</section>
+
+<!-- ================= ANSWERS 1 ================= -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="brand"><i></i>STRATA</div>
+  <div style="position:relative;margin-top:10mm">
+    <div class="eyebrow">Your team · your project</div>
+    <h2 style="margin-top:3mm">Same answers on all four forms. Each member fills their own personal details</h2>
+  </div>
+
+  <div style="position:relative;margin-top:8mm">
+    <div class="field"><div class="k">Team size <span class="req">*</span></div><div class="v"><b>4</b></div></div>
+    <div class="field"><div class="k">How many attend in person <span class="req">*</span></div><div class="v"><b>4</b>, all ten days, Dec 1 to 10</div></div>
+    <div class="field"><div class="k">Project name <span class="req">*</span></div><div class="v"><b style="font:800 18px/1 'Bricolage';letter-spacing:.2em">STRATA</b></div></div>
+
+    <div class="field">
+      <div class="k">Briefly describe what your project does <span class="req">*</span><br><br>250 max</div>
+      <div class="v">
+        <div class="hero"><div class="q">Only <mark>3 of Injective's 188</mark> real-world perp markets had a buyer and a seller within 0.25% of price. STRATA is an open arena where AI market makers quote those books with their own capital and get scored onchain every hour.</div></div>
+        <div class="count">220 / 250 characters · paste exactly as written</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="k">Category <span class="req">*</span></div>
+      <div class="v chips"><span class="chip off">DeFi</span><span class="chip sel">AI &amp; agents</span><span class="chip off">RWA</span><span class="chip off">Infra &amp; tooling</span><span class="chip off">Consumer</span></div>
+    </div>
+    <div class="field">
+      <div class="k">Stage <span class="req">*</span></div>
+      <div class="v chips"><span class="chip off">Idea</span><span class="chip off">Prototype</span><span class="chip sel">Testnet</span><span class="chip off">Mainnet</span></div>
+    </div>
+
+    <div class="field">
+      <div class="k">What have you shipped so far? <span class="req">*</span></div>
+      <div class="v">
+        <div class="hero"><div class="q" style="font-size:13.5px;font-weight:550;line-height:1.5">Live on Injective testnet: three AI market-making agents quoting real order books behind oracle, session and risk guards; arena and score contracts verified on Blockscout and Sourcify; <mark>4 hourly score roots attested onchain</mark>; a kill switch that cancelled every order onchain <mark>10 seconds</mark> after a signed request; a public leaderboard where anyone can verify a score in the browser; and an options writer in a labeled simulator. 163 contract tests, 100% coverage, public security review. We also measured mainnet: only 3 of 188 real-world perps had a two-sided price within 0.25%.</div></div>
+        <div class="count">paste exactly as written</div>
+      </div>
+    </div>
+  </div>
+  <div class="pg">2 / 3</div>
+</section>
+
+<!-- ================= ANSWERS 2 ================= -->
+<section class="page">
+  <div class="grid"></div>
+  <div class="brand"><i></i>STRATA</div>
+  <div style="position:relative;margin-top:10mm">
+    <div class="eyebrow">Links · the hacker house</div>
+  </div>
+
+  <div style="position:relative;margin-top:6mm">
+    <div class="field links">
+      <div class="k">Website · demo · repo · deck</div>
+      <div class="v">
+        <div><span class="mono" style="font-size:9px;color:var(--muted);display:inline-block;width:20mm">WEBSITE</span><a href="https://strata-web-ochre.vercel.app">strata-web-ochre.vercel.app</a></div>
+        <div><span class="mono" style="font-size:9px;color:var(--muted);display:inline-block;width:20mm">DEMO</span><a href="https://strata-web-ochre.vercel.app/media/strata-demo.mp4">strata-web-ochre.vercel.app/media/strata-demo.mp4</a></div>
+        <div><span class="mono" style="font-size:9px;color:var(--muted);display:inline-block;width:20mm">REPO</span><a href="https://github.com/Adwaitbytes/strata">github.com/Adwaitbytes/strata</a></div>
+        <div><span class="mono" style="font-size:9px;color:var(--muted);display:inline-block;width:20mm">DECK</span><a href="https://strata-web-ochre.vercel.app/media/STRATA-deck.pdf">strata-web-ochre.vercel.app/media/STRATA-deck.pdf</a></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="k">What do you want to build or ship during the 10 days? <span class="req">*</span></div>
+      <div class="v">
+        <div class="hero"><div class="q" style="font-size:13.5px;font-weight:550;line-height:1.5">Take STRATA from testnet to mainnet on Injective's real-world perps, then open the arena to outside agents. In ten days:</div>
+          <ul class="tight" style="margin-top:8px">
+            <li><b>Mainnet arena live:</b> contracts on chain 1776, funded house agents quoting gold, the Nasdaq, FX and SICI, hourly attestations on mainnet</li>
+            <li><b>Season 1 rewards:</b> a distributor that pays for depth and uptime, designed with the Injective team, hard to game with wash trades or quote spam</li>
+            <li><b>Options:</b> the writer moves from our simulator onto Injective Options as soon as we get writer access</li>
+            <li><b>Open onboarding:</b> a public agent SDK and MCP server so a new agent can enroll in minutes</li>
+            <li><b>Private RFQ</b> for institutional block trades</li>
+          </ul>
+          <p style="margin-top:8px;font-size:12px;color:var(--muted)">Every agent stays scored onchain every hour, so the before and after on each book is public.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="k">Where do you need the most help? <span class="req">*</span> (up to 3)</div>
+      <div class="v chips">
+        <span class="chip off">Technical Mentorship</span><span class="chip sel">Injective Integration</span><span class="chip off">AI &amp; Agent Development</span><span class="chip off">Product Development</span><span class="chip sel">Tokenomics &amp; DeFi Design</span><span class="chip off">Go-to-Market &amp; Growth</span><span class="chip off">Fundraising &amp; Investor Connections</span><span class="chip sel">Ecosystem Partnerships</span><span class="chip off">Team Building</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="k">Anything else you'd like us to know?</div>
+      <div class="v"><div class="hero"><div class="q" style="font-size:13.5px;font-weight:550;line-height:1.5">Watch the 3 minute film: <a href="https://strata-web-ochre.vercel.app/media/strata-film.mp4">strata-web-ochre.vercel.app/media/strata-film.mp4</a>. Every number in it is real and dated, and anything illustrative is labeled. The code, tests and security review are public. Mainnet goes live the day we fund it.</div></div></div>
+    </div>
+
+    <div class="field">
+      <div class="k">Per person</div>
+      <div class="v">
+        <p>Attend in person: <b>Yes, I can attend all 10 days.</b> Each member adds their own name, email, Telegram, GitHub, role, city and visa answer, and reads the privacy policy and terms before ticking them.</p>
+      </div>
+    </div>
+  </div>
+  <div class="pg">3 / 3</div>
+</section>
+
+<script>
+  // 188 markets, 3 with a two-sided price within 0.25% (rwa-sweep.json, 9 Nov 2026 08:42 UTC)
+  const d = document.getElementById("dots");
+  for (let i = 0; i < 188; i++) { const s = document.createElement("span"); if (i === 61 || i === 94 || i === 127) s.className = "on"; d.appendChild(s); }
+</script>
+</body>
+</html>
