@@ -18,3 +18,12 @@ packages/contracts/broadcast/*/31337/
 keystore/
 .secrets/
 .run/
+
+# film heavy media (sources and final MP4s are committed)
+film/.media/
+film/.hyperframes/
+film/renders/
+film/assets/blender/**/*.png
+film/assets/clips/*.webm
+film/.voice-tests/
+film/node_modules/
