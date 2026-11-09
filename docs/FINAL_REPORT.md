@@ -1,6 +1,6 @@
 # STRATA R0: final report
 
-Release stage: **Injective testnet** (D27, D33: no mainnet capital). Status as of 2026-11-09, 17:30 IST. The soak result is appended at the end when it completes.
+Release stage: **Injective testnet** (D27, D33: no mainnet capital). Status as of 2026-11-09, 17:30 IST. Soak window 1 result is below; it did not pass cleanly, and a second window runs after the fixes.
 
 ## Live links
 
@@ -66,3 +66,7 @@ Epochs 1 to 12 were skipped by the scorer with a recorded reason (host asleep, n
 5. **Git history** still contains the studio name in older commits (current files are clean); rewriting it needs an owner-run force push.
 6. Database integration tests are skipped in CI (they run locally against TimescaleDB).
 7. The agents run on the owner's Mac under `caffeinate`; moving them to a cloud host is a config change (D25).
+
+## Soak, window 1 (08:20 to 14:20 UTC, 9 Nov)
+
+Agents quoted for the full 6 hours (16 open orders on chain afterwards), 3,864 orders recorded, 4 epochs attested, 136 guard events. Not clean: one agent crash on an unhandled ECONNRESET (auto-restarted in 10 s, no duplicate orders) and a 2.5 hour recording stall in the indexer and scorer after network failures. Both bugs are being fixed; a second soak window follows. Mainnet stays gated on a clean soak and on funding.

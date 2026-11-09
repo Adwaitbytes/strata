@@ -239,3 +239,9 @@ Cross-folder fixes to make `.github/workflows/ci.yml` pass on main:
 - Audit gate is now production dependencies only; the one accepted advisory is in docs/SECURITY.md section 7.
 - Root ESLint: browser globals for `film/capture/*.mjs` (Playwright page callbacks); scorer and agent info logs write
   to stdout directly instead of `console.log`.
+
+### Soak result, window 1 (2026-11-09 08:20 to 14:20 UTC)
+- Agents quoted on testnet for the full 6 hours; 16 orders open on chain at 15:09 UTC. 3,864 orders recorded in the window, 4 epochs attested onchain (13 to 16), 12 epochs skipped with recorded reasons, 136 guard events.
+- One planned restart at 09:06 UTC for every agent (tuner fix deploy, clean exit, orders cancelled).
+- **Not clean:** strata-test-1 crashed once at 14:03:54 UTC on an unhandled `ECONNRESET` promise rejection; the supervisor restarted it in 10 s and it reconciled open orders before quoting (no duplicates). From about 12:30 UTC the indexer, scorer and one baseline process stopped writing to Neon after network failures and did not recover until restarted at 15:07 UTC, so orders after 12:30 UTC are under-recorded for that period (the chain itself shows the agents kept quoting).
+- Verdict: fails the strict "no unhandled errors" bar. Fixes for both bugs are in progress; a second soak window starts after they deploy.
