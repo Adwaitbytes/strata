@@ -8,6 +8,7 @@ import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import { and, count, countDistinct, desc, eq, gte, isNotNull, isNull, max, min, avg, sql } from "drizzle-orm";
 import { schema } from "@strata/db";
 import type { NetworkName } from "@strata/sdk";
+import { NETWORKS } from "@strata/config";
 import { LiquiditySample, Provenance } from "@strata/sdk";
 import { DataUnavailableError } from "../errors.js";
 import type {
@@ -37,7 +38,7 @@ import {
 
 const {
   markets, agents, bookSnapshots, agentOrders, agentFills, oraclePrices, guardEvents, tunerEvents,
-  epochs, scores, heartbeats, adminNonces, killCommands,
+  epochs, scores, heartbeats, adminNonces, killCommands, arenaEvents,
 } = schema;
 
 /** Latest-book lookups only scan this far back; an older book is not a current book. */
@@ -325,6 +326,28 @@ export class DrizzleRepository implements Repository {
     return this.run(async () => {
       const [r] = await this.db.select({ s: max(scores.season) }).from(scores).where(eq(scores.network, network));
       return r?.s ?? null;
+    });
+  }
+
+  seasonEndsAt(network: NetworkName, season: number) {
+    return this.run(async () => {
+      const arena = NETWORKS[network].contracts.arena;
+      // A superseded arena may have emitted the same season number, so only the configured arena counts.
+      if (arena === null) return null;
+      const [r] = await this.db
+        .select({ args: arenaEvents.args })
+        .from(arenaEvents)
+        .where(and(
+          eq(arenaEvents.network, network),
+          eq(arenaEvents.event, "SeasonStarted"),
+          eq(sql`lower(${arenaEvents.contract})`, arena.toLowerCase()),
+          eq(sql`${arenaEvents.args}->>'season'`, String(season)),
+        ))
+        .orderBy(desc(arenaEvents.blockNumber))
+        .limit(1);
+      const endTime = (r?.args as { endTime?: unknown } | undefined)?.endTime;
+      const seconds = typeof endTime === "string" || typeof endTime === "number" ? Number(endTime) : NaN;
+      return Number.isSafeInteger(seconds) && seconds > 0 ? seconds * 1000 : null;
     });
   }
 

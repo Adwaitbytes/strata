@@ -36,12 +36,13 @@ export interface MemoryData {
   tunerEvents: TunerEvent[];
   heartbeats: Array<Heartbeat & { network: NetworkName }>;
   epochs: EpochAttestation[];
+  seasonEnds: Array<{ network: NetworkName; season: number; endsAtMs: number }>;
 }
 
 export function emptyData(): MemoryData {
   return {
     markets: [], books: [], baselines: [], history: [], oracles: [], agents: [], quotes: [], fills: [],
-    scores: [], guardEvents: [], tunerEvents: [], heartbeats: [], epochs: [],
+    scores: [], guardEvents: [], tunerEvents: [], heartbeats: [], epochs: [], seasonEnds: [],
   };
 }
 
@@ -134,6 +135,10 @@ export class MemoryRepo implements Repository {
     this.check();
     const seasons = this.data.scores.filter((s) => s.network === network).map((s) => s.season);
     return seasons.length ? Math.max(...seasons) : null;
+  }
+  async seasonEndsAt(network: NetworkName, season: number) {
+    this.check();
+    return this.data.seasonEnds.find((e) => e.network === network && e.season === season)?.endsAtMs ?? null;
   }
   async scoredEpochs(network: NetworkName, season: number, limit: number) {
     this.check();

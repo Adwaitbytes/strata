@@ -85,6 +85,8 @@ export interface Repository {
   heartbeats(network: NetworkName): Promise<Heartbeat[]>;
 
   latestSeason(network: NetworkName): Promise<number | null>;
+  /** End of a season in ms, from the current arena's SeasonStarted event; null if not indexed. */
+  seasonEndsAt(network: NetworkName, season: number): Promise<number | null>;
   /** Distinct epochs that have scores in a season, newest first. */
   scoredEpochs(network: NetworkName, season: number, limit: number): Promise<number[]>;
   epochScores(network: NetworkName, season: number, epoch: number): Promise<EpochScore[]>;

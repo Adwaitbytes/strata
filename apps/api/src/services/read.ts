@@ -206,9 +206,13 @@ function ranked(scores: EpochScore[]): EpochScore[] {
 
 export async function getLeaderboard(ctx: ReadContext, network: NetworkName, seasonParam: number | undefined): Promise<LeaderboardResponse> {
   const season = seasonParam ?? (await ctx.repo.latestSeason(network)) ?? 0;
-  const [epochs, agents] = await Promise.all([ctx.repo.scoredEpochs(network, season, 2), ctx.repo.listAgents(network)]);
+  const [epochs, agents, seasonEndsAt] = await Promise.all([
+    ctx.repo.scoredEpochs(network, season, 2),
+    ctx.repo.listAgents(network),
+    ctx.repo.seasonEndsAt(network, season),
+  ]);
   const [latest, previous] = epochs;
-  const base = { network, season, seasonEndsAt: null, at: ctx.now() };
+  const base = { network, season, seasonEndsAt, at: ctx.now() };
   if (latest === undefined) return { ...base, epoch: null, rows: [] };
 
   const [current, prior] = await Promise.all([

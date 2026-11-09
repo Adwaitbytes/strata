@@ -219,6 +219,17 @@ describe("leaderboard and epochs", () => {
     expect(body.rows.map((r) => [r.agentId, r.rank, r.previousRank])).toEqual([[2, 1, 2], [1, 2, 1], [3, 3, null]]);
   });
 
+  it("reports the onchain season end from the SeasonStarted event", async () => {
+    repo.data.seasonEnds = [{ network: "testnet", season: 0, endsAtMs: 1_796_860_800_000 }];
+    const body = LeaderboardResponse.parse((await get("/v1/leaderboard?network=testnet")).json());
+    expect(body.seasonEndsAt).toBe(1_796_860_800_000);
+  });
+
+  it("leaves the season end null when no SeasonStarted event is indexed", async () => {
+    const body = LeaderboardResponse.parse((await get("/v1/leaderboard?network=testnet")).json());
+    expect(body.seasonEndsAt).toBeNull();
+  });
+
   it("returns 200 with no rows for a season without scores", async () => {
     const body = LeaderboardResponse.parse((await get("/v1/leaderboard?network=testnet&season=5")).json());
     expect(body).toMatchObject({ season: 5, rows: [], epoch: null });
