@@ -216,3 +216,14 @@ PRD 16.4, testnet, 2026-11-08 (UTC). Terminal captures in `deliverables/screens/
 - All services restarted 2026-11-09T08:20Z (13:50 IST) with `caffeinate -dimsu`. The 6 h soak clock restarts at 08:20Z and ends 14:20Z.
 - The scorer skipped epochs 1 to 8 with reason "no book data for any arena market in the epoch window" (honest gap, nothing invented).
 - Blockscout verification still fails: eth-bytecode-db.services.blockscout.com/health returns 503. Sourcify exact match stands; a retry loop verifies automatically when Blockscout recovers.
+
+## Options writer (PRD 9.8, SIMULATED)
+- 2026-11-09: `strata-options` runs on STRATA's simulator (D9, docs/OPTIONS.md "The running simulator") via
+  `scripts/run-testnet.sh options`. Underlying prices are read-only mainnet oracle reads; no chain orders, no keys loaded.
+- Shared-package changes (additive): `packages/db` migration `0006_sim_options.sql` and Drizzle tables `simOptionQuotes`,
+  `simOptionPositions`, `simOptionBook`. Applied to Neon 2026-11-09 (additive CREATE TABLE only).
+- `agents` row testnet/9001 `strata-options`, `simulated = true`, kind house, no markets, inserted by the agent at boot
+  (it refuses to run if that id belongs to a non-simulated agent). Scorer already excludes simulated agents
+  (`services/scorer/src/epoch.ts`, documented in docs/SCORING.md). The web agent page already shows the SIMULATED badge
+  for `simulated` agents, so apps/web was not changed. Heartbeat detail reports `simulatedCapitalUsd`, not `capitalUsd`,
+  so the Transparency capital panel never lists simulated USDC as house capital.

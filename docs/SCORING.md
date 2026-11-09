@@ -33,6 +33,18 @@ All inputs come from the STRATA database, which the indexer fills from Injective
 Only rows labeled `LIVE`, `TESTNET` or `BASELINE` describe the real book. Rows labeled `MOCK`,
 `SIMULATED` or `BACKTEST` never affect a score. Simulated agents are not scored or attested.
 
+How simulated agents stay out of attested epochs (verified 2026-11-09 for the options writer, PRD 9.8):
+- `computeEpoch` (`services/scorer/src/epoch.ts`) drops every agent whose `agents.simulated` is true
+  before any metric is computed, so it never gets a leaf in the merkle tree and never changes another
+  agent's score. Test: `epoch.test.ts`, "skips simulated, withdrawn and late agents".
+- The options writer (`strata-options`, testnet agent id 9001) is registered off-chain with
+  `simulated = true`, `kind = house` and no arena markets, so it would also fail the arena-market rule.
+  It is not enrolled in `StrataArena`: enrolling an agent that never quotes onchain would only add a
+  zero row. Its id sits outside the arena's sequential id range so an onchain enrollment cannot collide.
+- Its quotes, positions and PnL live in `sim_option_quotes`, `sim_option_positions` and
+  `sim_option_book` (migration 0006), which the scorer never reads. Each table has a CHECK that pins
+  `provenance = 'SIMULATED'`. It writes nothing to `agent_orders`, `agent_fills` or `book_snapshots`.
+
 Arena markets and their uptime spread limit (`maxSpreadBps`) come from `packages/config`, which is
 generated from a live Injective Indexer query.
 

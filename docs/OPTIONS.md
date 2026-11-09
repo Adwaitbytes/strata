@@ -56,3 +56,32 @@ SimOption {
 ### What the UI must show
 - Every options number labeled `SIMULATED`, never next to LIVE numbers without the label.
 - The settlement oracle, the collateral locked, and the max loss per contract (`collateral - premium`).
+
+## The running simulator (`strata-options`, PRD 9.8 step 3)
+
+Code: `services/agent/src/options/` (pricing, book, strategy, runner, store, main). Config:
+`services/agent/config/options/strata-options.json`. Start: `nohup scripts/run-testnet.sh options >/dev/null 2>&1 &`,
+log `.run/logs/strata-options.log`.
+
+- **Real inputs:** underlying prices are read-only queries of the mainnet chain oracle (`OraclePrice` /
+  `ProviderPriceState` through the `@injectivelabs/networks` mainnet endpoints) for the six perps in
+  `markets.mainnet.json`: SICI, US500, USTECH, XAU, XAG, WTI. No mainnet transaction is built and no key is loaded.
+- **Simulated:** the USDC (10,000 starting), every option, every buyer and every PnL figure. The buyer takes a quote with
+  probability `0.35 x exp(-3 x (premium / fair - 1))`, drawn from a hash of the quote id so runs are reproducible.
+- **Pricing:** Black-76 with zero rates on the oracle price, `sigma` = max(EWMA realized vol, 10%). EWMA half-life 6 h,
+  20 oracle returns needed before the first quote. The quoted premium is priced at `sigma x 1.2` and the implied vol of
+  that premium is checked again before quoting. Realized vol is annualized over calendar time, which overstates vol for
+  session-bound underlyings and therefore errs toward higher premiums.
+- **Strikes and expiries:** strike solved for |delta| 0.20, rounded to a 1-2-5 grid near 0.25% of spot, and kept only if
+  |delta| stays in 0.15 to 0.30. Expiry is the first Friday session close at least 24 h away (16:00 New York for
+  US500/USTECH and SICI, 17:00 for XAU/XAG/WTI); a Friday holiday rolls to the next week.
+- **Collateral:** each write locks `size x maxPayoutPerUnit` (400 USDC per write, at most 1,600 per underlying and two
+  open options per underlying and kind). A write that free USDC cannot cover is refused and logged as a guard event.
+  Property test: `book.test.ts` "full-collateral invariant".
+- **Guards:** Risk Governor (daily loss 300, drawdown 800, gross 4,000 and net 1,000 USD of delta-equivalent notional,
+  order rate), session guard per underlying, oracle age above 180 s, and the kill switch (signed API command, env flag,
+  persisted latch). A risk close or a kill with close buys options back at fair value plus 5%.
+- **Records (Neon):** `sim_option_quotes`, `sim_option_positions`, `sim_option_book` (migration 0006, provenance pinned
+  to SIMULATED by CHECK), `guard_events` with provenance SIMULATED, heartbeat `agent:9001`, risk and kill state in
+  `agent_risk_state`. The `agents` row (testnet, id 9001, `simulated = true`, kind house, no markets) makes the API and
+  the agent page show the SIMULATED badge. Not enrolled in StrataArena and never scored (docs/SCORING.md).
