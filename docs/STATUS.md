@@ -210,3 +210,9 @@ PRD 16.4, testnet, 2026-11-08 (UTC). Terminal captures in `deliverables/screens/
 
 ## Soak
 - **6-hour soak started 2026-11-08T20:04:52Z (2026-11-09 01:34:52 IST)**: the first batch from the last of the three agents after the restart on the current code (fill ownership b96d3e5, slow-cycle configs 192a75b). Planned end 2026-11-09T02:04:52Z. Checks: `pnpm --filter @strata/agent inj:open-orders`, `inj:balances`, `.run/logs/*.log`, hourly epoch posts.
+
+### Soak restart (2026-11-09)
+- The host Mac slept around 2026-11-08T20:47Z and every process stopped; heartbeats were 11.5 h stale at 2026-11-09T08:19Z.
+- All services restarted 2026-11-09T08:20Z (13:50 IST) with `caffeinate -dimsu`. The 6 h soak clock restarts at 08:20Z and ends 14:20Z.
+- The scorer skipped epochs 1 to 8 with reason "no book data for any arena market in the epoch window" (honest gap, nothing invented).
+- Blockscout verification still fails: eth-bytecode-db.services.blockscout.com/health returns 503. Sourcify exact match stands; a retry loop verifies automatically when Blockscout recovers.
