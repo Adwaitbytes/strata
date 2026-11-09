@@ -49,7 +49,7 @@ def build() -> None:
     fill = S.add_sun(165.0, 38.0, strength=0.0, color_hex="#8EA5C8", angle_deg=6.0)
     fill.name = "night_fill"
     S.add_haze(density=0.0035, falloff_m=6.0, size=(360.0, 480.0, 60.0), center=(0.0, 140.0, 0.0), color_hex="#AAB0AA")
-    S.setup_render(samples=48)
+    S.setup_render(samples=40)
     S.setup_compositor(bloom=0.1, vignette=0.28)
 
     warm = S.hexc("#FFD3A0")

@@ -1075,7 +1075,13 @@ def aim_sun(ob: bpy.types.Object, azimuth_deg: float, elevation_deg: float) -> N
     ob.rotation_euler = (-d).to_track_quat("-Z", "Y").to_euler()
 
 
-def setup_render(samples: int = 64, res_pct: int = 100, motion_blur: bool = False) -> None:
+def setup_render(
+    samples: int = 40,
+    res_pct: int = 100,
+    motion_blur: bool = False,
+    vol_tile: str = "16",
+    vol_samples: int = 32,
+) -> None:
     s = bpy.context.scene
     s.render.engine = "BLENDER_EEVEE"
     s.render.resolution_x = 1920
@@ -1104,8 +1110,8 @@ def setup_render(samples: int = 64, res_pct: int = 100, motion_blur: bool = Fals
     e.ray_tracing_method = "SCREEN"
     e.use_fast_gi = True
     e.fast_gi_method = "GLOBAL_ILLUMINATION"
-    e.volumetric_tile_size = "8"
-    e.volumetric_samples = 64
+    e.volumetric_tile_size = vol_tile
+    e.volumetric_samples = vol_samples
     e.volumetric_end = 400.0
     e.use_volumetric_shadows = True
     e.bokeh_max_size = 60.0

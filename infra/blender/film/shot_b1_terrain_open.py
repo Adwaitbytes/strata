@@ -34,7 +34,7 @@ def build() -> None:
     S.setup_world(S.Sky(strength=1.0, glow_strength=1.4), S.sun_direction(sun_az, sun_el))
     S.add_sun(sun_az, sun_el, strength=8.0, color_hex="#FFD9B0", angle_deg=3.0)
     S.add_haze(density=0.004, falloff_m=6.0, size=(360.0, 480.0, 60.0), center=(0.0, 120.0, 0.0), color_hex="#AAB0AA")
-    S.setup_render()
+    S.setup_render(samples=64, vol_tile="8", vol_samples=64)
     S.setup_compositor(bloom=0.06, vignette=0.25)
 
     cam = S.make_camera(lens=32.0, fstop=5.6)
