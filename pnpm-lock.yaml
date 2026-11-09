@@ -162,6 +162,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@fastify/swagger-ui>@fastify/static': ^10.1.10
+
 importers:
 
   .:
@@ -212,8 +215,8 @@ importers:
         specifier: ^9.9.3
         version: 9.9.3(supports-color@7.2.0)
       '@fastify/swagger-ui':
-        specifier: ^6.1.3
-        version: 6.1.3
+        specifier: ^5.2.6
+        version: 5.2.6
       '@fastify/websocket':
         specifier: ^11.3.7
         version: 11.3.7
@@ -243,7 +246,7 @@ importers:
         version: 2.57.16(typescript@5.9.3)(zod@3.25.76)
       ws:
         specifier: ^8.21.0
-        version: 8.21.0
+        version: 8.22.1
       zod:
         specifier: ^3.25.76
         version: 3.25.76
@@ -528,7 +531,7 @@ importers:
         version: 19.3.0
       next:
         specifier: 16.4.5
-        version: 16.4.5(@babel/core@7.29.13(supports-color@7.2.0))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.0)(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.4.5(@babel/core@7.29.13(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.0)(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -1084,8 +1087,8 @@ packages:
   '@fastify/static@10.1.10':
     resolution: {integrity: sha512-CGwOoZiKg5m4SAqeiS8bzCSKDa71DMFQ7QeVsuWBOrfFu32DpVZWFFb0cpEg7e54YK6HZZsl4g/wfoKMnRQMUw==}
 
-  '@fastify/swagger-ui@6.1.3':
-    resolution: {integrity: sha512-gEV0wqNx9yBqTUAw0TOpVQRtHPxehk91rVRRTDrWVbi1FnV0R4Vb6qh7jYlqoEiL1/qSix/dhHzmeUbKbgrAGg==}
+  '@fastify/swagger-ui@5.2.6':
+    resolution: {integrity: sha512-OMnms0O5s9wb6wis/K5nlrAMLsgUbr1GA8uphM41IasWe3AFdgxz6r/3bA9HTxlDNUYc2FGGKeqMp3ntxmSiNA==}
 
   '@fastify/swagger@9.9.3':
     resolution: {integrity: sha512-1whjjguZlh4VV6OP2SD7w7ZNXXuLPwLcxbKIu7GckhHGgCyIYwtOyBskc3TLZa7LsaRmZZRiB1nz/JTaCI5grQ==}
@@ -6775,6 +6778,27 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/core@7.29.13(supports-color@8.1.1)':
+    dependencies:
+      '@babel/code-frame': 7.29.7
+      '@babel/generator': 7.29.13
+      '@babel/helper-compilation-targets': 7.29.13
+      '@babel/helper-module-transforms': 7.29.13(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1)
+      '@babel/helpers': 7.29.13
+      '@babel/parser': 7.29.13
+      '@babel/template': 7.29.7
+      '@babel/traverse': 7.29.13(supports-color@8.1.1)
+      '@babel/types': 7.29.11
+      '@jridgewell/remapping': 2.3.5
+      convert-source-map: 2.0.0
+      debug: 4.4.3(supports-color@8.1.1)
+      gensync: 1.0.0-beta.2
+      json5: 2.2.3
+      semver: 6.3.2
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   '@babel/generator@7.29.13':
     dependencies:
       '@babel/parser': 7.29.13
@@ -6800,6 +6824,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@babel/helper-module-imports@7.29.7(supports-color@8.1.1)':
+    dependencies:
+      '@babel/traverse': 7.29.13(supports-color@8.1.1)
+      '@babel/types': 7.29.11
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
+
   '@babel/helper-module-transforms@7.29.13(@babel/core@7.29.13(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@babel/core': 7.29.13(supports-color@7.2.0)
@@ -6808,6 +6840,16 @@ snapshots:
       '@babel/traverse': 7.29.13(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
+
+  '@babel/helper-module-transforms@7.29.13(@babel/core@7.29.13(supports-color@8.1.1))(supports-color@8.1.1)':
+    dependencies:
+      '@babel/core': 7.29.13(supports-color@8.1.1)
+      '@babel/helper-module-imports': 7.29.7(supports-color@8.1.1)
+      '@babel/helper-validator-identifier': 7.29.7
+      '@babel/traverse': 7.29.13(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
 
   '@babel/helper-string-parser@7.29.13': {}
 
@@ -6843,6 +6885,19 @@ snapshots:
       debug: 4.4.3(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
+
+  '@babel/traverse@7.29.13(supports-color@8.1.1)':
+    dependencies:
+      '@babel/code-frame': 7.29.7
+      '@babel/generator': 7.29.13
+      '@babel/helper-globals': 7.29.7
+      '@babel/parser': 7.29.13
+      '@babel/template': 7.29.7
+      '@babel/types': 7.29.11
+      debug: 4.4.3(supports-color@8.1.1)
+    transitivePeerDependencies:
+      - supports-color
+    optional: true
 
   '@babel/types@7.29.11':
     dependencies:
@@ -7132,10 +7187,10 @@ snapshots:
       fastq: 1.20.3
       glob: 14.0.4
 
-  '@fastify/swagger-ui@6.1.3':
+  '@fastify/swagger-ui@5.2.6':
     dependencies:
       '@fastify/static': 10.1.10
-      fastify-plugin: 6.0.1
+      fastify-plugin: 5.1.0
       openapi-types: 12.1.3
       rfdc: 1.4.1
       yaml: 2.9.1
@@ -7154,7 +7209,7 @@ snapshots:
     dependencies:
       duplexify: 4.1.3
       fastify-plugin: 6.0.1
-      ws: 8.21.0
+      ws: 8.22.1
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -11840,6 +11895,33 @@ snapshots:
       - '@types/node'
       - babel-plugin-macros
 
+  next@16.4.5(@babel/core@7.29.13(supports-color@8.1.1))(@opentelemetry/api@1.10.0)(@playwright/test@1.65.0)(@types/node@22.20.5)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    dependencies:
+      '@next/env': 16.4.5
+      '@swc/helpers': 0.5.23
+      baseline-browser-mapping: 2.11.35
+      caniuse-lite: 1.0.30001823
+      postcss: 8.5.23
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+      styled-jsx: 5.1.6(@babel/core@7.29.13(supports-color@8.1.1))(react@19.3.0)
+    optionalDependencies:
+      '@next/swc-darwin-arm64': 16.4.5
+      '@next/swc-darwin-x64': 16.4.5
+      '@next/swc-linux-arm64-gnu': 16.4.5
+      '@next/swc-linux-arm64-musl': 16.4.5
+      '@next/swc-linux-x64-gnu': 16.4.5
+      '@next/swc-linux-x64-musl': 16.4.5
+      '@next/swc-win32-arm64-msvc': 16.4.5
+      '@next/swc-win32-x64-msvc': 16.4.5
+      '@opentelemetry/api': 1.10.0
+      '@playwright/test': 1.65.0
+      sharp: 0.35.5(@types/node@22.20.5)
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@types/node'
+      - babel-plugin-macros
+
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
@@ -12926,6 +13008,13 @@ snapshots:
       react: 19.3.0
     optionalDependencies:
       '@babel/core': 7.29.13(supports-color@7.2.0)
+
+  styled-jsx@5.1.6(@babel/core@7.29.13(supports-color@8.1.1))(react@19.3.0):
+    dependencies:
+      client-only: 0.0.1
+      react: 19.3.0
+    optionalDependencies:
+      '@babel/core': 7.29.13(supports-color@8.1.1)
 
   supports-color@7.2.0:
     dependencies:
