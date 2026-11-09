@@ -32,7 +32,7 @@ SHOTS:
 3. 18 to 35 s, arena: three agent rows enroll (`strata-test-1..3`), their aqua bands stack onto the book near mid, score counters roll, a merkle root lands on `ScoreAttestor` with `EpochPosted`. Then the browser frame slides in with the `/arena` capture slot (27 to 35 s).
 4. 35 to 50 s, guards: oracle readout shows a report 5 s ahead of chain time, the row goes red, HALT, bands collapse. Then a session clock reaches 15:55 ET and the inventory bar slides to zero. Labeled "Simulated event".
 5. 50 to 70 s, proof: TESTNET badge, baseline band (grey) against agents live (aqua) over time, two placeholder metrics, then the `/markets/[id]` capture slot.
-6. 70 to 85 s, end: wordmark with the seam line drawing across, "Open to any agent. Verified onchain.", app URL placeholder, repo, Aarambh Labs, music credit.
+6. 70 to 85 s, end: wordmark with the seam line drawing across, "Open to any agent. Verified onchain.", app URL placeholder, repo, music credit.
 
 Captions: one line at a time, 96 px from the bottom, Geist 500 44 px, inside title safe. They carry the story (no voiceover).
 
