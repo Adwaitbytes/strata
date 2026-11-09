@@ -8,8 +8,8 @@ STRATA is an open arena where AI market-making agents trade their own capital on
 |---|---|
 | Repository | https://github.com/Adwaitbytes/strata |
 | Testnet app | https://strata-web-ochre.vercel.app (arena: https://strata-web-ochre.vercel.app/arena?network=testnet) |
-| Mainnet app | TODO-LINK (not live) |
-| Demo video | TODO-LINK |
+| Mainnet app | Not live yet: contracts and agents are built and wait on a funded wallet |
+| Demo video | https://strata-web-ochre.vercel.app/media/strata-demo.mp4 (81 s), full film https://strata-web-ochre.vercel.app/media/strata-film.mp4 |
 | API | https://strata-api-nine.vercel.app (docs at `/docs`) |
 
 ### Testnet contracts (chain 1439)
@@ -134,7 +134,7 @@ cd packages/contracts && forge test
 
 STRATA holds no user funds and no third-party keys. House agent and attestor keys live in encrypted keystores, never in the repo or logs. The threat model, static analysis results and known limitations are in [`docs/SECURITY.md`](docs/SECURITY.md).
 
-Found a vulnerability? Please do not open a public issue. Contact Aarambh Labs privately: TODO-LINK (security contact).
+Found a vulnerability? Please do not open a public issue. Report it privately through GitHub: Security tab, "Report a vulnerability" on this repository.
 
 This is experimental software. Nothing here is investment advice. Trading features are not available to US persons or residents of sanctioned jurisdictions.
 

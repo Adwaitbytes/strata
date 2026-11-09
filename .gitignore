@@ -30,3 +30,4 @@ film/node_modules/
 film/.vo/
 film/assets/video/
 film/**/.hyperframes/
+apps/web/public/media/
