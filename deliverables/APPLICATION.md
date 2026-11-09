@@ -6,6 +6,7 @@ Form: Injective Bangkok Hacker House (Dec 1 to 10, 2026). Closes **Nov 10, 2026*
 
 Nothing below in square brackets is real yet. Do not submit with a bracket left in.
 
+- [ ] Team of 4 filled in (names, roles, links); all 4 attend in person
 - [x] Stage is **Testnet** (D33: no mainnet capital). Variant A below is the copy to submit. Variant B is kept only in case a wallet is funded and S1, S2 and S5 go live before the deadline.
 - [x] Testnet web app: https://strata-web-ochre.vercel.app
 - [x] Arena: https://strata-web-ochre.vercel.app/arena?network=testnet
@@ -80,7 +81,14 @@ Note: the PRD draft named Gulf Labs and SMBC Nikko here. They are program partne
 
 ## Team
 
-Fill in on the form yourself (name and contact). No company name (D41).
+Team of 4, all attending the Hacker House in person in Bangkok, Dec 1 to 10, 2026. No company name (D41).
+
+| # | Name | Role | Contact / links |
+|---|---|---|---|
+| 1 | [MEMBER_1_NAME] (team lead) | [ROLE] | [LINKS] |
+| 2 | [MEMBER_2_NAME] | [ROLE] | [LINKS] |
+| 3 | [MEMBER_3_NAME] | [ROLE] | [LINKS] |
+| 4 | [MEMBER_4_NAME] | [ROLE] | [LINKS] |
 
 ---
 
