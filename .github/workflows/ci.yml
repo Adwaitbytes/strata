@@ -81,6 +81,8 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
+          # Nothing is installed here, so there is no pnpm store for the automatic cache to save.
+          package-manager-cache: false
       # Gate: high or critical advisories in production dependencies. Accepted exceptions live in
       # pnpm-workspace.yaml (auditConfig.ignoreGhsas) and are explained in docs/SECURITY.md section 7.
       - name: pnpm audit, production dependencies (fails on high or critical)
@@ -117,15 +119,15 @@ jobs:
           name: forge-coverage
           path: packages/contracts/lcov.info
           if-no-files-found: error
-      - name: slither
-        uses: crytic/slither-action@v0.4.1
+      # Slither runs on the runner with the pinned forge above. slither-action v0.4.1 ships a
+      # Python too old for current slither-analyzer, so it is installed directly, pinned.
+      - uses: actions/setup-python@v6
         with:
-          # `uses` steps ignore defaults.run.working-directory, so the target is repo-relative.
-          target: packages/contracts
-          slither-version: "0.11.6"
-          solc-version: "0.8.28"
-          fail-on: high
-          slither-args: --filter-paths "lib/|test/|script/"
+          python-version: "3.12"
+      - name: Install slither
+        run: python -m pip install --disable-pip-version-check "slither-analyzer==0.11.6"
+      - name: slither (fails on high)
+        run: slither . --filter-paths "lib/|test/|script/" --fail-high
 
   compose:
     name: Compose and image builds
