@@ -27,7 +27,7 @@ Beat it on what it lacked:
 - **Never fake a number.** Every number on screen is real, dated, and sourced from the live system (Neon read-only, the API https://strata-api-nine.vercel.app, chain/explorer). Anything illustrative is labeled on screen ("Illustration", "TESTNET", "BASELINE", "SIMULATED"). STRATA runs on Injective testnet today; say so plainly. Mainnet RWA markets appear only as the measured BASELINE (read-only order book recordings since 2026-11-08 18:48 UTC).
 - **No AI look.** No AI-generated images or video of anything, no stock footage, no glowing brain or robot imagery, no lens flares, no fake UI. Visuals come from: the real product, real chain pages, real data, Blender renders of our own data, and clean kinetic type.
 - **No AI voice of the script.** Plain spoken English, like a sharp founder explaining it to a friend over coffee. Contractions. Short and medium sentences mixed. No: delve, unlock, seamless, leverage, empower, revolutionize, game-changing, landscape, "in today's world", "not just X but Y", "introducing", rule-of-three lists, rhetorical questions stacked in a row. No em dashes anywhere.
-- Never claim partnerships. "Built on Injective" only. Team: Aarambh Labs.
+- Never claim partnerships. "Built on Injective" only. Do not name any company or team (no "Aarambh Labs") anywhere in the film.
 - Secrets: Gemini key at `.secrets/gemini_api_key` (and spares in `.secrets/gemini_api_keys`, one per line). Read from file in scripts, never print, never commit.
 - Git: never set git identity; global config is correct. Commit explicit paths; `git pull --rebase` before push; never force-push.
 
