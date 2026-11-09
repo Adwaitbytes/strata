@@ -1,4 +1,4 @@
-"""B2 canyon_cut, 7 s: the camera descends, the land splits, and the cut face shows the real
+"""B2 canyon_cut, 5 s: the camera descends, the land splits, and the cut face shows the real
 depth profile of NVDA/USDC PERP (BASELINE) at 2026-11-08 19:30:25 UTC.
 
 The far block's cut face is the book at that moment: bids on the left (a $500 bank, malachite
@@ -18,9 +18,9 @@ import numpy as np  # noqa: E402
 import strata_scene as S  # noqa: E402
 
 SHOT = "b2_canyon_cut"
-FRAMES = 7 * S.FPS
+FRAMES = 5 * S.FPS
 CUT_Y = 42.0  # row 84: 19:30:25 UTC, same cut as B3
-SPLIT = (24, 150)  # frames over which the near block moves away
+SPLIT = (16, 108)  # frames over which the near block moves away
 SLIDE = (-30.0, -8.5)  # metres in y and z
 
 
@@ -54,7 +54,7 @@ def build() -> None:
     S.setup_world(S.Sky(glow_strength=1.2), S.sun_direction(sun_az, sun_el))
     S.add_sun(sun_az, sun_el, strength=7.0, color_hex="#FFD6A8", angle_deg=2.5)
     S.add_haze(density=0.003, falloff_m=6.0, size=(360.0, 480.0, 60.0), center=(0.0, 140.0, 0.0), color_hex="#AAB0AA")
-    S.setup_render(motion_blur=True)
+    S.setup_render(samples=24, motion_blur=True)
     S.setup_compositor(bloom=0.07, vignette=0.25)
 
     cam = S.make_camera(lens=35.0, fstop=6.3)
@@ -74,4 +74,4 @@ def build() -> None:
 if __name__ == "__main__":
     args = S.parse_args()
     build()
-    S.render(SHOT, args, default_still=200)
+    S.render(SHOT, args, default_still=145)

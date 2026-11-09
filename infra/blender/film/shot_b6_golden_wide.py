@@ -1,4 +1,4 @@
-"""B6 golden_wide, 10 s: the filled land at golden hour, a slow orbit, sky kept clear for the title.
+"""B6 golden_wide, 7 s: the filled land at golden hour, a slow orbit, sky kept clear for the title.
 
 The land is the real NVDA/USDC PERP book (BASELINE). The deposits on it are the same
 illustration as B3 (depth added at 44, 34, 25 and 15 bps from mid), so the canyon is narrowed
@@ -16,7 +16,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import strata_scene as S  # noqa: E402
 
 SHOT = "b6_golden_wide"
-FRAMES = 10 * S.FPS
+FRAMES = 7 * S.FPS
 DEPOSITS = [(3000.0, 44.0), (6000.0, 34.0), (10000.0, 25.0), (5000.0, 15.0)]
 PIVOT = (8.0, 64.0)
 
@@ -46,7 +46,7 @@ def build() -> None:
     )
     S.add_sun(sun_az, sun_el, strength=10.0, color_hex="#FFBD76", angle_deg=2.2)
     S.add_haze(density=0.0013, falloff_m=7.0, size=(420.0, 560.0, 70.0), center=(0.0, 150.0, 0.0), color_hex="#A9B0B0")
-    S.setup_render()
+    S.setup_render(samples=24)
     S.setup_compositor(bloom=0.1, vignette=0.22, lift=(0.97, 0.995, 1.03), gain=(1.06, 1.0, 0.93))
 
     cam = S.make_camera(lens=32.0, fstop=8.0)
@@ -69,4 +69,4 @@ def build() -> None:
 if __name__ == "__main__":
     args = S.parse_args()
     build()
-    S.render(SHOT, args, default_still=150)
+    S.render(SHOT, args, default_still=105)

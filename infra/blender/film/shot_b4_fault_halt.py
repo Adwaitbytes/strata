@@ -1,4 +1,4 @@
-"""B4 fault_halt, 5 s: a fault cracks across the land, the far side drops, and everything stops.
+"""B4 fault_halt, 4 s: a fault cracks across the land, the far side drops, and everything stops.
 
 Land: the real NVDA/USDC PERP book (BASELINE). The fault is an illustration of a guard halt:
 a hairline of halt red runs across the land, the far side drops a step and every moving
@@ -18,7 +18,7 @@ import numpy as np  # noqa: E402
 import strata_scene as S  # noqa: E402
 
 SHOT = "b4_fault_halt"
-FRAMES = 5 * S.FPS
+FRAMES = 4 * S.FPS
 FAULT_Y = 93.0
 CRACK = (34, 56)  # hairline runs across the land over these frames
 DROP = (56, 61)  # far side drops
@@ -172,7 +172,7 @@ def build() -> None:
     S.setup_world(S.Sky(), S.sun_direction(sun_az, sun_el))
     S.add_sun(sun_az, sun_el, strength=7.5, color_hex="#FFD3A0", angle_deg=2.5)
     S.add_haze(density=0.0035, falloff_m=6.0, size=(360.0, 480.0, 60.0), center=(0.0, 140.0, 0.0), color_hex="#AAB0AA")
-    S.setup_render(samples=40, motion_blur=True)
+    S.setup_render(samples=24, motion_blur=True)
     S.setup_compositor(bloom=0.08, vignette=0.26)
 
     cam = S.make_camera(lens=35.0, fstop=4.5)
@@ -197,4 +197,4 @@ def build() -> None:
 if __name__ == "__main__":
     args = S.parse_args()
     build()
-    S.render(SHOT, args, default_still=110)
+    S.render(SHOT, args, default_still=90)

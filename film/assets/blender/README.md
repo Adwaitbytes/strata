@@ -1,6 +1,6 @@
 # Blender shots (B1 to B7)
 
-Rendered in Blender 5.2.1 (EEVEE, AgX Medium High Contrast, 1920x1080, 30 fps) from the
+Rendered in Blender 5.2.1 (EEVEE, AgX Medium High Contrast, 1920x1080, 30 fps; B1 and B3 at 64 samples, B2, B4 and B6 at 24 to fit a 10 minute render cap) from the
 scripts in `infra/blender/film/`. Every shot is a 1920x1080 PNG sequence in its own folder
 (gitignored), an H.264 proxy `<id>.mp4` (committed) and one still `<id>.png` for layout
 (local only, PNGs here are gitignored). No text is rendered into any frame.
@@ -51,12 +51,12 @@ scripts in `infra/blender/film/`. Every shot is a 1920x1080 PNG sequence in its 
 | ID | Frames | Duration | Proxy |
 |---|---|---|---|
 | `b1_terrain_open` | 240 | 8.0 s | `b1_terrain_open/b1_terrain_open.mp4` |
-| `b2_canyon_cut` | 210 | 7.0 s | `b2_canyon_cut/b2_canyon_cut.mp4` |
+| `b2_canyon_cut` | 150 | 5.0 s | `b2_canyon_cut/b2_canyon_cut.mp4` |
 | `b3_strata_rise` | 270 | 9.0 s | `b3_strata_rise/b3_strata_rise.mp4` |
-| `b4_fault_halt` | 150 | 5.0 s | `b4_fault_halt/b4_fault_halt.mp4` |
-| `b5_night_close` | 180 | 6.0 s | `b5_night_close/b5_night_close.mp4` |
-| `b6_golden_wide` | 300 | 10.0 s | `b6_golden_wide/b6_golden_wide.mp4` |
-| `b7_merkle_root` | 180 | 6.0 s | `b7_merkle_root/b7_merkle_root.mp4` |
+| `b4_fault_halt` | 120 | 4.0 s | `b4_fault_halt/b4_fault_halt.mp4` |
+| `b5_night_close` | not rendered | 6.0 s | script ready, dropped for time |
+| `b6_golden_wide` | 210 | 7.0 s | `b6_golden_wide/b6_golden_wide.mp4` |
+| `b7_merkle_root` | not rendered | 6.0 s | script ready, dropped for time |
 
 ### B1 `terrain_open` (8 s)
 A slow dusk glide forward in time along the canyon, 18:48 to about 19:50 UTC of the window. The
@@ -64,7 +64,7 @@ low bank on the left is the bids, the stepped mesas on the right are the $49,113
 it stood on the book, the dark floor between them is the spread. Sky is clear in the upper
 third for "NVDA/USDC perp, Injective mainnet, 8 Nov, BASELINE". Data: the full heightfield.
 
-### B2 `canyon_cut` (7 s)
+### B2 `canyon_cut` (5 s)
 Starts high over the intact land, then the land splits at 2026-11-08 19:30:25 UTC: the near half
 slides back and sinks while the camera drops into the gap and ends square to the cut face. The
 cut face is the real depth profile at that moment: bids left ($500, malachite tinted beds), the
@@ -78,24 +78,24 @@ than the old basalt and has a dark parting at its base, so the section reads as 
 canyon narrows from a 107 bps gap to a stepped V; the last layer is the ochre STRATA stratum,
 which glows faintly along both crests and in the section. Data: real land; deposits illustrative.
 
-### B4 `fault_halt` (5 s)
+### B4 `fault_halt` (4 s)
 Low over the land near 20:20 UTC, dust drifting in the evening air. A halt red hairline races
 across the land and up through the ask wall (frames 34 to 56), the far side drops 0.8 m (56 to
 61), and from frame 61 nothing moves: camera, dust and the grit kicked up along the fault all
-hold still to the end. Data: real land; fault illustrative.
+hold still to the end (frames 61 to 120). Data: real land; fault illustrative.
 
-### B5 `night_close` (6 s)
+### B5 `night_close` (6 s, not rendered: the director covers this beat in 2D)
 Looking forward in time to the end of the window, where the real spread widened (about 150 bps
 at 20:15 UTC to 450.9 bps at 20:39:25 UTC), so the canyon opens up ahead. The sun sets, the sky
 goes to night and the survey contours come up as the light on the land. Data: real land; the
 light change is illustrative.
 
-### B6 `golden_wide` (10 s)
+### B6 `golden_wide` (7 s)
 The whole land after the deposits, at golden hour, on a slow 12 degree orbit. The narrowed canyon
 runs away as a gilded line, the stepped ask mesas take the low side light, and the upper third is
 clear sky for the end title. Data: real land with the B3 deposits (illustrative).
 
-### B7 `merkle_root` (6 s)
+### B7 `merkle_root` (6 s, not rendered: the director covers this beat in 2D)
 Three leaf crystals (one per scored agent in testnet season 1 epoch 0, 19:22 to 20:22 UTC) rise
 from the bid bank; leaves 1 and 2 grow filaments to a node, leaf 3 is promoted unchanged, and the
 node and leaf 3 join in the ochre root (`0x117a7ecd...6ada77`, posted in tx
