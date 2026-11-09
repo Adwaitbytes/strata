@@ -1,0 +1,13 @@
+{
+  "name": "strata-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes hyperframes@0.9.26 preview",
+    "check": "npx --yes hyperframes@0.9.26 check",
+    "render": "npx --yes hyperframes@0.9.26 render"
+  },
+  "devDependencies": {
+    "@hyperframes/core": "^0.9.26"
+  }
+}

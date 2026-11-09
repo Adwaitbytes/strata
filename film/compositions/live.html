@@ -1,0 +1,160 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+    .live-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 0.98; }
+    .live-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; }
+    .live-body { font-family: "Schibsted Grotesk", sans-serif; }
+
+    /* Screen-space crop: no capture pixel ever reaches y 880 or below, so the caption chip always sits on clean basalt
+       (the pages' own ground is #0D0F0E, the same as the root, so the crop has no visible edge). */
+    #live-stage { position: absolute; inset: 0; clip-path: inset(0px 0px 200px 0px); }
+    /* The camera: every capture and every rebuild that lives on the page is inside it, in the page's CSS px. */
+    #live-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    #live-page { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .live-shot { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    /* Page crop above the Arena column's description (y 218), so the h1 never sits half cut at the frame top. */
+    #live-arena { clip-path: inset(218px 0px 0px 0px); }
+    /* The recording is pixel-aligned with arena.png; only its stats band (between the rules at y 370 and 466) is shown,
+       so the season clock ticks while every other pixel comes from the sharper 2x still. */
+    #live-arena-rec { clip-path: inset(372px 0px 616px 0px); }
+
+    /* Two real objects cut from the same capture, at their own page positions: the Testnet / Mainnet switch
+       (x 1423 to 1572, y 263 to 297) and the Enroll an agent button (x 1448 to 1572, y 11 to 45). */
+    .live-iso { position: absolute; background-image: url("assets/screens/arena.png"); background-size: 1920px 1080px; background-repeat: no-repeat; }
+    #live-iso-toggle { left: 1419px; top: 259px; width: 157px; height: 42px; background-position: -1419px -259px; }
+    #live-iso-button { left: 1444px; top: 7px; width: 132px; height: 42px; background-position: -1444px -7px; }
+
+    /* Rebuilt leaderboard row for the simulated options writer, in the Arena table's own metrics:
+       rows are 58 px tall with a 1 px #262B28 rule, the agent column starts at x 436. */
+    #live-row4 { position: absolute; left: 348px; top: 760px; width: 1224px; height: 58px; }
+    #live-row4-ground { position: absolute; inset: 0; background: #0D0F0E; }
+    #live-row4-rule { position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: #262B28; transform-origin: 0 50%; }
+    #live-row4-cells { position: absolute; left: 88px; top: 0; height: 58px; display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    #live-row4-name { font-weight: 600; font-size: 15px; color: #ECE8DF; }
+    #live-row4-kind { font-weight: 400; font-size: 15px; color: #B4AFA3; }
+    #live-row4-sep { color: #8E897E; }
+    #live-row4-badge { margin-left: 4px; padding: 4px 8px 3px; font-size: 14px; font-weight: 600; letter-spacing: 0.12em; line-height: 1; color: #B4AFA3; background: #1C201E; border: 1px solid #3D3F3B; border-radius: 4px; }
+
+    /* Ochre hairline underlines on the Enroll stepper labels (measured: "2 Identity" x 771 to 826, "4 Enroll" x 1158.5 to 1203, baseline 377.5). */
+    .live-ul { position: absolute; top: 383px; height: 1.25px; background: #E9A94B; transform-origin: 0 50%; }
+    #live-ul2 { left: 771px; width: 55px; }
+    #live-ul4 { left: 1158.5px; width: 44.5px; }
+
+    /* The mainnet statement: a clean basalt frame, type left, the real switch (pushed 2x) on the right at x 1180 to 1824. */
+    #live-mainnet { position: absolute; left: 96px; top: 294px; width: 1000px; height: 360px; }
+    #live-mn-title { position: absolute; left: 0; top: 0; font-size: 132px; color: #ECE8DF; white-space: nowrap; }
+    #live-mn-title .live-w { display: inline-block; }
+    #live-mn-title .live-accent { color: #E9A94B; }
+    #live-mn-cap { position: absolute; left: 6px; top: 299px; font-size: 40px; font-weight: 400; line-height: 1.2; color: #B4AFA3; white-space: nowrap; }
+    #live-mn-cap .live-ch { display: inline-block; white-space: pre; }
+    #live-mn-zero { color: #ECE8DF; font-weight: 500; }
+
+    #live-dip { position: absolute; inset: 0; background: #000000; opacity: 0.4; }
+  </style>
+  <div id="root" data-composition-id="live" data-width="1920" data-height="1080" data-duration="16.5">
+    <div id="live-stage">
+      <div id="live-cam" data-layout-allow-overflow>
+        <div id="live-page">
+          <img id="live-arena" class="clip live-shot" src="assets/screens/arena.png" alt="" data-start="0" data-duration="11.95" data-track-index="0" />
+          <video id="live-arena-rec" class="clip live-shot" src="assets/clips/arena-live.mp4" muted playsinline data-start="0" data-duration="8.42" data-track-index="1"></video>
+          <div id="live-row4" class="clip" data-start="0" data-duration="11.95" data-track-index="2">
+            <div id="live-row4-ground"></div>
+            <div id="live-row4-rule"></div>
+            <div id="live-row4-cells" class="live-body">
+              <span id="live-row4-name">strata-options</span>
+              <span id="live-row4-kind"><span id="live-row4-sep">·</span> options writer</span>
+              <span id="live-row4-badge" class="live-mono">SIMULATED</span>
+            </div>
+          </div>
+        </div>
+        <div id="live-iso-toggle" class="clip live-iso" data-start="0" data-duration="11.95" data-track-index="3"></div>
+        <div id="live-iso-button" class="clip live-iso" data-start="0" data-duration="11.95" data-track-index="4"></div>
+        <img id="live-join" class="clip live-shot" src="assets/screens/join-step1.png" alt="" data-start="11.95" data-duration="4.55" data-track-index="0" />
+        <div id="live-ul2" class="clip live-ul" data-start="11.95" data-duration="4.55" data-track-index="3"></div>
+        <div id="live-ul4" class="clip live-ul" data-start="11.95" data-duration="4.55" data-track-index="4"></div>
+      </div>
+    </div>
+
+    <div id="live-mainnet" class="clip" data-start="8.4" data-duration="3.3" data-track-index="5">
+      <div id="live-mn-title" class="live-display">
+        <div><span class="live-w">Mainnet:</span></div>
+        <div><span class="live-w">the</span> <span class="live-w">day</span> <span class="live-w">we</span> <span class="live-w live-accent">fund</span> <span class="live-w">it</span></div>
+      </div>
+      <div id="live-mn-cap" class="live-mono"><span id="live-mn-label">Mainnet capital today: </span><span id="live-mn-zero">$0</span></div>
+    </div>
+
+    <div id="live-dip" class="clip" data-start="16.4" data-duration="0.1" data-track-index="6"></div>
+  </div>
+  <script>
+    // Camera framings, in page CSS px (captures are 1920 x 1080 CSS at DPR 2, so they stay sharp to 2x).
+    // pin(s, px, py, sx, sy) puts page point (px, py) at screen point (sx, sy); camAt centres it above the caption band.
+    const pin = (s, px, py, sx, sy) => ({ scale: s, x: sx - px * s, y: sy - py * s });
+    const camAt = (s, cx, cy) => pin(s, cx, cy, 960, 450);
+    const SHOTS = {
+      head:     camAt(1.5, 960, 487),          // Arena column edge to edge: description, Testnet switch, ticking clock, rows 1 to 3 end at y 860
+      headIn:   camAt(1.53, 960, 487),         // entry: arrives 2% large and settles
+      rows:     camAt(2.0, 720, 605),          // clock, epoch, agents ranked 3, rows 1 to 3 + rebuilt row 4 (ends at y 876)
+      network:  pin(2.0, 1497.5, 280, 1501, 467), // the real switch alone at x 1352 to 1650, centred on the type block
+      button:   camAt(4.6, 1510, 28),          // into the real "Enroll an agent" button
+      stepIn:   pin(1.68, 960, 367, 960, 470), // Enroll page arrives slightly large
+      stepper:  pin(1.6, 960, 367, 960, 470),  // stepper labels at y 470; the step card is cropped at y 880, between the network cards and Wallet
+    };
+
+    // Typewriter spans for the mono line, built once (deterministic).
+    const label = document.getElementById("live-mn-label");
+    const text = label.textContent;
+    label.textContent = "";
+    for (const ch of text) {
+      const s = document.createElement("span");
+      s.className = "live-ch";
+      s.textContent = ch;
+      label.appendChild(s);
+    }
+
+    const tl = gsap.timeline({ paused: true });
+
+    // 0.0 Arena on testnet, live recording (the season clock ticks), arriving with a short settle.
+    tl.fromTo("#live-cam", { ...SHOTS.headIn }, { ...SHOTS.head, duration: 0.5, ease: "expo.out" }, 0);
+
+    // 3.52 "Three house agents are quoting": push to the leaderboard rows.
+    tl.to("#live-cam", { ...SHOTS.rows, duration: 1.1, ease: "power2.inOut" }, 3.52);
+
+    // 6.0 "an options writer ... in simulation": the rebuilt row joins the table.
+    tl.fromTo("#live-row4-ground", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 6.0);
+    tl.fromTo("#live-row4-rule", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 6.0);
+    tl.fromTo("#live-row4-name", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 6.12);
+    tl.fromTo("#live-row4-kind", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 6.56);
+    tl.fromTo("#live-row4-badge", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 7.7);
+
+    // 8.2 "Mainnet": whip to the real Testnet / Mainnet switch, smear peaking mid move.
+    // The recording ends at 8.42, at the smear's peak; the identical still capture carries on beneath it.
+    tl.to("#live-cam", { ...SHOTS.network, duration: 0.42, ease: "power3.inOut" }, 8.2);
+    tl.fromTo("#live-cam", { filter: "blur(0px)" }, { filter: "blur(10px)", duration: 0.21, ease: "power2.in", immediateRender: false }, 8.2);
+    tl.to("#live-cam", { filter: "blur(0px)", duration: 0.21, ease: "power2.out" }, 8.41);
+    // 8.5 the page falls away around the switch: blur swap to a clean basalt frame, the switch stays put.
+    tl.fromTo("#live-page", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(8px)", duration: 0.2, ease: "power2.in" }, 8.5);
+
+    // 8.6 the statement, per word; then the capital line types; the $0 lands on "fund".
+    tl.fromTo("#live-mn-title .live-w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, stagger: 0.08, ease: "power2.out" }, 8.6);
+    tl.fromTo("#live-mn-label .live-ch", { opacity: 0 }, { opacity: 1, duration: 0.01, stagger: 0.03, ease: "none" }, 9.35);
+    tl.fromTo("#live-mn-zero", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 10.6);
+    tl.to("#live-mainnet", { opacity: 0, filter: "blur(6px)", duration: 0.2, ease: "power3.in" }, 11.3);
+
+    // 11.4 "And any agent can join": the camera rises off the switch and dives into the real Enroll button, cut on the fastest frame.
+    tl.to("#live-cam", { ...SHOTS.button, duration: 0.55, ease: "power3.in" }, 11.4);
+    tl.to("#live-cam", { filter: "blur(8px)", duration: 0.3, ease: "power2.in" }, 11.65);
+    // 11.95 the Enroll page arrives slightly large and settles on its stepper.
+    tl.set("#live-cam", { ...SHOTS.stepIn, filter: "blur(4px)" }, 11.95);
+    tl.to("#live-cam", { filter: "blur(0px)", duration: 0.2, ease: "power2.out" }, 11.95);
+    tl.to("#live-cam", { ...SHOTS.stepper, duration: 0.8, ease: "expo.out" }, 11.95);
+
+    // 13.98 "own code" -> step 2 Identity; 15.12 "own capital" -> step 4 Enroll.
+    tl.fromTo("#live-ul2", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 13.98);
+    tl.fromTo("#live-ul4", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power2.inOut" }, 15.12);
+
+    window.__timelines["live"] = tl;
+  </script>
+</template>

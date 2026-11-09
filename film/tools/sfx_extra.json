@@ -1,0 +1,11 @@
+[
+ {"id": "open-cut", "file": "assets/sfx/whoosh-short.mp3", "scene": "gap", "local": 0.12, "volume": 0.07},
+ {"id": "gap-dim", "file": "assets/sfx/click-soft.mp3", "scene": "gap", "local": 4.90, "volume": 0.14},
+ {"id": "gap-flood", "file": "assets/sfx/whoosh-short.mp3", "scene": "gap", "local": 7.10, "volume": 0.07},
+ {"id": "gap-dot", "file": "assets/sfx/key-press.mp3", "scene": "gap", "local": 9.48, "volume": 0.11},
+ {"id": "gap-cost", "file": "assets/sfx/pop.mp3", "scene": "gap", "local": 11.40, "volume": 0.11},
+ {"id": "measure-pan", "file": "assets/sfx/whoosh.mp3", "scene": "measure", "local": 0.25, "volume": 0.06},
+ {"id": "measure-188", "file": "assets/sfx/click-soft.mp3", "scene": "measure", "local": 4.76, "volume": 0.12},
+ {"id": "measure-fill", "file": "assets/sfx/key-press.mp3", "scene": "measure", "local": 12.68, "volume": 0.12},
+ {"id": "measure-3", "file": "assets/sfx/pop.mp3", "scene": "measure", "local": 13.60, "volume": 0.16}
+]

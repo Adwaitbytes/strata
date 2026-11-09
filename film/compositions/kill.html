@@ -1,0 +1,258 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; color: #ECE8DF; }
+    .kill-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; }
+    .kill-body { font-family: "Schibsted Grotesk", sans-serif; font-weight: 400; }
+    .kill-abs { position: absolute; white-space: nowrap; }
+    .kill-muted { color: #B4AFA3; }
+    .kill-subtle { color: #8E897E; }
+    .kill-halt { color: #F0656E; }
+
+    /* one stage: the orders and the message clear away, the 202 line travels to become the request station of the chain's clock */
+    #kill-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; clip-path: inset(0 0 180px 0); }
+    #kill-world { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+
+    .kill-panel { position: absolute; background: #121513; border: 1px solid #373D39; border-radius: 4px; }
+    .kill-panel::before, .kill-panel::after { content: ""; position: absolute; width: 10px; height: 10px; border-color: #8E897E; border-style: solid; }
+    .kill-panel::before { left: -6px; top: -6px; border-width: 1px 0 0 1px; }
+    .kill-panel::after { right: -6px; bottom: -6px; border-width: 0 1px 1px 0; }
+    .kill-in { position: absolute; white-space: nowrap; }
+    .kill-badge { font-size: 28px; line-height: 1; padding: 8px 14px 7px; border: 1px solid #373D39; border-radius: 3px; color: #B4AFA3; }
+
+    /* header */
+    #kill-head-left { left: 96px; top: 96px; display: flex; align-items: baseline; gap: 20px; }
+    #kill-head-left .kill-mono { font-size: 36px; }
+    #kill-head-left .kill-body { font-size: 36px; color: #B4AFA3; }
+    #kill-head-right { right: 96px; top: 96px; display: flex; align-items: center; gap: 16px; font-size: 28px; color: #B4AFA3; }
+
+    /* resting orders */
+    #kill-orders { left: 96px; top: 168px; width: 875px; height: 640px; }
+    .kill-ladder-title { font-size: 28px; color: #B4AFA3; }
+    .kill-axis { position: absolute; width: 2px; background: #373D39; }
+    .kill-rung { position: absolute; height: 40px; }
+    .kill-lab { position: absolute; right: 0; top: 0; font-size: 28px; line-height: 40px; text-align: right; white-space: nowrap; color: #ECE8DF; }
+    .kill-bar { position: absolute; top: 7px; height: 26px; transform-origin: 0 50%; }
+    .kill-ask .kill-bar { background: #EA8A6A; }
+    .kill-bid .kill-bar { background: #7CC9A0; }
+    /* digits sit on a 1.3em pitch so no neighbouring digit bleeds into the window; tops are raised 0.15em to compensate */
+    #kill-count { left: 136px; top: 534.5px; font-size: 210px; font-weight: 500; line-height: 1.3; height: 1.3em; overflow: hidden; }
+    .kill-col { display: block; }
+    .kill-col > span { display: block; height: 1.3em; line-height: 1.3; }
+    #kill-count-label { left: 316px; top: 716px; font-size: 32px; color: #B4AFA3; }
+    #kill-202 { left: 1033px; top: 714px; font-size: 30px; line-height: 1; }
+
+    /* the signed message */
+    #kill-msg { left: 1001px; top: 168px; width: 823px; height: 640px; }
+    .kill-hair { position: absolute; left: 32px; width: 759px; height: 1px; background: #262B28; }
+    .kill-line { position: absolute; left: 32px; font-size: 30px; line-height: 40px; white-space: pre; }
+
+    /* the chain's clock, one screen below */
+    #kill-big { left: 82px; top: 150px; font-size: 224px; font-weight: 500; line-height: 1.3; height: 1.3em; }
+    .kill-roll { display: inline-block; height: 1.3em; overflow: hidden; vertical-align: top; }
+    .kill-roll .kill-col > span { display: block; height: 1.3em; line-height: 1.3; }
+    .kill-glyph { display: inline-block; vertical-align: top; line-height: 1.3; height: 1.3em; }
+    #kill-big-unit { margin-left: 0.3em; }
+    #kill-time { position: absolute; left: 0; top: 490px; width: 1920px; height: 340px; overflow: visible; }
+    #kill-time text { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; }
+  </style>
+
+  <div id="root" data-composition-id="kill" data-width="1920" data-height="1080" data-duration="10.6">
+    <div id="kill-cam" class="clip" data-start="0" data-duration="10.6" data-track-index="1">
+      <div id="kill-world">
+
+        <div id="kill-head-left" class="kill-abs"><span class="kill-mono">strata-test-1</span><span class="kill-body">resting orders</span></div>
+        <div id="kill-head-right" class="kill-abs kill-mono"><span>8 Nov 2026, 20:00:15 UTC</span><span class="kill-subtle">·</span><span class="kill-badge">TESTNET</span></div>
+
+        <div id="kill-orders" class="kill-panel">
+          <div class="kill-in kill-mono kill-ladder-title" style="left:40px;top:32px">BTC/USDC PERP</div>
+          <div class="kill-in kill-mono kill-ladder-title" style="left:455px;top:32px">ETH/USDC PERP</div>
+          <div class="kill-axis" style="left:308px;top:84px;height:256px"></div>
+          <div class="kill-axis" style="left:723px;top:84px;height:256px"></div>
+
+          <!-- BTC/USDC: S 0.0002@76,081, S 0.0001@76,005, B 0.0001@75,701, B 0.0002@75,625 -->
+          <div id="kill-r1" class="kill-rung kill-ask" style="left:40px;top:92px;width:262px"><span class="kill-lab kill-mono">76,081 × 0.0002</span><span class="kill-bar" style="left:272px;width:80px"></span></div>
+          <div id="kill-r3" class="kill-rung kill-ask" style="left:40px;top:144px;width:262px"><span class="kill-lab kill-mono">76,005 × 0.0001</span><span class="kill-bar" style="left:272px;width:40px"></span></div>
+          <div id="kill-r5" class="kill-rung kill-bid" style="left:40px;top:236px;width:262px"><span class="kill-lab kill-mono">75,701 × 0.0001</span><span class="kill-bar" style="left:272px;width:40px"></span></div>
+          <div id="kill-r7" class="kill-rung kill-bid" style="left:40px;top:288px;width:262px"><span class="kill-lab kill-mono">75,625 × 0.0002</span><span class="kill-bar" style="left:272px;width:80px"></span></div>
+
+          <!-- ETH/USDC: S 0.008@2,236.5, S 0.0053@2,234.3, B 0.0062@1,916.9, B 0.0072@1,916.8 -->
+          <div id="kill-r2" class="kill-rung kill-ask" style="left:455px;top:92px;width:262px"><span class="kill-lab kill-mono">2,236.5 × 0.008</span><span class="kill-bar" style="left:272px;width:80px"></span></div>
+          <div id="kill-r4" class="kill-rung kill-ask" style="left:455px;top:144px;width:262px"><span class="kill-lab kill-mono">2,234.3 × 0.0053</span><span class="kill-bar" style="left:272px;width:53px"></span></div>
+          <div id="kill-r6" class="kill-rung kill-bid" style="left:455px;top:236px;width:262px"><span class="kill-lab kill-mono">1,916.9 × 0.0062</span><span class="kill-bar" style="left:272px;width:62px"></span></div>
+          <div id="kill-r8" class="kill-rung kill-bid" style="left:455px;top:288px;width:262px"><span class="kill-lab kill-mono">1,916.8 × 0.0072</span><span class="kill-bar" style="left:272px;width:72px"></span></div>
+
+        </div>
+
+        <div id="kill-msg" class="kill-panel">
+          <div class="kill-in kill-mono kill-muted" style="left:32px;top:32px;font-size:28px">POST /v1/admin/kill</div>
+          <div class="kill-hair" style="top:92px"></div>
+          <div class="kill-line kill-mono" style="top:120px" data-n="19">STRATA kill request</div>
+          <div class="kill-line kill-mono" style="top:172px" data-n="16">network: testnet</div>
+          <div class="kill-line kill-mono" style="top:224px" data-n="9">target: 1</div>
+          <div class="kill-line kill-mono" style="top:276px" data-n="20">closePositions: true</div>
+          <div class="kill-line kill-mono" style="top:328px" data-n="39">nonce: c1593aca5295811f5470a7f9f299bf10</div>
+          <div class="kill-line kill-mono" style="top:380px" data-n="24">expiresAt: 1794168325000</div>
+          <div id="kill-hair-sign" class="kill-hair" style="top:452px"></div>
+          <div id="kill-signed" class="kill-in kill-mono kill-muted" style="left:32px;top:482px;font-size:30px">signed by 0x7f4a…9b54</div>
+        </div>
+
+        <!-- these outlive their panels: the count parks where 10.1 s will land, the 202 line becomes the request station -->
+        <div id="kill-count" class="kill-abs kill-mono" data-layout-ignore><span class="kill-col" id="kill-count-col"></span></div>
+        <div id="kill-count-label" class="kill-abs kill-mono">open orders</div>
+        <div id="kill-202" class="kill-abs kill-mono">HTTP 202 accepted · 20:00:26.868</div>
+
+        <!-- the chain's clock: request to first cancel, measured -->
+        <div id="kill-big" class="kill-abs kill-mono" data-layout-ignore><span class="kill-roll" data-d="1"></span><span class="kill-roll" data-d="0"></span><span class="kill-glyph" id="kill-big-dot">.</span><span class="kill-roll" data-d="1"></span><span class="kill-glyph" id="kill-big-unit">s</span></div>
+        <svg id="kill-time" viewBox="0 0 1920 340" aria-hidden="true"></svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Scene-local seconds. Word times from cues.json (l10): one 2.00, signed 2.45, message 3.05, pulls 3.83,
+    // order 4.50, testnet 5.18, cancels 5.94, hit 6.46, about 7.24, ten 7.60, seconds 8.04, later 8.57.
+    const T = {
+      type: 1.9, signed: 2.95, accepted: 3.2, pull: 3.72, pullGap: 0.11,
+      park: 4.62, travel: 4.72, leave: 4.8, axis: 5.35, request: 5.72, halts: 6.0, cancel: 6.5, measure: 6.7,
+      countOut: 7.28, big: 7.45, zero: 8.45,
+    };
+    const CHARS_PER_S = 130;
+
+    // ---- the measured timeline (request 20:00:26.868 = 0) ----
+    const NS = "http://www.w3.org/2000/svg";
+    const svgEl = (parent, tag, attrs, text) => {
+      const el = document.createElementNS(NS, tag);
+      for (const k in attrs) el.setAttribute(k, attrs[k]);
+      if (text) el.textContent = text;
+      parent.appendChild(el);
+      return el;
+    };
+    const X0 = 96, PX = 75.9;                 // 22.13 s spans x 96 to 1776
+    const X = (s) => X0 + s * PX;
+    const AY = 140;                           // axis y inside the svg (frame y 630)
+    const svg = document.getElementById("kill-time");
+    const g = (id) => svgEl(svg, "g", { id, opacity: 0 });
+
+    const axisLen = 1824 - X0;
+    const axisLine = svgEl(svg, "path", { id: "kill-axis-line", d: `M${X0} ${AY} H1824`, stroke: "#373D39", "stroke-width": 2, fill: "none", "stroke-dasharray": axisLen, "stroke-dashoffset": axisLen });
+    const ticks = g("kill-ticks");
+    for (let s = 1; s <= 22; s++) {
+      const major = s % 5 === 0;
+      svgEl(ticks, "line", { x1: X(s), y1: major ? AY - 16 : AY - 8, x2: X(s), y2: AY, stroke: major ? "#8E897E" : "#373D39", "stroke-width": major ? 2 : 1.5 });
+    }
+
+    // dimension line over the measured 10.1 s (drawn under the giant number)
+    const DY = -40;                           // frame y 450
+    const dimLen = X(10.1) - X0;
+    const dim = svgEl(svg, "path", { id: "kill-dim", d: `M${X0} ${DY} H${X(10.1)}`, stroke: "#ECE8DF", "stroke-width": 2, fill: "none", "stroke-dasharray": dimLen, "stroke-dashoffset": dimLen });
+    const dimTicks = g("kill-dim-ticks");
+    svgEl(dimTicks, "line", { x1: X0, y1: DY - 12, x2: X0, y2: DY + 12, stroke: "#ECE8DF", "stroke-width": 2 });
+    svgEl(dimTicks, "line", { x1: X(10.1), y1: DY - 12, x2: X(10.1), y2: DY + 12, stroke: "#ECE8DF", "stroke-width": 2 });
+
+    // markers: above the axis for request and first cancel, below for the halt and the empty book
+    const above = (id, s, value, label, colour) => {
+      const m = g(id);
+      svgEl(m, "line", { x1: X(s), y1: 12, x2: X(s), y2: AY + 12, stroke: colour, "stroke-width": 3 });
+      svgEl(m, "text", { x: X(s) + 16, y: 46, fill: colour, "font-size": 34 }, value);
+      svgEl(m, "text", { x: X(s) + 16, y: 92, fill: "#B4AFA3", "font-size": 30 }, label);
+      return m;
+    };
+    const below = (id, s, value, label, colour, anchorEnd) => {
+      const m = g(id);
+      const tx = anchorEnd ? X(s) - 16 : X(s) + 16;
+      const anchor = anchorEnd ? "end" : "start";
+      svgEl(m, "line", { x1: X(s), y1: AY - 12, x2: X(s), y2: AY + 120, stroke: colour, "stroke-width": 3 });
+      svgEl(m, "text", { x: tx, y: AY + 66, fill: colour, "font-size": 34, "text-anchor": anchor }, value);
+      svgEl(m, "text", { x: tx, y: AY + 112, fill: "#B4AFA3", "font-size": 30, "text-anchor": anchor }, label);
+      return m;
+    };
+    const mRequest = above("kill-m-request", 0, "20:00:26.9", "request", "#ECE8DF");
+    const mHalts = below("kill-m-halts", 0.86, "+0.86 s", "agent halts", "#F0656E", false);
+    const mCancel = above("kill-m-cancel", 10.1, "+10.1 s", "first cancel in block 147,657,579", "#ECE8DF");
+    const mZero = below("kill-m-zero", 22.13, "20:00:49", "open orders 0", "#ECE8DF", true);
+    const mTx = g("kill-m-tx");
+    svgEl(mTx, "text", { x: X(10.1) + 16, y: AY + 66, fill: "#B4AFA3", "font-size": 30 }, "tx BA464D0D…D925");
+
+    // ---- rolling digits ----
+    const fillColumn = (col, digits) => {
+      for (const d of digits) {
+        const s = document.createElement("span");
+        s.textContent = String(d);
+        col.appendChild(s);
+      }
+    };
+    fillColumn(document.getElementById("kill-count-col"), [8, 7, 6, 5, 4, 3, 2, 1, 0]);
+    document.querySelectorAll("#kill-big .kill-roll").forEach((cell) => {
+      const col = document.createElement("span");
+      col.className = "kill-col";
+      fillColumn(col, Array.from({ length: 20 }, (_, i) => i % 10));
+      cell.appendChild(col);
+    });
+
+    // ---- timeline ----
+    const tl = gsap.timeline({ paused: true });
+    const blurIn = (sel, t, d = 0.18) =>
+      tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+
+    // "one signed message": the six lines type in, one character per step
+    let t = T.type;
+    document.querySelectorAll("#kill-msg .kill-line").forEach((line) => {
+      const n = Number(line.dataset.n);
+      const d = n / CHARS_PER_S;
+      tl.fromTo(line, { clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0% 0 0)", duration: d, ease: `steps(${n})` }, t);
+      t += d;
+    });
+    tl.fromTo("#kill-hair-sign", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.signed - 0.05);
+    blurIn("#kill-signed", T.signed);
+    blurIn("#kill-202", T.accepted);
+
+    // "pulls every order": the rungs vanish one by one, the count falls 8 to 0
+    const countCol = document.getElementById("kill-count-col");
+    for (let k = 1; k <= 8; k++) {
+      const at = T.pull + (k - 1) * T.pullGap;
+      const rung = `#kill-r${k}`;
+      tl.fromTo(`${rung} .kill-bar`, { scaleX: 1 }, { scaleX: 0, duration: 0.16, ease: "power3.in" }, at);
+      tl.fromTo(`${rung} .kill-lab`, { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.14, ease: "power3.in" }, at + 0.02);
+    }
+
+    // the count snaps down one row as each rung goes, 0.11 s apart. GSAP's steps(8) splits the tween
+    // into 9 equal holds (0/8 ... 8/8), so 9 gaps long puts jump k exactly 0.1 s after rung k starts.
+    tl.fromTo(countCol, { yPercent: 0 }, { yPercent: -800 / 9, duration: 9 * T.pullGap, ease: "steps(8)" }, T.pull + 0.1 - T.pullGap);
+
+    // the object becomes the world: the count parks top left where 10.1 s will land (it goes first so the two
+    // paths never cross), the 202 line travels to the request station, the panels clear
+    tl.fromTo("#kill-202", { x: 0, y: 0 }, { x: -921, y: -202, duration: 0.9, ease: "power2.inOut" }, T.travel);
+    tl.to("#kill-msg", { opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, T.leave);
+    tl.to("#kill-orders", { opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, T.leave + 0.06);
+    tl.to(["#kill-head-left", "#kill-head-right"], { opacity: 0, filter: "blur(6px)", duration: 0.3, ease: "power3.in" }, T.leave + 0.12);
+    tl.fromTo(["#kill-count", "#kill-count-label"], { x: 0, y: 0 }, { x: -54, y: -384.5, duration: 0.9, ease: "power2.inOut" }, T.park);
+    tl.to("#kill-202", { opacity: 0, filter: "blur(6px)", duration: 0.1, ease: "power3.in" }, T.request - 0.1);
+
+    // the measured timeline
+    tl.to(axisLine, { attr: { "stroke-dashoffset": 0 }, duration: 0.8, ease: "power2.inOut" }, T.axis);
+    tl.to(ticks, { opacity: 1, duration: 0.6, ease: "power2.out" }, T.axis + 0.2);
+    tl.to(mRequest, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.request);
+    tl.to(mHalts, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.halts);
+    tl.to(dimTicks, { opacity: 1, duration: 0.12, ease: "power2.out" }, T.measure);
+    tl.to(dim, { attr: { "stroke-dashoffset": 0 }, duration: 0.6, ease: "power2.inOut" }, T.measure);
+    tl.to(mCancel, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.cancel);
+    tl.to(["#kill-count", "#kill-count-label"], { opacity: 0, filter: "blur(6px)", duration: 0.18, ease: "power3.in" }, T.countOut);
+
+    // "about ten seconds": the giant 10.1 s rolls in over its own span
+    blurIn(["#kill-big-dot", "#kill-big-unit"], T.big, 0.22);
+    document.querySelectorAll("#kill-big .kill-roll").forEach((cell, i) => {
+      const d = Number(cell.dataset.d);
+      tl.fromTo(cell, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, T.big + i * 0.04);
+      tl.fromTo(cell.firstChild, { yPercent: 0 }, { yPercent: -5 * (10 + d), duration: 0.6, ease: "power3.out" }, T.big + i * 0.04);
+    });
+
+    // "later": the book is empty at 20:00:49; the first cancel's tx
+    tl.to(mZero, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.zero);
+    tl.to(mTx, { opacity: 1, duration: 0.2, ease: "power2.out" }, T.zero + 0.12);
+
+    window.__timelines["kill"] = tl;
+  </script>
+</template>

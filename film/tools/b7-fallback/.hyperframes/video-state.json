@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "historyId": "641f60cb-7252-4ee2-8f62-6606f6bf6e14",
+  "currentRevision": null,
+  "pendingChanges": false,
+  "files": {
+    "hyperframes.json": {
+      "hash": "35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7",
+      "content": "/Users/adwaitkeshari/.cache/hyperframes/history/641f60cb-7252-4ee2-8f62-6606f6bf6e14/blobs/35/35a6d4ea79ebe911f0d81705f7aace5d8ff0316b745b0311d56af50c9c237cb7"
+    },
+    "index.html": {
+      "hash": "11c018045d802ac782b5edc49035a64c5dc8811120cdb10730b2a1f292c137f4",
+      "content": "/Users/adwaitkeshari/.cache/hyperframes/history/641f60cb-7252-4ee2-8f62-6606f6bf6e14/blobs/11/11c018045d802ac782b5edc49035a64c5dc8811120cdb10730b2a1f292c137f4"
+    },
+    "meta.json": {
+      "hash": "8c820b96db81fddd1ea19e98450c6342db62253dc64dba151898b544138487bd",
+      "content": "/Users/adwaitkeshari/.cache/hyperframes/history/641f60cb-7252-4ee2-8f62-6606f6bf6e14/blobs/8c/8c820b96db81fddd1ea19e98450c6342db62253dc64dba151898b544138487bd"
+    }
+  },
+  "revisions": {},
+  "checks": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "66564064-d2fb-4d4d-bd84-597dae8a3194",
+      "completedAt": 1794217572989,
+      "output": "/Users/adwaitkeshari/Desktop/injective/strata/film/assets/video/fb-b7.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}

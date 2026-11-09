@@ -1,0 +1,455 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+
+    .agent-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 1; }
+    .agent-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; }
+    .agent-body { font-family: "Schibsted Grotesk", sans-serif; }
+
+    /* The world: two instrument panels side by side (ladder, tuner), 3840 px wide. The camera pans from one to the other. */
+    #agent-cam { position: absolute; left: 0; top: 0; width: 3840px; height: 1080px; transform-origin: 0 0; }
+    .agent-abs { position: absolute; }
+
+    .agent-panel { position: absolute; top: 64px; width: 1728px; height: 820px; background: #121513; border: 1px solid #373D39; border-radius: 4px; }
+    .agent-reg { position: absolute; background: #ECE8DF; opacity: 0.55; }
+    .agent-hdr-rule { position: absolute; top: 148px; width: 1726px; height: 1px; background: #262B28; }
+    #agent-ruler { position: absolute; left: 0; top: 0; width: 3840px; height: 1080px; overflow: visible; }
+
+    .agent-badge { display: inline-flex; align-items: center; height: 44px; padding: 0 14px; border: 1px solid #373D39; border-radius: 3px; font-size: 28px; line-height: 1; color: #ECE8DF; letter-spacing: 0.04em; white-space: nowrap; }
+
+    /* Region A: the ladder */
+    #agent-hdr-a { left: 136px; top: 84px; display: flex; align-items: center; gap: 22px; white-space: nowrap; }
+    #agent-hdr-a .agent-name { font-size: 34px; line-height: 1; color: #ECE8DF; }
+    #agent-time-a { left: 1184px; top: 92px; width: 600px; text-align: right; font-size: 28px; line-height: 1; color: #B4AFA3; white-space: nowrap; }
+    #agent-axis-cap { left: 180px; top: 170px; width: 300px; text-align: right; font-size: 28px; line-height: 1; color: #8E897E; white-space: nowrap; }
+    #agent-axis { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+    .agent-plab { position: absolute; left: 246px; width: 200px; height: 30px; margin-top: -15px; text-align: right; font-size: 28px; line-height: 30px; color: #B4AFA3; white-space: nowrap; }
+    .agent-row { position: absolute; left: 480px; width: 820px; height: 1px; background: #262B28; transform-origin: 0 50%; }
+
+    #agent-quotes, #agent-ghosts { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .agent-ord { position: absolute; left: 0; width: 1300px; height: 0; }
+    .agent-pin { position: absolute; left: 454px; top: -1px; width: 26px; height: 2px; }
+    .agent-bar { position: absolute; left: 492px; top: -13px; height: 26px; border-radius: 2px; transform-origin: 0 50%; }
+    #agent-olabs { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .agent-olab { position: absolute; height: 34px; margin-top: -17px; font-size: 30px; line-height: 34px; white-space: nowrap; color: #B4AFA3; }
+    .agent-side { left: 136px; height: 30px; margin-top: -15px; font-size: 28px; line-height: 30px; white-space: nowrap; }
+    .agent-bid .agent-pin { background: #7CC9A0; }
+    .agent-bid .agent-bar { background: rgba(124, 201, 160, 0.9); }
+    .agent-bid .agent-px { color: #7CC9A0; }
+    .agent-ask .agent-pin { background: #EA8A6A; }
+    .agent-ask .agent-bar { background: rgba(234, 138, 106, 0.9); }
+    .agent-ask .agent-px { color: #EA8A6A; }
+    .agent-ghost { position: absolute; left: 492px; height: 26px; margin-top: -13px; border-radius: 2px; }
+    .agent-ghost.agent-bid { border: 1.5px dashed rgba(124, 201, 160, 0.55); }
+    .agent-ghost.agent-ask { border: 1.5px dashed rgba(234, 138, 106, 0.55); }
+
+    #agent-fair-pin { left: 454px; width: 26px; height: 2px; margin-top: -1px; background: #ECE8DF; }
+    #agent-fair-line { left: 480px; width: 1304px; height: 2px; margin-top: -1px; background: #ECE8DF; opacity: 0.9; transform-origin: 0 50%; }
+    #agent-fair-lab { left: 1340px; width: 444px; font-size: 32px; line-height: 1; color: #ECE8DF; white-space: nowrap; }
+    #agent-fair-src { left: 1340px; width: 444px; font-size: 28px; line-height: 40px; color: #B4AFA3; white-space: nowrap; }
+
+    #agent-inv { left: 1340px; top: 196px; width: 444px; height: 150px; }
+    #agent-inv-head { position: absolute; left: 0; top: 0; width: 444px; height: 44px; display: flex; align-items: center; justify-content: space-between; }
+    #agent-inv-name { font-size: 28px; line-height: 1; color: #B4AFA3; }
+    #agent-inv-track { position: absolute; left: 0; top: 79px; width: 444px; height: 2px; background: #373D39; transform-origin: 50% 50%; }
+    .agent-inv-tick { position: absolute; width: 2px; background: #373D39; }
+    #agent-inv-mid { position: absolute; left: 221px; top: 64px; width: 2px; height: 32px; background: #ECE8DF; }
+    #agent-inv-fill { position: absolute; left: 222px; top: 73px; width: 166px; height: 14px; background: #ECE8DF; opacity: 0.8; border-radius: 1px; transform-origin: 0 50%; }
+    .agent-inv-lab { position: absolute; top: 112px; font-size: 28px; line-height: 1; white-space: nowrap; }
+    #agent-lean { left: 1340px; top: 700px; width: 444px; font-size: 30px; line-height: 1.3; color: #B4AFA3; }
+
+    /* Region B: the tuner */
+
+    #agent-knobs { position: absolute; left: 0; top: 0; width: 3840px; height: 1080px; }
+    #agent-hdr-b { left: 2056px; top: 86px; font-size: 36px; line-height: 1; font-weight: 500; color: #ECE8DF; white-space: nowrap; }
+    #agent-hdr-b2 { left: 3004px; top: 92px; width: 700px; text-align: right; font-size: 28px; line-height: 1; color: #B4AFA3; white-space: nowrap; }
+    .agent-knob { position: absolute; left: 2056px; width: 764px; height: 112px; }
+    .agent-kname { position: absolute; left: 0; top: 0; font-size: 32px; line-height: 36px; color: #ECE8DF; white-space: nowrap; }
+    .agent-kval { position: absolute; right: 0; top: 0; font-size: 32px; line-height: 36px; color: #ECE8DF; white-space: nowrap; }
+    .agent-kmin { position: absolute; left: 0; top: 52px; width: 88px; text-align: right; font-size: 28px; line-height: 30px; color: #8E897E; white-space: nowrap; }
+    .agent-kmax { position: absolute; left: 708px; top: 52px; width: 56px; font-size: 28px; line-height: 30px; color: #8E897E; white-space: nowrap; }
+    .agent-ktrack { position: absolute; left: 108px; top: 66px; width: 580px; height: 2px; background: #373D39; transform-origin: 0 50%; }
+    .agent-kdec { position: absolute; top: 60px; width: 2px; height: 14px; background: #373D39; }
+    .agent-kcap { position: absolute; top: 53px; width: 3px; height: 28px; background: #4A514C; transform-origin: 50% 50%; }
+    .agent-kband { position: absolute; top: 65px; height: 4px; background: rgba(236, 232, 223, 0.32); transform-origin: 50% 50%; }
+    .agent-kband::before, .agent-kband::after { content: ""; position: absolute; top: -6px; width: 2px; height: 16px; background: rgba(236, 232, 223, 0.7); }
+    .agent-kband::before { left: 0; }
+    .agent-kband::after { right: 0; }
+    .agent-kneedle { position: absolute; top: 47px; width: 4px; height: 40px; margin-left: -2px; background: #ECE8DF; border-radius: 1px; }
+    .agent-kghost { position: absolute; top: 47px; width: 0; height: 40px; margin-left: -1px; border-left: 2px dashed #B4AFA3; }
+    .agent-kghost-lab { position: absolute; top: 88px; width: 160px; margin-left: -80px; text-align: center; font-size: 28px; line-height: 1; color: #B4AFA3; white-space: nowrap; }
+    #agent-clamp { left: 2056px; top: 778px; font-size: 30px; line-height: 1; color: #ECE8DF; white-space: nowrap; }
+    #agent-lognote { left: 2056px; top: 824px; font-size: 28px; line-height: 1; color: #8E897E; white-space: nowrap; }
+
+    #agent-card { left: 2880px; top: 176px; width: 824px; background: #161917; border: 1px solid #373D39; border-radius: 4px; padding: 30px 32px 34px; }
+    #agent-card-top { display: flex; align-items: center; gap: 18px; }
+    #agent-card-time { margin-top: 16px; font-size: 28px; line-height: 1.2; color: #B4AFA3; white-space: nowrap; }
+    .agent-card-rule { height: 1px; background: #262B28; margin: 20px 0; }
+    .agent-chg { display: flex; align-items: baseline; justify-content: space-between; height: 46px; }
+    .agent-chg-k { font-size: 32px; line-height: 1; color: #B4AFA3; }
+    .agent-chg-v { font-size: 32px; line-height: 1; color: #ECE8DF; white-space: nowrap; }
+    .agent-chg-v .agent-was { color: #8E897E; }
+    #agent-why { font-size: 30px; line-height: 1.4; color: #ECE8DF; }
+    #agent-final { left: 2880px; top: 722px; width: 824px; font-size: 52px; color: #ECE8DF; }
+    #agent-final > div + div { margin-top: 6px; }
+    #agent-final .agent-acc { color: #E9A94B; }
+  </style>
+
+  <div id="root" data-composition-id="agent" data-width="1920" data-height="1080" data-duration="23.7">
+    <div id="agent-cam" class="clip" data-start="0" data-duration="23.7" data-track-index="1" data-layout-allow-overflow>
+      <svg id="agent-fx" width="0" height="0" style="position:absolute"><filter id="agent-hblur" x="-5%" y="0" width="110%" height="100%"><feGaussianBlur id="agent-hblur-k" stdDeviation="0 0"></feGaussianBlur></filter></svg>
+      <div class="agent-panel" style="left:96px"></div>
+      <div class="agent-panel" style="left:2016px"></div>
+      <div class="agent-reg" style="left:96px;top:64px;width:10px;height:2px"></div>
+      <div class="agent-reg" style="left:96px;top:64px;width:2px;height:10px"></div>
+      <div class="agent-reg" style="left:1814px;top:882px;width:10px;height:2px"></div>
+      <div class="agent-reg" style="left:1822px;top:874px;width:2px;height:10px"></div>
+      <div class="agent-reg" style="left:2016px;top:64px;width:10px;height:2px"></div>
+      <div class="agent-reg" style="left:2016px;top:64px;width:2px;height:10px"></div>
+      <div class="agent-reg" style="left:3734px;top:882px;width:10px;height:2px"></div>
+      <div class="agent-reg" style="left:3742px;top:874px;width:2px;height:10px"></div>
+      <div class="agent-hdr-rule" style="left:97px"></div>
+      <div class="agent-hdr-rule" style="left:2017px"></div>
+      <svg id="agent-ruler" viewBox="0 0 3840 1080"><path id="agent-ruler-path" fill="none" stroke="#373D39" stroke-width="1.5" d=""></path></svg>
+
+      <!-- Region A: the ladder (BTC/USDC PERP, strata-test-1, 9 Nov 2026 08:44:06 UTC) -->
+      <div id="agent-hdr-a" class="agent-abs">
+        <span class="agent-mono agent-name">strata-test-1 · BTC/USDC PERP</span>
+        <span class="agent-mono agent-badge">TESTNET</span>
+      </div>
+      <div id="agent-time-a" class="agent-abs agent-mono">9 Nov 2026, 08:44:06 UTC</div>
+      <div id="agent-axis-cap" class="agent-abs agent-mono">tick size 1</div>
+      <div id="agent-side-a" class="agent-abs agent-mono agent-side" style="color:#EA8A6A" data-prices="74506,74432">asks</div>
+      <div id="agent-side-b" class="agent-abs agent-mono agent-side" style="color:#7CC9A0" data-prices="74133,74059">bids</div>
+
+      <div class="agent-row" data-price="74000"></div>
+      <div class="agent-row" data-price="74100"></div>
+      <div class="agent-row" data-price="74200"></div>
+      <div class="agent-row" data-price="74300"></div>
+      <div class="agent-row" data-price="74400"></div>
+      <div class="agent-row" data-price="74500"></div>
+
+      <svg id="agent-axis" viewBox="0 0 1920 1080">
+        <line id="agent-axis-line" x1="480" x2="480" y1="196" y2="844" stroke="#373D39" stroke-width="2"></line>
+        <path id="agent-ticks-major" fill="none" stroke="#8E897E" stroke-width="2" d=""></path>
+        <path id="agent-ticks-mid" fill="none" stroke="#5E625C" stroke-width="1.5" d=""></path>
+        <path id="agent-ticks-minor" fill="none" stroke="#4A514C" stroke-width="1.5" d=""></path>
+      </svg>
+      <div class="agent-plab agent-mono" data-price="74000">74,000</div>
+      <div class="agent-plab agent-mono" data-price="74100">74,100</div>
+      <div class="agent-plab agent-mono" data-price="74200">74,200</div>
+      <div class="agent-plab agent-mono" data-price="74300">74,300</div>
+      <div class="agent-plab agent-mono" data-price="74400">74,400</div>
+      <div class="agent-plab agent-mono" data-price="74500">74,500</div>
+
+      <div id="agent-fair-pin" class="agent-abs" data-price="74280.55"></div>
+      <div id="agent-fair-line" class="agent-abs" data-price="74280.55"></div>
+      <div id="agent-fair-lab" class="agent-abs agent-mono">oracle 74,280.55</div>
+      <div id="agent-fair-src" class="agent-abs agent-mono"><div>Chainlink Data Streams</div><div>9 Nov 2026, 08:43:34 UTC</div></div>
+
+      <div id="agent-ghosts">
+        <div class="agent-ghost agent-ask" data-price="74506" data-size="0.0002"></div>
+        <div class="agent-ghost agent-ask" data-price="74432" data-size="0.0001"></div>
+        <div class="agent-ghost agent-bid" data-price="74133" data-size="0.0001"></div>
+        <div class="agent-ghost agent-bid" data-price="74059" data-size="0.0002"></div>
+      </div>
+      <div id="agent-quotes">
+        <div id="agent-a2" class="agent-ord agent-ask" data-price="74506" data-size="0.0002">
+          <div class="agent-pin"></div><div class="agent-bar"></div>
+        </div>
+        <div id="agent-a1" class="agent-ord agent-ask" data-price="74432" data-size="0.0001">
+          <div class="agent-pin"></div><div class="agent-bar"></div>
+        </div>
+        <div id="agent-b1" class="agent-ord agent-bid" data-price="74133" data-size="0.0001">
+          <div class="agent-pin"></div><div class="agent-bar"></div>
+        </div>
+        <div id="agent-b2" class="agent-ord agent-bid" data-price="74059" data-size="0.0002">
+          <div class="agent-pin"></div><div class="agent-bar"></div>
+        </div>
+      </div>
+
+      <div id="agent-olabs">
+        <div id="agent-a2-lab" class="agent-olab agent-ask agent-mono" data-price="74506" data-size="0.0002"><span class="agent-px">74,506</span> × 0.0002</div>
+        <div id="agent-a1-lab" class="agent-olab agent-ask agent-mono" data-price="74432" data-size="0.0001"><span class="agent-px">74,432</span> × 0.0001</div>
+        <div id="agent-b1-lab" class="agent-olab agent-bid agent-mono" data-price="74133" data-size="0.0001"><span class="agent-px">74,133</span> × 0.0001</div>
+        <div id="agent-b2-lab" class="agent-olab agent-bid agent-mono" data-price="74059" data-size="0.0002"><span class="agent-px">74,059</span> × 0.0002</div>
+      </div>
+
+      <div id="agent-inv" class="agent-abs">
+        <div id="agent-inv-head">
+          <span id="agent-inv-name" class="agent-mono">inventory</span>
+          <span id="agent-illus" class="agent-mono agent-badge">Illustration</span>
+        </div>
+        <div id="agent-inv-track"></div>
+        <div class="agent-inv-tick" style="left:0;top:72px;height:16px"></div>
+        <div class="agent-inv-tick" style="left:442px;top:72px;height:16px"></div>
+        <div id="agent-inv-fill"></div>
+        <div id="agent-inv-mid"></div>
+        <div id="agent-inv-short" class="agent-inv-lab agent-mono" style="left:0;color:#8E897E">short</div>
+        <div id="agent-inv-flat" class="agent-inv-lab agent-mono" style="left:172px;width:100px;text-align:center;color:#ECE8DF">flat</div>
+        <div id="agent-inv-long" class="agent-inv-lab agent-mono" style="left:344px;width:100px;text-align:right;color:#8E897E">long</div>
+      </div>
+      <div id="agent-lean" class="agent-abs agent-body">Long inventory: both quotes lean lower, toward selling.</div>
+
+      <!-- Region B: the tuner (bounds from packages/risk/src/params.ts) -->
+      <div id="agent-hdr-b2" class="agent-abs agent-mono">strata-test-1 · BTC/USDC PERP</div>
+      <div id="agent-knobs">
+      <div id="agent-hdr-b" class="agent-abs agent-body">AI Risk Tuner</div>
+
+      <div class="agent-knob" id="agent-k0" data-scale="log" data-min="0.001" data-max="5" data-val="0.1" data-decades="0.01,0.1,1" data-band="1">
+        <div class="agent-kname agent-body">gamma</div><div class="agent-kval agent-mono">0.1</div>
+        <div class="agent-kmin agent-mono">0.001</div><div class="agent-kmax agent-mono">5</div>
+        <div class="agent-ktrack"></div><div class="agent-kband"></div>
+        <div class="agent-kcap agent-kcap-l"></div><div class="agent-kcap agent-kcap-r"></div>
+        <div class="agent-kneedle"></div>
+      </div>
+      <div class="agent-knob" id="agent-k1" data-scale="log" data-min="1" data-max="500" data-val="10" data-decades="10,100" data-band="1" data-ghost="12">
+        <div class="agent-kname agent-body">min half spread</div><div class="agent-kval agent-mono">10 bps</div>
+        <div class="agent-kmin agent-mono">1</div><div class="agent-kmax agent-mono">500</div>
+        <div class="agent-ktrack"></div><div class="agent-kband"></div>
+        <div class="agent-kcap agent-kcap-l"></div><div class="agent-kcap agent-kcap-r"></div>
+        <div class="agent-kghost"></div><div class="agent-kghost-lab agent-mono">12</div>
+        <div class="agent-kneedle"></div>
+      </div>
+      <div class="agent-knob" id="agent-k2" data-scale="lin" data-min="1" data-max="10" data-val="2" data-steps="1">
+        <div class="agent-kname agent-body">levels</div><div class="agent-kval agent-mono">2</div>
+        <div class="agent-kmin agent-mono">1</div><div class="agent-kmax agent-mono">10</div>
+        <div class="agent-ktrack"></div>
+        <div class="agent-kcap agent-kcap-l"></div><div class="agent-kcap agent-kcap-r"></div>
+        <div class="agent-kneedle"></div>
+      </div>
+      <div class="agent-knob" id="agent-k3" data-scale="log" data-min="0.1" data-max="5" data-val="1" data-decades="1" data-band="1" data-ghost="0.9">
+        <div class="agent-kname agent-body">size</div><div class="agent-kval agent-mono">×1</div>
+        <div class="agent-kmin agent-mono">0.1</div><div class="agent-kmax agent-mono">5</div>
+        <div class="agent-ktrack"></div><div class="agent-kband"></div>
+        <div class="agent-kcap agent-kcap-l"></div><div class="agent-kcap agent-kcap-r"></div>
+        <div class="agent-kghost"></div><div class="agent-kghost-lab agent-mono">×0.9</div>
+        <div class="agent-kneedle"></div>
+      </div>
+      <div class="agent-knob" id="agent-k4" data-scale="lin" data-min="0" data-max="1" data-val="0">
+        <div class="agent-kname agent-body">off-hours quoting</div><div class="agent-kval agent-mono">off</div>
+        <div class="agent-kmin agent-mono">off</div><div class="agent-kmax agent-mono">on</div>
+        <div class="agent-ktrack"></div>
+        <div class="agent-kcap agent-kcap-l"></div><div class="agent-kcap agent-kcap-r"></div>
+        <div class="agent-kneedle"></div>
+      </div>
+      <div id="agent-clamp" class="agent-abs agent-mono">each change clamped to 20% per step</div>
+      <div id="agent-lognote" class="agent-abs agent-mono">log scale: gamma, min half spread, size</div>
+      </div>
+
+      <div id="agent-card" class="agent-abs">
+        <div id="agent-card-top"><span id="agent-shadow" class="agent-mono agent-badge">SHADOW · not applied</span></div>
+        <div id="agent-card-time" class="agent-mono">8 Nov 2026, 20:13:47 UTC</div>
+        <div class="agent-card-rule"></div>
+        <div id="agent-chg1" class="agent-chg"><span class="agent-chg-k agent-body">min half spread</span><span class="agent-chg-v agent-mono"><span class="agent-was">10 →</span> 12 bps</span></div>
+        <div id="agent-chg2" class="agent-chg"><span class="agent-chg-k agent-body">size</span><span class="agent-chg-v agent-mono"><span class="agent-was">×1 →</span> ×0.9</span></div>
+        <div class="agent-card-rule"></div>
+        <div id="agent-why" class="agent-body">“An oracle-versus-book deviation guard fired recently, so we are modestly widening the minimum half spread and trimming order size; there were no fills or markouts to justify anything else.”</div>
+      </div>
+      <div id="agent-final" class="agent-abs agent-display">
+        <div><span class="agent-w">Suggestions</span> <span class="agent-w">only.</span></div>
+        <div><span class="agent-w">The</span> <span class="agent-w">tuner</span> <span class="agent-w agent-acc">cannot</span> <span class="agent-w">send</span> <span class="agent-w">orders.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Layout constants: price axis of the ladder (world px) and camera stops.
+    const AX = 480;
+    const P_LO = 74000, P_HI = 74560, Y_LO = 830, Y_HI = 210;
+    const K = (Y_LO - Y_HI) / (P_HI - P_LO);
+    const yOf = (p) => Y_LO - (p - P_LO) * K;
+    const BAR_PX_PER_UNIT = 2200000; // 0.0001 BTC -> 220 px
+    const SKEW_USD = 40; // illustration only: how far the long-inventory quotes lean
+    const CAM_A = 0, CAM_B = -1920;
+    const KNOB_SHIFT = 442; // knobs start centred in the tuner panel, then slide left to make room for the suggestion
+    const TRACK_W = 580, TRACK_X = 108;
+
+    const q = (s, r = document) => r.querySelector(s);
+    const qa = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+    // Axis ticks: major every 100, mid every 50, minor every 10 (tick size is 1).
+    let dMaj = "", dMid = "", dMin = "";
+    for (let p = P_HI; p >= P_LO; p -= 10) {
+      const y = yOf(p).toFixed(2);
+      if (p % 100 === 0) dMaj += `M${AX - 24} ${y}H${AX}`;
+      else if (p % 50 === 0) dMid += `M${AX - 16} ${y}H${AX}`;
+      else dMin += `M${AX - 9} ${y}H${AX}`;
+    }
+    q("#agent-ticks-major").setAttribute("d", dMaj);
+    q("#agent-ticks-mid").setAttribute("d", dMid);
+    q("#agent-ticks-minor").setAttribute("d", dMin);
+
+    // Bottom survey ruler along the panel: a tick every 24 px, a longer one every 120 px.
+    let dR = "";
+    for (const x0 of [120, 2040]) for (let x = x0; x <= x0 + 1680; x += 24) dR += `M${x} 883V${(x - x0) % 120 === 0 ? 869 : 876}`;
+    q("#agent-ruler-path").setAttribute("d", dR);
+
+    qa(".agent-plab, .agent-row").forEach((el) => { el.style.top = `${yOf(+el.dataset.price)}px`; });
+    ["#agent-fair-pin", "#agent-fair-line"].forEach((s) => { q(s).style.top = `${yOf(74280.55)}px`; });
+    q("#agent-fair-lab").style.top = `${yOf(74280.55) - 46}px`;
+    q("#agent-fair-src").style.top = `${yOf(74280.55) + 14}px`;
+
+    qa(".agent-ord").forEach((el) => {
+      const w = +el.dataset.size * BAR_PX_PER_UNIT;
+      el.style.top = `${yOf(+el.dataset.price)}px`;
+      q(".agent-bar", el).style.width = `${w}px`;
+    });
+    qa(".agent-olab").forEach((el) => {
+      el.style.top = `${yOf(+el.dataset.price)}px`;
+      el.style.left = `${492 + +el.dataset.size * BAR_PX_PER_UNIT + 24}px`;
+    });
+    qa(".agent-side").forEach((el) => {
+      const [p0, p1] = el.dataset.prices.split(",").map(Number);
+      el.style.top = `${(yOf(p0) + yOf(p1)) / 2}px`;
+    });
+    qa(".agent-ghost").forEach((el) => {
+      el.style.top = `${yOf(+el.dataset.price)}px`;
+      el.style.width = `${+el.dataset.size * BAR_PX_PER_UNIT}px`;
+    });
+
+    // Knobs: log tracks for the wide ranges, linear for levels, two stops for off-hours.
+    const frac = (k, v) => {
+      const lo = +k.dataset.min, hi = +k.dataset.max;
+      return k.dataset.scale === "log" ? Math.log(v / lo) / Math.log(hi / lo) : (v - lo) / (hi - lo);
+    };
+    const tx = (k, v) => TRACK_X + frac(k, v) * TRACK_W;
+    qa(".agent-knob").forEach((k, i) => {
+      k.style.top = `${176 + i * 118}px`;
+      const v = +k.dataset.val;
+      q(".agent-kneedle", k).style.left = `${tx(k, v)}px`;
+      q(".agent-kcap-l", k).style.left = `${TRACK_X - 1.5}px`;
+      q(".agent-kcap-r", k).style.left = `${TRACK_X + TRACK_W - 1.5}px`;
+      const marks = k.dataset.decades ? k.dataset.decades.split(",").map(Number)
+        : k.dataset.steps ? Array.from({ length: +k.dataset.max - +k.dataset.min - 1 }, (_, j) => +k.dataset.min + 1 + j) : [];
+      marks.forEach((m) => {
+        const d = document.createElement("div");
+        d.className = "agent-kdec";
+        d.style.left = `${tx(k, m) - 1}px`;
+        k.insertBefore(d, q(".agent-ktrack", k).nextSibling);
+      });
+      if (k.dataset.band) {
+        const b = q(".agent-kband", k);
+        const x0 = tx(k, v * 0.8), x1 = tx(k, v * 1.2);
+        b.style.left = `${x0}px`;
+        b.style.width = `${x1 - x0}px`;
+      }
+      if (k.dataset.ghost) {
+        const gx = tx(k, +k.dataset.ghost);
+        q(".agent-kghost", k).style.left = `${gx}px`;
+        q(".agent-kghost-lab", k).style.left = `${gx}px`;
+      }
+    });
+
+    // The rationale types in: split into word spans of char spans so wrapping stays natural.
+    const why = q("#agent-why");
+    const words = why.textContent.trim().split(/\s+/);
+    why.textContent = "";
+    words.forEach((w, i) => {
+      const ws = document.createElement("span");
+      ws.style.whiteSpace = "nowrap";
+      for (const ch of w) {
+        const c = document.createElement("span");
+        c.className = "agent-ch";
+        c.textContent = ch;
+        ws.appendChild(c);
+      }
+      why.appendChild(ws);
+      if (i < words.length - 1) why.appendChild(document.createTextNode(" "));
+    });
+    const chars = qa(".agent-ch", why);
+
+    const tl = gsap.timeline({ paused: true });
+    const blurIn = (t, s, d = 0.3) => tl.fromTo(s, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+    const blurOut = (t, s, d = 0.3) => tl.to(s, { opacity: 0, filter: "blur(6px)", duration: d, ease: "power3.in" }, t);
+
+    // Camera
+    tl.set("#agent-cam", { x: CAM_A, y: 0, scale: 1 }, 0);
+    tl.to("#agent-cam", { x: CAM_B, duration: 1.3, ease: "power2.inOut" }, 11.55);
+    // Horizontal-only motion blur on the long pan, peaking at its fastest frame.
+    tl.set("#agent-cam", { filter: "url(#agent-hblur)" }, 11.6);
+    tl.fromTo("#agent-hblur-k", { attr: { stdDeviation: "0 0" } }, { attr: { stdDeviation: "14 0" }, duration: 0.6, ease: "power2.in" }, 11.6);
+    tl.to("#agent-hblur-k", { attr: { stdDeviation: "0 0" }, duration: 0.6, ease: "power2.out" }, 12.2);
+    tl.set("#agent-cam", { filter: "none" }, 12.8);
+    tl.fromTo("#agent-knobs", { x: KNOB_SHIFT }, { x: 0, duration: 1.0, ease: "power2.inOut" }, 16.6);
+
+    // Beat 1 (0 to 4.4): "Inside, the agent doesn't try to guess where the price is going."
+    blurIn(1.6, "#agent-time-a");
+    tl.fromTo("#agent-inv-track", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 2.3);
+    tl.fromTo(".agent-inv-tick, #agent-inv-mid", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 2.75);
+    blurIn(2.45, "#agent-inv-name, .agent-inv-lab");
+    tl.set("#agent-inv-fill", { scaleX: 0 }, 0);
+    tl.set("#agent-illus, #agent-lean", { opacity: 0 }, 0);
+    blurIn(3.55, "#agent-axis-cap");
+
+    // On "Inside": the four real resting orders snap onto their ticks.
+    const snaps = [["#agent-b1", 6, 0.6], ["#agent-a1", -6, 0.78], ["#agent-b2", 6, 0.96], ["#agent-a2", -6, 1.14]];
+    snaps.forEach(([id, dy, t]) => {
+      tl.fromTo(`${id}, ${id}-lab`, { y: dy, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, t);
+      tl.fromTo(`${id} .agent-bar`, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, t);
+    });
+
+    // Beat 2 (4.4 to 7.7): "quotes both sides around a fair price".
+    blurIn(4.55, "#agent-side-a", 0.25);
+    blurIn(5.05, "#agent-side-b", 0.25);
+    tl.fromTo("#agent-fair-pin", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" }, 6.42);
+    tl.fromTo("#agent-fair-line", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power2.inOut" }, 6.42);
+    blurIn(6.6, "#agent-fair-lab", 0.25);
+    blurIn(6.95, "#agent-fair-src");
+
+    // Beat 3 (7.7 to 11.5): illustration, inventory grows long and the quote set leans down, then returns.
+    blurIn(7.78, "#agent-illus", 0.25);
+    tl.fromTo("#agent-ghosts", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 8.0);
+    tl.to("#agent-inv-fill", { scaleX: 1, duration: 2.8, ease: "power1.inOut" }, 8.1);
+    tl.to("#agent-quotes", { y: SKEW_USD * K, duration: 2.8, ease: "power1.inOut" }, 8.1);
+    blurIn(8.35, "#agent-lean", 0.35);
+    tl.to("#agent-inv-flat", { color: "#8E897E", duration: 0.3, ease: "power2.out" }, 8.4);
+    tl.to("#agent-inv-long", { color: "#ECE8DF", duration: 0.3, ease: "power2.out" }, 9.9);
+    tl.to("#agent-inv-fill", { scaleX: 0, duration: 0.5, ease: "power2.inOut" }, 10.95);
+    tl.to("#agent-quotes", { y: 0, duration: 0.5, ease: "power2.inOut" }, 10.95);
+    tl.to("#agent-inv-flat", { color: "#ECE8DF", duration: 0.3, ease: "power2.out" }, 11.2);
+    tl.to("#agent-inv-long", { color: "#8E897E", duration: 0.3, ease: "power2.out" }, 11.2);
+    tl.to("#agent-ghosts", { opacity: 0, duration: 0.25, ease: "power3.in" }, 11.15);
+    blurOut(11.1, "#agent-illus, #agent-lean", 0.25);
+
+    // Beat 4 (11.5 to 16.5): pan to the tuner; five knobs land, then the hard limits light up.
+    tl.fromTo(".agent-ktrack", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power2.inOut", stagger: 0.07 }, 12.35);
+    tl.fromTo(".agent-kdec", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 12.9);
+    blurIn(12.95, "#agent-lognote");
+    qa(".agent-knob").forEach((k, i) => {
+      const t = 13.4 + i * 0.14;
+      tl.fromTo(q(".agent-kneedle", k), { y: -6, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, t);
+      blurIn(t, q(".agent-kval", k), 0.25);
+    });
+    tl.fromTo(".agent-kcap", { scaleY: 0.5, backgroundColor: "#4A514C" }, { scaleY: 1, backgroundColor: "#ECE8DF", duration: 0.35, ease: "expo.out", stagger: 0.04 }, 14.9);
+    tl.to(".agent-kmin, .agent-kmax", { color: "#ECE8DF", duration: 0.35, ease: "power2.out" }, 14.9);
+    tl.fromTo(".agent-kband", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: "expo.out", stagger: 0.06 }, 15.3);
+    blurIn(15.3, "#agent-clamp", 0.25);
+
+    // Beat 5 (16.5 to 21.2): shadow mode. The real suggestion lands, its changes show as ghost needles, the rationale types in.
+    tl.fromTo("#agent-card", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "expo.out" }, 17.25);
+    tl.set("#agent-card-time, #agent-chg1, #agent-chg2, .agent-card-rule, #agent-shadow, .agent-kghost, .agent-kghost-lab", { opacity: 0 }, 0);
+    tl.set(chars, { opacity: 0 }, 0);
+    blurIn(17.3, "#agent-hdr-b2");
+    blurIn(17.6, "#agent-shadow", 0.18);
+    tl.to(".agent-card-rule", { opacity: 1, duration: 0.3, ease: "power2.out" }, 17.8);
+    blurIn(17.95, "#agent-card-time");
+    blurIn(18.62, "#agent-chg1", 0.25);
+    const g1 = tx(q("#agent-k1"), 12) - tx(q("#agent-k1"), 10);
+    tl.fromTo("#agent-k1 .agent-kghost", { x: -g1, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 18.7);
+    blurIn(18.85, "#agent-k1 .agent-kghost-lab", 0.25);
+    blurIn(18.98, "#agent-chg2", 0.25);
+    const g3 = tx(q("#agent-k3"), 0.9) - tx(q("#agent-k3"), 1);
+    tl.fromTo("#agent-k3 .agent-kghost", { x: -g3, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "expo.out" }, 19.05);
+    blurIn(19.2, "#agent-k3 .agent-kghost-lab", 0.25);
+    tl.to(chars, { opacity: 1, duration: 0.05, ease: "none", stagger: { amount: 1.7 } }, 19.1);
+
+    // Beat 6 (21.2 to end): "and it never places an order."
+    tl.fromTo("#agent-final .agent-w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, stagger: 0.08, ease: "power2.out" }, 21.2);
+
+    window.__timelines["agent"] = tl;
+  </script>
+</template>

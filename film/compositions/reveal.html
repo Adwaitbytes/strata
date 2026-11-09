@@ -1,0 +1,99 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+    .reveal-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 1.2; }
+    .reveal-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; }
+
+    #reveal-linewrap { position: absolute; left: 0; width: 1920px; height: 3px; transform-origin: 50% 50%; }
+    #reveal-line { position: absolute; left: 0; top: 0; width: 1920px; height: 3px; background: #E9A94B; transform-origin: 0 50%; }
+    #reveal-wm { position: absolute; left: 580px; width: 760px; height: 96px; }
+    .reveal-box { position: absolute; left: 0; width: 760px; overflow: hidden; }
+    .reveal-half { position: absolute; left: 0; top: 0; width: 760px; height: 96px; }
+    .reveal-half svg { display: block; width: 760px; height: 95.14px; filter: drop-shadow(0 4px 18px rgba(9, 11, 10, 0.55)); }
+    #reveal-sub { position: absolute; left: 0; width: 1920px; text-align: center; font-size: 60px; color: #ECE8DF; white-space: nowrap; text-shadow: 0 2px 22px rgba(9, 11, 10, 0.7), 0 1px 3px rgba(9, 11, 10, 0.6); }
+    #reveal-sub .reveal-acc { color: #E9A94B; }
+    #reveal-illus { position: absolute; left: 96px; top: 834px; font-size: 28px; line-height: 34px; color: #ECE8DF; white-space: nowrap; text-shadow: 0 1px 14px rgba(9, 11, 10, 0.85), 0 1px 2px rgba(9, 11, 10, 0.7); }
+    #reveal-built { position: absolute; left: 0; width: 1920px; text-align: center; font-size: 30px; line-height: 36px; color: #ECE8DF; white-space: nowrap; text-shadow: 0 2px 16px rgba(9, 11, 10, 0.8), 0 1px 2px rgba(9, 11, 10, 0.7); }
+  </style>
+
+  <div id="root" data-composition-id="reveal" data-width="1920" data-height="1080" data-duration="12.0">
+    <!-- B3: layers of liquidity deposit and settle, the canyon narrows; the ochre layer is STRATA depth.
+         9 s render held on its settled last frame to the end of the scene. -->
+    <video id="reveal-b3" class="clip" src="assets/video/b3.mp4" muted playsinline data-start="0" data-media-start="2.0" data-duration="12.0" data-track-index="0"
+      style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover"></video>
+
+    <!-- the ochre stratum, drawn across the frame at the ochre layer's height; it becomes the wordmark's seam -->
+    <div id="reveal-linewrap" class="clip" data-start="4.0" data-duration="8.0" data-track-index="1"><div id="reveal-line"></div></div>
+
+    <div id="reveal-wm" class="clip" data-start="4.7" data-duration="7.3" data-track-index="2" aria-label="STRATA">
+      <div id="reveal-box-top" class="reveal-box"><div id="reveal-wm-top" class="reveal-half">
+        <svg viewBox="0 0 548 68.6" aria-hidden="true"><path fill="#ECE8DF" d="M37.0 69.8Q29.4 69.8 22.7 68.9Q15.9 68 10.8 65.5Q5.7 63.1 2.9 58.7Q0.0 54.4 0.0 47.5Q0.0 47.3 0.0 47Q-0.0 46.7 0.1 46.4L14.2 46.4Q14.1 46.9 14.1 47.4Q14.0 48 14.0 48.7Q14.0 52 16.8 54Q19.5 56 24.7 57Q29.8 58 36.8 58Q39.8 58 42.9 57.7Q45.9 57.4 48.8 56.8Q51.6 56.3 53.8 55.4Q55.9 54.5 57.2 53Q58.5 51.5 58.5 49.6Q58.5 46.9 56.1 45.2Q53.7 43.5 49.7 42.4Q45.7 41.4 40.7 40.7Q35.6 40 30.3 39.1Q24.9 38.3 19.9 36.8Q14.8 35.4 10.7 33.1Q6.6 30.9 4.3 27.2Q2.0 23.6 2.0 18.3Q2.0 13.8 4.2 10.1Q6.3 6.4 10.8 3.8Q15.2 1.3 21.8 0Q28.3 -1.3 36.9 -1.3Q45.7 -1.3 52.1 0.1Q58.4 1.6 62.5 4.2Q66.6 6.9 68.6 10.4Q70.5 14 70.5 18.3L70.5 20L56.6 20L56.6 18.6Q56.6 16.3 54.2 14.5Q51.8 12.7 47.6 11.6Q43.3 10.5 37.8 10.5Q30.4 10.5 25.8 11.4Q21.1 12.3 18.9 14Q16.6 15.7 16.6 17.8Q16.6 20.2 19.0 21.7Q21.4 23.2 25.4 24.1Q29.4 25.1 34.5 25.8Q39.5 26.5 44.9 27.4Q50.3 28.3 55.4 29.7Q60.4 31.1 64.5 33.4Q68.5 35.8 70.9 39.3Q73.2 42.8 73.2 47.9Q73.2 56 68.7 60.8Q64.1 65.6 56.0 67.7Q47.8 69.8 37.0 69.8ZM120.5 68.6L120.5 12.5L90.0 12.5L90.0 -0.1L165.4 -0.1L165.4 12.5L134.9 12.5L134.9 68.6ZM186.5 68.6L186.5 -0.1L240.3 -0.1Q247.5 -0.1 252.2 2.8Q256.8 5.7 259.2 10.5Q261.5 15.4 261.5 21.2Q261.5 27.4 258.3 32.7Q255.1 38 248.5 40.9L263.2 68.6L247.1 68.6L234.3 43.6L200.8 43.6L200.8 68.6ZM200.8 31.7L236.5 31.7Q241.4 31.7 244.1 28.8Q246.8 26 246.8 21.5Q246.8 18.4 245.6 16.2Q244.4 14.1 242.2 13Q239.9 11.9 236.5 11.9L200.8 11.9ZM311.3 0L278.5 68.7L296.8 68.7L314.0 31.2Q315.1 28.8 316.3 26Q317.5 23.2 318.6 20.5Q319.7 17.8 320.5 15.9L321.3 15.9Q322.0 17.6 323.0 20.2Q324.1 22.9 325.3 25.7Q326.6 28.6 327.8 31.1L345.1 68.7L362.5 68.7L329.6 0ZM405.8 68.6L405.8 12.5L375.3 12.5L375.3 -0.1L450.7 -0.1L450.7 12.5L420.2 12.5L420.2 68.6ZM496.4 0L463.6 68.7L481.9 68.7L499.1 31.2Q500.2 28.8 501.4 26Q502.6 23.2 503.7 20.5Q504.8 17.8 505.6 15.9L506.4 15.9Q507.1 17.6 508.2 20.2Q509.2 22.9 510.5 25.7Q511.7 28.6 512.9 31.1L530.2 68.7L547.6 68.7L514.7 0Z"/></svg>
+      </div></div>
+      <div id="reveal-box-bot" class="reveal-box"><div id="reveal-wm-bot" class="reveal-half">
+        <svg viewBox="0 0 548 68.6" aria-hidden="true"><path fill="#ECE8DF" d="M37.0 69.8Q29.4 69.8 22.7 68.9Q15.9 68 10.8 65.5Q5.7 63.1 2.9 58.7Q0.0 54.4 0.0 47.5Q0.0 47.3 0.0 47Q-0.0 46.7 0.1 46.4L14.2 46.4Q14.1 46.9 14.1 47.4Q14.0 48 14.0 48.7Q14.0 52 16.8 54Q19.5 56 24.7 57Q29.8 58 36.8 58Q39.8 58 42.9 57.7Q45.9 57.4 48.8 56.8Q51.6 56.3 53.8 55.4Q55.9 54.5 57.2 53Q58.5 51.5 58.5 49.6Q58.5 46.9 56.1 45.2Q53.7 43.5 49.7 42.4Q45.7 41.4 40.7 40.7Q35.6 40 30.3 39.1Q24.9 38.3 19.9 36.8Q14.8 35.4 10.7 33.1Q6.6 30.9 4.3 27.2Q2.0 23.6 2.0 18.3Q2.0 13.8 4.2 10.1Q6.3 6.4 10.8 3.8Q15.2 1.3 21.8 0Q28.3 -1.3 36.9 -1.3Q45.7 -1.3 52.1 0.1Q58.4 1.6 62.5 4.2Q66.6 6.9 68.6 10.4Q70.5 14 70.5 18.3L70.5 20L56.6 20L56.6 18.6Q56.6 16.3 54.2 14.5Q51.8 12.7 47.6 11.6Q43.3 10.5 37.8 10.5Q30.4 10.5 25.8 11.4Q21.1 12.3 18.9 14Q16.6 15.7 16.6 17.8Q16.6 20.2 19.0 21.7Q21.4 23.2 25.4 24.1Q29.4 25.1 34.5 25.8Q39.5 26.5 44.9 27.4Q50.3 28.3 55.4 29.7Q60.4 31.1 64.5 33.4Q68.5 35.8 70.9 39.3Q73.2 42.8 73.2 47.9Q73.2 56 68.7 60.8Q64.1 65.6 56.0 67.7Q47.8 69.8 37.0 69.8ZM120.5 68.6L120.5 12.5L90.0 12.5L90.0 -0.1L165.4 -0.1L165.4 12.5L134.9 12.5L134.9 68.6ZM186.5 68.6L186.5 -0.1L240.3 -0.1Q247.5 -0.1 252.2 2.8Q256.8 5.7 259.2 10.5Q261.5 15.4 261.5 21.2Q261.5 27.4 258.3 32.7Q255.1 38 248.5 40.9L263.2 68.6L247.1 68.6L234.3 43.6L200.8 43.6L200.8 68.6ZM200.8 31.7L236.5 31.7Q241.4 31.7 244.1 28.8Q246.8 26 246.8 21.5Q246.8 18.4 245.6 16.2Q244.4 14.1 242.2 13Q239.9 11.9 236.5 11.9L200.8 11.9ZM311.3 0L278.5 68.7L296.8 68.7L314.0 31.2Q315.1 28.8 316.3 26Q317.5 23.2 318.6 20.5Q319.7 17.8 320.5 15.9L321.3 15.9Q322.0 17.6 323.0 20.2Q324.1 22.9 325.3 25.7Q326.6 28.6 327.8 31.1L345.1 68.7L362.5 68.7L329.6 0ZM405.8 68.6L405.8 12.5L375.3 12.5L375.3 -0.1L450.7 -0.1L450.7 12.5L420.2 12.5L420.2 68.6ZM496.4 0L463.6 68.7L481.9 68.7L499.1 31.2Q500.2 28.8 501.4 26Q502.6 23.2 503.7 20.5Q504.8 17.8 505.6 15.9L506.4 15.9Q507.1 17.6 508.2 20.2Q509.2 22.9 510.5 25.7Q511.7 28.6 512.9 31.1L530.2 68.7L547.6 68.7L514.7 0Z"/></svg>
+      </div></div>
+    </div>
+
+    <div id="reveal-sub" class="clip reveal-display" data-start="6.0" data-duration="6.0" data-track-index="3">An open <span class="reveal-acc">arena</span> for AI market makers</div>
+    <div id="reveal-illus" class="clip reveal-mono" data-start="0.4" data-duration="4.2" data-track-index="5">Illustration: STRATA depth added to the real NVDA/USDC PERP book</div>
+    <div id="reveal-built" class="clip reveal-mono" data-start="8.3" data-duration="3.7" data-track-index="4">Built on Injective</div>
+  </div>
+
+  <script>
+    // Screen y (px) of B3's ochre layer (STRATA depth). The lead retunes this one number when the real
+    // render lands: the ochre line, the wordmark's seam, and the lockup under it all follow it.
+    // Keep it inside 260..760 so the lockup stays clear of the caption band (y > 900).
+    const OCHRE_Y = 640;
+
+    // Wordmark geometry (assets/brand/wordmark-dark.svg, viewBox 548 x 68.6, seam y 41.2 to 45.6).
+    const WM_W = 760;
+    const WM_H = (WM_W * 68.6) / 548;
+    const SEAM_TOP = (41.2 / 68.6) * WM_H;
+    const SEAM_BOT = (45.6 / 68.6) * WM_H;
+    const WM_TOP = OCHRE_Y - (SEAM_TOP + SEAM_BOT) / 2;
+    const px = (n) => `${n.toFixed(2)}px`;
+
+    document.getElementById("reveal-linewrap").style.top = px(OCHRE_Y - 1.5);
+    document.getElementById("reveal-wm").style.top = px(WM_TOP);
+    // each half of the wordmark sits in a box that ends at the seam, so it rises out of the line
+    const boxTop = document.getElementById("reveal-box-top");
+    boxTop.style.top = "0px";
+    boxTop.style.height = px(SEAM_TOP);
+    const boxBot = document.getElementById("reveal-box-bot");
+    boxBot.style.top = px(SEAM_BOT);
+    boxBot.style.height = px(WM_H - SEAM_BOT);
+    document.getElementById("reveal-wm-bot").style.top = px(-SEAM_BOT);
+    // The lockup sits under the wordmark; if the stratum is low in frame it moves above instead.
+    const LOCKUP_BELOW = OCHRE_Y <= 640;
+    const SUB_TOP = LOCKUP_BELOW ? WM_TOP + WM_H + 40 : WM_TOP - 190;
+    document.getElementById("reveal-sub").style.top = px(SUB_TOP);
+    document.getElementById("reveal-built").style.top = px(SUB_TOP + 67 + 30);
+
+    const tl = gsap.timeline({ paused: true });
+
+    // 0 to 4.1: the land alone. "So we built one." (3.19 to 4.96)
+    // 4.10: the ochre line draws across the frame along the ochre layer
+    tl.fromTo("#reveal-line", { scaleX: 0 }, { scaleX: 1, duration: 0.75, ease: "power2.inOut" }, 4.1);
+
+    // "STRATA" (4.96): the letters rise out of the line, top halves up, bottom halves down
+    tl.fromTo("#reveal-wm-top", { y: SEAM_TOP }, { y: 0, duration: 0.9, ease: "expo.out" }, 4.84);
+    tl.fromTo("#reveal-wm-bot", { y: -(WM_H - SEAM_BOT) }, { y: 0, duration: 0.9, ease: "expo.out" }, 4.94);
+
+    // the line gathers in from the frame edges to the wordmark's width, then closes into its cut
+    tl.fromTo("#reveal-linewrap", { scaleX: 1 }, { scaleX: WM_W / 1920, duration: 0.8, ease: "power3.inOut" }, 5.0);
+    tl.to("#reveal-line", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, 5.72);
+
+    // "arena" (6.39)
+    tl.fromTo("#reveal-sub", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 6.26);
+    // the deposits are illustrative (film/assets/blender/README.md): say so while they fall
+    tl.fromTo("#reveal-illus", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.5);
+    tl.to("#reveal-illus", { opacity: 0, duration: 0.3, ease: "power3.in" }, 4.1);
+    // "built on Injective" (built 8.6)
+    tl.fromTo("#reveal-built", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, 8.48);
+
+    window.__timelines["reveal"] = tl;
+  </script>
+</template>

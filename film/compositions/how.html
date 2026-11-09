@@ -1,0 +1,252 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #ECEEE7; }
+    .how-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 1.2; white-space: nowrap; }
+    .how-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; white-space: nowrap; }
+
+    /* The sheet is drawn in design units: the survey line is y = 0 and the sheet spans x 0 to 3456.
+       The camera maps it to the screen; at the final pull back (scale 0.5) 56 px type reads at 28 px. */
+    #how-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    #how-grid { position: absolute; left: -720px; top: -1200px; }
+    #how-svg { position: absolute; left: -60px; top: -480px; overflow: visible; }
+    .how-abs { position: absolute; }
+    #how-title { left: -8px; top: -786px; font-size: 190px; line-height: 1.2; color: #141613; }
+    #how-title .how-acc { color: #8A560E; }
+    .how-num { font-size: 56px; line-height: 70px; color: #474C45; top: 36px; }
+    .how-label { font-size: 80px; color: #141613; top: 112px; }
+    .how-sub { font-size: 56px; line-height: 70px; color: #474C45; }
+    .how-row { position: absolute; left: 0; width: 667px; height: 70px; }
+    .how-row-t { position: absolute; left: 0; top: 0; width: 546px; text-align: right; font-size: 56px; line-height: 70px; }
+    .how-row-bar { position: absolute; left: 568px; top: 21px; height: 28px; }
+    .how-ask { color: #A6432A; }
+    .how-bid { color: #1D6A47; }
+    .how-layer-t { position: absolute; left: 1725px; font-size: 56px; line-height: 70px; color: #141613; }
+  </style>
+
+  <div id="root" data-composition-id="how" data-width="1920" data-height="1080" data-duration="13.2">
+    <div id="how-cam" class="clip" data-start="0" data-duration="13.2" data-track-index="1" data-layout-allow-overflow>
+      <svg id="how-grid" width="4440" height="2400" viewBox="0 0 4440 2400" aria-hidden="true">
+        <defs>
+          <pattern id="how-grid-minor" width="48" height="48" patternUnits="userSpaceOnUse">
+            <path d="M48 1H1V48" fill="none" stroke="#D2D6CB" stroke-width="2" stroke-opacity="0.45" />
+          </pattern>
+          <pattern id="how-grid-major" width="240" height="240" patternUnits="userSpaceOnUse">
+            <path d="M240 1H1V240" fill="none" stroke="#D2D6CB" stroke-width="2" stroke-opacity="0.8" />
+          </pattern>
+        </defs>
+        <rect width="4440" height="2400" fill="url(#how-grid-minor)" />
+        <rect width="4440" height="2400" fill="url(#how-grid-major)" />
+      </svg>
+
+      <svg id="how-svg" width="3576" height="960" viewBox="-60 -480 3576 960" aria-hidden="true">
+        <defs>
+          <pattern id="how-hatch-spread" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <path d="M0 0V16" stroke="#141613" stroke-width="3" />
+          </pattern>
+          <pattern id="how-hatch-depth" width="16" height="16" patternUnits="userSpaceOnUse">
+            <circle cx="8" cy="8" r="2.6" fill="#141613" />
+          </pattern>
+          <pattern id="how-hatch-uptime" width="24" height="16" patternUnits="userSpaceOnUse">
+            <path d="M3 8H15" stroke="#141613" stroke-width="3" />
+          </pattern>
+          <pattern id="how-hatch-markout" width="22" height="22" patternUnits="userSpaceOnUse">
+            <path d="M11 6V16M6 11H16" stroke="#141613" stroke-width="2.6" />
+          </pattern>
+        </defs>
+
+        <!-- the survey line with end ticks -->
+        <path id="how-line" d="M0 0H3456" stroke="#141613" stroke-width="4" fill="none" />
+        <path id="how-ends" d="M2 -16V16M3454 -16V16" stroke="#141613" stroke-width="4" fill="none" />
+
+        <!-- station markers -->
+        <circle id="how-m1" class="how-m" cx="18" cy="0" r="16" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+        <circle id="how-m2" class="how-m" cx="825" cy="0" r="16" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+        <circle id="how-m3" class="how-m" cx="1519" cy="0" r="16" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+        <circle id="how-m4" class="how-m" cx="2179" cy="0" r="16" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+        <circle id="how-m5" class="how-m" cx="2960" cy="0" r="16" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+
+        <!-- 1: ladder axis -->
+        <path id="how-s1-axis" d="M566 -424V-96" stroke="#141613" stroke-width="3" fill="none" />
+
+        <!-- 2: a ruler with a tick every 5 s, one sample on each -->
+        <g id="how-s2-ruler">
+          <path id="how-s2-base" d="M807 -80H1335" stroke="#141613" stroke-width="3" fill="none" />
+          <g id="how-s2-ticks" stroke="#141613" stroke-width="3"></g>
+          <g id="how-s2-dots" fill="#141613"></g>
+          <path id="how-s2-dim" d="M807 -224H851M808.5 -236V-212M849.5 -236V-212" stroke="#141613" stroke-width="3" fill="none" />
+        </g>
+
+        <!-- 3: four beds of the hourly score -->
+        <g id="how-s3-stack">
+          <rect class="how-bed" x="1501" y="-380" width="200" height="72" fill="url(#how-hatch-spread)" stroke="#141613" stroke-width="3" />
+          <rect class="how-bed" x="1501" y="-308" width="200" height="72" fill="url(#how-hatch-depth)" stroke="#141613" stroke-width="3" />
+          <rect class="how-bed" x="1501" y="-236" width="200" height="72" fill="url(#how-hatch-uptime)" stroke="#141613" stroke-width="3" />
+          <rect class="how-bed" x="1501" y="-164" width="200" height="72" fill="url(#how-hatch-markout)" stroke="#141613" stroke-width="3" />
+        </g>
+
+        <!-- 4: a merkle tree folding three leaves into one root -->
+        <g id="how-s4-tree" fill="none" stroke="#141613" stroke-width="3">
+          <path class="how-edge-a" d="M2201 -114L2301 -230" />
+          <path class="how-edge-a" d="M2401 -114L2301 -230" />
+          <path class="how-edge-a" d="M2601 -114L2601 -230" />
+          <path class="how-edge-b" d="M2301 -230L2451 -370" />
+          <path class="how-edge-b" d="M2601 -230L2451 -370" />
+        </g>
+        <g id="how-s4-leaves" fill="#ECEEE7" stroke="#141613" stroke-width="3">
+          <rect x="2187" y="-114" width="28" height="28" />
+          <rect x="2387" y="-114" width="28" height="28" />
+          <rect x="2587" y="-114" width="28" height="28" />
+        </g>
+        <g id="how-s4-mids" fill="#141613">
+          <circle cx="2301" cy="-230" r="12" />
+          <circle cx="2601" cy="-230" r="12" />
+        </g>
+        <circle id="how-s4-root" cx="2451" cy="-370" r="22" fill="#ECEEE7" stroke="#141613" stroke-width="4" />
+
+        <!-- 5: a sighting reticle; anyone can take the reading -->
+        <g id="how-s5-reticle" fill="none" stroke="#141613" stroke-width="3">
+          <circle id="how-s5-outer" cx="3112" cy="-250" r="150" />
+          <circle id="how-s5-inner" cx="3112" cy="-250" r="56" />
+          <path class="how-s5-hair" d="M3112 -400V-422M3112 -306V-336M3112 -194V-164M3112 -100V-78M2962 -250H2940M3056 -250H3026M3168 -250H3198M3262 -250H3284" />
+        </g>
+        <path id="how-s5-check" d="M3086 -251L3105 -230L3141 -274" fill="none" stroke="#141613" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+
+      <div id="how-title" class="how-abs how-display">How it <span class="how-acc">works</span></div>
+
+      <!-- station numbers -->
+      <div id="how-n1" class="how-abs how-mono how-num" style="left: 0px">01</div>
+      <div id="how-n2" class="how-abs how-mono how-num" style="left: 807px">02</div>
+      <div id="how-n3" class="how-abs how-mono how-num" style="left: 1501px">03</div>
+      <div id="how-n4" class="how-abs how-mono how-num" style="left: 2161px">04</div>
+      <div id="how-n5" class="how-abs how-mono how-num" style="left: 2942px">05</div>
+
+      <!-- 1: quotes both sides (strata-test-1, BTC/USDC PERP, 9 Nov 2026 08:44:06 UTC) -->
+      <div id="how-s1-a2" class="how-row" style="top: -445px"><div class="how-row-t how-mono how-ask">74,506 × 0.0002</div><div class="how-row-bar" style="width: 96px; background: #A6432A"></div></div>
+      <div id="how-s1-a1" class="how-row" style="top: -369px"><div class="how-row-t how-mono how-ask">74,432 × 0.0001</div><div class="how-row-bar" style="width: 48px; background: #A6432A"></div></div>
+      <div id="how-s1-b1" class="how-row" style="top: -221px"><div class="how-row-t how-mono how-bid">74,133 × 0.0001</div><div class="how-row-bar" style="width: 48px; background: #1D6A47"></div></div>
+      <div id="how-s1-b2" class="how-row" style="top: -145px"><div class="how-row-t how-mono how-bid">74,059 × 0.0002</div><div class="how-row-bar" style="width: 96px; background: #1D6A47"></div></div>
+      <div id="how-s1-label" class="how-abs how-display how-label" style="left: 0px">Quotes both sides</div>
+
+      <!-- 2: measured every 5 s -->
+      <div id="how-s2-dimt" class="how-abs how-mono how-sub" style="left: 807px; top: -312px; color: #141613">5 s</div>
+      <div id="how-s2-label" class="how-abs how-display how-label" style="left: 807px">Measured every 5 s</div>
+      <div id="how-s2-sub" class="how-abs" style="left: 807px; top: 222px"><div class="how-mono how-sub">720 samples</div><div class="how-mono how-sub">an hour</div></div>
+
+      <!-- 3: scored every hour -->
+      <div class="how-abs how-mono how-layer-t how-s3-lt" style="top: -379px">spread</div>
+      <div class="how-abs how-mono how-layer-t how-s3-lt" style="top: -307px">depth</div>
+      <div class="how-abs how-mono how-layer-t how-s3-lt" style="top: -235px">uptime</div>
+      <div class="how-abs how-mono how-layer-t how-s3-lt" style="top: -163px">markout</div>
+      <div id="how-s3-label" class="how-abs how-display how-label" style="left: 1501px">Scored every hour</div>
+      <div id="how-s3-sub" class="how-abs how-mono how-sub" style="left: 1501px; top: 222px">0 to 10,000</div>
+
+      <!-- 4: merkle root onchain (season 1, epoch 0) -->
+      <div id="how-s4-label" class="how-abs how-display how-label" style="left: 2161px">Merkle root onchain</div>
+      <div id="how-s4-sub" class="how-abs how-mono how-sub" style="left: 2161px; top: 222px; color: #141613">0x117a7ecd…6ada77</div>
+
+      <!-- 5: anyone can verify -->
+      <div id="how-s5-label" class="how-abs how-display how-label" style="left: 2942px">Anyone can verify</div>
+    </div>
+  </div>
+
+  <script>
+    // Camera views: screen = design * scale + (x, y). The sheet spans x 0..3456, y -786..362.
+    // Station text spans (design x): 1 0..667, 2 807..1361, 3 1501..2021, 4 2161..2802, 5 2942..3454.
+    // Each held view puts both frame edges in a gap between stations, so no label is ever cut:
+    // it shows the station that just landed and the one before it, both whole.
+    const HOW_VIEW = {
+      open: { scale: 0.75, x: 100, y: 715 },  // title, station 1's ladder, the line
+      sheet: { scale: 0.5, x: 96, y: 564 },   // the whole sheet, final pull back
+      s1: { scale: 1, x: 626.5, y: 511 },     // frame x -626..1293: station 1 centred
+      s2: { scale: 1, x: 100, y: 511 },       // frame x -100..1820: stations 1 and 2
+      s3: { scale: 1, x: -700, y: 511 },      // frame x 700..2620: stations 2 and 3
+      s4: { scale: 1, x: -1400, y: 511 },     // frame x 1400..3320: stations 3 and 4
+    };
+
+    // Ruler: 12 intervals of 5 s, 44 design px each; a sample dot on every tick.
+    (() => {
+      const ns = "http://www.w3.org/2000/svg";
+      const ticks = document.getElementById("how-s2-ticks");
+      const dots = document.getElementById("how-s2-dots");
+      for (let j = 0; j <= 12; j += 1) {
+        const x = 807 + j * 44 + (j === 0 ? 1.5 : j === 12 ? -1.5 : 0);
+        const major = j % 6 === 0;
+        const p = document.createElementNS(ns, "path");
+        p.setAttribute("d", `M${x} -80V${major ? -136 : -112}`);
+        ticks.appendChild(p);
+        const c = document.createElementNS(ns, "circle");
+        c.setAttribute("class", "how-dot");
+        c.setAttribute("cx", String(807 + j * 44));
+        c.setAttribute("cy", "-170");
+        c.setAttribute("r", "8");
+        dots.appendChild(c);
+      }
+    })();
+
+    const blurIn = { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" };
+    const blurFrom = { opacity: 0, filter: "blur(8px)" };
+
+    const tl = gsap.timeline({ paused: true });
+    tl.set("#how-cam", HOW_VIEW.open, 0);
+
+    // Frame 0 opens on the object: the title, the survey line with its five stations, and
+    // station 1's ladder (the real BTC quotes) already on the sheet. "Here's how it works" (0.54).
+
+    // Push in to station 1. "An agent quotes both sides" (quotes 2.26)
+    tl.to("#how-cam", { ...HOW_VIEW.s1, duration: 1.1, ease: "power2.inOut" }, 1.2);
+    tl.to("#how-m1", { fill: "#141613", duration: 0.2, ease: "power2.out" }, 2.1);
+    tl.fromTo("#how-s1-label", blurFrom, { ...blurIn }, 2.12);
+
+    // Pan to station 2. "We measure it every five seconds" (measure 5.5, five 6.34)
+    tl.to("#how-cam", { ...HOW_VIEW.s2, duration: 1.0, ease: "power2.inOut" }, 4.35);
+    tl.fromTo("#how-s2-base", { strokeDasharray: 528, strokeDashoffset: 528 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, 5.1);
+    tl.fromTo("#how-s2-ticks path", { scaleY: 0, transformOrigin: "50% 100%" }, { scaleY: 1, duration: 0.3, ease: "expo.out", stagger: 0.035 }, 5.3);
+    tl.to("#how-m2", { fill: "#141613", duration: 0.2, ease: "power2.out" }, 5.36);
+    tl.fromTo("#how-s2-label", blurFrom, { ...blurIn }, 5.38);
+    tl.fromTo("#how-s2-dots .how-dot", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.25, ease: "expo.out", stagger: 0.065 }, 5.55);
+    tl.fromTo("#how-s2-dim", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "power2.out" }, 6.2);
+    tl.fromTo("#how-s2-dimt", blurFrom, { ...blurIn }, 6.2);
+    tl.fromTo("#how-s2-sub", blurFrom, { ...blurIn }, 6.42);
+
+    // Pan to station 3. "Every hour, we score it" (hour 7.48, score 8.12)
+    tl.to("#how-cam", { ...HOW_VIEW.s3, duration: 0.95, ease: "power2.inOut" }, 6.95);
+    tl.to("#how-m3", { fill: "#141613", duration: 0.2, ease: "power2.out" }, 7.9);
+    tl.fromTo("#how-s3-label", blurFrom, { ...blurIn }, 7.92);
+    // beds settle bottom first, like sediment
+    const beds = gsap.utils.toArray("#how-s3-stack .how-bed").reverse();
+    const bedLabels = gsap.utils.toArray(".how-s3-lt").reverse();
+    beds.forEach((bed, i) => {
+      tl.fromTo(bed, { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.5, ease: "expo.out" }, 7.98 + i * 0.1);
+      tl.fromTo(bedLabels[i], { opacity: 0, filter: "blur(8px)" }, { ...blurIn }, 8.04 + i * 0.1);
+    });
+    tl.fromTo("#how-s3-sub", blurFrom, { ...blurIn }, 8.36);
+
+    // Pan to station 4. "and post the result onchain" (post 8.92, onchain 9.96)
+    tl.to("#how-cam", { ...HOW_VIEW.s4, duration: 0.9, ease: "power2.inOut" }, 8.8);
+    tl.fromTo("#how-s4-leaves rect", { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out", stagger: 0.05 }, 9.2);
+    tl.fromTo("#how-s4-tree .how-edge-a", { strokeDasharray: 160, strokeDashoffset: 160 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.inOut" }, 9.3);
+    tl.fromTo("#how-s4-mids circle", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.3, ease: "expo.out" }, 9.55);
+    tl.fromTo("#how-s4-tree .how-edge-b", { strokeDasharray: 210, strokeDashoffset: 210 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.inOut" }, 9.55);
+    tl.fromTo("#how-s4-root", { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.35, ease: "expo.out" }, 9.78);
+    tl.to("#how-s4-root", { fill: "#8A560E", stroke: "#8A560E", duration: 0.2, ease: "power2.out" }, 9.84);
+    tl.to("#how-m4", { fill: "#141613", duration: 0.2, ease: "power2.out" }, 9.8);
+    tl.fromTo("#how-s4-label", blurFrom, { ...blurIn }, 9.82);
+    tl.fromTo("#how-s4-sub", blurFrom, { ...blurIn }, 9.9);
+
+    // Pull back to the whole sheet. "where anyone can check it" (anyone 11.08, check 11.83)
+    // station 5 lands once the pull back has brought its label wholly inside the frame (11.1)
+    tl.to("#how-cam", { ...HOW_VIEW.sheet, duration: 1.3, ease: "power2.inOut" }, 10.38);
+    tl.to("#how-m5", { fill: "#141613", duration: 0.2, ease: "power2.out" }, 11.08);
+    tl.fromTo("#how-s5-label", blurFrom, { ...blurIn }, 11.1);
+    tl.fromTo("#how-s5-outer", { strokeDasharray: 943, strokeDashoffset: 943 }, { strokeDashoffset: 0, duration: 0.6, ease: "power2.inOut" }, 11.0);
+    tl.fromTo("#how-s5-inner", { strokeDasharray: 352, strokeDashoffset: 352 }, { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut" }, 11.15);
+    tl.fromTo(".how-s5-hair", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 11.35);
+    tl.fromTo("#how-s5-check", { strokeDasharray: 90, strokeDashoffset: 90 }, { strokeDashoffset: 0, duration: 0.3, ease: "power2.inOut" }, 11.72);
+
+    window.__timelines["how"] = tl;
+  </script>
+</template>

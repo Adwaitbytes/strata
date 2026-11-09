@@ -1,0 +1,215 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; color: #ECE8DF; }
+    .session-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 0.98; }
+    .session-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; }
+    .session-body { font-family: "Schibsted Grotesk", sans-serif; font-weight: 400; }
+    .session-abs { position: absolute; white-space: nowrap; }
+    .session-muted { color: #B4AFA3; }
+    .session-subtle { color: #8E897E; }
+    .session-accent { color: #E9A94B; }
+    .session-halt { color: #F0656E; }
+
+    #session-b5, #session-type, #session-flood, #session-inst { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    #session-b5 { z-index: 1; object-fit: cover; }
+    #session-type { z-index: 4; }
+    #session-flood { z-index: 2; background: #0D0F0E; }
+    #session-inst { z-index: 3; }
+
+    /* over B5: the close, then 24/7 */
+    #session-clock { left: 96px; top: 529px; display: flex; align-items: baseline; gap: 30px; }
+    /* digits sit on a 1.3em pitch so no neighbouring digit bleeds into the window; the block is raised 0.15em to compensate */
+    #session-clock-time { font-size: 128px; font-weight: 500; line-height: 1.3; height: 1.3em; }
+    #session-clock-label { font-size: 42px; color: #ECE8DF; }
+    .session-roll { display: inline-block; height: 1.3em; overflow: hidden; vertical-align: top; }
+    .session-col { display: block; }
+    .session-col > span { display: block; height: 1.3em; line-height: 1.3; }
+    .session-glyph { display: inline-block; vertical-align: top; line-height: 1.3; height: 1.3em; }
+    #session-247 { left: 96px; top: 712px; font-size: 84px; }
+    #session-ill { left: 96px; top: 850px; font-size: 28px; line-height: 1; color: #B4AFA3; }
+
+    /* the basalt instrument */
+    #session-head-left { left: 96px; top: 92px; font-size: 28px; }
+    #session-head-right { right: 96px; top: 92px; font-size: 28px; }
+    .session-panel { position: absolute; background: #121513; border: 1px solid #373D39; border-radius: 4px; }
+    .session-panel::before, .session-panel::after { content: ""; position: absolute; width: 10px; height: 10px; border-color: #8E897E; border-style: solid; }
+    .session-panel::before { left: -6px; top: -6px; border-width: 1px 0 0 1px; }
+    .session-panel::after { right: -6px; bottom: -6px; border-width: 0 1px 1px 0; }
+    #session-panel { left: 96px; top: 146px; width: 1728px; height: 504px; }
+    .session-in { position: absolute; white-space: nowrap; }
+    .session-lab { font-size: 28px; color: #B4AFA3; }
+    .session-step { font-size: 30px; color: #ECE8DF; }
+    #session-divider { position: absolute; left: 944px; top: 32px; width: 1px; height: 440px; background: #262B28; }
+
+    /* ladder: price axis at x 300, fair at y 306 */
+    #session-axis { position: absolute; left: 300px; top: 116px; width: 2px; height: 380px; background: #373D39; }
+    #session-fair { position: absolute; left: 300px; top: 296px; width: 440px; height: 20px; overflow: visible; }
+    .session-rung { position: absolute; left: 302px; height: 30px; }
+    .session-bar { position: absolute; left: 0; top: 0; height: 30px; transform-origin: 0 50%; }
+    .session-ask .session-bar { background: #EA8A6A; }
+    .session-bid .session-bar { background: #7CC9A0; }
+    #session-dim-line { position: absolute; left: 770px; top: 264px; width: 2px; height: 84px; background: #ECE8DF; transform-origin: 50% 50%; }
+    .session-dim-tick { position: absolute; left: 760px; width: 22px; height: 2px; background: #ECE8DF; }
+    #session-dim-top { top: 263px; }
+    #session-dim-bot { top: 347px; }
+
+    /* position bar: zero at x 1352, long to the right */
+    #session-track { position: absolute; left: 1000px; top: 305px; width: 688px; height: 2px; background: #373D39; }
+    .session-track-tick { position: absolute; width: 2px; background: #8E897E; }
+    #session-zero { position: absolute; left: 1351px; top: 276px; width: 2px; height: 60px; background: #ECE8DF; }
+    #session-pos { position: absolute; left: 1353px; top: 290px; width: 270px; height: 32px; background: #ECE8DF; transform-origin: 0 50%; }
+
+    /* the real event line */
+    #session-event { left: 96px; top: 690px; }
+    #session-event-rule { position: absolute; left: 96px; top: 676px; width: 1728px; height: 1px; background: #262B28; }
+    .session-ev-head { font-size: 46px; line-height: 1.1; display: flex; align-items: baseline; gap: 18px; }
+    .session-ev-head .session-body { font-weight: 500; }
+    .session-ev-head .session-mono { font-size: 40px; }
+    .session-ev-sep { color: #8E897E; }
+    .session-ev-sentence { font-size: 38px; line-height: 1.3; margin-top: 12px; }
+    .session-ev-date { font-size: 28px; line-height: 1; margin-top: 18px; display: flex; align-items: center; gap: 16px; color: #B4AFA3; }
+    .session-badge { font-size: 28px; line-height: 1; padding: 8px 14px 7px; border: 1px solid #373D39; border-radius: 3px; color: #B4AFA3; }
+  </style>
+
+  <div id="root" data-composition-id="session" data-width="1920" data-height="1080" data-duration="10.8">
+
+    <!-- B5: light falls from late day to night -->
+    <video id="session-b5" class="clip" src="assets/video/b5.mp4" muted playsinline data-start="0" data-duration="6" data-track-index="0"></video>
+
+    <div id="session-type" class="clip" data-start="0" data-duration="6" data-track-index="1">
+      <div id="session-clock" class="session-abs">
+        <span id="session-clock-time" class="session-mono" data-layout-ignore><span class="session-roll" data-d="1"></span><span class="session-roll" data-d="6"></span><span class="session-glyph">:</span><span class="session-roll" data-d="0"></span><span class="session-roll" data-d="0"></span></span>
+        <span id="session-clock-label" class="session-mono">New York · close</span>
+      </div>
+      <div id="session-247" class="session-abs session-display">Injective perps trade <span class="session-accent">24/7</span></div>
+      <!-- B5 is an illustration over the real land: labelled for as long as it is on screen -->
+      <div id="session-ill" class="session-abs session-mono">Illustration over the real NVDA/USDC PERP book</div>
+    </div>
+
+    <!-- night drains into the basalt ground -->
+    <div id="session-flood" class="clip" data-start="5.6" data-duration="5.2" data-track-index="2"></div>
+
+    <div id="session-inst" class="clip" data-start="5.9" data-duration="4.9" data-track-index="3">
+      <div id="session-head-left" class="session-abs session-mono session-muted">Illustration of the schedule</div>
+      <div id="session-head-right" class="session-abs session-mono session-muted">close 16:00 New York</div>
+
+      <div id="session-panel" class="session-panel">
+        <div class="session-in session-mono session-lab" style="left:40px;top:30px">quotes</div>
+        <div id="session-step-a" class="session-in session-mono session-step" style="left:40px;top:74px">30 min before close: spreads x2, size x0.5</div>
+
+        <div class="session-in session-mono session-lab" style="left:40px;top:180px">asks</div>
+        <div class="session-in session-mono session-lab" style="left:40px;top:396px">bids</div>
+        <div class="session-in session-mono session-subtle" style="left:40px;top:288px;font-size:28px">fair</div>
+        <div id="session-axis"></div>
+        <svg id="session-fair" viewBox="0 0 440 20" aria-hidden="true"><path id="session-fair-path" d="M0 10 H440" stroke="#8E897E" stroke-width="2" stroke-dasharray="8 8" fill="none"/></svg>
+
+        <div id="session-a2" class="session-rung session-ask" style="top:207px"><div class="session-bar" style="width:440px"></div></div>
+        <div id="session-a1" class="session-rung session-ask" style="top:249px"><div class="session-bar" style="width:300px"></div></div>
+        <div id="session-b1" class="session-rung session-bid" style="top:333px"><div class="session-bar" style="width:300px"></div></div>
+        <div id="session-b2" class="session-rung session-bid" style="top:375px"><div class="session-bar" style="width:440px"></div></div>
+
+        <div id="session-dim-line"></div>
+        <div id="session-dim-top" class="session-dim-tick"></div>
+        <div id="session-dim-bot" class="session-dim-tick"></div>
+        <div class="session-in session-mono session-lab" style="left:796px;top:288px">spread</div>
+
+        <div id="session-divider"></div>
+
+        <div class="session-in session-mono session-lab" style="left:1000px;top:30px">position</div>
+        <div id="session-step-b" class="session-in session-mono session-step" style="left:1000px;top:74px">5 min before close: flat</div>
+        <div id="session-track"></div>
+        <div class="session-track-tick" style="left:1000px;top:293px;height:26px"></div>
+        <div class="session-track-tick" style="left:1686px;top:293px;height:26px"></div>
+        <div id="session-zero"></div>
+        <div id="session-pos"></div>
+        <div class="session-in session-mono session-subtle" style="left:1000px;top:352px;font-size:28px">short</div>
+        <div class="session-in session-mono session-subtle" style="left:1352px;top:352px;font-size:28px;transform:translateX(-50%)">0</div>
+        <div class="session-in session-mono session-subtle" style="left:1688px;top:352px;font-size:28px;transform:translateX(-100%)">long</div>
+      </div>
+
+      <div id="session-event-rule"></div>
+      <div id="session-event" class="session-abs">
+        <div class="session-ev-head session-ev-line">
+          <span class="session-body">Session guard</span><span class="session-ev-sep session-mono">·</span><span class="session-mono session-halt">halt</span><span class="session-ev-sep session-mono">·</span><span class="session-mono">BHA-PERP</span>
+        </div>
+        <div class="session-ev-sentence session-body session-ev-line">Underlying market is closed; quotes are pulled until it reopens.</div>
+        <div class="session-ev-date session-mono session-ev-line"><span>9 Nov 2026, 08:20:57 UTC</span><span class="session-ev-sep">·</span><span class="session-badge">TESTNET</span><span class="session-ev-sep">·</span><span>reopens 14:30 UTC</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Scene-local seconds. Word times from cues.json (l09): four 1.83, New 2.41, never 4.55, bell 6.24,
+    // widens 7.46, spreads 8.15, flattens 9.03, position 9.65.
+    const T = {
+      clock: 1.7, clockLabel: 2.28, always: 4.38, typeOut: 5.78, flood: 5.6,
+      build: 6.0, event: 6.62, widen: 7.33, flatten: 8.9,
+    };
+    // ladder geometry: rung centres sit 42 and 84 px from fair (y 306); the schedule doubles both
+    const STEP = 42;
+
+    document.querySelectorAll("#root .session-roll").forEach((cell) => {
+      const col = document.createElement("span");
+      col.className = "session-col";
+      for (let i = 0; i < 20; i++) {
+        const s = document.createElement("span");
+        s.textContent = String(i % 10);
+        col.appendChild(s);
+      }
+      cell.appendChild(col);
+    });
+
+    const tl = gsap.timeline({ paused: true });
+    const blurIn = (sel, t, d = 0.18) =>
+      tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+
+    // over B5: 16:00 rolls in on "four", the label on "New York"; 24/7 lands on "never do"
+    document.querySelectorAll("#session-clock-time .session-roll").forEach((cell, i) => {
+      const d = Number(cell.dataset.d);
+      tl.fromTo(cell, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "none" }, T.clock + i * 0.04);
+      tl.fromTo(cell.firstChild, { yPercent: 0 }, { yPercent: -5 * (10 + d), duration: 0.6, ease: "power3.out" }, T.clock + i * 0.04);
+    });
+    blurIn("#session-clock-time .session-glyph", T.clock + 0.06);
+    blurIn("#session-clock-label", T.clockLabel);
+    blurIn("#session-247", T.always, 0.2);
+    tl.to(["#session-clock", "#session-247", "#session-ill"], { opacity: 0, filter: "blur(6px)", duration: 0.2, ease: "power3.in" }, T.typeOut);
+
+    // night drains to basalt
+    tl.fromTo("#session-flood", { opacity: 0 }, { opacity: 1, duration: 0.36, ease: "power2.inOut" }, T.flood);
+
+    // the instrument builds: panel, labels, fair line draws, rungs snap to their ticks, position fills
+    blurIn(["#session-head-left", "#session-head-right"], T.build, 0.2);
+    tl.fromTo("#session-panel", { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, T.build - 0.05);
+    tl.fromTo("#session-fair-path", { attr: { "stroke-dashoffset": 440 }, opacity: 0 }, { attr: { "stroke-dashoffset": 0 }, opacity: 1, duration: 0.7, ease: "power2.inOut" }, T.build + 0.05);
+    [["#session-a2", -6], ["#session-a1", -6], ["#session-b1", 6], ["#session-b2", 6]].forEach(([sel, off], i) => {
+      tl.fromTo(sel, { y: off, opacity: 0 }, { y: 0, opacity: 1, duration: 0.35, ease: "expo.out" }, T.build + 0.12 + i * 0.05);
+      tl.fromTo(`${sel} .session-bar`, { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, T.build + 0.12 + i * 0.05);
+    });
+    tl.fromTo(["#session-dim-line", "#session-dim-top", "#session-dim-bot"], { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, T.build + 0.35);
+    tl.fromTo("#session-pos", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "expo.out" }, T.build + 0.2);
+
+    // the real event line
+    blurIn("#session-event-rule", T.event, 0.2);
+    tl.fromTo("#session-event .session-ev-line", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, stagger: 0.08, ease: "power2.out" }, T.event);
+
+    // "widens its spreads": every rung re-quotes twice as far from fair at half size
+    blurIn("#session-step-a", T.widen);
+    tl.to("#session-a2", { y: -2 * STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+    tl.to("#session-a1", { y: -STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+    tl.to("#session-b1", { y: STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+    tl.to("#session-b2", { y: 2 * STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+    tl.to("#session-panel .session-bar", { scaleX: 0.5, duration: 0.5, ease: "expo.out" }, T.widen + 0.1);
+    tl.fromTo("#session-dim-line", { scaleY: 1 }, { scaleY: 2, duration: 0.5, ease: "expo.out", immediateRender: false }, T.widen);
+    tl.fromTo("#session-dim-top", { y: 0 }, { y: -STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+    tl.fromTo("#session-dim-bot", { y: 0 }, { y: STEP, duration: 0.5, ease: "expo.out" }, T.widen);
+
+    // "flattens its position": the long position shrinks to zero
+    blurIn("#session-step-b", T.flatten);
+    tl.to("#session-pos", { scaleX: 0, duration: 0.6, ease: "power3.inOut" }, T.flatten);
+
+    window.__timelines["session"] = tl;
+  </script>
+</template>

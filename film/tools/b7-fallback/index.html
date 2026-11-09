@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #0D0F0E; }
+      #root { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #0D0F0E; }
+      #grid { position: absolute; inset: 0;
+        background-image: linear-gradient(rgba(55,61,57,.55) 1px, transparent 1px), linear-gradient(90deg, rgba(55,61,57,.55) 1px, transparent 1px),
+          linear-gradient(rgba(38,43,40,.6) 1px, transparent 1px), linear-gradient(90deg, rgba(38,43,40,.6) 1px, transparent 1px);
+        background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px; background-position: 0 30px, 0 30px, 0 30px, 0 30px; }
+      svg { position: absolute; inset: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- Fallback for Blender B7 (merkle_root): three leaves rise into one root, survey style. Positions match PROOF_B7 in compositions/proof.html. -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="6" data-width="1920" data-height="1080">
+      <div id="grid" class="clip" data-start="0" data-duration="6" data-track-index="0"></div>
+      <svg id="tree" class="clip" data-start="0" data-duration="6" data-track-index="1" width="1920" height="1080" viewBox="0 0 1920 1080">
+        <g fill="none" stroke="#B4AFA3" stroke-width="3" stroke-linecap="round">
+          <path id="e1" d="M600 650 L780 490" />
+          <path id="e2" d="M960 650 L780 490" />
+          <path id="e3" d="M780 490 L960 330" />
+          <path id="e4" d="M1320 650 L1320 490 L960 330" />
+        </g>
+        <g fill="#161917" stroke="#ECE8DF" stroke-width="3">
+          <rect id="l1" x="578" y="628" width="44" height="44" />
+          <rect id="l2" x="938" y="628" width="44" height="44" />
+          <rect id="l3" x="1298" y="628" width="44" height="44" />
+          <circle id="n1" cx="780" cy="490" r="14" />
+          <circle id="n2" cx="1320" cy="490" r="14" />
+        </g>
+        <circle id="rootring" cx="960" cy="330" r="46" fill="none" stroke="#E9A94B" stroke-width="2" opacity="0" />
+        <circle id="rootdot" cx="960" cy="330" r="24" fill="#E9A94B" />
+      </svg>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      const len = (id) => document.getElementById(id).getTotalLength();
+      ["l1", "l2", "l3"].forEach((id, i) => tl.fromTo("#" + id, { opacity: 0, scale: 0.6, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.5, ease: "expo.out" }, 0.25 + i * 0.12));
+      ["e1", "e2", "e4"].forEach((id, i) => tl.fromTo("#" + id, { strokeDasharray: len(id), strokeDashoffset: len(id) }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" }, 0.9 + i * 0.1));
+      tl.fromTo(["#n1", "#n2"], { opacity: 0, scale: 0.4, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.4, ease: "expo.out" }, 1.65);
+      tl.fromTo("#e3", { strokeDasharray: len("e3"), strokeDashoffset: len("e3") }, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, 2.0);
+      tl.fromTo("#rootdot", { opacity: 0, scale: 0.3, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.6, ease: "expo.out" }, 2.75);
+      tl.fromTo("#rootring", { opacity: 0, scale: 0.7, transformOrigin: "50% 50%" }, { opacity: 0.9, scale: 1, duration: 0.8, ease: "expo.out" }, 2.95);
+      tl.fromTo("#grid", { opacity: 0.6 }, { opacity: 1, duration: 5.8, ease: "none" }, 0);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

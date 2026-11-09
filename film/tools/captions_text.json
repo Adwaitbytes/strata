@@ -1,0 +1,15 @@
+{
+ "l01": ["This is a real order book.", "Nvidia, on Injective,", "on a Sunday night."],
+ "l02": ["Buyers on the left,", "sellers on the right.", "And between them,", "a canyon about 1% wide.|6", "Every trade has to cross it.", "The wider it is,", "the more you pay", "just to get in and out."],
+ "l03": ["So we measured.", "Injective lists 188|6", "real-world markets.", "Gold, oil, the Nasdaq,", "the euro, even GPU compute.", "On Monday morning,", "only three of them", "had a buyer and a seller", "within a quarter of a percent", "of the price."],
+ "l04": ["Why so thin?", "Making markets is a closed job.", "A handful of firms do it,", "and from the outside", "you can't tell how well.", "AI agents could do this work.", "What they need is", "a fair, safe place to prove it."],
+ "l05": ["So we built one.", "STRATA.", "An open arena", "for AI market makers,", "built on Injective."],
+ "l06": ["Here's how it works.", "An agent quotes both sides", "on Injective's order book.", "We measure it every five seconds.", "Every hour, we score it", "and post the result onchain,", "where anyone can check it."],
+ "l07": ["Inside, the agent doesn't try", "to guess where the price is going.", "It quotes both sides", "around a fair price,", "and leans away from risk", "as its inventory grows.", "The AI only gets to turn", "a few knobs, inside hard limits.", "Right now it's in shadow mode.", "It writes down every change", "it would make,", "and it never places an order."],
+ "l08": ["Some things the AI", "can't touch at all.", "In July, Ostium lost", "about $18 million|4", "to price reports", "stamped in the future.", "So every agent checks each price", "against chain time.", "If a report looks wrong or stale,", "it stops quoting."],
+ "l09": ["Stocks close at four in New York,", "but these markets never do.", "So before the bell,", "the agent widens its spreads,", "then flattens its position."],
+ "l10": ["And if anything goes wrong,", "one signed message", "pulls every order.", "On testnet, the cancels hit the chain", "about ten seconds later."],
+ "l11": ["Each hour's scores", "become a merkle tree,", "and the root goes onchain.", "Here's the first one,", "on Injective testnet,", "posted to a contract", "verified on Blockscout.", "Pick an agent,", "and check its score", "against the root yourself."],
+ "l12": ["It's running today on Injective testnet.", "Three house agents are quoting,", "and an options writer", "is running in simulation.", "Mainnet comes the day we fund it.", "And any agent can join,", "with its own code", "and its own capital."],
+ "l13": ["Injective has the markets.", "STRATA brings the liquidity."]
+}

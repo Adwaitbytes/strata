@@ -27,3 +27,5 @@ film/assets/blender/**/*.png
 film/assets/clips/*.webm
 film/.voice-tests/
 film/node_modules/
+film/.vo/
+film/assets/video/

@@ -1,0 +1,179 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+    .thin-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; line-height: 0.98; }
+    .thin-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 400; white-space: nowrap; }
+    .thin-abs { position: absolute; }
+
+    /* survey paper: the gold book */
+    #thin-paper { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; background: #ECEEE7; }
+    #thin-grid { position: absolute; left: 0; top: 0; }
+    #thin-head { left: 96px; top: 92px; font-size: 44px; font-weight: 500; color: #141613; line-height: 53px; }
+    .thin-gutter { left: 96px; font-size: 32px; line-height: 40px; }
+    .thin-price { right: 1160px; font-size: 72px; font-weight: 500; color: #141613; line-height: 86px; text-align: right; }
+    .thin-size { font-size: 72px; font-weight: 500; color: #1D6A47; line-height: 86px; }
+    .thin-bar { position: absolute; left: 802px; height: 36px; background: #1D6A47; transform-origin: 0 50%; }
+    #thin-noasks { left: 830px; top: 220px; width: 994px; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 44px; color: #A6432A; }
+    #thin-foot { left: 96px; top: 846px; font-size: 28px; line-height: 34px; color: #5A5F57; }
+
+    /* basalt type */
+    /* one block at x 96 that builds line by line; each earlier line steps back to #8E897E */
+    .thin-title { position: absolute; left: 96px; font-size: 140px; line-height: 0.95; color: #ECE8DF; white-space: nowrap; }
+    .thin-w { display: inline-block; }
+    .thin-acc { color: #E9A94B; }
+    #thin-t1 { top: 150px; }
+    #thin-sub1 { position: absolute; left: 102px; top: 303px; font-size: 34px; line-height: 41px; color: #B4AFA3; }
+    #thin-t2 { top: 368px; }
+    #thin-t3 { top: 501px; }
+    #thin-strip { position: absolute; left: 0; top: 0; }
+  </style>
+
+  <div id="root" data-composition-id="thin" data-width="1920" data-height="1080" data-duration="15.0">
+
+    <!-- 0 to 3.7: survey paper, the real gold book (Mon 9 Nov 2026, 08:42 UTC sweep) -->
+    <div id="thin-paper" class="clip" data-start="0" data-duration="3.9" data-track-index="2">
+      <svg id="thin-grid" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <defs>
+          <pattern id="thin-grid-minor" x="96" y="54" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M24 0.5H0.5V24" fill="none" stroke="#D2D6CB" stroke-width="1" stroke-opacity="0.45" />
+          </pattern>
+          <pattern id="thin-grid-major" x="96" y="54" width="120" height="120" patternUnits="userSpaceOnUse">
+            <path d="M120 0.5H0.5V120" fill="none" stroke="#D2D6CB" stroke-width="1" stroke-opacity="0.8" />
+          </pattern>
+        </defs>
+        <rect width="1920" height="1080" fill="url(#thin-grid-minor)" />
+        <rect width="1920" height="1080" fill="url(#thin-grid-major)" />
+        <!-- header rule with registration ticks -->
+        <path d="M96 172H1824" stroke="#B5BBAE" stroke-width="1.5" />
+        <path d="M96.75 162V172M1823.25 162V172" stroke="#B5BBAE" stroke-width="1.5" />
+        <!-- price axis with a scale break between 3,500.00 and 0.01 -->
+        <path d="M800 212V672M800 708V820" stroke="#141613" stroke-width="2" />
+        <path d="M784 682L816 670M784 710L816 698" stroke="#141613" stroke-width="2" />
+        <!-- mark -->
+        <path d="M800 440H1824" stroke="#141613" stroke-width="2" stroke-dasharray="10 8" />
+        <!-- asks: an empty, dashed box, drawn left to right through a clip -->
+        <clipPath id="thin-asksclip"><rect id="thin-asksclip-r" x="820" y="210" width="0" height="160" /></clipPath>
+        <g id="thin-asksbox" clip-path="url(#thin-asksclip)">
+          <rect x="831" y="221" width="992" height="138" fill="none" stroke="#A6432A" stroke-width="2" stroke-dasharray="12 9" />
+        </g>
+      </svg>
+
+      <div id="thin-head" class="thin-mono thin-abs">XAU/USDC PERP</div>
+
+      <div class="thin-mono thin-abs thin-gutter" style="top: 270px; color: #A6432A">asks</div>
+      <div class="thin-mono thin-abs thin-gutter" style="top: 420px; color: #474C45">mark</div>
+      <div class="thin-mono thin-abs thin-gutter" style="top: 590px; color: #1D6A47">bids</div>
+
+      <div class="thin-mono thin-abs thin-price" style="top: 397px">4,098.82</div>
+      <div id="thin-noasks" class="thin-mono thin-abs"><span id="thin-noasks-t">no asks</span></div>
+
+      <div id="thin-bid1" class="thin-abs" style="left: 0; top: 0; width: 1920px; height: 1080px">
+        <div class="thin-mono thin-abs thin-price" style="top: 567px">3,500.00</div>
+        <div id="thin-bar1" class="thin-bar" style="top: 592px; width: 60px"></div>
+        <div class="thin-mono thin-abs thin-size" style="left: 888px; top: 567px">× 0.2212</div>
+      </div>
+      <div id="thin-bid2" class="thin-abs" style="left: 0; top: 0; width: 1920px; height: 1080px">
+        <div class="thin-mono thin-abs thin-price" style="top: 727px">0.01</div>
+        <div id="thin-bar2" class="thin-bar" style="top: 752px; width: 600px"></div>
+        <div class="thin-mono thin-abs thin-size" style="left: 1428px; top: 727px">× 10,000</div>
+      </div>
+
+      <div id="thin-foot" class="thin-mono thin-abs">Mon 9 Nov 2026, 08:42 UTC · mainnet · BASELINE</div>
+    </div>
+
+    <!-- basalt: the 188-tick strip from `measure`, a dim horizon line -->
+    <div id="thin-horizon" class="clip" data-start="3.4" data-duration="11.6" data-track-index="1" style="position:absolute;left:0;top:0;width:1920px;height:1080px">
+      <svg id="thin-strip" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g id="thin-ticks"></g>
+        <path id="thin-base" d="M96 840.75H1824" stroke="#ECE8DF" stroke-opacity="0.45" stroke-width="1.5" />
+      </svg>
+    </div>
+
+    <div id="thin-t1" class="clip thin-title thin-display" data-start="3.4" data-duration="11.6" data-track-index="3"><span class="thin-w">A</span> <span class="thin-w thin-acc">closed</span> <span class="thin-w">job</span></div>
+    <div id="thin-sub1" class="clip thin-mono" data-start="6.8" data-duration="8.2" data-track-index="4">who quotes, how much, how well: not public</div>
+    <div id="thin-t2" class="clip thin-title thin-display" data-start="8.0" data-duration="7.0" data-track-index="5"><span class="thin-w thin-acc">AI</span> <span class="thin-w thin-acc">agents</span> <span class="thin-w">could</span> <span class="thin-w">do</span> <span class="thin-w">this</span> <span class="thin-w">work</span></div>
+    <div id="thin-t3" class="clip thin-title thin-display" data-start="11.2" data-duration="3.8" data-track-index="6"><span class="thin-w">They</span> <span class="thin-w">need</span> <span class="thin-w">a</span> <span class="thin-w">place</span> <span class="thin-w">to</span> <span class="thin-w thin-acc">prove</span> <span class="thin-w">it</span></div>
+  </div>
+
+  <script>
+    // The 188-tick strip from `measure`, same geometry (x positions match that scene tick for tick):
+    // markets sorted equity, fx, commodity, index, compute, then ticker (assets/data/rwa-sweep.json,
+    // Mon 9 Nov 2026 08:42:45 UTC). The three equities with a bid and an ask within 0.25% of mark stay ochre:
+    // META (equity 86), MSTR (95), SPCX (137). The rest are hollow, as `measure` leaves them.
+    const THIN_GROUPS = [166, 11, 8, 2, 1];
+    const THIN_BOTH = new Set([86, 95, 137]);
+    const THIN_STRIP = { left: 96, pitch: 8, width: 5, gap: 56, top: 700, base: 840 };
+
+    const thinTicks = [];
+    (() => {
+      const ns = "http://www.w3.org/2000/svg";
+      const g = document.getElementById("thin-ticks");
+      let gx = THIN_STRIP.left;
+      THIN_GROUPS.forEach((count, gi) => {
+        for (let k = 0; k < count; k += 1) {
+          const both = gi === 0 && THIN_BOTH.has(k);
+          const r = document.createElementNS(ns, "rect");
+          r.setAttribute("x", String(gx + k * THIN_STRIP.pitch + 0.625));
+          r.setAttribute("y", String(THIN_STRIP.top));
+          r.setAttribute("width", String(THIN_STRIP.width - 1.25));
+          r.setAttribute("height", String(THIN_STRIP.base - THIN_STRIP.top));
+          r.setAttribute("stroke-width", "1.25");
+          if (both) {
+            r.setAttribute("fill", "#E9A94B");
+            r.setAttribute("stroke", "#E9A94B");
+          } else {
+            r.setAttribute("fill", "none");
+            r.setAttribute("stroke", "#ECE8DF");
+            r.setAttribute("stroke-opacity", "0.45");
+          }
+          g.appendChild(r);
+          thinTicks.push({ el: r, x: gx + k * THIN_STRIP.pitch });
+        }
+        gx += count * THIN_STRIP.pitch + THIN_STRIP.gap;
+      });
+    })();
+
+    const tl = gsap.timeline({ paused: true });
+    const blurIn = { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" };
+    const blurFrom = { opacity: 0, filter: "blur(8px)" };
+    const STEP_BACK = "#8E897E";
+
+    // Beat 1 (0 to 3.55): the gold book builds on "Why so thin?" (Why 0.49) and holds
+    tl.fromTo("#thin-asksclip-r", { attr: { width: 0 } }, { attr: { width: 1020 }, duration: 0.5, ease: "power2.inOut" }, 0.06);
+    tl.fromTo("#thin-noasks-t", blurFrom, { ...blurIn }, 0.4);
+    tl.fromTo("#thin-bid1", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, 0.3);
+    tl.fromTo("#thin-bar1", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.3);
+    tl.fromTo("#thin-bid2", { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, 0.42);
+    tl.fromTo("#thin-bar2", { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "expo.out" }, 0.42);
+
+    // Blur swap on "closed job" (job 3.34): the paper defocuses away, basalt type arrives
+    tl.fromTo("#thin-paper", { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(14px)", duration: 0.24, ease: "power3.in" }, 3.45);
+    tl.fromTo("#thin-t1 .thin-w", blurFrom, { ...blurIn, stagger: 0.08 }, 3.62);
+
+    // the strip rises off its datum left to right while "A handful of firms do it" (handful 4.15)
+    tl.fromTo("#thin-base", { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 3.9);
+    thinTicks.forEach(({ el, x }) => {
+      const at = 4.0 + (0.9 * (x - THIN_STRIP.left)) / (1824 - THIN_STRIP.left);
+      tl.fromTo(el, { attr: { y: THIN_STRIP.base, height: 0 } }, { attr: { y: THIN_STRIP.top, height: THIN_STRIP.base - THIN_STRIP.top }, duration: 0.3, ease: "expo.out" }, at);
+    });
+
+    // "you can't tell how well" (can't 7.04)
+    tl.fromTo("#thin-sub1", blurFrom, { ...blurIn }, 6.92);
+
+    // "AI agents could do this work" (AI 8.24) lands under it; the lines above step back
+    tl.fromTo("#thin-t2 .thin-w", blurFrom, { ...blurIn, stagger: 0.08 }, 8.12);
+    tl.to(["#thin-t1", "#thin-t1 .thin-acc", "#thin-sub1"], { color: STEP_BACK, duration: 0.35, ease: "power2.out" }, 8.12);
+
+    // "They need a place to prove it": each word lands with its spoken word
+    const THIN_T3_AT = [11.37, 11.66, 12.16, 12.88, 13.24, 13.38, 13.74];
+    document.querySelectorAll("#thin-t3 .thin-w").forEach((w, i) => {
+      tl.fromTo(w, blurFrom, { ...blurIn }, THIN_T3_AT[i]);
+    });
+    tl.to(["#thin-t2", "#thin-t2 .thin-acc"], { color: STEP_BACK, duration: 0.35, ease: "power2.out" }, 11.37);
+
+    window.__timelines["thin"] = tl;
+  </script>
+</template>

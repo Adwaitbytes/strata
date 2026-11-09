@@ -1,0 +1,346 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #ECEEE7; }
+    .measure-display { font-family: "Bricolage Grotesque", sans-serif; font-weight: 480; font-stretch: 92%; font-variation-settings: "opsz" 96; letter-spacing: -0.027em; }
+    .measure-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; white-space: nowrap; }
+    .measure-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .measure-svg { position: absolute; left: 0; top: 0; overflow: visible; }
+    /* One continuous survey sheet: gap's last frame on top, this survey 960 px further down */
+    #measure-sheet { position: absolute; left: 0; top: 0; width: 1920px; height: 2040px; background: #ECEEE7; }
+    #measure-here { top: 960px; }
+    /* gap's closing frame, exactly as gap leaves it */
+    .measure-side { position: absolute; width: 124px; height: 52px; box-sizing: border-box; text-align: center; font-size: 34px; line-height: 50px;
+      font-weight: 500; border: 1px solid #B5BBAE; border-radius: 4px; background: #F7F8F3; }
+    #measure-g-bids { color: #1D6A47; }
+    #measure-g-asks { color: #A6432A; }
+    .measure-gnum { position: absolute; width: 936px; height: 240px; font-family: "Martian Mono", monospace; font-stretch: 87.5%;
+      font-feature-settings: "tnum" 1, "zero" 1; font-weight: 500; font-size: 240px; line-height: 240px; color: #141613; }
+    .measure-gnum span { position: absolute; top: 0; display: block; width: 156px; height: 240px; }
+    #measure-g-cost { position: absolute; width: 1200px; text-align: center; font-size: 30px; line-height: 30px; color: #474C45; }
+    .measure-gnote { position: absolute; font-size: 28px; line-height: 28px; color: #5A5F57; }
+    #measure-g-mid { width: 200px; text-align: center; } #measure-g-note { width: 720px; text-align: right; }
+    /* The survey sheet */
+    #measure-title { position: absolute; left: 96px; top: 76px; font-size: 96px; line-height: 96px; color: #141613; white-space: nowrap; }
+    .measure-w { display: inline-block; }
+    .measure-accent { color: #8A560E; }
+    #measure-date { position: absolute; left: 96px; top: 186px; font-size: 30px; line-height: 30px; color: #474C45; }
+    .measure-class { position: absolute; top: 530px; font-size: 28px; line-height: 28px; color: #474C45; }
+    #measure-class-tail { right: 96px; }
+    .measure-call { position: absolute; top: 256px; }
+    .measure-call-sym { font-size: 34px; line-height: 34px; font-weight: 500; color: #141613; }
+    .measure-call-state { margin-top: 8px; font-size: 28px; line-height: 28px; color: #474C45; }
+    .measure-right { text-align: right; }
+    .measure-three { position: absolute; top: 352px; font-size: 30px; line-height: 30px; font-weight: 500; color: #8A560E; }
+    /* "3 of 188" as one unit: 240 px mono at -0.04em (146.4 px pitch), small Schibsted "of", 28 px between inks (placed in the script) */
+    #measure-num { position: absolute; left: 0; top: 576px; width: 900px; height: 240px; font-family: "Martian Mono", monospace;
+      font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; font-weight: 500; font-size: 240px; line-height: 240px; color: #141613; }
+    #measure-n188 { position: absolute; top: 0; width: 449px; height: 240px; }
+    .measure-cell { position: absolute; top: 0; display: block; width: 156px; height: 240px; overflow: hidden; }
+    .measure-col { display: block; }
+    .measure-col span { display: block; height: 240px; }
+    #measure-n0 { color: #8A560E; }
+    /* 80 px Schibsted on the numbers' baseline (792): its baseline sits 68.5 px into an 80 px line box */
+    #measure-of { position: absolute; top: 147.5px; font-family: "Schibsted Grotesk", sans-serif; font-weight: 500; font-size: 80px; line-height: 80px; color: #474C45; }
+    .measure-cap { position: absolute; left: 96px; top: 812px; font-size: 30px; line-height: 30px; color: #474C45; }
+    #measure-foot { position: absolute; left: 96px; top: 858px; font-size: 28px; line-height: 28px; color: #5A5F57; }
+  </style>
+  <div id="root" data-composition-id="measure" data-width="1920" data-height="1080" data-duration="18.9">
+    <div id="measure-world" class="clip measure-layer" data-start="0" data-duration="18.9" data-track-index="0" data-layout-allow-overlap>
+      <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="measure-vblur" x="0" y="-0.1" width="1" height="1.2"><feGaussianBlur id="measure-vblur-k" stdDeviation="0 0" /></filter></svg>
+      <div id="measure-sheet">
+        <svg id="measure-grid" class="measure-svg" width="1920" height="2040" viewBox="0 0 1920 2040" aria-hidden="true">
+          <defs>
+            <pattern id="measure-grid-p" width="120" height="120" patternUnits="userSpaceOnUse">
+              <path d="M24.5 0V120M48.5 0V120M72.5 0V120M96.5 0V120M0 24.5H120M0 48.5H120M0 72.5H120M0 96.5H120" stroke="#D2D6CB" stroke-opacity="0.45" stroke-width="1" fill="none" />
+              <path d="M0.5 0V120M0 0.5H120" stroke="#D2D6CB" stroke-opacity="0.8" stroke-width="1" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="1920" height="2040" fill="url(#measure-grid-p)" />
+        </svg>
+        <div id="measure-gap" class="measure-layer">
+          <svg id="measure-section" class="measure-svg" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+            <defs>
+              <pattern id="measure-hatch-bid" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V12" stroke="#1D6A47" stroke-opacity="0.55" stroke-width="1.5" /></pattern>
+              <pattern id="measure-hatch-ask" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0V12" stroke="#A6432A" stroke-opacity="0.55" stroke-width="1.5" /></pattern>
+            </defs>
+            <path id="measure-mass-bid" fill="url(#measure-hatch-bid)" />
+            <path id="measure-mass-ask" fill="url(#measure-hatch-ask)" />
+            <path id="measure-datumL" stroke="#141613" stroke-width="1.5" fill="none" />
+            <path id="measure-datumR" stroke="#141613" stroke-width="1.5" fill="none" />
+            <path id="measure-prof-bid" stroke="#1D6A47" stroke-width="2.5" stroke-linejoin="round" fill="none" />
+            <path id="measure-prof-ask" stroke="#A6432A" stroke-width="2.5" stroke-linejoin="round" fill="none" />
+            <line id="measure-extL" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="6 6" />
+            <line id="measure-extR" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="6 6" />
+            <line id="measure-cl" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="20 6 4 6" />
+            <path id="measure-dim" stroke="#141613" stroke-width="2" fill="none" />
+            <line id="measure-tickL" stroke="#141613" stroke-width="2" />
+            <line id="measure-tickR" stroke="#141613" stroke-width="2" />
+            <line id="measure-trail" stroke="#8A560E" stroke-width="3.5" />
+            <circle id="measure-dot" r="9" fill="#8A560E" />
+          </svg>
+          <div id="measure-g-bids" class="measure-mono measure-side">Bids</div>
+          <div id="measure-g-asks" class="measure-mono measure-side">Asks</div>
+          <div id="measure-g-num" class="measure-gnum">
+            <span style="left:0">$</span><span style="left:156px">1</span><span style="left:312px">0</span><span style="left:468px">.</span><span style="left:624px">5</span><span style="left:780px">7</span>
+          </div>
+          <div id="measure-g-cost" class="measure-mono">to buy and sell $1,000 at the median spread, before fees</div>
+          <div id="measure-g-mid" class="measure-mono measure-gnote">mid</div>
+          <div id="measure-g-note" class="measure-mono measure-gnote">NVDA/USDC PERP · mean depth · BASELINE</div>
+        </div>
+        <svg id="measure-here" class="measure-svg" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+          <path id="measure-datum" d="M96 500.5H1824" stroke="#141613" stroke-width="1.5" fill="none" />
+        </svg>
+      </div>
+    </div>
+
+    <div id="measure-survey" class="clip measure-layer" data-start="0" data-duration="18.9" data-track-index="1" data-layout-allow-overlap>
+      <div id="measure-title" class="measure-display">
+        <span class="measure-w">Survey:</span> <span class="measure-w measure-accent">real-world</span> <span class="measure-w">perps</span> <span class="measure-w">on</span> <span class="measure-w">Injective</span>
+      </div>
+      <div id="measure-date" class="measure-mono">Mon 9 Nov 2026, 08:42 UTC</div>
+      <svg id="measure-strip" class="measure-svg" width="1920" height="1080" viewBox="0 0 1920 1080" aria-hidden="true">
+        <g id="measure-brackets"></g>
+        <g id="measure-ticks"></g>
+        <g id="measure-leaders"></g>
+      </svg>
+      <div id="measure-class-eq" class="measure-mono measure-class" style="left:96px"></div>
+      <div id="measure-class-tail" class="measure-mono measure-class"></div>
+      <div id="measure-labels"></div>
+      <div id="measure-num" data-layout-allow-overflow>
+        <span id="measure-n0" class="measure-cell"><span class="measure-col" data-digit="3"></span></span>
+        <span id="measure-of">of</span>
+        <div id="measure-n188">
+          <span class="measure-cell" style="left:0"><span class="measure-col" data-digit="1"></span></span>
+          <span class="measure-cell" style="left:146.4px"><span class="measure-col" data-digit="8"></span></span>
+          <span class="measure-cell" style="left:292.8px"><span class="measure-col" data-digit="8"></span></span>
+        </div>
+      </div>
+      <div id="measure-cap-listed" class="measure-mono measure-cap">real-world perps, all active</div>
+      <div id="measure-cap-both" class="measure-mono measure-cap">had a bid and an ask within 0.25% of the price</div>
+      <div id="measure-foot" class="measure-mono">Injective mainnet · chain REST, read-only · BASELINE</div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      // ---- gap's last frame, rebuilt so the seam is one continuous sheet. Keep CANYON equal to gap.html's. ----
+      const CANYON = { cx: 840, w: 760, y: 680, floor: 750, top: 430, numTop: 96, bids: { x: 230, y: 654 }, asks: { x: 1650, y: 654 }, cut: { x: 470, y: 776 } };
+      // NVDA/USDC PERP mean cumulative depth (assets/data/section_nvda.json), x = -360..360 bps in steps of 4, bids negative
+      const DEPTH = [4391,4391,4391,4391,4391,4391,4391,4389,4388,4388,4387,4387,4387,4387,4386,4386,4386,4386,4386,4338,4338,4338,4338,4338,4338,4337,4304,4238,4238,4107,4107,4106,4106,4072,3998,3998,3997,3947,3913,3912,3911,3910,3908,3905,3900,3898,3894,3858,3818,3812,3807,3802,3762,3760,3758,3758,3717,3649,3613,3612,3442,3406,3338,3202,3159,3147,3090,3016,2941,2932,2860,2710,2006,801,366,313,304,196,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5315,10574,10913,11975,12427,12502,16215,16814,16986,17225,17808,18321,19061,19917,20534,20650,20684,20890,21027,21164,21267,21369,21404,21404,21678,21780,21917,22315,22825,23544,24264,24572,24914,25188,25633,25959,26199,26370,26404,26404,26490,26524,26610,26678,26747,26866,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918];
+      const SPREAD_BPS = 105.7;
+      const section = (C) => {
+        const ppb = C.w / SPREAD_BPS;
+        const bpsAt = (i) => -360 + i * 4;
+        const reach = (sign) => { let r = 360; while (C.cx + sign * r * ppb < 104 || C.cx + sign * r * ppb > 1816) r -= 4; return r; };
+        const r = { [-1]: reach(-1), [1]: reach(1) };
+        let maxUsd = 0;
+        DEPTH.forEach((d, i) => { if (bpsAt(i) >= -r[-1] && bpsAt(i) <= r[1]) maxUsd = Math.max(maxUsd, d); });
+        const k = (C.floor - C.top) / Math.sqrt(maxUsd);
+        const X = (b) => C.cx + b * ppb;
+        const Y = (usd) => C.floor - Math.sqrt(usd) * k;
+        const side = (sign) => {
+          let i = 90; // x = 0, mid
+          while (DEPTH[i + sign] === 0) i += sign;
+          const pts = [];
+          for (; Math.abs(bpsAt(i)) <= r[sign]; i += sign) pts.push([X(bpsAt(i)), Y(DEPTH[i])]);
+          const end = pts[pts.length - 1];
+          const line = pts.map((p, j) => `${j ? "L" : "M"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" ") + ` L${end[0].toFixed(1)} ${C.floor}`;
+          return { line, area: `${line} Z` };
+        };
+        return { left: X(-r[-1]), right: X(r[1]), bids: side(-1), asks: side(1) };
+      };
+      const C = CANYON;
+      const S = section(C);
+      const x1 = C.cx - C.w / 2;
+      const x2 = C.cx + C.w / 2;
+      const set = (id, a) => { const n = document.getElementById(id); Object.entries(a).forEach(([k, v]) => n.setAttribute(k, v)); };
+      const place = (id, left, top) => { const n = document.getElementById(id); n.style.left = `${left}px`; n.style.top = `${top}px`; };
+      set("measure-mass-bid", { d: S.bids.area });
+      set("measure-mass-ask", { d: S.asks.area });
+      set("measure-prof-bid", { d: S.bids.line });
+      set("measure-prof-ask", { d: S.asks.line });
+      set("measure-datumL", { d: `M${C.cx} ${C.floor}H${S.left.toFixed(1)}` });
+      set("measure-datumR", { d: `M${C.cx} ${C.floor}H${S.right.toFixed(1)}` });
+      set("measure-extL", { x1: x1, x2: x1, y1: C.y - 16, y2: C.floor });
+      set("measure-extR", { x1: x2, x2: x2, y1: C.y - 16, y2: C.floor });
+      set("measure-cl", { x1: C.cx, x2: C.cx, y1: C.y - 64, y2: C.floor });
+      set("measure-dim", { d: `M${x1} ${C.y}H${x2}` });
+      set("measure-tickL", { x1: x1, x2: x1, y1: C.y - 16, y2: C.y + 16 });
+      set("measure-tickR", { x1: x2, x2: x2, y1: C.y - 16, y2: C.y + 16 });
+      set("measure-trail", { x1: x1, x2: x2, y1: C.y, y2: C.y });
+      set("measure-dot", { cx: x2, cy: C.y });
+      place("measure-g-bids", C.bids.x - 62, C.bids.y);
+      place("measure-g-asks", C.asks.x - 62, C.asks.y);
+      place("measure-g-num", C.cx - 3.5 * 156 + 78, C.numTop);
+      place("measure-g-cost", C.cx - 600, C.numTop + 274);
+      place("measure-g-mid", C.cx - 100, C.floor + 12);
+      place("measure-g-note", S.right - 720, C.floor + 12);
+
+      // ---- The 188-tick strip: one tick per real-world perp on Injective mainnet, grouped by asset class ----
+      // From assets/data/rwa-sweep.json rows (sweep Mon 9 Nov 2026 08:42:45 UTC, chain REST, BASELINE):
+      // "SYMBOL.both.bidLevels.askLevels", both = 1 when bidDepthUsd25 > 0 and askDepthUsd25 > 0 (a bid and an ask within 0.25% of mark)
+      const STRIP = [
+        ["equity", "AAPL.0.2.5 ABNB.0.0.0 ADBE.0.0.0 AFRM.0.0.0 AI.0.0.0 AMC.0.0.0 AMD.0.0.1 AMGN.0.0.0 AMT.0.0.0 AMZN.0.1.7 ANET.0.0.0 APO.0.0.0 ARKB.0.0.0 ARKK.0.0.0 ARM.0.1.1 ASML.0.1.0 AVGO.0.1.1 AXP.0.0.0 AZN.0.0.0 BA.0.0.0 BABA.0.1.1 BAC.0.0.0 BE.0.0.0 BIDU.0.0.0 BIIB.0.0.0 BILI.0.0.0 BITB.0.0.0 BKNG.0.0.0 BLK.0.0.0 BX.0.0.0 BYND.0.0.0 C.0.0.0 CCI.0.0.0 CHTR.0.0.1 CME.0.0.0 CMG.0.0.0 COF.0.0.0 COIN.0.1.7 COST.0.2.1 CRCL.0.4.6 CRDO.0.1.0 CRM.0.2.1 CRWD.0.0.0 CRWV.0.0.0 DELL.0.2.1 DIA.0.0.0 DIS.0.0.0 DKNG.0.0.0 DLR.0.0.0 EDU.0.0.0 ENPH.0.0.0 EQIX.0.0.0 FIS.0.0.0 FLUT.0.0.0 FSLR.0.0.0 GBTC.0.0.0 GD.0.0.0 GILD.0.0.0 GLD.0.0.0 GLXY.0.0.0 GME.0.0.0 GOOGL.0.2.7 GRAB.0.0.0 GS.0.1.1 HIMS.0.1.0 HOOD.0.3.5 HPE.0.0.0 IBIT.0.0.0 IBM.0.2.1 ICE.0.0.0 INTC.0.2.2 IREN.0.0.0 ISRG.0.0.0 JD.0.0.0 JPM.0.2.1 KKR.0.0.0 KO.0.0.0 LI.0.0.0 LLY.0.0.0 LMT.0.0.0 LULU.0.0.1 LVS.0.0.0 LYV.0.0.0 MA.0.0.0 MCD.0.0.0 MELI.0.0.0 META.1.2.4 MGM.0.0.0 MNST.0.0.0 MO.0.0.0 MRK.0.0.0 MRNA.0.1.0 MRVL.0.1.0 MS.0.0.0 MSFT.0.3.6 MSTR.1.4.5 MU.0.2.1 NBIS.0.0.1 NEE.0.0.0 NFLX.0.1.1 NIO.0.0.0 NKE.0.0.0 NOC.0.0.0 NOW.0.0.1 NU.0.0.0 NVDA.0.2.2 NVO.0.1.2 O.0.0.0 OKLO.0.0.0 ONTO.0.0.0 ORCL.0.1.0 PANW.0.0.2 PDD.0.1.1 PEP.0.0.0 PFE.0.1.0 PLD.0.0.0 PLTR.0.2.2 PM.0.0.0 PSA.0.0.0 PYPL.0.0.0 QCOM.0.1.1 RBLX.0.0.0 REGN.0.0.0 RIO.0.0.0 RIVN.0.1.0 RKLB.0.0.0 RTX.0.0.0 SAP.0.0.0 SBUX.0.0.0 SCHW.0.0.0 SHAZ.0.0.0 SKYD.0.0.0 SMCI.0.0.0 SNAP.0.0.0 SNDK.0.1.2 SNOW.0.0.0 SOFI.0.0.0 SPCX.1.6.4 SPG.0.0.0 SPGI.0.0.0 SPOT.0.0.0 STRC.0.1.0 TAP.0.0.0 TEM.0.0.0 TGT.0.0.0 TKO.0.0.0 TLT.0.0.0 TME.0.0.0 TMO.0.0.0 TSLA.0.3.5 TSM.0.1.1 TTD.0.0.0 TTWO.0.0.0 UBER.0.0.0 UPST.0.0.0 V.0.0.0 VALE.0.0.0 VOD.0.0.0 VRT.0.0.0 VRTX.0.0.0 VST.0.0.0 WFC.0.0.0 WMT.0.0.1 WYNN.0.0.0 XOM.0.0.0 XPEV.0.0.0"],
+        ["fx", "AUDUSD.0.0.0 EURUSD.0.1.0 GBPUSD.0.1.0 NZDUSD.0.0.0 USDCAD.0.0.0 USDCHF.0.0.0 USDHKD.0.1.0 USDJPY.0.1.0 USDNOK.0.0.0 USDSEK.0.0.0 USDSGD.0.0.0"],
+        ["commodity", "BRENT.0.1.0 COPPER.0.0.0 NATGAS.0.0.0 WTI.0.2.1 XAG.0.2.1 XAU.0.2.0 XPD.0.0.0 XPT.0.0.0"],
+        ["index", "US500.0.0.0 USTECH.0.0.0"],
+        ["compute", "SICI.0.0.0"],
+      ];
+      const CLASS_NAME = { equity: "Equities", fx: "FX", commodity: "Commodities", index: "Indices", compute: "Compute" };
+      const INK = "#141613", HOLLOW = "#B5BBAE", OCHRE = "#8A560E", RULE = "#5A5F57";
+      const PITCH = 8, TICK_W = 5, GROUP_GAP = 56, LEFT = 96;
+      const TOP = 404, BASE = 500, LIFT = 20, LEADER_TOP = 260;
+      const DRAW = { at: 3.62, dur: 0.9 }; // "hundred and eighty-eight" 3.78 to 4.46
+      const HOLLOW_AT = { at: 12.5, dur: 0.4 }; // in the pause before "only three" 13.0
+      const wave = (x, w) => w.at + (w.dur * (x - LEFT)) / (1824 - LEFT);
+
+      const svgEl = (tag, attrs, parent) => {
+        const n = parent.appendChild(document.createElementNS("http://www.w3.org/2000/svg", tag));
+        Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v));
+        return n;
+      };
+      const div = (className, textContent, parent) => parent.appendChild(Object.assign(document.createElement("div"), { className, textContent }));
+      const ticksG = document.getElementById("measure-ticks");
+      const bracketsG = document.getElementById("measure-brackets");
+      const leadersG = document.getElementById("measure-leaders");
+
+      const markets = {};
+      const groups = [];
+      let gx = LEFT;
+      STRIP.forEach(([cls, list]) => {
+        const items = list.split(" ").map((s, i) => {
+          const [sym, both, bl, al] = s.split(".");
+          const m = { sym, both: both === "1", bids: Number(bl), asks: Number(al), x: gx + i * PITCH };
+          m.tick = svgEl("rect", { x: m.x, y: BASE, width: TICK_W, height: 0, fill: INK, stroke: INK, "stroke-width": 1.25 }, ticksG);
+          markets[sym] = m;
+          return m;
+        });
+        const end = gx + (items.length - 1) * PITCH + TICK_W;
+        const bracket = svgEl("path", { d: `M${gx} 510V517.5H${end}V510`, stroke: RULE, "stroke-width": 1.25, fill: "none" }, bracketsG);
+        groups.push({ cls, items, x0: gx, bracket });
+        gx += items.length * PITCH + GROUP_GAP;
+      });
+      document.getElementById("measure-class-eq").textContent = `${CLASS_NAME.equity} ${groups[0].items.length}`;
+      document.getElementById("measure-class-tail").textContent = groups.slice(1).map((g) => `${CLASS_NAME[g.cls]} ${g.items.length}`).join(" · ");
+
+      // Callouts: the state of each named book at the sweep (levels from the sweep; WTI's spread from SPEC DATA)
+      const stateOf = (m) => (m.sym === "WTI" ? "spread 164.8 bps" : m.bids === 0 && m.asks === 0 ? "empty book" : m.asks === 0 ? "no asks" : m.bids === 0 ? "no bids" : "");
+      const MONO = 0.65; // Martian Mono advance at font-stretch 87.5%, in em
+      const CALLS = [
+        ["XAU", 5.36], // "Gold" 5.48
+        ["WTI", 6.11], // "oil" 6.23
+        ["USTECH", 7.32], // "Nasdaq" 7.44
+        ["EURUSD", 8.25], // "euro" 8.37
+        ["SICI", 9.43], // "GPU" 9.55
+      ];
+      const labels = document.getElementById("measure-labels");
+      CALLS.forEach(([sym]) => {
+        const m = markets[sym];
+        const box = (m.call = div("measure-mono measure-call", "", labels));
+        const state = stateOf(m);
+        div("measure-call-sym", sym, box);
+        div("measure-call-state", state, box);
+        const width = Math.max(sym.length * 34 * MONO, state.length * 28 * MONO);
+        const tx = m.x + TICK_W / 2;
+        if (tx + 14 + width <= 1824) box.style.left = `${tx + 14}px`;
+        else { box.classList.add("measure-right"); box.style.left = `${tx - 14 - width}px`; box.style.width = `${width}px`; }
+        m.leader = svgEl("line", { x1: tx, x2: tx, y1: TOP - LIFT, y2: TOP - LIFT, stroke: INK, "stroke-width": 1.25 }, leadersG);
+      });
+
+      // The three that had both sides: ochre, named above the strip
+      const THREE = [["META", "right"], ["MSTR", "left"], ["SPCX", "left"]];
+      THREE.forEach(([sym, side]) => {
+        const m = markets[sym];
+        const tx = m.x + TICK_W / 2;
+        const label = (m.label3 = div("measure-mono measure-three", sym, labels));
+        const width = sym.length * 30 * MONO;
+        label.style.left = `${side === "left" ? tx + 10 : tx - 10 - width}px`;
+        m.leader3 = svgEl("line", { x1: tx, x2: tx, y1: 386, y2: 386, stroke: OCHRE, "stroke-width": 1.25 }, leadersG);
+      });
+
+      // Payoff ink metrics: 240 px Martian Mono "3" 17..139 px, "1" from 23.3 px; 80 px Schibsted "of" 3.5..72.6 px. Inks start on the x = 100 edge.
+      const EDGE = 100, GAP = 28;
+      const X3 = EDGE - 17;
+      const XOF = X3 + 139 + GAP - 3.5;
+      const X188 = XOF + 72.6 + GAP - 23.3;
+      const X188_ALONE = EDGE - 23.3; // while 188 stands alone it sits on the edge, then makes room for "3 of"
+      [["measure-n0", X3], ["measure-of", XOF], ["measure-n188", X188_ALONE]].forEach(([id, x]) => (document.getElementById(id).style.left = `${x}px`));
+
+      // Rolling digit columns: a blank row, then 0 to 9 twice
+      document.querySelectorAll(".measure-col").forEach((col) => [" ", ..."01234567890123456789"].forEach((d) => col.appendChild(Object.assign(document.createElement("span"), { textContent: d }))));
+
+      const tl = gsap.timeline({ paused: true });
+      const blurIn = (sel, t, d = 0.18) =>
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+      const blurOut = (sel, t, d = 0.18) =>
+        tl.fromTo(sel, { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: d, ease: "power3.in", immediateRender: false }, t);
+      const roll = (col, t, cell = 240) => {
+        tl.fromTo(col, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, t);
+        tl.fromTo(col, { y: 0 }, { y: -(11 + Number(col.dataset.digit)) * cell, duration: 0.6, ease: "power3.out" }, t);
+      };
+
+      // 0 to 0.5: the camera travels down the same sheet, from the canyon to the survey (vertical smear at the fastest frames)
+      tl.fromTo("#measure-sheet", { y: 0 }, { y: -960, duration: 0.5, ease: "power2.inOut" }, 0);
+      tl.set("#measure-sheet", { filter: "url(#measure-vblur)" }, 0.034);
+      tl.fromTo("#measure-vblur-k", { attr: { stdDeviation: "0 0" } }, { attr: { stdDeviation: "0 12" }, duration: 0.25, ease: "power2.in" }, 0);
+      tl.fromTo("#measure-vblur-k", { attr: { stdDeviation: "0 12" } }, { attr: { stdDeviation: "0 0" }, duration: 0.25, ease: "power2.out", immediateRender: false }, 0.25);
+      tl.set("#measure-sheet", { filter: "none" }, 0.5);
+      tl.set("#measure-gap", { opacity: 0 }, 0.5); // panned off the top; nothing left to paint
+
+      // "measured" 0.82: the sheet title, word by word
+      tl.fromTo("#measure-title .measure-w", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, stagger: 0.08, ease: "power2.out" }, 0.6);
+
+      // "a hundred and eighty-eight" 3.78: 188 ticks rise off the datum left to right, each class bracketed, and 188 rolls in
+      Object.values(markets).forEach((m) => {
+        tl.fromTo(m.tick, { attr: { y: BASE, height: 0 } }, { attr: { y: TOP, height: BASE - TOP }, duration: 0.24, ease: "expo.out" }, wave(m.x, DRAW));
+      });
+      groups.forEach((g) => tl.fromTo(g.bracket, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, wave(g.x0, DRAW)));
+      blurIn("#measure-class-eq", 3.95);
+      document.querySelectorAll("#measure-n188 .measure-col").forEach((col, i) => roll(col, 4.08 + i * 0.04));
+      blurIn("#measure-class-tail", 4.36);
+      blurIn("#measure-cap-listed", 4.38); // "real-world" 4.46
+
+      // Gold, oil, the Nasdaq, the euro, GPU compute: each tick lifts on its name and says what its book held
+      CALLS.forEach(([sym, t], i) => {
+        const m = markets[sym];
+        const out = i + 1 < CALLS.length ? CALLS[i + 1][1] - 0.04 : 10.9;
+        const box = m.call;
+        tl.fromTo(m.tick, { attr: { y: TOP } }, { attr: { y: TOP - LIFT }, duration: 0.35, ease: "expo.out", immediateRender: false }, t);
+        tl.fromTo(m.leader, { attr: { y2: TOP - LIFT } }, { attr: { y2: LEADER_TOP }, duration: 0.3, ease: "power2.out" }, t + 0.02);
+        blurIn(box, t + 0.06);
+        blurOut(box, out, 0.16);
+        tl.fromTo(m.leader, { attr: { y2: LEADER_TOP } }, { attr: { y2: TOP - LIFT }, duration: 0.2, ease: "power3.in", immediateRender: false }, out);
+        tl.fromTo(m.tick, { attr: { y: TOP - LIFT } }, { attr: { y: TOP }, duration: 0.3, ease: "power3.in", immediateRender: false }, out);
+      });
+
+      // "Monday morning" 11.38
+      blurIn("#measure-date", 11.26);
+
+      // Before "only three": every book without a bid and an ask within 0.25% goes hollow; three fill ochre
+      blurOut("#measure-cap-listed", 12.3, 0.2);
+      Object.values(markets).forEach((m) => {
+        const t = wave(m.x, HOLLOW_AT);
+        if (m.both) tl.fromTo(m.tick, { fill: INK, stroke: INK, strokeWidth: 1.25 }, { fill: OCHRE, stroke: OCHRE, strokeWidth: 2, duration: 0.2, ease: "power2.out", immediateRender: false }, t);
+        else tl.fromTo(m.tick, { fillOpacity: 1, stroke: INK }, { fillOpacity: 0, stroke: HOLLOW, duration: 0.16, ease: "power2.out", immediateRender: false }, t);
+      });
+      THREE.forEach(([sym], i) => {
+        const m = markets[sym];
+        tl.fromTo(m.leader3, { attr: { y2: 386 } }, { attr: { y2: 398 }, duration: 0.2, ease: "power2.out" }, 12.78 + i * 0.06);
+        blurIn(m.label3, 12.8 + i * 0.06);
+      });
+
+      // "three" 13.21: 188 makes room, the ochre 3 rolls in, "of" joins them: 3 of 188
+      tl.fromTo("#measure-n188", { x: 0 }, { x: X188 - X188_ALONE, duration: 0.45, ease: "power3.inOut" }, 12.98);
+      roll(document.querySelector("#measure-n0 .measure-col"), 13.26);
+      blurIn("#measure-of", 13.36);
+      // "had a buyer and a seller" 14.2
+      blurIn("#measure-cap-both", 14.08);
+      // Provenance, then hold
+      blurIn("#measure-foot", 15.5);
+
+      window.__timelines["measure"] = tl;
+    })();
+  </script>
+</template>

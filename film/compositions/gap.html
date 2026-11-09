@@ -1,0 +1,270 @@
+<template>
+  <style>
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+    .gap-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; white-space: nowrap; }
+    .gap-layer { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    .gap-svg { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+
+    /* Side tags either side of the canyon (the site's terrain-label pattern: an instrument tag, legible on any land) */
+    .gap-side { position: absolute; width: 124px; height: 52px; box-sizing: border-box; text-align: center; font-size: 34px; line-height: 50px;
+      font-weight: 500; border: 1px solid; border-radius: 4px; }
+    #gap-t-bids { color: #7CC9A0; background: #121513; border-color: #373D39; }
+    #gap-t-asks { color: #EA8A6A; background: #121513; border-color: #373D39; }
+    #gap-p-bids { color: #1D6A47; background: #F7F8F3; border-color: #B5BBAE; }
+    #gap-p-asks { color: #A6432A; background: #F7F8F3; border-color: #B5BBAE; }
+
+    /* The giant number: six 156 px mono cells (0.65 em at 240 px), "$" hidden in cell 0 until "pay" */
+    .gap-num { position: absolute; width: 936px; height: 240px; font-family: "Martian Mono", monospace; font-stretch: 87.5%;
+      font-feature-settings: "tnum" 1, "zero" 1; font-weight: 500; font-size: 240px; line-height: 240px; }
+    .gap-cell { position: absolute; top: 0; display: block; width: 156px; height: 240px; }
+    .gap-roll { overflow: hidden; }
+    .gap-col { display: block; }
+    .gap-col span, .gap-glyph { display: block; height: 240px; }
+    .gap-c0 { left: 0; } .gap-c1 { left: 156px; } .gap-c2 { left: 312px; } .gap-c3 { left: 468px; } .gap-c4 { left: 624px; } .gap-c5 { left: 780px; }
+    /* 96 px unit on the digits' baseline: Martian Mono's baseline sits 0.9 em below a 1 em line box */
+    .gap-unit { position: absolute; left: 958px; top: 129.6px; font-size: 96px; line-height: 96px; font-weight: 400; }
+    #gap-t-num { color: #ECE8DF; }
+    #gap-t-num .gap-unit { color: #ECE8DF; }
+    #gap-p-num { color: #141613; }
+    #gap-p-num .gap-unit { color: #474C45; }
+
+    .gap-label { position: absolute; width: 1200px; text-align: center; font-size: 30px; line-height: 30px; }
+    #gap-t-label { color: #ECE8DF; }
+    /* The cut face is the book at one moment; the paper section after the flood is the window mean, so this note stays on the land */
+    #gap-t-cut { position: absolute; font-size: 28px; line-height: 28px; color: #B4AFA3; }
+    #gap-p-label, #gap-p-cost { color: #474C45; }
+
+    /* Survey paper, revealed by the flood from the canyon outward */
+    #gap-flood { background: #ECEEE7; }
+    .gap-note { position: absolute; font-size: 28px; line-height: 28px; color: #5A5F57; }
+    #gap-p-mid { width: 200px; text-align: center; }
+    #gap-p-note { width: 720px; text-align: right; }
+  </style>
+  <div id="root" data-composition-id="gap" data-width="1920" data-height="1080" data-duration="13.9">
+    <!-- B2: the land splits and the camera drops in, square to the cut face. 0.9x: it settles by 4.4 and holds its last frame until the flood. -->
+    <video id="gap-b2" class="clip" src="assets/video/b2.mp4" muted playsinline data-start="0" data-duration="7.36" data-playback-rate="0.9" data-track-index="0"
+      style="position:absolute;left:0;top:0;width:1920px;height:1080px;object-fit:cover"></video>
+
+    <!-- Chalk survey marks over the land -->
+    <div id="gap-terrain" class="clip gap-layer" data-start="0" data-duration="7.36" data-track-index="1">
+      <div id="gap-t-bids" class="gap-mono gap-side gap-bids">Bids</div>
+      <div id="gap-t-asks" class="gap-mono gap-side gap-asks">Asks</div>
+      <svg id="gap-t-dim" class="gap-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+        <path class="gap-dimL" stroke="#ECE8DF" stroke-width="2" fill="none" pathLength="1" stroke-dasharray="1 1" />
+        <path class="gap-dimR" stroke="#ECE8DF" stroke-width="2" fill="none" pathLength="1" stroke-dasharray="1 1" />
+        <line class="gap-tickL" stroke="#ECE8DF" stroke-width="2" />
+        <line class="gap-tickR" stroke="#ECE8DF" stroke-width="2" />
+      </svg>
+      <div id="gap-t-num" class="gap-num" data-layout-allow-overflow>
+        <span class="gap-cell gap-c0"><span class="gap-glyph gap-dollar">$</span></span>
+        <span class="gap-cell gap-c1 gap-roll"><span class="gap-col" data-digit="1"></span></span>
+        <span class="gap-cell gap-c2 gap-roll"><span class="gap-col" data-digit="0"></span></span>
+        <span class="gap-cell gap-c3 gap-roll"><span class="gap-col" data-digit="5"></span></span>
+        <span class="gap-cell gap-c4"><span class="gap-glyph gap-point">.</span></span>
+        <span class="gap-cell gap-c5 gap-roll"><span class="gap-col" data-digit="7"></span></span>
+        <span class="gap-unit">bps</span>
+      </div>
+      <div id="gap-t-label" class="gap-mono gap-label gap-spread">median spread</div>
+      <div id="gap-t-cut" class="gap-mono">cut at 19:30:25 UTC</div>
+    </div>
+
+    <!-- The same marks in ink on survey paper, with the cross-section drawn from section_nvda.json -->
+    <div id="gap-paper" class="clip gap-layer" data-start="6.8" data-duration="7.1" data-track-index="2" data-layout-allow-overlap>
+      <div id="gap-flood" class="gap-layer">
+        <svg id="gap-grid" class="gap-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+          <defs>
+            <pattern id="gap-grid-p" width="120" height="120" patternUnits="userSpaceOnUse">
+              <path d="M24.5 0V120M48.5 0V120M72.5 0V120M96.5 0V120M0 24.5H120M0 48.5H120M0 72.5H120M0 96.5H120" stroke="#D2D6CB" stroke-opacity="0.45" stroke-width="1" fill="none" />
+              <path d="M0.5 0V120M0 0.5H120" stroke="#D2D6CB" stroke-opacity="0.8" stroke-width="1" fill="none" />
+            </pattern>
+          </defs>
+          <rect width="1920" height="1080" fill="url(#gap-grid-p)" />
+        </svg>
+        <svg id="gap-section" class="gap-svg" viewBox="0 0 1920 1080" aria-hidden="true">
+          <defs>
+            <pattern id="gap-hatch-bid" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <path d="M0 0V12" stroke="#1D6A47" stroke-opacity="0.55" stroke-width="1.5" />
+            </pattern>
+            <pattern id="gap-hatch-ask" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <path d="M0 0V12" stroke="#A6432A" stroke-opacity="0.55" stroke-width="1.5" />
+            </pattern>
+          </defs>
+          <path id="gap-mass-bid" fill="url(#gap-hatch-bid)" />
+          <path id="gap-mass-ask" fill="url(#gap-hatch-ask)" />
+          <path id="gap-datumL" stroke="#141613" stroke-width="1.5" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <path id="gap-datumR" stroke="#141613" stroke-width="1.5" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <path id="gap-prof-bid" stroke="#1D6A47" stroke-width="2.5" stroke-linejoin="round" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <path id="gap-prof-ask" stroke="#A6432A" stroke-width="2.5" stroke-linejoin="round" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <line id="gap-extL" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="6 6" />
+          <line id="gap-extR" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="6 6" />
+          <line id="gap-cl" stroke="#5A5F57" stroke-width="1.25" stroke-dasharray="20 6 4 6" />
+          <path class="gap-dimL" stroke="#141613" stroke-width="2" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <path class="gap-dimR" stroke="#141613" stroke-width="2" fill="none" pathLength="1" stroke-dasharray="1 1" />
+          <line class="gap-tickL" stroke="#141613" stroke-width="2" />
+          <line class="gap-tickR" stroke="#141613" stroke-width="2" />
+          <line id="gap-trail" stroke="#8A560E" stroke-width="3.5" />
+          <circle id="gap-dot" r="9" fill="#8A560E" />
+        </svg>
+        <div id="gap-p-bids" class="gap-mono gap-side gap-bids">Bids</div>
+        <div id="gap-p-asks" class="gap-mono gap-side gap-asks">Asks</div>
+        <div id="gap-p-num" class="gap-num" data-layout-allow-overflow>
+          <span class="gap-cell gap-c0"><span class="gap-glyph gap-dollar">$</span></span>
+          <span class="gap-cell gap-c1 gap-roll"><span class="gap-col" data-digit="1"></span></span>
+          <span class="gap-cell gap-c2 gap-roll"><span class="gap-col" data-digit="0"></span></span>
+          <span class="gap-cell gap-c3 gap-roll"><span class="gap-col" data-digit="5"></span></span>
+          <span class="gap-cell gap-c4"><span class="gap-glyph gap-point">.</span></span>
+          <span class="gap-cell gap-c5 gap-roll"><span class="gap-col" data-digit="7"></span></span>
+          <span class="gap-unit">bps</span>
+        </div>
+        <div id="gap-p-label" class="gap-mono gap-label gap-spread">median spread</div>
+        <div id="gap-p-cost" class="gap-mono gap-label">to buy and sell $1,000 at the median spread, before fees</div>
+        <div id="gap-p-mid" class="gap-mono gap-note">mid</div>
+        <div id="gap-p-note" class="gap-mono gap-note">NVDA/USDC PERP · mean depth · BASELINE</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (() => {
+      // B2's settled framing (assets/video/b2.mp4 from source 4.0 s, held on its last frame until the flood), in 1920x1080 px.
+      // cx / w: centre and width of the canyon floor, which the 105.7 bps dimension line spans. y: the dimension line, on the floor.
+      // floor: the canyon floor at the cut face, the paper section's datum. top: the highest the ink section may rise (the horizon),
+      // so the type above stays in the sky. numTop: top of the number's 240 px line box. bids / asks: centre x and top y of the
+      // 124 x 52 tags (far enough out to sit on the right land through the whole descent). cut: left x and top y of the cut-face note.
+      // The paper section is laid out from these same numbers, so what stays put through the flood stays put.
+      // measure.html opens on this scene's last frame and keeps an identical copy of this constant.
+      const CANYON = { cx: 840, w: 760, y: 680, floor: 750, top: 430, numTop: 96, bids: { x: 230, y: 654 }, asks: { x: 1650, y: 654 }, cut: { x: 470, y: 776 } };
+
+      // NVDA/USDC PERP, mean cumulative resting depth in USD from mid out to x bps, x = -360..360 in steps of 4, bids negative
+      // (assets/data/section_nvda.json: mainnet, BASELINE, Sun 8 Nov 2026 18:48:25 to 20:47:45 UTC, 1,361 snapshots)
+      const DEPTH = [4391,4391,4391,4391,4391,4391,4391,4389,4388,4388,4387,4387,4387,4387,4386,4386,4386,4386,4386,4338,4338,4338,4338,4338,4338,4337,4304,4238,4238,4107,4107,4106,4106,4072,3998,3998,3997,3947,3913,3912,3911,3910,3908,3905,3900,3898,3894,3858,3818,3812,3807,3802,3762,3760,3758,3758,3717,3649,3613,3612,3442,3406,3338,3202,3159,3147,3090,3016,2941,2932,2860,2710,2006,801,366,313,304,196,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5315,10574,10913,11975,12427,12502,16215,16814,16986,17225,17808,18321,19061,19917,20534,20650,20684,20890,21027,21164,21267,21369,21404,21404,21678,21780,21917,22315,22825,23544,24264,24572,24914,25188,25633,25959,26199,26370,26404,26404,26490,26524,26610,26678,26747,26866,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918,26918];
+      const SPREAD_BPS = 105.7;
+      const CELL = 156;
+      const ROW = 240;
+
+      // Square-root height, bids left of mid and asks right, the empty canyon between; each side cut where it meets x 104 or 1816
+      const section = (C) => {
+        const ppb = C.w / SPREAD_BPS;
+        const bpsAt = (i) => -360 + i * 4;
+        const reach = (sign) => { let r = 360; while (C.cx + sign * r * ppb < 104 || C.cx + sign * r * ppb > 1816) r -= 4; return r; };
+        const r = { [-1]: reach(-1), [1]: reach(1) };
+        let maxUsd = 0;
+        DEPTH.forEach((d, i) => { if (bpsAt(i) >= -r[-1] && bpsAt(i) <= r[1]) maxUsd = Math.max(maxUsd, d); });
+        const k = (C.floor - C.top) / Math.sqrt(maxUsd);
+        const X = (b) => C.cx + b * ppb;
+        const Y = (usd) => C.floor - Math.sqrt(usd) * k;
+        const side = (sign) => {
+          let i = 90; // x = 0, mid
+          while (DEPTH[i + sign] === 0) i += sign;
+          const pts = [];
+          for (; Math.abs(bpsAt(i)) <= r[sign]; i += sign) pts.push([X(bpsAt(i)), Y(DEPTH[i])]);
+          const end = pts[pts.length - 1];
+          const line = pts.map((p, j) => `${j ? "L" : "M"}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(" ") + ` L${end[0].toFixed(1)} ${C.floor}`;
+          return { line, area: `${line} Z` };
+        };
+        return { left: X(-r[-1]), right: X(r[1]), bids: side(-1), asks: side(1) };
+      };
+
+      const C = CANYON;
+      const S = section(C);
+      const x1 = C.cx - C.w / 2;
+      const x2 = C.cx + C.w / 2;
+      const attrs = (sel, a) => document.querySelectorAll(sel).forEach((n) => Object.entries(a).forEach(([k, v]) => n.setAttribute(k, v)));
+      const place = (sel, left, top) => document.querySelectorAll(sel).forEach((n) => { n.style.left = `${left}px`; n.style.top = `${top}px`; });
+
+      // Layout, all from CANYON
+      place(".gap-bids", C.bids.x - 62, C.bids.y);
+      place(".gap-asks", C.asks.x - 62, C.asks.y);
+      place(".gap-num", C.cx - 3.5 * CELL, C.numTop);
+      place(".gap-label", C.cx - 600, C.numTop + 274);
+      place("#gap-t-cut", C.cut.x, C.cut.y);
+      place("#gap-p-mid", C.cx - 100, C.floor + 12);
+      place("#gap-p-note", S.right - 720, C.floor + 12);
+      attrs(".gap-dimL", { d: `M${C.cx} ${C.y}H${x1}` });
+      attrs(".gap-dimR", { d: `M${C.cx} ${C.y}H${x2}` });
+      attrs(".gap-tickL", { x1: x1, x2: x1, y1: C.y, y2: C.y });
+      attrs(".gap-tickR", { x1: x2, x2: x2, y1: C.y, y2: C.y });
+      attrs("#gap-mass-bid", { d: S.bids.area });
+      attrs("#gap-mass-ask", { d: S.asks.area });
+      attrs("#gap-prof-bid", { d: S.bids.line });
+      attrs("#gap-prof-ask", { d: S.asks.line });
+      attrs("#gap-datumL", { d: `M${C.cx} ${C.floor}H${S.left.toFixed(1)}` });
+      attrs("#gap-datumR", { d: `M${C.cx} ${C.floor}H${S.right.toFixed(1)}` });
+      attrs("#gap-extL", { x1: x1, x2: x1, y1: C.y - 16, y2: C.y - 16 });
+      attrs("#gap-extR", { x1: x2, x2: x2, y1: C.y - 16, y2: C.y - 16 });
+      attrs("#gap-cl", { x1: C.cx, x2: C.cx, y1: C.y - 64, y2: C.y - 64 });
+      attrs("#gap-trail", { y1: C.y, y2: C.y, x1: x1, x2: x1 });
+      attrs("#gap-dot", { cx: x1, cy: C.y });
+      attrs(".gap-dimL, .gap-dimR, #gap-datumL, #gap-datumR, #gap-prof-bid, #gap-prof-ask", { "stroke-dashoffset": 1 });
+
+      // Rolling digit columns: a blank row, then 0 to 9 twice, so every digit rolls in from empty through a full turn
+      document.querySelectorAll(".gap-col").forEach((col) => {
+        for (let n = -1; n < 20; n++) {
+          const s = document.createElement("span");
+          s.textContent = n < 0 ? " " : String(n % 10);
+          col.appendChild(s);
+        }
+      });
+
+      const tl = gsap.timeline({ paused: true });
+      const blurIn = (sel, t, d = 0.18) =>
+        tl.fromTo(sel, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: d, ease: "power2.out" }, t);
+      const blurOut = (sel, t) =>
+        tl.fromTo(sel, { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.16, ease: "power3.in", immediateRender: false }, t);
+
+      // "left" 1.17, "right" 2.54
+      blurIn(".gap-bids", 1.04);
+      blurIn(".gap-asks", 2.41);
+
+      // "canyon" 4.68: the dimension line opens from the canyon centre to both lips, its end ticks land, the number rolls in above it
+      tl.fromTo(".gap-dimL, .gap-dimR", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.55, ease: "power2.inOut" }, 4.42);
+      tl.fromTo(".gap-tickL, .gap-tickR", { attr: { y1: C.y, y2: C.y } }, { attr: { y1: C.y - 16, y2: C.y + 16 }, duration: 0.3, ease: "expo.out" }, 4.9);
+      document.querySelectorAll(".gap-num").forEach((num) => {
+        num.querySelectorAll(".gap-col").forEach((col, i) => {
+          const digit = Number(col.dataset.digit);
+          const t = 4.54 + i * 0.04;
+          tl.fromTo(col, { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none" }, t);
+          tl.fromTo(col, { y: 0 }, { y: -(11 + digit) * ROW, duration: 0.6, ease: "power3.out" }, t);
+        });
+      });
+      tl.set(".gap-dollar", { opacity: 0 }, 0);
+      blurIn(".gap-point", 4.6);
+      blurIn(".gap-unit", 4.76);
+      blurIn(".gap-spread", 4.92);
+      blurIn("#gap-t-cut", 5.4);
+
+      // Colour flood: survey paper opens out of the canyon while every mark holds its place and turns to ink
+      tl.fromTo("#gap-flood", { clipPath: `inset(0px ${1920 - C.cx}px 0px ${C.cx}px)` }, { clipPath: "inset(0px 0px 0px 0px)", duration: 0.45, ease: "power2.inOut" }, 6.88);
+      tl.set("#gap-flood", { clipPath: "none" }, 7.4); // flood done: release the clip so the paper composites exactly as measure's copy
+
+      // The ink cross-section draws in under the number: datum, both profiles outward from the canyon, then the hatching
+      tl.fromTo("#gap-datumL, #gap-datumR", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.7, ease: "power2.inOut" }, 7.3);
+      tl.fromTo("#gap-prof-bid, #gap-prof-ask", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.inOut" }, 7.45);
+      tl.fromTo("#gap-extL, #gap-extR", { attr: { y2: C.y - 16 } }, { attr: { y2: C.floor }, duration: 0.5, ease: "power2.inOut" }, 7.5);
+      tl.fromTo("#gap-cl", { attr: { y2: C.y - 64 } }, { attr: { y2: C.floor }, duration: 0.5, ease: "power2.inOut" }, 7.55);
+      tl.fromTo("#gap-mass-bid, #gap-mass-ask", { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 7.85);
+      blurIn("#gap-p-mid", 8.2);
+      blurIn("#gap-p-note", 8.28);
+
+      // "cross it" 8.69: one ochre dot crosses the canyon from the bid lip to the ask lip, leaving its path in ochre
+      tl.fromTo("#gap-dot", { scale: 0, svgOrigin: `${x1} ${C.y}` }, { scale: 1, svgOrigin: `${x1} ${C.y}`, duration: 0.2, ease: "expo.out" }, 8.48);
+      tl.fromTo("#gap-dot", { attr: { cx: x1 } }, { attr: { cx: x2 }, duration: 0.8, ease: "power2.inOut" }, 8.68);
+      tl.fromTo("#gap-trail", { attr: { x2: x1 } }, { attr: { x2: x2 }, duration: 0.8, ease: "power2.inOut" }, 8.68);
+
+      // "pay" 11.27: the 5 and the point trade places, 105.7 bps becomes $10.57, the cost of $1,000 in and out at that spread
+      const P = "#gap-p-num";
+      const SWAP = 11.02;
+      tl.fromTo(`${P} .gap-unit`, { opacity: 1, filter: "blur(0px)" }, { opacity: 0, filter: "blur(6px)", duration: 0.2, ease: "power3.in", immediateRender: false }, SWAP);
+      tl.fromTo(`${P} .gap-c3`, { x: 0 }, { x: CELL, duration: 0.46, ease: "power3.inOut" }, SWAP);
+      tl.fromTo(`${P} .gap-c4`, { x: 0 }, { x: -CELL, duration: 0.46, ease: "power3.inOut" }, SWAP);
+      tl.fromTo(`${P} .gap-point`, { y: 0 }, { y: 44, duration: 0.23, ease: "power2.out" }, SWAP);
+      tl.fromTo(`${P} .gap-point`, { y: 44 }, { y: 0, duration: 0.23, ease: "power2.in", immediateRender: false }, SWAP + 0.23);
+      tl.fromTo(P, { x: 0 }, { x: CELL / 2, duration: 0.46, ease: "power3.inOut" }, SWAP);
+      blurIn(`${P} .gap-dollar`, SWAP + 0.36, 0.2);
+      blurOut("#gap-p-label", SWAP);
+      blurIn("#gap-p-cost", SWAP + 0.3);
+
+      window.__timelines["gap"] = tl;
+    })();
+  </script>
+</template>

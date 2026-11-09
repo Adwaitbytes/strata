@@ -1,0 +1,267 @@
+<template>
+  <style>
+    @font-face { font-family: "Bricolage Grotesque"; src: url("assets/fonts/BricolageGrotesque-latin.woff2") format("woff2"); font-weight: 200 800; font-stretch: 75% 100%; font-style: normal; }
+    @font-face { font-family: "Schibsted Grotesk"; src: url("assets/fonts/SchibstedGrotesk-latin.woff2") format("woff2"); font-weight: 400 900; font-style: normal; }
+    @font-face { font-family: "Martian Mono"; src: url("assets/fonts/MartianMono-latin.woff2") format("woff2"); font-weight: 100 800; font-stretch: 75% 112.5%; font-style: normal; }
+    #root { position: absolute; inset: 0; overflow: hidden; background: #0D0F0E; }
+    .proof-mono { font-family: "Martian Mono", monospace; font-stretch: 87.5%; font-feature-settings: "tnum" 1, "zero" 1; }
+
+    .proof-layer { position: absolute; inset: 0; }
+    .proof-cam { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+    .proof-shot { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; }
+    /* ochre hairline that marks the line on a real screen; drawn left to right */
+    .proof-mark { position: absolute; height: 1px; background: #E9A94B; transform-origin: 0 50%; }
+
+    /* B7 world: the render plus its survey annotations */
+    #proof-world { position: absolute; inset: 0; z-index: 1; }
+    #proof-b7 { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; object-fit: cover; }
+    #proof-epoch { position: absolute; opacity: 0; color: #ECE8DF; }
+    .proof-epoch-l1 { display: flex; align-items: center; gap: 18px; font-size: 30px; line-height: 40px; font-weight: 400; }
+    .proof-epoch-l2 { margin-top: 8px; font-size: 28px; line-height: 36px; color: #B4AFA3; }
+    .proof-badge { font-size: 28px; line-height: 38px; letter-spacing: 0.04em; color: #B4AFA3; border: 1px solid #373D39; border-radius: 4px; padding: 0 10px; }
+    .proof-leaf { position: absolute; width: 480px; height: 96px; }
+    .proof-leaf-lead { position: absolute; left: 240px; top: 30px; width: 1px; height: 22px; background: rgba(236, 232, 223, 0.6); transform-origin: 50% 0; }
+    .proof-leaf-label { position: absolute; left: 0; top: 60px; width: 480px; text-align: center; font-size: 30px; line-height: 40px; white-space: nowrap; opacity: 0; }
+    .proof-leaf-name { color: #B4AFA3; }
+    .proof-leaf-sep { color: #8E897E; }
+    .proof-leaf-score { color: #ECE8DF; font-weight: 500; }
+    #proof-rootmark { position: absolute; width: 1200px; height: 84px; }
+    #proof-root-hash { position: absolute; left: 0; top: 0; width: 1200px; text-align: center; font-size: 44px; line-height: 60px; font-weight: 500; color: #E9A94B; white-space: nowrap; }
+    #proof-root-hash span { opacity: 0; }
+    #proof-root-lead { position: absolute; left: 600px; top: 64px; width: 1px; height: 20px; background: rgba(233, 169, 75, 0.7); transform-origin: 50% 100%; }
+
+    /* real screens */
+    #proof-tx { z-index: 2; }
+    #proof-ct { z-index: 3; }
+    #proof-ag { z-index: 4; }
+    #proof-tx-fx { opacity: 0; }
+    #proof-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+  </style>
+  <div id="root" data-composition-id="proof" data-width="1920" data-height="1080" data-duration="16.0">
+    <svg id="proof-defs" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="proof-hb-out" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+          <feGaussianBlur id="proof-hb-out-dev" stdDeviation="0 0" edgeMode="duplicate" />
+        </filter>
+        <filter id="proof-hb-in" x="0" y="0" width="1" height="1" color-interpolation-filters="sRGB">
+          <feGaussianBlur id="proof-hb-in-dev" stdDeviation="0 0" edgeMode="duplicate" />
+        </filter>
+      </defs>
+    </svg>
+
+    <!-- Beat 1 (0 to 4.85): B7 full-bleed, leaves and root annotated, then the root hash becomes the world -->
+    <!-- the zoom through scales this world past the frame and the chain page dissolves over it: the overflow is the move -->
+    <div id="proof-world" data-layout-allow-overflow data-layout-allow-overlap>
+      <video id="proof-b7" class="clip" src="assets/video/b7.mp4" muted playsinline data-start="0" data-duration="4.9" data-track-index="0"></video>
+      <div id="proof-epoch" class="proof-mono">
+        <div class="proof-epoch-l1"><span>Epoch 0 · season 1</span><span class="proof-badge">TESTNET</span></div>
+        <div class="proof-epoch-l2">8 Nov 2026, 19:22 to 20:22 UTC</div>
+      </div>
+      <div id="proof-leaf-1" class="proof-leaf">
+        <div class="proof-leaf-lead"></div>
+        <div class="proof-leaf-label proof-mono"><span class="proof-leaf-name">agent 1</span><span class="proof-leaf-sep"> · </span><span class="proof-leaf-score">10,000</span></div>
+      </div>
+      <div id="proof-leaf-2" class="proof-leaf">
+        <div class="proof-leaf-lead"></div>
+        <div class="proof-leaf-label proof-mono"><span class="proof-leaf-name">agent 2</span><span class="proof-leaf-sep"> · </span><span class="proof-leaf-score">0</span></div>
+      </div>
+      <div id="proof-leaf-3" class="proof-leaf">
+        <div class="proof-leaf-lead"></div>
+        <div class="proof-leaf-label proof-mono"><span class="proof-leaf-name">agent 3</span><span class="proof-leaf-sep"> · </span><span class="proof-leaf-score">0</span></div>
+      </div>
+      <div id="proof-rootmark">
+        <div id="proof-root-hash" class="proof-mono"><span>0</span><span>x</span><span>1</span><span>1</span><span>7</span><span>a</span><span>7</span><span>e</span><span>c</span><span>d</span><span>…</span><span>6</span><span>a</span><span>d</span><span>a</span><span>7</span><span>7</span></div>
+        <div id="proof-root-lead"></div>
+      </div>
+    </div>
+
+    <!-- Beat 2 (4.55 to 8.83): the real epoch attestation tx on Blockscout. Clipped to y 162..606: the banner
+         and the local-time Timestamp row (+05:30) never show; below the Block row the page ground continues. -->
+    <div id="proof-tx" class="clip proof-layer" data-start="4.55" data-duration="4.2833" data-track-index="1">
+      <div id="proof-tx-fx" class="proof-layer">
+        <div class="proof-layer" data-layout-allow-occlusion style="background: #101112"></div>
+        <div id="proof-tx-whip" class="proof-layer">
+          <div id="proof-tx-cam" class="proof-cam" data-layout-allow-overflow>
+            <img id="proof-tx-shot" class="proof-shot" data-layout-allow-occlusion src="assets/screens/chain/blockscout-epoch-tx.png" alt="" style="clip-path: inset(162px 0px 474px 0px)" />
+            <div id="proof-tx-u-status" class="proof-mark" style="left: 511px; top: 552px; width: 79px"></div>
+            <div id="proof-tx-u-method" class="proof-mark" style="left: 602px; top: 552px; width: 79px"></div>
+            <div id="proof-tx-u-block" class="proof-mark" style="left: 511px; top: 590.5px; width: 85px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beat 3 (8.83 to 11.17): ScoreAttestor contract page, verified (exact match) -->
+    <div id="proof-ct" class="clip proof-layer" data-start="8.8333" data-duration="2.3334" data-track-index="2">
+      <div id="proof-ct-fx" class="proof-layer">
+        <div id="proof-ct-whip" class="proof-layer">
+          <div id="proof-ct-cam" class="proof-cam" data-layout-allow-overflow>
+            <img id="proof-ct-shot" class="proof-shot" src="assets/screens/chain/blockscout-attestor-contract.png" alt="" style="clip-path: inset(162px 0px 0px 0px)" />
+            <div id="proof-ct-u-verified" class="proof-mark" style="left: 277px; top: 500px; width: 331px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beat 4 (11.17 to 16): agent 1 "Verify my score" panel, real before and result captures.
+         Clipped to x >= 1020 and y 64..520 so the Live quotes panel, the nav and the tuner card never show;
+         the page ground there is #0D0F0E, the same as this root, so the clip edge is invisible. -->
+    <div id="proof-ag" class="clip proof-layer" data-start="11.1667" data-duration="4.8333" data-track-index="3">
+      <div id="proof-ag-fx" class="proof-layer">
+        <div id="proof-ag-cam" class="proof-cam" data-layout-allow-overflow>
+          <img id="proof-ag-res" class="proof-shot" src="assets/screens/agent-1-verify-result.png" alt="" style="clip-path: inset(64px 0px 701px 1020px)" />
+          <img id="proof-ag-bef-low" class="clip proof-shot" data-start="11.1667" data-duration="1.9" data-track-index="4" src="assets/screens/agent-1-verify-before.png" alt="" style="clip-path: inset(361px 0px 618px 1020px)" />
+          <img id="proof-ag-bef-row1" class="clip proof-shot" data-start="11.1667" data-duration="1.5" data-track-index="5" src="assets/screens/agent-1-verify-before.png" alt="" style="clip-path: inset(307px 0px 719px 1020px)" />
+          <img id="proof-ag-bef-top" class="clip proof-shot" data-start="11.1667" data-duration="1.0" data-track-index="6" src="assets/screens/agent-1-verify-before.png" alt="" style="clip-path: inset(64px 0px 773px 1020px)" />
+          <div id="proof-ag-u-root" class="proof-mark" style="left: 1344.5px; top: 363.5px; width: 67px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    // B7 overlay anchors in screen px of the 1920 x 1080 render. Retune these when the real B7 lands:
+    // root = the single node the leaves rise into, leaves = the three leaf nodes (agent 1, 2, 3), epoch = label block top-left.
+    const PROOF_B7 = {
+      root: { x: 960, y: 330 },
+      leaves: [{ x: 600, y: 650 }, { x: 960, y: 650 }, { x: 1320, y: 650 }],
+      epoch: { x: 96, y: 84 },
+    };
+
+    // Local times (s). Word times from cues.json, scene `proof`.
+    const T = {
+      epoch: 0.74,          // "Each hour's" 0.86
+      leaves: 2.12,         // "merkle" 2.28
+      rootLead: 3.3,
+      rootType: 3.4,        // "root" 3.53
+      charStep: 0.025,
+      zoom: 4.28,           // zoom through the root, lands on "Here's" 4.86
+      txIn: 4.62,
+      uStatus: 5.56,        // "first" 5.64
+      uMethod: 5.98,        // "one" 6.07
+      uBlock: 7.05,         // "testnet" 7.17
+      whipOut: 8.67,
+      cut1: 8.8333,         // frame 265, contract page lands on "contract" 8.81
+      uVerified: 9.42,      // "verified" 9.49
+      pushOut: 10.8667,
+      cut2: 11.1667,        // frame 335, "Pick an agent" 11.3
+      click: 12.15,         // "check" 12.29
+      row1: 12.62,          // "its score" 12.64
+      row2: 13.05,          // "against" 13.22
+      agPush: 13.15,        // push only once both checks have settled
+      uRoot: 14.12,         // "root" 14.21
+    };
+
+    // Camera on a real capture: page region left/top (CSS px of the 1920 x 1080 page) at scale s.
+    const cam = (f) => ({ scale: f.s, x: -f.left * f.s, y: -f.top * f.s });
+    // Same camera re-scaled about a page point, keeping that point fixed on screen.
+    const zoomAbout = (f, px, py, s) => {
+      const sx = (px - f.left) * f.s, sy = (py - f.top) * f.s;
+      return { s, left: px - sx / s, top: py - sy / s };
+    };
+
+    const TX2 = { s: 2.6, left: 225.5, top: 268 };   // testnet bar, Success / postEpoch, Block 147660200; clip edge at the caption band
+    const TX0 = zoomAbout(TX2, TX2.left + 960 / TX2.s, TX2.top + 450 / TX2.s, 1.7); // expands from frame centre, where the hash went
+    const CT1 = { s: 1.9, left: 200, top: 213 };     // contract details, verified bar
+    const CT2 = zoomAbout(CT1, 442, 489, 2.4);       // push into the verified bar (cut on its fastest frame)
+    const AG1 = { s: 3.0, left: 985.5, top: 150 };   // Verify panel: epoch, button, the two checks
+    const AG0 = zoomAbout(AG1, 1305.5, 300, 2.6);
+    const AG2 = { s: 3.3, left: 1014.6, top: 255 };   // the two Passed rows fill the frame (Epoch label just out of frame)
+    const WHIP = 380;
+
+    const $ = (id) => document.getElementById(id);
+    const world = $("proof-world");
+
+    // Place the B7 annotations from PROOF_B7 (build time, deterministic).
+    const epochEl = $("proof-epoch");
+    epochEl.style.left = PROOF_B7.epoch.x + "px";
+    epochEl.style.top = PROOF_B7.epoch.y + "px";
+    PROOF_B7.leaves.forEach((p, i) => {
+      const el = $("proof-leaf-" + (i + 1));
+      el.style.left = p.x - 240 + "px";
+      el.style.top = p.y + "px";
+    });
+    const rootEl = $("proof-rootmark");
+    rootEl.style.left = PROOF_B7.root.x - 600 + "px";
+    rootEl.style.top = PROOF_B7.root.y - 136 + "px";   // hash sits above the root ring (radius 46)
+    // Zoom through the centre of the typed hash.
+    const hashY = PROOF_B7.root.y - 106;
+    world.style.transformOrigin = PROOF_B7.root.x + "px " + hashY + "px";
+
+    // Ochre marks are 4 px on screen at the shot's held scale.
+    const markPx = (sel, s) => document.querySelectorAll(sel).forEach((el) => { el.style.height = 4 / s + "px"; });
+    markPx("#proof-tx-cam .proof-mark", TX2.s);
+    markPx("#proof-ct-cam .proof-mark", CT1.s);
+    markPx("#proof-ag-cam .proof-mark", AG2.s);
+
+    const tl = gsap.timeline({ paused: true });
+    const ft = (target, from, to, at) => tl.fromTo(target, from, { ...to, immediateRender: false }, at);
+
+    // Initial transform states (no CSS transforms on GSAP targets).
+    tl.set(world, { scale: 1, x: 0, y: 0 }, 0);
+    tl.set(".proof-leaf-lead", { scaleY: 0 }, 0);
+    tl.set("#proof-root-lead", { scaleY: 0 }, 0);
+    tl.set(".proof-mark", { scaleX: 0 }, 0);
+    tl.set("#proof-tx-cam", cam(TX0), 0);
+    tl.set("#proof-ct-cam", { ...cam(CT1), x: -CT1.left * CT1.s - WHIP }, 0);
+    tl.set("#proof-ag-cam", cam(AG0), 0);
+    tl.set("#proof-ag-bef-low", { y: 0 }, 0);
+
+    // Beat 1: B7
+    ft("#proof-epoch", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, T.epoch);
+    [1, 2, 3].forEach((n, i) => {
+      const t = T.leaves + i * 0.1;
+      ft(`#proof-leaf-${n} .proof-leaf-lead`, { scaleY: 0 }, { scaleY: 1, duration: 0.3, ease: "power2.out" }, t);
+      ft(`#proof-leaf-${n} .proof-leaf-label`, { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power2.out" }, t + 0.12);
+    });
+    ft("#proof-root-lead", { scaleY: 0 }, { scaleY: 1, duration: 0.25, ease: "power2.out" }, T.rootLead);
+    ft("#proof-root-hash span", { opacity: 0 }, { opacity: 1, duration: 0.05, ease: "none", stagger: T.charStep }, T.rootType);
+
+    // Zoom through the root hash: the world rushes past, the chain arrives out of it.
+    const zoomDur = 0.57;
+    ft(world, { scale: 1 }, { scale: 24, duration: zoomDur, ease: "power3.in" }, T.zoom);
+    ft(world, { x: 0, y: 0 }, { x: 960 - PROOF_B7.root.x, y: 450 - hashY, duration: zoomDur, ease: "power2.inOut" }, T.zoom);
+    ft(world, { filter: "blur(0px)" }, { filter: "blur(16px)", duration: 0.37, ease: "power2.in" }, T.zoom + 0.2);
+    ft(world, { opacity: 1 }, { opacity: 0, duration: 0.15, ease: "power1.in" }, T.zoom + 0.42);
+
+    // Beat 2: the epoch tx
+    ft("#proof-tx-fx", { opacity: 0 }, { opacity: 1, duration: 0.23, ease: "power1.inOut" }, T.txIn);
+    ft("#proof-tx-fx", { filter: "blur(14px)" }, { filter: "blur(0px)", duration: 0.45, ease: "power2.out" }, T.txIn);
+    ft("#proof-tx-cam", cam(TX0), { ...cam(TX2), duration: 0.9, ease: "expo.out" }, T.txIn);
+    const draw = (id, at) => ft(id, { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, at);
+    draw("#proof-tx-u-status", T.uStatus);
+    draw("#proof-tx-u-method", T.uMethod);
+    draw("#proof-tx-u-block", T.uBlock);
+
+    // Whip to the contract page: horizontal smear, cut at its fastest frame.
+    tl.set("#proof-tx-whip", { filter: "url(#proof-hb-out)" }, T.whipOut);
+    ft("#proof-hb-out-dev", { attr: { stdDeviation: "0 0" } }, { attr: { stdDeviation: "36 0" }, duration: T.cut1 - T.whipOut, ease: "power3.in" }, T.whipOut);
+    ft("#proof-tx-cam", cam(TX2), { ...cam(TX2), x: -TX2.left * TX2.s + WHIP, duration: T.cut1 - T.whipOut, ease: "power3.in" }, T.whipOut);
+
+    // Beat 3: ScoreAttestor, verified
+    tl.set("#proof-ct-whip", { filter: "url(#proof-hb-in)" }, T.cut1);
+    ft("#proof-hb-in-dev", { attr: { stdDeviation: "36 0" } }, { attr: { stdDeviation: "0 0" }, duration: 0.2, ease: "power2.out" }, T.cut1);
+    tl.set("#proof-ct-whip", { filter: "none" }, T.cut1 + 0.22);
+    ft("#proof-ct-cam", { ...cam(CT1), x: -CT1.left * CT1.s - WHIP }, { ...cam(CT1), duration: 0.34, ease: "expo.out" }, T.cut1);
+    draw("#proof-ct-u-verified", T.uVerified);
+    // Push into the bar, cut on its fastest frame into the agent page.
+    ft("#proof-ct-cam", cam(CT1), { ...cam(CT2), duration: T.cut2 - T.pushOut, ease: "power3.in" }, T.pushOut);
+    ft("#proof-ct-fx", { filter: "blur(0px)" }, { filter: "blur(5px)", duration: T.cut2 - T.pushOut, ease: "power3.in" }, T.pushOut);
+
+    // Beat 4: Verify my score
+    ft("#proof-ag-fx", { filter: "blur(6px)" }, { filter: "blur(0px)", duration: 0.3, ease: "power2.out" }, T.cut2);
+    ft("#proof-ag-cam", cam(AG0), { ...cam(AG1), duration: 0.75, ease: "expo.out" }, T.cut2);
+    // Real UI states, swapped on the frame like the live page re-renders (camera still):
+    // the button dims once checking starts; row 1 passes, grows 18 px and pushes the pending row 2 down;
+    // row 2 passes and the panel grows to show the Blockscout link.
+    tl.set("#proof-ag-bef-top", { opacity: 0 }, T.click);
+    tl.set("#proof-ag-bef-row1", { opacity: 0 }, T.row1);
+    tl.set("#proof-ag-bef-low", { y: 18 }, T.row1);
+    tl.set("#proof-ag-bef-low", { opacity: 0 }, T.row2);
+    tl.set("#proof-ag-res", { clipPath: "inset(64px 0px 560px 1020px)" }, T.row2);
+    // Then one push onto the settled Passed / Passed rows, and hold.
+    ft("#proof-ag-cam", cam(AG1), { ...cam(AG2), duration: 0.95, ease: "power2.inOut" }, T.agPush);
+    draw("#proof-ag-u-root", T.uRoot);
+
+    window.__timelines["proof"] = tl;
+  </script>
+</template>
