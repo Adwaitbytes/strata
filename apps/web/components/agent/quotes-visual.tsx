@@ -1,21 +1,33 @@
 import type { Quote } from "@strata/sdk";
-import { formatBps, formatPrice } from "@/lib/format";
+import { formatBps, formatPrice, shortHex } from "@/lib/format";
+import { buildQuoteLadders, type QuoteLadder } from "./quote-ladders";
 
 /**
- * The agent's resting ladder as stacked layers: bids grow left from the mid, asks grow right,
- * one layer per level. Width is quantity relative to the largest order shown.
+ * The agent's resting orders, one ladder per market so no mid or spread ever mixes two books.
  */
-export function QuotesVisual({ quotes }: { quotes: Quote[] }) {
-  const live = quotes.filter((q) => q.cancelledAt == null);
-  const levels = [...new Set(live.map((q) => q.level))].sort((a, b) => a - b);
-  const maxQty = Math.max(...live.map((q) => Number(q.quantity)), 0);
-  const bestBid = Math.max(...live.filter((q) => q.side === "buy").map((q) => Number(q.price)));
-  const bestAsk = Math.min(...live.filter((q) => q.side === "sell").map((q) => Number(q.price)));
-  const mid = Number.isFinite(bestBid) && Number.isFinite(bestAsk) ? (bestBid + bestAsk) / 2 : null;
-  const spreadBps = mid ? ((bestAsk - bestBid) / mid) * 10_000 : null;
-
+export function QuotesVisual({ quotes, tickers }: { quotes: Quote[]; tickers: ReadonlyMap<string, string> }) {
+  const ladders = buildQuoteLadders(quotes, tickers);
   return (
-    <div>
+    <div className="flex flex-col gap-6">
+      {ladders.map((ladder) => (
+        <Ladder key={ladder.marketId} ladder={ladder} />
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Stacked layers: bids grow left from the mid, asks grow right, one layer per level.
+ * Width is quantity relative to the largest order in this market.
+ */
+function Ladder({ ladder }: { ladder: QuoteLadder }) {
+  const { quotes: live, levels, maxQty, mid, spreadBps } = ladder;
+  const name = ladder.ticker ?? shortHex(ladder.marketId, 8, 4);
+  return (
+    <section aria-label={`Live quotes, ${name}`}>
+      <h3 className="num mb-2 text-xs font-medium text-fg" title={ladder.marketId}>
+        {name}
+      </h3>
       <div className="mb-4 flex items-baseline justify-between text-xs text-fg-muted">
         <span>
           Mid <span className="num text-fg">{mid ? mid.toFixed(4) : "n/a"}</span>
@@ -24,7 +36,7 @@ export function QuotesVisual({ quotes }: { quotes: Quote[] }) {
           Quoted spread <span className="num text-fg">{formatBps(spreadBps)}</span>
         </span>
       </div>
-      <div className="grid grid-cols-[1fr_1px_1fr] gap-x-3" role="table" aria-label="Live quotes by level">
+      <div className="grid grid-cols-[1fr_1px_1fr] gap-x-3" role="table" aria-label={`Live quotes by level, ${name}`}>
         <div role="row" className="contents">
           <span role="columnheader" className="pb-2 text-right text-[11px] text-bid">
             Bids
@@ -64,6 +76,6 @@ export function QuotesVisual({ quotes }: { quotes: Quote[] }) {
           );
         })}
       </div>
-    </div>
+    </section>
   );
 }

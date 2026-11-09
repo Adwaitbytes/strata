@@ -97,7 +97,7 @@ describe.skipIf(!url)("Postgres persistence (integration)", () => {
     const batch = [
       { kind: "quote" as const, value: { network: "testnet" as const, provenance: "TESTNET" as const, agentId: AGENT, marketId: M, orderHash: hash, side: "buy" as const, price: "99.9", quantity: "0.25", level: 0, postedAt: 1_000, cancelledAt: null } },
       { kind: "fill" as const, value: { network: "testnet" as const, provenance: "TESTNET" as const, agentId: AGENT, marketId: M, orderHash: hash, tradeId: "t", txHash: `0x${randomUUID().replace(/-/g, "")}`, eventIndex: 0, side: "buy" as const, price: "99.9", quantity: "0.1", feeUsd: 0, isMaker: true, counterpartySubaccountId: null, executedAt: 1_500 } },
-      { kind: "tuner" as const, value: { network: "testnet" as const, id: randomUUID(), agentId: AGENT, marketId: M, mode: "shadow" as const, model: "stub", before: params, suggested: params, applied: params, clamped: [], rationale: "No change.", rejected: false, rejectReason: null, at: 2_000 } },
+      { kind: "tuner" as const, value: { network: "testnet" as const, id: randomUUID(), agentId: AGENT, marketId: M, mode: "shadow" as const, model: "stub", before: params, suggested: params, applied: null, clamped: [], rationale: "No change.", rejected: false, rejectReason: null, at: 2_000 } },
     ];
     await writer.write(batch);
     await writer.write(batch);

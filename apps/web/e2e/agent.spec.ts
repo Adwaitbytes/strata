@@ -9,10 +9,18 @@ test.describe("Agent page", () => {
     await expect(focal).toContainText(/Score, epoch #\d+/);
     await expect(focal).toContainText(/#\d/);
     await expect(page.locator("#identity").getByText("ERC-8004 identity")).toBeVisible();
-    await expect(page.getByRole("table", { name: "Live quotes by level" })).toBeVisible();
+    // One ladder per market, each labeled with its ticker.
+    await expect(page.getByRole("table", { name: /^Live quotes by level, MOCK-/ }).first()).toBeVisible();
     await expect(page.getByRole("group", { name: /Score history over/ })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Guard events" })).toBeVisible();
     await expect(page.getByText("SHADOW").first()).toBeVisible();
+  });
+
+  test("never presents a shadow tuner suggestion as applied", async ({ page }) => {
+    await page.goto("/agents/1");
+    const tuner = page.locator("#tuner");
+    await expect(tuner.getByText("Suggested, not applied").first()).toBeVisible();
+    await expect(tuner.getByText("APPLIED", { exact: true })).toHaveCount(0);
   });
 
   test("verifies the score in the browser", async ({ page }) => {

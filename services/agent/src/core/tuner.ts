@@ -204,9 +204,11 @@ export async function runTunerStep(input: TunerStepInput): Promise<{ event: Tune
   if (!parsed.success) return reject(`schema violation: ${parsed.error.issues.map((i) => i.path.join(".") || i.code).join(", ")}`.slice(0, 200));
   const { rationale, ...suggested } = parsed.data;
   const { applied, clamped } = boundSuggestion(input.current, suggested);
+  // Shadow mode never touches the quoter, so recording bounded values as `applied` would misstate what ran.
+  const live = input.mode === "live";
   return {
-    event: { ...base, suggested, applied, clamped, rationale, rejected: false, rejectReason: null },
-    next: input.mode === "live" ? applied : input.current,
+    event: { ...base, suggested, applied: live ? applied : null, clamped, rationale, rejected: false, rejectReason: null },
+    next: live ? applied : input.current,
   };
 }
 

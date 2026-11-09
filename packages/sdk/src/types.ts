@@ -199,7 +199,7 @@ export const TunerEvent = z.object({
   model: z.string(),
   before: TunableParams,
   suggested: TunableParams,
-  /** Values after clamping to bounds and the 20%-per-step limit. */
+  /** Values after clamping to bounds and the 20%-per-step limit. Null when rejected and always null in shadow mode, where nothing is applied. */
   applied: TunableParams.nullable(),
   clamped: z.array(z.string()),
   rationale: z.string().max(280),

@@ -68,11 +68,12 @@ describe("boundSuggestion", () => {
 });
 
 describe("runTunerStep", () => {
-  it("shadow mode logs the bounded suggestion but keeps the current params", async () => {
+  it("shadow mode logs the suggestion, records nothing as applied, and keeps the current params", async () => {
     const { event, next } = await runTunerStep({ client: stub(reply()), snapshot, current, mode: "shadow", ...ctx });
     expect(TunerEvent.parse(event)).toEqual(event);
     expect(event).toMatchObject({ mode: "shadow", model: "stub-model", rejected: false, rejectReason: null });
-    expect(event.applied).toMatchObject({ gamma: 0.11, minHalfSpreadBps: 11 });
+    expect(event.suggested).toMatchObject({ gamma: 0.11, minHalfSpreadBps: 11 });
+    expect(event.applied).toBeNull();
     expect(next).toEqual(current);
   });
 

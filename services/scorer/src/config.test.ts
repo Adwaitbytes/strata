@@ -1,3 +1,4 @@
+import { getNetwork } from "@strata/config";
 import { describe, expect, it } from "vitest";
 import { loadScorerConfig } from "./config.js";
 
@@ -36,7 +37,14 @@ describe("loadScorerConfig", () => {
   });
 
   it("requires contract addresses when the network config has none", () => {
-    expect(() => loadScorerConfig({ STRATA_NETWORK: "testnet", SCORER_API_BASE: base.SCORER_API_BASE }, [])).toThrow(/STRATA_ARENA_ADDRESS/);
+    // Mainnet has no STRATA deployment (D27), so packages/config holds null contracts there.
+    expect(() => loadScorerConfig({ STRATA_NETWORK: "mainnet", SCORER_API_BASE: base.SCORER_API_BASE }, [])).toThrow(/STRATA_ARENA_ADDRESS/);
+  });
+
+  it("falls back to the deployed testnet contracts from packages/config", () => {
+    const c = loadScorerConfig({ STRATA_NETWORK: "testnet", SCORER_API_BASE: base.SCORER_API_BASE }, []);
+    expect(c.arena).toBe(getNetwork("testnet").contracts.arena);
+    expect(c.attestor).toBe(getNetwork("testnet").contracts.attestor);
   });
 
   it("rejects an unknown network and a non-https API base", () => {

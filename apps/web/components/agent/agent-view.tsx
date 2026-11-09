@@ -50,6 +50,8 @@ export function AgentView({ id }: { id: number }) {
   });
   // Rank lives on the leaderboard, not on the agent record.
   const board = useQuery({ queryKey: ["leaderboard", network, "rank"], queryFn: ({ signal }) => api.leaderboard(network, { signal }) });
+  const markets = useQuery({ queryKey: ["markets", network], queryFn: ({ signal }) => api.markets(network, { signal }) });
+  const tickers = new Map((markets.data?.markets ?? []).map((m) => [m.market.marketId, m.market.ticker]));
 
   if (q.isPending) return <AgentSkeleton />;
   if (q.isError && !q.data) {
@@ -183,7 +185,7 @@ export function AgentView({ id }: { id: number }) {
       <div className="grid items-start gap-6 lg:grid-cols-[1.25fr_1fr]">
         <Panel title="Live quotes" id="quotes" aside={<span className="text-xs text-fg-subtle">{d.liveQuotes.length} orders resting</span>}>
           {d.liveQuotes.length ? (
-            <QuotesVisual quotes={d.liveQuotes} />
+            <QuotesVisual quotes={d.liveQuotes} tickers={tickers} />
           ) : (
             <EmptyState title="Not quoting right now" detail={a.status === "active" ? "The agent has no resting orders at this moment" : `The agent is ${a.status}`} className="border-0 p-0" />
           )}
