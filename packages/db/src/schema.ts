@@ -255,3 +255,68 @@ export const agentRiskState = pgTable("agent_risk_state", {
   state: jsonb("state").notNull(),
   updatedAt: ts("updated_at").notNull(),
 }, (t) => [primaryKey({ columns: [t.network, t.agentId] })]);
+
+/**
+ * Options-writer simulator (migration 0006, PRD 9.8, docs/OPTIONS.md). Provenance is pinned to
+ * SIMULATED by a CHECK constraint on every table; the scorer never reads these.
+ */
+export const simOptionQuotes = pgTable("sim_option_quotes", {
+  network: networkEnum("network").notNull(),
+  provenance: provenanceEnum("provenance").notNull(),
+  agentId: integer("agent_id").notNull(),
+  quoteId: text("quote_id").notNull(),
+  underlying: text("underlying").notNull(),
+  underlyingMarketId: text("underlying_market_id").notNull(),
+  kind: text("kind").notNull(),
+  strike: numeric("strike").notNull(),
+  expiryAt: ts("expiry_at").notNull(),
+  spot: numeric("spot").notNull(),
+  spotSource: text("spot_source").notNull(),
+  spotTs: ts("spot_ts").notNull(),
+  size: numeric("size").notNull(),
+  delta: doublePrecision("delta").notNull(),
+  realizedVol: doublePrecision("realized_vol").notNull(),
+  sigmaFair: doublePrecision("sigma_fair").notNull(),
+  impliedVol: doublePrecision("implied_vol").notNull(),
+  fairValue: numeric("fair_value").notNull(),
+  premium: numeric("premium").notNull(),
+  collateral: numeric("collateral").notNull(),
+  outcome: text("outcome").notNull(),
+  at: ts("at").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.quoteId, t.at] })]);
+
+export const simOptionPositions = pgTable("sim_option_positions", {
+  network: networkEnum("network").notNull(),
+  provenance: provenanceEnum("provenance").notNull(),
+  agentId: integer("agent_id").notNull(),
+  positionId: text("position_id").notNull(),
+  underlying: text("underlying").notNull(),
+  underlyingMarketId: text("underlying_market_id").notNull(),
+  kind: text("kind").notNull(),
+  strike: numeric("strike").notNull(),
+  expiryAt: ts("expiry_at").notNull(),
+  size: numeric("size").notNull(),
+  premium: numeric("premium").notNull(),
+  collateral: numeric("collateral").notNull(),
+  status: text("status").notNull(),
+  payout: numeric("payout"),
+  settlementPrice: numeric("settlement_price"),
+  settledOnStaleOracle: boolean("settled_on_stale_oracle").notNull().default(false),
+  openedAt: ts("opened_at").notNull(),
+  closedAt: ts("closed_at"),
+}, (t) => [primaryKey({ columns: [t.network, t.positionId] })]);
+
+export const simOptionBook = pgTable("sim_option_book", {
+  network: networkEnum("network").notNull(),
+  provenance: provenanceEnum("provenance").notNull(),
+  agentId: integer("agent_id").notNull(),
+  at: ts("at").notNull(),
+  cash: numeric("cash").notNull(),
+  lockedCollateral: numeric("locked_collateral").notNull(),
+  freeCash: numeric("free_cash").notNull(),
+  premiumCollected: numeric("premium_collected").notNull(),
+  realizedPnl: numeric("realized_pnl").notNull(),
+  unrealizedPnl: numeric("unrealized_pnl").notNull(),
+  equity: numeric("equity").notNull(),
+  openPositions: integer("open_positions").notNull(),
+}, (t) => [primaryKey({ columns: [t.network, t.agentId, t.at] })]);
