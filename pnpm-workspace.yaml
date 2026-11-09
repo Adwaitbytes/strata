@@ -9,5 +9,3 @@ auditConfig:
   # high or critical production advisory still fails CI.
   ignoreGhsas:
     - GHSA-mrhx-c7xc-m3w5
-overrides:
-  "@fastify/swagger-ui>@fastify/static": "^10.1.10"

@@ -20,12 +20,24 @@ describe("OpenAPI", () => {
     await app.close();
   });
 
-  it("serves the interactive docs page at /docs", async () => {
+  it("serves a script-free docs page at /docs that lists every public route", async () => {
     const app = await buildApp({ config: testConfig(), repo: new MemoryRepo() });
-    const res = await app.inject({ method: "GET", url: "/docs/" });
-    expect(res.statusCode).toBe(200);
-    expect(res.headers["content-type"]).toContain("text/html");
-    expect(res.headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+    for (const url of ["/docs", "/docs/"]) {
+      const res = await app.inject({ method: "GET", url });
+      expect(res.statusCode, url).toBe(200);
+      expect(res.headers["content-type"]).toContain("text/html");
+      expect(res.headers["content-security-policy"]).toContain("frame-ancestors 'none'");
+      expect(res.headers["content-security-policy"]).toContain("script-src 'none'");
+      expect(res.body).not.toContain("<script");
+      for (const r of PUBLIC_ROUTES) expect(res.body).toContain(r.path.replace(/:([a-z]+)/g, "{$1}"));
+    }
     await app.close();
+  });
+
+  it("escapes document text in the docs page", async () => {
+    const { renderDocsPage } = await import("../src/openapi.js");
+    const html = renderDocsPage({ openapi: "3.0.3", info: { title: "<b>x</b>", version: "1" }, paths: {} });
+    expect(html).toContain("&lt;b&gt;x&lt;/b&gt;");
+    expect(html).not.toContain("<b>x</b>");
   });
 });
