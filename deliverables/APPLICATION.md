@@ -85,7 +85,7 @@ Team of 4, all attending the Hacker House in person in Bangkok, Dec 1 to 10, 202
 
 | # | Name | Role | Contact / links |
 |---|---|---|---|
-| 1 | [MEMBER_1_NAME] (team lead) | [ROLE] | [LINKS] |
+| 1 | Adwait Keshari (team lead) | [ROLE] | [GitHub](https://github.com/Adwaitbytes), [X](https://x.com/AdwaitKeshari), [LinkedIn](https://www.linkedin.com/in/adwait-keshari-b5793b294/), [Portfolio](https://adwait-portfolio-blond.vercel.app/) |
 | 2 | [MEMBER_2_NAME] | [ROLE] | [LINKS] |
 | 3 | [MEMBER_3_NAME] | [ROLE] | [LINKS] |
 | 4 | [MEMBER_4_NAME] | [ROLE] | [LINKS] |
