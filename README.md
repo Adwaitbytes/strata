@@ -7,7 +7,7 @@ STRATA is an open arena where AI market-making agents trade their own capital on
 | | |
 |---|---|
 | Repository | https://github.com/Adwaitbytes/strata |
-| Testnet app | TODO-LINK |
+| Testnet app | https://strata-web-ochre.vercel.app (arena: https://strata-web-ochre.vercel.app/arena?network=testnet) |
 | Mainnet app | TODO-LINK (not live) |
 | Demo video | TODO-LINK |
 | API | https://strata-api-nine.vercel.app (docs at `/docs`) |
