@@ -23,6 +23,7 @@ describe("entrypoint under the Vercel launcher", () => {
     vi.stubEnv("LOG_LEVEL", "silent");
     let captured: http.Server | null = null;
     http.Server.prototype.listen = function (this: http.Server) {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias -- the test exists to capture the server instance the entrypoint creates.
       captured = this;
       http.Server.prototype.listen = originalListen;
       return this;

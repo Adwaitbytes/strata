@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "start": "tsx src/main.ts",
@@ -15,7 +16,7 @@
     "@strata/db": "workspace:*",
     "@strata/keys": "workspace:*",
     "@strata/sdk": "workspace:*",
-    "drizzle-orm": "^0.44.0",
+    "drizzle-orm": "^0.45.4",
     "postgres": "^3.4.5",
     "viem": "^2.30.0",
     "zod": "^3.25.0"

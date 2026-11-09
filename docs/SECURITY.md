@@ -116,3 +116,17 @@ testnet with a recorded clip, reduce-only close path on testnet, Playwright E2E,
 7. Rate limiting is per serverless instance.
 8. Market-hours calendar data covers 2026 only (L-5).
 9. `RewardsDistributor` roots are write-once: a wrong root cannot be fixed, only swept after 30 days.
+
+## 7. Dependency audit exceptions
+
+CI runs `pnpm audit --prod --audit-level high`: any high or critical advisory in a production
+dependency fails the build. Dev-only tooling (vitest and its tinypool, Lighthouse CI and its
+basic-ftp) is not shipped to any runtime and is not gated. Exceptions are listed in
+`pnpm-workspace.yaml` under `auditConfig.ignoreGhsas` and must be explained here.
+
+| Advisory | Package | Why accepted | Exit plan |
+| --- | --- | --- | --- |
+| GHSA-mrhx-c7xc-m3w5 (high) | zod 3.25.x | The fix exists only in zod 4.6.6+; there is no 3.x patch and every package validates with the zod 3 API. Exposure is memory use while validating an oversized collection. The API caps request bodies at 16 KiB (`bodyLimit` in `apps/api/src/create-app.ts`) and WebSocket messages at `MAX_CLIENT_MESSAGE_BYTES`, so untrusted input cannot reach the sizes that matter. | Migrate the workspace to zod 4 and drop the exception. |
+
+Resolved on 2026-11-09 by upgrading: drizzle-orm to 0.45.4 (GHSA-gpj5-g38j-94v9) and
+@fastify/swagger-ui to 6.1.3, which pulls @fastify/static 10.1.10 (GHSA-83w8-p2f5-377r).

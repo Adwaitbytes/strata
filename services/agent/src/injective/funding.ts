@@ -192,7 +192,7 @@ export async function distributeTestnetFunds(options: DistributeOptions = {}): P
 }
 
 async function distributeUnlocked(options: DistributeOptions): Promise<DistributionStep[]> {
-  const log = options.log ?? ((l: string) => console.log(l));
+  const log = options.log ?? ((l: string) => void process.stdout.write(`${l}\n`));
   const evm = new EvmRpc("testnet");
   await assertTestnet(evm);
 

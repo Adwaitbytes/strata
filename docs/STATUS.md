@@ -227,3 +227,15 @@ PRD 16.4, testnet, 2026-11-08 (UTC). Terminal captures in `deliverables/screens/
   (`services/scorer/src/epoch.ts`, documented in docs/SCORING.md). The web agent page already shows the SIMULATED badge
   for `simulated` agents, so apps/web was not changed. Heartbeat detail reports `simulatedCapitalUsd`, not `capitalUsd`,
   so the Transparency capital panel never lists simulated USDC as house capital.
+
+## CI green (2026-11-09)
+Cross-folder fixes to make `.github/workflows/ci.yml` pass on main:
+- services/indexer and services/scorer gained a `build` script (`tsconfig.build.json`, emits `dist/`), which the service
+  Dockerfile needs for `ENTRY`. `film/` is excluded from the service image build context.
+- `scripts/gen-abis.mjs` resolves paths from its own location, so `pnpm build` in packages/contracts works.
+- `forge fmt` applied to `IStrataArena.sol` (layout only); `test/generated/**` is excluded from fmt because
+  `services/scorer/test/forgeVectors.test.ts` parses its one-line-per-leaf layout.
+- drizzle-orm 0.45.4 in api, agent, indexer, scorer, db; @fastify/swagger-ui 6.1.3 in api (audit fixes).
+- Audit gate is now production dependencies only; the one accepted advisory is in docs/SECURITY.md section 7.
+- Root ESLint: browser globals for `film/capture/*.mjs` (Playwright page callbacks); scorer and agent info logs write
+  to stdout directly instead of `console.log`.

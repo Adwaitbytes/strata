@@ -47,6 +47,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
+        with:
+          submodules: recursive
+      # @strata/contracts is a workspace package: its build and test tasks run forge.
+      - uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.8.4
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
         with:
@@ -75,7 +81,13 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: pnpm audit (fails on high or critical)
+      # Gate: high or critical advisories in production dependencies. Accepted exceptions live in
+      # pnpm-workspace.yaml (auditConfig.ignoreGhsas) and are explained in docs/SECURITY.md section 7.
+      - name: pnpm audit, production dependencies (fails on high or critical)
+        run: pnpm audit --prod --audit-level high
+      # Report only: dev tooling (test runners, Lighthouse CI) never ships to a runtime.
+      - name: pnpm audit, all dependencies (report only)
+        continue-on-error: true
         run: pnpm audit --audit-level high
 
   contracts:
@@ -91,7 +103,7 @@ jobs:
           submodules: recursive
       - uses: foundry-rs/foundry-toolchain@v1
         with:
-          version: stable
+          version: v1.8.4
       - name: forge fmt check
         run: forge fmt --check
       - name: forge build
@@ -108,7 +120,10 @@ jobs:
       - name: slither
         uses: crytic/slither-action@v0.4.1
         with:
+          # `uses` steps ignore defaults.run.working-directory, so the target is repo-relative.
           target: packages/contracts
+          slither-version: "0.11.6"
+          solc-version: "0.8.28"
           fail-on: high
           slither-args: --filter-paths "lib/|test/|script/"
 

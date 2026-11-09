@@ -37,7 +37,14 @@ interface IStrataArena {
         Status status;
     }
 
-    event AgentEnrolled(uint256 indexed agentId, address indexed operator, uint256 indexed erc8004Id, bytes32 subaccountId, uint64 season, string metadataURI);
+    event AgentEnrolled(
+        uint256 indexed agentId,
+        address indexed operator,
+        uint256 indexed erc8004Id,
+        bytes32 subaccountId,
+        uint64 season,
+        string metadataURI
+    );
     event AgentUpdated(uint256 indexed agentId, string metadataURI);
     event AgentWithdrawn(uint256 indexed agentId);
     event AgentSuspended(uint256 indexed agentId, string reason);
@@ -60,7 +67,9 @@ interface IStrataArena {
     error EmptyReason();
 
     /// @notice Enroll the caller's ERC-8004 identity as an arena agent for the current season.
-    function enroll(uint256 erc8004Id, bytes32 subaccountId, string calldata metadataURI) external returns (uint256 agentId);
+    function enroll(uint256 erc8004Id, bytes32 subaccountId, string calldata metadataURI)
+        external
+        returns (uint256 agentId);
     /// @notice Update the metadata URI of an agent. Operator only.
     function updateMetadata(uint256 agentId, string calldata uri) external;
     /// @notice Withdraw an agent from the arena. Operator only. Irreversible for this agent ID.
@@ -79,7 +88,10 @@ interface IStrataArena {
     function attestor() external view returns (address);
     function currentSeason() external view returns (uint64);
     function identityRegistry() external view returns (address);
-    function seasons(uint64 season) external view returns (uint64 startTime, uint64 endTime, uint32 epochSeconds, bool active);
+    function seasons(uint64 season)
+        external
+        view
+        returns (uint64 startTime, uint64 endTime, uint32 epochSeconds, bool active);
     function getMarket(bytes32 marketId) external view returns (MarketCfg memory);
     function getAgent(uint256 agentId) external view returns (Agent memory);
     function agentIdOf(address operator) external view returns (uint256);

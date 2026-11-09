@@ -44,4 +44,10 @@ export default tseslint.config(
     files: ["**/*.mjs", "**/*.js", "**/*.cjs"],
     languageOptions: { globals: globals.node },
   },
+  {
+    // Film capture scripts drive Playwright; callbacks passed to page.evaluate and
+    // addInitScript run inside the browser page, so both global sets apply.
+    files: ["film/capture/**/*.mjs"],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
 );

@@ -20,7 +20,8 @@ import { createScorerMetrics, serveMetrics } from "./telemetry.js";
 const MAX_BACKOFF_FACTOR = 8;
 
 const log: Logger = {
-  info: (msg, fields) => console.log(JSON.stringify({ level: "info", service: "scorer", msg, ...fields, at: new Date().toISOString() })),
+  info: (msg, fields) =>
+    void process.stdout.write(`${JSON.stringify({ level: "info", service: "scorer", msg, ...fields, at: new Date().toISOString() })}\n`),
   warn: (msg, fields) => console.warn(JSON.stringify({ level: "warn", service: "scorer", msg, ...fields, at: new Date().toISOString() })),
   error: (msg, fields) => console.error(JSON.stringify({ level: "error", service: "scorer", msg, ...fields, at: new Date().toISOString() })),
 };

@@ -1,8 +1,11 @@
 // Generates packages/sdk/src/abis.ts from Foundry build output. Run after `forge build`.
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const out = "packages/contracts/out";
+// Resolved from this file so it works from the repo root and from the contracts package build script.
+const root = fileURLToPath(new URL("..", import.meta.url));
+const out = join(root, "packages/contracts/out");
 // Concrete contracts: their ABIs are supersets of IStrataArena / IScoreAttestor (extra views, errors,
 // events such as UnknownSeason and OperatorCapChanged), so clients can decode every revert and log.
 const contracts = [
@@ -17,5 +20,5 @@ for (const [name, path] of contracts) {
   const abi = JSON.parse(readFileSync(p, "utf8")).abi;
   src += `export const ${name} = ${JSON.stringify(abi, null, 2)} as const;\n\n`;
 }
-writeFileSync("packages/sdk/src/abis.ts", src);
+writeFileSync(join(root, "packages/sdk/src/abis.ts"), src);
 console.log("wrote packages/sdk/src/abis.ts");

@@ -35,7 +35,9 @@ async function recordingPage(theme = "dark") {
   await ctx.addInitScript((t) => {
     try {
       localStorage.setItem("strata-theme", t);
-    } catch {}
+    } catch {
+      // Storage can be blocked on some origins; the page then falls back to its default theme.
+    }
   }, theme);
   const startedAt = Date.now();
   const page = await ctx.newPage();

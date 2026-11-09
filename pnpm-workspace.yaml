@@ -4,3 +4,8 @@ packages:
   - "packages/*"
 allowBuilds:
   esbuild: true
+auditConfig:
+  # Accepted and documented in docs/SECURITY.md (Dependency audit exceptions). Every other
+  # high or critical production advisory still fails CI.
+  ignoreGhsas:
+    - GHSA-mrhx-c7xc-m3w5

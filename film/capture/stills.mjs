@@ -52,7 +52,9 @@ async function newPage(theme, { stubWallet = false } = {}) {
   await ctx.addInitScript((t) => {
     try {
       localStorage.setItem("strata-theme", t);
-    } catch {}
+    } catch {
+      // Storage can be blocked on some origins; the page then falls back to its default theme.
+    }
   }, theme);
   if (stubWallet) await ctx.addInitScript(installStubWallet, { address: STUB_ADDRESS, rpc: TESTNET_RPC });
   const page = await ctx.newPage();
