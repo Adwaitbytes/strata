@@ -1387,7 +1387,7 @@
   "arena": {
    "file": "arena.png",
    "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
-   "capturedAt": "2026-11-09T08:45:11.250Z",
+   "capturedAt": "2026-11-09T08:57:24.458Z",
    "scrollY": 0,
    "theme": "dark",
    "elements": {
@@ -1477,7 +1477,7 @@
       "y": 832.6,
       "w": 400,
       "h": 153.5,
-      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.4 bps STRATA share 0.0%"
      },
      {
       "x": 348,
@@ -1491,7 +1491,7 @@
       "y": 998.1,
       "w": 400,
       "h": 153.5,
-      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.8 bps STRATA share 0.0%"
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 198.6 bps STRATA share 0.0%"
      },
      {
       "x": 1172,
@@ -1549,7 +1549,7 @@
   "arena-markets": {
    "file": "arena-markets.png",
    "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
-   "capturedAt": "2026-11-09T08:45:12.885Z",
+   "capturedAt": "2026-11-09T08:57:26.118Z",
    "scrollY": 711,
    "theme": "dark",
    "elements": {
@@ -1600,7 +1600,7 @@
       "y": 121.6,
       "w": 400,
       "h": 153.5,
-      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.4 bps STRATA share 0.0%"
      },
      {
       "x": 348,
@@ -1614,7 +1614,7 @@
       "y": 287.1,
       "w": 400,
       "h": 153.5,
-      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.8 bps STRATA share 0.0%"
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 198.6 bps STRATA share 0.0%"
      },
      {
       "x": 1172,
@@ -1635,7 +1635,7 @@
       "y": 452.6,
       "w": 400,
       "h": 153.5,
-      "text": "INJ/USDC PERP Crypto Spread 2.0 bps Baseline 1953.8 bps STRATA share 0.0%"
+      "text": "INJ/USDC PERP Crypto Spread 2.0 bps Baseline 1781.1 bps STRATA share 0.0%"
      },
      {
       "x": 1172,
@@ -1722,7 +1722,7 @@
   "arena-light": {
    "file": "arena-light.png",
    "url": "https://strata-web-ochre.vercel.app/arena?network=testnet",
-   "capturedAt": "2026-11-09T08:45:23.045Z",
+   "capturedAt": "2026-11-09T08:57:34.996Z",
    "scrollY": 0,
    "theme": "light",
    "elements": {
@@ -1812,7 +1812,7 @@
       "y": 832.6,
       "w": 400,
       "h": 153.5,
-      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.3 bps STRATA share 0.0%"
+      "text": "BTC/USDC PERP Crypto Spread 40.1 bps Baseline 39.4 bps STRATA share 0.0%"
      },
      {
       "x": 348,
@@ -1826,7 +1826,7 @@
       "y": 998.1,
       "w": 400,
       "h": 153.5,
-      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 217.4 bps STRATA share 0.0%"
+      "text": "ETH/USDC PERP Crypto Spread 0.5 bps Baseline 198.4 bps STRATA share 0.0%"
      },
      {
       "x": 1172,
