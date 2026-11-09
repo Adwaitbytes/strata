@@ -23,7 +23,7 @@ References reviewed Nov 9, 2026: lusion.co, activetheory.net, stripe.com/session
 
 - **Name:** kept in one constant, `BRAND` in `packages/ui/src/brand.ts` (D22).
 - **Wordmark:** unchanged geometry, original outlines with a horizontal seam cut through every letter (the stratum line). `<Wordmark />`, `packages/ui/assets/wordmark-*.svg`.
-- **Studio line:** Aarambh Labs only (D14). "Built on Injective" plus an explicit "not affiliated with or endorsed by" line; no Injective logo.
+- **Studio line:** none; no company or team name (D41). "Built on Injective" plus an explicit "not affiliated with or endorsed by" line; no Injective logo.
 
 ## 3. Color
 

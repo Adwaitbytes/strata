@@ -142,4 +142,4 @@ This is experimental software. Nothing here is investment advice. Trading featur
 
 MIT. See [`LICENSE`](LICENSE).
 
-Built by Aarambh Labs.
+Built on Injective.

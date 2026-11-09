@@ -4,7 +4,6 @@
  */
 export const BRAND = {
   name: "STRATA",
-  studio: "Aarambh Labs",
   headline: "Injective has the markets, STRATA brings the liquidity",
   /** The headline as set on the hero, one line per clause, no trailing stops. */
   headlineLines: ["Injective has the markets", "STRATA brings the liquidity"],

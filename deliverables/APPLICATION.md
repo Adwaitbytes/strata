@@ -18,7 +18,6 @@ Nothing below in square brackets is real yet. Do not submit with a bracket left 
 - [ ] Make the repo public before submitting (it is private until submission, D24)
 - [x] `[VIDEO_URL]`: demo video
 - [x] `[DECK_URL]`: `deliverables/STRATA-deck.pdf` hosted somewhere reviewers can open
-- [ ] Owner confirms the "Earlier" sentence (grants figure, clients, incubation) is accurate and OK to state publicly
 - [ ] Any number added from the app keeps its label if it is testnet (say "on testnet")
 - [ ] Re-run the character count if the description changes (command at the bottom)
 
@@ -52,11 +51,11 @@ AI & agents
 
 ### Variant A: Testnet (submit this one)
 
-Live on Injective testnet: arena and score attestation contracts on Injective EVM (verified on Blockscout and Sourcify: StrataArena https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870?tab=contract, ScoreAttestor https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF?tab=contract). Three STRATA house agents quoting BTC, ETH, INJ, LINK and index perps behind oracle, session and risk guards with a kill switch (testnet has no live RWA perps). We have recorded a read-only baseline on 12 mainnet RWA perp markets since Nov 8; mainnet agents quote there once funded. Hourly onchain score attestations (3 attested as of Nov 9, latest: https://testnet.blockscout.injective.network/tx/0xd850e8ca8cc79511228b92d9088e36e3f82ed24a1520f2bea078c8eae75937d2) and a public leaderboard at https://strata-web-ochre.vercel.app/arena?network=testnet. Options writer agent: running in a labeled simulator (covered calls and cash-secured puts on real mainnet oracle prices) while we wait for writer access. Mainnet contracts and agents are built and tested, waiting on a funded wallet. Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
+Live on Injective testnet: arena and score attestation contracts on Injective EVM (verified on Blockscout and Sourcify: StrataArena https://testnet.blockscout.injective.network/address/0x2046D580f7c710bEE8C8eFE46CB34ccFD1B40870?tab=contract, ScoreAttestor https://testnet.blockscout.injective.network/address/0xfb73da045cDc792dCb9f8Dcdc300aeE348bff4DF?tab=contract). Three STRATA house agents quoting BTC, ETH, INJ, LINK and index perps behind oracle, session and risk guards with a kill switch (testnet has no live RWA perps). We have recorded a read-only baseline on 12 mainnet RWA perp markets since Nov 8; mainnet agents quote there once funded. Hourly onchain score attestations (3 attested as of Nov 9, latest: https://testnet.blockscout.injective.network/tx/0xd850e8ca8cc79511228b92d9088e36e3f82ed24a1520f2bea078c8eae75937d2) and a public leaderboard at https://strata-web-ochre.vercel.app/arena?network=testnet. Options writer agent: running in a labeled simulator (covered calls and cash-secured puts on real mainnet oracle prices) while we wait for writer access. Mainnet contracts and agents are built and tested, waiting on a funded wallet.
 
 ### Variant B: Mainnet (not in use; only if a wallet is funded and S1, S2 and S5 go live)
 
-Mainnet beta live: arena and score attestation contracts on Injective EVM, verified on Blockscout ([MAINNET_ARENA_CONTRACT_URL], [MAINNET_ATTESTOR_CONTRACT_URL]). [N_MAINNET_AGENTS] STRATA agents quoting [MAINNET_MARKETS] with team capital, behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations (latest: [MAINNET_EPOCH_TX_URL]) and a live leaderboard at [MAINNET_ARENA_URL]. Full feature set on testnet, including the options writer agent ([OPTIONS_STATUS]). Earlier: Aarambh Labs shipped Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE) and Proofly (KYC, incubated at IFIH GIFT City); clients include DP World and WASL Group.
+Mainnet beta live: arena and score attestation contracts on Injective EVM, verified on Blockscout ([MAINNET_ARENA_CONTRACT_URL], [MAINNET_ATTESTOR_CONTRACT_URL]). [N_MAINNET_AGENTS] STRATA agents quoting [MAINNET_MARKETS] with team capital, behind oracle, session and risk guards with a kill switch. Hourly onchain score attestations (latest: [MAINNET_EPOCH_TX_URL]) and a live leaderboard at [MAINNET_ARENA_URL]. Full feature set on testnet, including the options writer agent ([OPTIONS_STATUS]).
 
 ## What will you build in the 10 days
 
@@ -81,7 +80,7 @@ Note: the PRD draft named Gulf Labs and SMBC Nikko here. They are program partne
 
 ## Team
 
-Aarambh Labs. Owner and contact: Yatharth Urmaliya (Founder and CEO), per the PRD owner line (D14).
+Fill in on the form yourself (name and contact). No company name (D41).
 
 ---
 

@@ -45,7 +45,7 @@ export function SiteFooter() {
           <div className="title-block-cell title-block-mark">
             <Wordmark title={BRAND.name} className="h-[13px] w-auto self-start text-fg" />
             <p className="mt-4 max-w-[22rem] text-sm leading-relaxed text-fg-muted">
-              An open arena for AI market makers on Injective, built by {BRAND.studio}
+              An open arena for AI market makers, built on Injective
             </p>
           </div>
           {COLUMNS.map((c) => (

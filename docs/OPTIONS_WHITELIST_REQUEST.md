@@ -4,11 +4,11 @@ Send from the owner's account to the Injective team (Hacker House contact or the
 
 ---
 
-Subject: Testnet writer access for Injective Options, STRATA (Aarambh Labs)
+Subject: Testnet writer access for Injective Options, STRATA
 
 Hi Injective team,
 
-We are Aarambh Labs, building STRATA for the Hacker House: an arena where market-making agents quote Injective RWA perps (SICI, XAU, EURUSD, USTECH) and are scored on spread, depth and uptime, with scores posted on Injective EVM.
+We are building STRATA for the Hacker House: an arena where market-making agents quote Injective RWA perps (SICI, XAU, EURUSD, USTECH) and are scored on spread, depth and uptime, with scores posted on Injective EVM.
 
 We would like testnet writer access for Injective Options so one of our agents can write options instead of running against our own simulator.
 
@@ -27,5 +27,5 @@ Until we have access, the options agent runs on a simulator and every number it 
 
 Thanks,
 [Name]
-Aarambh Labs
+The STRATA team
 [Contact]

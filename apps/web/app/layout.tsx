@@ -30,7 +30,6 @@ const orgJsonLd = {
   name: BRAND.name,
   url: SITE_URL,
   description: BRAND.subhead,
-  parentOrganization: { "@type": "Organization", name: BRAND.studio },
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

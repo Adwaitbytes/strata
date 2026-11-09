@@ -4,7 +4,7 @@
 
 | Field | Value |
 |---|---|
-| Owner | Yatharth Urmaliya (Yathu), Founder and CEO, Aarambh Labs |
+| Owner | The project owner |
 | Builder | Claude Code orchestrator plus parallel subagents |
 | Target | Injective Bangkok Hacker House (Dec 1 to 10, 2026), application closes **Nov 10, 2026** |
 | Required stage | **Mainnet** (limited beta, team capital only) **plus Testnet** (full feature set incl. options) |
@@ -35,7 +35,7 @@ You are the lead engineer and orchestrator. Follow these rules exactly.
 ## 1. Mission and Success Criteria
 
 ### 1.1 Mission
-Get Aarambh Labs selected as one of the 20 teams for the Injective Bangkok Hacker House by submitting a **live mainnet product** that solves Injective's biggest problem: thin liquidity on its markets.
+Get STRATA selected as one of the 20 teams for the Injective Bangkok Hacker House by submitting a **live mainnet product** that solves Injective's biggest problem: thin liquidity on its markets.
 
 ### 1.2 What "selected" requires (reviewer lens)
 Reviewers are the Injective core team and HackQuest. They will:
@@ -698,7 +698,7 @@ Install and load before relevant work (verify each source before installing; ski
   (Verify length is 250 characters or fewer before submitting.)
 - **Category:** AI & agents
 - **Stage:** Mainnet (only if Section 1.3 S1, S2, S5 are live; otherwise Testnet)
-- **What have you shipped:** Mainnet beta live: arena and score attestation contracts on Injective EVM (links), [N] STRATA agents quoting [markets] with oracle, session and risk guards, hourly onchain score attestations, live leaderboard at [URL]. Options writer agent on testnet. Earlier: Aarambh Labs products Supermission (AI DeFi trading terminal, about $100K in grants), Monsmith (Monad IDE), Proofly (KYC, incubated at IFIH GIFT City); clients incl. DP World and WASL Group.
+- **What have you shipped:** Mainnet beta live: arena and score attestation contracts on Injective EVM (links), [N] STRATA agents quoting [markets] with oracle, session and risk guards, hourly onchain score attestations, live leaderboard at [URL]. Options writer agent on testnet.
 - **What will you build in the 10 days:** Rewards distributor and Season 1 incentives with the Injective team; options writer agent to mainnet as soon as Options launches; private RFQ for institutional block trades (privacy track); public agent SDK and MCP onboarding for third-party agents; demo flows with Gulf Labs and SMBC Nikko.
 - **Help needed (max 3):** Injective Integration, Tokenomics & DeFi Design, Ecosystem Partnerships
 
@@ -709,7 +709,7 @@ Install and load before relevant work (verify each source before installing; ski
 ### 23.1 Ask all of these together, numbered, with the default shown so the owner can reply "default" quickly:
 1. **Product name:** keep "STRATA"? (default: yes; you will check domain and trademark conflicts and propose 2 alternates if conflicted)
 2. **Domain:** which domain should the app use, and do you have DNS access? (default: buy `strata-arena.xyz` or similar after you approve)
-3. **GitHub:** repo owner/org and repo name; public or private until submission? (default: `aarambhlabs/strata`, public at submission)
+3. **GitHub:** repo owner/org and repo name; public or private until submission? (default: `<org>/strata`, public at submission)
 4. **Hosting accounts:** Vercel team, AWS account (credits?), Postgres choice. (default: Vercel + AWS; Fly.io fallback)
 5. **Mainnet capital:** total USDC and INJ you will fund for house agents, and max daily loss you accept. (default: $1,000 total, $50 max daily loss, $150 max season drawdown)
 6. **Mainnet wallets:** you will create and fund the agent wallets yourself, then place private keys into the secrets manager (never paste keys into chat). Confirm. Also: contract owner address (hardware wallet or Safe).
@@ -719,7 +719,7 @@ Install and load before relevant work (verify each source before installing; ski
 10. **Telegram:** chat ID(s) for alerts and kill switch. (default: create a bot and send you setup steps)
 11. **Blender:** is Blender installed and is BlenderMCP set up on your Mac? (default: use Blender Python scripts you can run)
 12. **Brand:** any existing brand colors, fonts or logo to use? (default: create STRATA identity per Section 12)
-13. **Team mentions:** names, roles and links to show on the site and deck. (default: Aarambh Labs only)
+13. **Team mentions:** names, roles and links to show on the site and deck. (default: none)
 14. **Legal:** OK to state "not available to US persons" and ship the default terms and risk disclosure? (default: yes)
 
 ### 23.2 After the answers
