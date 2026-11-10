@@ -6,7 +6,7 @@ Form: Injective Bangkok Hacker House (Dec 1 to 10, 2026). Closes **Nov 10, 2026*
 
 Nothing below in square brackets is real yet. Do not submit with a bracket left in.
 
-- [ ] Team of 4 filled in (names, roles, links); all 4 attend in person
+- [x] Team of 4, all attend in person; application submitted 2026-11-09 (each member filed their own form)
 - [x] Stage is **Testnet** (D33: no mainnet capital). Variant A below is the copy to submit.
 - [x] Testnet web app: https://strata-web-ochre.vercel.app
 - [x] Arena: https://strata-web-ochre.vercel.app/arena?network=testnet
@@ -85,10 +85,8 @@ Team of 4, all attending the Hacker House in person in Bangkok, Dec 1 to 10, 202
 
 | # | Name | Role | Contact / links |
 |---|---|---|---|
-| 1 | Adwait Keshari (team lead) | [ROLE] | [GitHub](https://github.com/Adwaitbytes), [X](https://x.com/AdwaitKeshari), [LinkedIn](https://www.linkedin.com/in/adwait-keshari-b5793b294/), [Portfolio](https://adwait-portfolio-blond.vercel.app/) |
-| 2 | [MEMBER_2_NAME] | [ROLE] | [LINKS] |
-| 3 | [MEMBER_3_NAME] | [ROLE] | [LINKS] |
-| 4 | [MEMBER_4_NAME] | [ROLE] | [LINKS] |
+| 1 | Adwait Keshari | Team lead | [GitHub](https://github.com/Adwaitbytes), [X](https://x.com/AdwaitKeshari), [LinkedIn](https://www.linkedin.com/in/adwait-keshari-b5793b294/), [Portfolio](https://adwait-portfolio-blond.vercel.app/) |
+| 2 to 4 | Three teammates | | Each submitted their own form with the same project answers (the form is one per person) |
 
 ---
 
