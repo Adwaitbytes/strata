@@ -70,3 +70,7 @@ Epochs 1 to 12 were skipped by the scorer with a recorded reason (host asleep, n
 ## Soak, window 1 (08:20 to 14:20 UTC, 9 Nov)
 
 Agents quoted for the full 6 hours (16 open orders on chain afterwards), 3,864 orders recorded, 4 epochs attested, 136 guard events. Not clean: one agent crash on an unhandled ECONNRESET (auto-restarted in 10 s, no duplicate orders) and a 2.5 hour recording stall in the indexer and scorer after network failures. Both bugs are being fixed; a second soak window follows. Mainnet stays gated on a clean soak and on funding.
+
+## Soak, window 2 (from 15:22 UTC, 9 Nov, on the fixed code)
+
+Clean for 1 h 17 min (zero unhandled errors), then interrupted when the laptop lid closed at 22:10 IST. On wake every service recovered on its own through the liveness watchdog, cancelling orders before restarting. A full 6 hour window needs the host awake or a cloud host; it remains the gate before mainnet.

@@ -253,3 +253,9 @@ Cross-folder fixes to make `.github/workflows/ci.yml` pass on main:
 ### Soak window 2 (fixed code, 09d8b86)
 - **Started 2026-11-09T15:22:54Z (20:52:54 IST)**, when the last of the three agents started on the fixed code; 6 h, planned end 2026-11-09T21:22:54Z. Every supervised child (agents 1 to 3, strata-options 9001, indexer, baseline, scorer) got SIGTERM at 15:22:10Z; supervisors kept running and restarted them; agents cancelled all orders on the way out (exit code 0).
 - Checks at 15:27Z: heartbeats fresh (under 30 s; scorer polls every 30 s) for agent:1, agent:2, agent:3, agent:9001, indexer, scorer, baseline (testnet and mainnet); 16 orders open on chain (`inj:open-orders`).
+
+### Soak window 2 result (started 2026-11-09 15:22:54 UTC on the fixed code)
+- Ran cleanly for 1 h 17 min: zero unhandled errors or fatal exits in any agent, the options writer or the scorer; 1,170 orders recorded 15:00 to 16:59 UTC; epoch 20 attested.
+- Interrupted at 16:40 UTC (22:10 IST) when the laptop lid was closed (pmset: Clamshell Sleep). The host slept until 05:27 UTC.
+- On wake, every service recovered by itself through the new liveness watchdog: agents cancelled all orders before restarting ("database liveness watchdog tripped: cancelling all orders and exiting"), the indexer and baseline resumed, and the scorer skipped the slept hours with "no book data". No manual restart was needed.
+- Verdict: the fixes hold, but a full uninterrupted 6 h window still needs the host awake (lid open and plugged in) or a cloud host (D25). Window 3 starts 2026-11-10 05:30 UTC if the host stays awake.
